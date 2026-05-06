@@ -21,19 +21,26 @@ const app = express();
 app.use(helmet());
 
 // Enable CORS
-const allowedOrigins = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',').map(o => o.trim().replace(/\/$/, '')) : [];
-if (allowedOrigins.length === 0) {
-    throw new Error('FRONTEND_URL environment variable is required');
-}
+const allowedOrigins = (process.env.FRONTEND_URL || '')
+    .split(',')
+    .map(s => s.trim().replace(/\/$/, ''))
+    .filter(Boolean);
+
+// Always allow localhost in development/fallback
+const defaultOrigins = ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:5174'];
 
 app.use(cors({
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl)
+    origin: (origin, callback) => {
+        // Allow requests with no origin (Postman, curl, server-to-server)
         if (!origin) return callback(null, true);
-        
-        // Check if the origin is in the allowed list (handling trailing slashes)
+
         const sanitizedOrigin = origin.replace(/\/$/, '');
-        if (allowedOrigins.indexOf(sanitizedOrigin) !== -1 || process.env.NODE_ENV === 'development') {
+        
+        if (
+            allowedOrigins.includes(sanitizedOrigin) || 
+            defaultOrigins.includes(sanitizedOrigin) ||
+            process.env.NODE_ENV === 'development'
+        ) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
@@ -45,7 +52,7 @@ app.use(cors({
 // Rate limiting
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 mins
-    max: 100, // limit each IP to 100 requests per windowMs
+    max: process.env.NODE_ENV === 'development' ? 10000 : 100, // much higher limit for dev
     standardHeaders: true,
     legacyHeaders: false,
     handler: (req, res) => {
