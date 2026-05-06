@@ -1,0 +1,80 @@
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const hpp = require('hpp');
+const rateLimit = require('express-rate-limit');
+const cookieParser = require('cookie-parser');
+
+// Route files
+const authRoutes = require('./routes/auth.routes');
+const namesRoutes = require('./routes/names.routes');
+const subscriptionRoutes = require('./routes/subscriptions.routes');
+const adminRoutes = require('./routes/admin.routes');
+const userRoutes = require('./routes/users.routes');
+
+const errorHandler = require('./middlewares/error');
+
+const app = express();
+
+// Set security headers
+app.use(helmet());
+
+// Enable CORS
+const allowedOrigin = process.env.FRONTEND_URL;
+if (!allowedOrigin) {
+    throw new Error('FRONTEND_URL environment variable is required');
+}
+
+app.use(cors({
+    origin: allowedOrigin,
+    credentials: true,
+}));
+
+// Rate limiting
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 mins
+    max: 100 // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
+
+// Body parser
+// Note: Webhook MUST come before express.json() if it needs raw body
+app.use('/api/v1/subscriptions/webhook', express.raw({ type: 'application/json' }));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// Prevent http param pollution
+app.use(hpp());
+
+// Request logging middleware
+if (process.env.LOG_REQUESTS === 'true') {
+    app.use(morgan('dev'));
+}
+
+// Mount routers
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/names', namesRoutes);
+app.use('/api/v1/subscriptions', subscriptionRoutes);
+app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/users', userRoutes);
+
+// Basic route for health check
+app.get('/', (req, res) => {
+    res.status(200).json({ 
+        success: true, 
+        message: 'Welcome to NoorNames API',
+        docs: 'Please use /api/v1/names for data'
+    });
+});
+
+app.get('/api/v1/health', (req, res) => {
+    res.status(200).json({ status: 'success', message: 'API is running' });
+});
+
+// Error handling middleware
+app.use(errorHandler);
+
+module.exports = app;
