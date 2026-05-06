@@ -7,7 +7,9 @@ const checkDB = async () => {
     await mongoose.connect(process.env.MONGODB_URI);
     const names = await Name.find({});
     console.log(`Total names in DB: ${names.length}`);
-    names.forEach(name => {
+    const activeNames = names.filter(n => n.isActive);
+    console.log(`Active names in DB: ${activeNames.length}`);
+    activeNames.slice(0, 10).forEach(name => {
       console.log(`- ${name.nameEnglish} (isActive: ${name.isActive})`);
     });
     process.exit(0);

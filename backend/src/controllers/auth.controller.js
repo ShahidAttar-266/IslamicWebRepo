@@ -13,7 +13,7 @@ const sendTokenResponse = (user, statusCode, res) => {
         expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict'
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     };
 
     res.status(statusCode)
@@ -106,10 +106,9 @@ exports.login = async (req, res, next) => {
 // @access  Private
 exports.getMe = async (req, res, next) => {
     try {
-        const user = await User.findById(req.user.id);
         res.status(200).json({
             success: true,
-            data: user
+            data: req.user
         });
     } catch (err) {
         next(err);

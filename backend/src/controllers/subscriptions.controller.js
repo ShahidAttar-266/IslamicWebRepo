@@ -82,6 +82,8 @@ exports.stripeWebhook = async (req, res, next) => {
                 
                 // Retrieve subscription details
                 const subscription = await stripe.subscriptions.retrieve(session.subscription);
+                const interval = subscription.items.data[0]?.plan?.interval; // 'month' or 'year'
+                const billingCycle = interval === 'year' ? 'yearly' : 'monthly';
                 
                 // Create subscription record
                 await Subscription.create({
@@ -89,7 +91,7 @@ exports.stripeWebhook = async (req, res, next) => {
                     stripeSubscriptionId: subscription.id,
                     stripeCustomerId: subscription.customer,
                     planType: 'premium', // Simplification, extract from line items
-                    billingCycle: 'monthly',
+                    billingCycle: billingCycle,
                     status: 'active',
                     startDate: new Date(subscription.current_period_start * 1000),
                     endDate: new Date(subscription.current_period_end * 1000)
@@ -100,7 +102,7 @@ exports.stripeWebhook = async (req, res, next) => {
                     'subscription.status': 'premium',
                     'subscription.stripeCustomerId': subscription.customer,
                     'subscription.stripeSubscriptionId': subscription.id,
-                    'subscription.planType': 'monthly',
+                    'subscription.planType': billingCycle,
                     'subscription.startDate': new Date(subscription.current_period_start * 1000),
                     'subscription.endDate': new Date(subscription.current_period_end * 1000)
                 });

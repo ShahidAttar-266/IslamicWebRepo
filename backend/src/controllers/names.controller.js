@@ -51,6 +51,8 @@ exports.getNames = async (req, res, next) => {
             ];
         }
 
+        console.log('[getNames] Query:', JSON.stringify(parsedQuery));
+
         query = Name.find(parsedQuery);
 
         // Select Fields

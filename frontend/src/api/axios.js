@@ -26,7 +26,9 @@ api.interceptors.response.use(
       // Only logout if it's NOT an auth/me check and NOT a subscription-related call
       // where a 401 might indicate a service error (like Stripe) rather than a session expiry.
       if (!url.includes('/auth/me') && !url.includes('/subscriptions')) {
-        useAuthStore.getState().logout();
+        import('../store/useAuthStore').then(({ default: useAuthStore }) => {
+          useAuthStore.getState().logout();
+        });
       }
     }
     return Promise.reject(error);
