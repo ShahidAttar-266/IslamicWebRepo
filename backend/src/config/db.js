@@ -8,11 +8,18 @@ const connectDB = async () => {
     };
 
     try {
+        if (!process.env.MONGODB_URI) {
+            console.error('MONGODB_URI is not defined in environment variables');
+            return;
+        }
         const conn = await mongoose.connect(process.env.MONGODB_URI, connOptions);
-        console.log(`MongoDB Connected (Standard): ${conn.connection.host}`);
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error) {
         console.error(`MongoDB Connection Error: ${error.message}`);
-        process.exit(1);
+        // Do not process.exit(1) on Vercel as it crashes the function without good logs
+        if (process.env.NODE_ENV !== 'production') {
+            process.exit(1);
+        }
     }
 
     mongoose.connection.on('error', (err) => {
