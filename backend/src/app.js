@@ -21,10 +21,7 @@ const app = express();
 app.use(helmet());
 
 // Enable CORS
-const allowedOrigins = ('https://noornames1.netlify.app/','https://islamic-web-repo.vercel.app')
-    .split(',')
-    .map(s => s.trim().replace(/\/$/, ''))
-    .filter(Boolean);
+const allowedOrigins = ['https://noornames1.netlify.app/','https://islamic-web-repo.vercel.app'];
 
 // Always allow localhost in development/fallback
 const defaultOrigins = ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:5174', 'https://islamic-web-repo.vercel.app', 'https://noornames1.netlify.app'];
