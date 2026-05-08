@@ -31,20 +31,24 @@ app.use(cors({
         // Allow requests with no origin (Postman, curl, server-to-server)
         if (!origin) return callback(null, true);
 
-        const sanitizedOrigin = origin.replace(/\/$/, '');
-        
-        if (
-            allowedOrigins.includes(sanitizedOrigin) || 
-            defaultOrigins.includes(sanitizedOrigin) ||
-            process.env.NODE_ENV === 'development'
-        ) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true,
+       const sanitizedOrigin = origin.replace(/\/$/, '');
+
+if (
+    allowedOrigins.includes(sanitizedOrigin) ||
+    defaultOrigins.includes(sanitizedOrigin) ||
+    process.env.NODE_ENV === 'development'
+) {
+    callback(null, true);
+} else {
+    console.log('Blocked Origin:', sanitizedOrigin);
+    callback(new Error(`Not allowed by CORS: ${sanitizedOrigin}`));
+}
+},
+credentials: true,
+methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+allowedHeaders: ['Content-Type', 'Authorization']
 }));
+app.options('*', cors());
 
 // Rate limiting
 const limiter = rateLimit({
