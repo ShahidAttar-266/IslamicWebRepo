@@ -21,7 +21,7 @@ const app = express();
 app.use(helmet());
 
 // Enable CORS
-const allowedOrigins = (process.env.FRONTEND_URL || 'https://noornames1.netlify.app/','https://islamic-web-repo.vercel.app')
+const allowedOrigins = ('https://noornames1.netlify.app/','https://islamic-web-repo.vercel.app')
     .split(',')
     .map(s => s.trim().replace(/\/$/, ''))
     .filter(Boolean);
