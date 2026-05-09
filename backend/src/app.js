@@ -22,7 +22,7 @@ app.set('trust proxy', 1); // Required for Vercel / any reverse proxy
 app.use(helmet());
 
 // Enable CORS
-const allowedOrigins = ['https://noornames1.netlify.app','https://islamic-web-repo.vercel.app'];
+const allowedOrigins = ['https://noornames1.netlify.app','https://islamic-web-repo.vercel.app','https://islamic-web-repo-jcwb.vercel.app/'];
 
 // Always allow localhost in development/fallback
 const defaultOrigins = ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:5174', 'https://islamic-web-repo.vercel.app', 'https://noornames1.netlify.app'];
