@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../api/axios';
 import NameCard from '../components/NameCard';
-import { Search as SearchIcon, Book } from 'lucide-react';
+import { Search as SearchIcon, Book, ChevronDown, ChevronUp, X } from 'lucide-react';
 
 const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
@@ -18,13 +18,22 @@ const Search = () => {
   const [genderFilter, setGenderFilter] = useState('');
   const [letterFilter, setLetterFilter] = useState(initialLetter);
   const [quranicFilter, setQuranicFilter] = useState(initialQuranic);
+  const [isAlphabetOpen, setIsAlphabetOpen] = useState(false);
+
+  const hasActiveFilters = searchTerm || genderFilter || letterFilter || quranicFilter;
+
+  const clearAllFilters = () => {
+    setSearchTerm('');
+    setGenderFilter('');
+    setLetterFilter('');
+    setQuranicFilter(false);
+  };
 
   // Debounce search and sync URL
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedTerm(searchTerm);
       
-      // Update URL parameters using current React state
       const params = new URLSearchParams(searchParams.toString());
       let changed = false;
 
@@ -68,38 +77,39 @@ const Search = () => {
 
   if (error) {
     return (
-      <div className="text-center py-20 bg-danger/5 border border-danger/20 rounded-2xl">
+      <div className="text-center py-20 bg-danger/5 border border-danger/20 rounded-2xl px-4">
         <p className="text-danger font-bold">Failed to load names</p>
         <p className="text-sm text-text-muted mt-2">{error.message}</p>
-        <button onClick={() => window.location.reload()} className="mt-4 bg-danger text-bg px-6 py-2 rounded-lg font-bold text-sm">Retry</button>
+        <button onClick={() => window.location.reload()} className="mt-4 bg-danger text-bg px-6 py-2 rounded-lg font-bold text-sm min-h-[44px]">Retry</button>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8">
       {/* Search Header */}
-      <div className="bg-card border border-border rounded-xl p-6">
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
-          <div className="relative flex-1">
+      <div className="bg-card border border-border rounded-2xl p-4 md:p-6 shadow-sm">
+        <div className="flex flex-col gap-4 mb-6">
+          <div className="relative w-full">
             <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" size={20} />
             <input 
               type="text" 
               placeholder="Search names, meanings..." 
-              className="w-full bg-bg border border-border focus:border-primary focus:ring-1 focus:ring-primary text-text rounded-lg py-3 pl-12 pr-4 outline-none transition-all"
+              className="w-full bg-bg border border-border focus:border-primary focus:ring-1 focus:ring-primary text-text rounded-xl py-3.5 pl-12 pr-4 outline-none transition-all text-base"
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
-                if (e.target.value && letterFilter) setLetterFilter(''); // Clear letter if typing
+                if (e.target.value && letterFilter) setLetterFilter(''); 
               }}
             />
           </div>
-          <div className="flex gap-2 flex-wrap">
+          
+          <div className="flex flex-wrap items-center gap-2">
             {['boy', 'girl', 'unisex'].map(g => (
               <button
                 key={g}
                 onClick={() => setGenderFilter(genderFilter === g ? '' : g)}
-                className={`px-4 py-3 rounded-lg capitalize text-sm font-medium border transition-colors ${
+                className={`flex-1 sm:flex-none px-4 py-3 rounded-xl capitalize text-sm font-bold border transition-all min-h-[44px] ${
                   genderFilter === g 
                     ? 'bg-primary border-primary text-bg' 
                     : 'bg-bg border-border text-text-muted hover:border-primary/50'
@@ -111,67 +121,100 @@ const Search = () => {
             
             <button
                 onClick={() => setQuranicFilter(!quranicFilter)}
-                className={`px-4 py-3 flex items-center gap-2 rounded-lg text-sm font-medium border transition-colors ${
+                className={`flex-1 sm:flex-none px-4 py-3 flex items-center justify-center gap-2 rounded-xl text-sm font-bold border transition-all min-h-[44px] ${
                   quranicFilter 
                     ? 'bg-primary border-primary text-bg' 
                     : 'bg-bg border-border text-text-muted hover:border-primary/50'
                 }`}
               >
-                <Book size={16} /> Quranic Only
+                <Book size={16} />
+                <span>Quranic<span className="hidden sm:inline"> Only</span></span>
             </button>
+
+            {hasActiveFilters && (
+              <button
+                onClick={clearAllFilters}
+                className="flex items-center gap-2 px-4 py-3 text-sm font-bold text-danger hover:bg-danger/5 rounded-xl transition-all min-h-[44px]"
+              >
+                <X size={16} /> Clear All
+              </button>
+            )}
           </div>
         </div>
 
         {/* Alphabet Filter */}
-        <div>
-          <p className="text-xs text-text-muted mb-2 uppercase tracking-wider font-semibold">Filter by Alphabet</p>
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => {
-                setLetterFilter('');
-                setSearchTerm('');
-                setGenderFilter('');
-                setQuranicFilter(false);
-              }}
-              className={`w-8 h-8 rounded text-sm font-bold transition-colors ${
-                !letterFilter && !searchTerm && !genderFilter && !quranicFilter ? 'bg-primary text-bg' : 'bg-bg border border-border text-text-muted hover:border-primary/50'
-              }`}
+        <div className="border-t border-border pt-6">
+          <div className="flex items-center justify-between mb-4 md:hidden">
+            <p className="text-xs text-text-muted uppercase tracking-wider font-bold">Filter by Letter</p>
+            <button 
+              onClick={() => setIsAlphabetOpen(!isAlphabetOpen)}
+              className="p-2 text-primary hover:bg-primary/5 rounded-lg transition-colors flex items-center gap-1 text-sm font-bold"
             >
-              All
+              {isAlphabetOpen ? <><ChevronUp size={18} /> Hide</> : <><ChevronDown size={18} /> Show</>}
             </button>
-            {alphabets.map(letter => (
+          </div>
+          
+          <div className={`${isAlphabetOpen ? 'block' : 'hidden'} md:block`}>
+            <p className="hidden md:block text-xs text-text-muted mb-4 uppercase tracking-wider font-bold">Filter by Alphabet</p>
+            <div className="grid grid-cols-4 sm:grid-cols-6 md:flex md:flex-wrap gap-2">
               <button
-                key={letter}
                 onClick={() => {
-                  setLetterFilter(letter === letterFilter ? '' : letter);
-                  setSearchTerm(''); // Clear search box if clicking letter
+                  setLetterFilter('');
                 }}
-                className={`w-8 h-8 rounded text-sm font-bold transition-colors ${
-                  letterFilter === letter ? 'bg-primary text-bg' : 'bg-bg border border-border text-text-muted hover:border-primary/50'
+                className={`min-w-[42px] min-h-[42px] flex items-center justify-center rounded-lg text-sm font-black transition-all border ${
+                  !letterFilter ? 'bg-primary border-primary text-bg' : 'bg-bg border-border text-text-muted hover:border-primary/50'
                 }`}
               >
-                {letter}
+                ALL
               </button>
-            ))}
+              {alphabets.map(letter => (
+                <button
+                  key={letter}
+                  onClick={() => {
+                    setLetterFilter(letter === letterFilter ? '' : letter);
+                    setSearchTerm(''); 
+                  }}
+                  className={`min-w-[42px] min-h-[42px] flex items-center justify-center rounded-lg text-sm font-black transition-all border ${
+                    letterFilter === letter ? 'bg-primary border-primary text-bg' : 'bg-bg border-border text-text-muted hover:border-primary/50'
+                  }`}
+                >
+                  {letter}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Results */}
       <div>
-        <h2 className="text-xl font-semibold mb-6 flex items-center justify-between">
-          <span>{data?.count || 0} Results Found</span>
-        </h2>
+        <div className="flex items-center justify-between mb-6 px-1">
+          <h2 className="text-base md:text-xl font-bold text-text">
+            {data?.count || 0} <span className="text-text-muted font-medium">Names Found</span>
+          </h2>
+          {isLoading && <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>}
+        </div>
 
-        {isLoading ? (
-          <div className="flex justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>
+        {isLoading && !data ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+             {[...Array(8)].map((_, i) => (
+               <div key={i} className="bg-card border border-border rounded-2xl h-64 animate-pulse" />
+             ))}
+          </div>
         ) : data?.data?.length === 0 ? (
-          <div className="text-center py-20 text-text-muted">
-            <SearchIcon size={48} className="mx-auto mb-4 opacity-20" />
-            <p className="text-lg">No names found matching your criteria.</p>
+          <div className="text-center py-20 bg-card border border-border rounded-2xl shadow-sm px-4">
+            <SearchIcon size={64} className="mx-auto mb-6 text-border" />
+            <p className="text-xl font-bold text-text">No names found</p>
+            <p className="text-text-muted mt-2 max-w-md mx-auto">We couldn't find any names matching your current filters. Try adjusting your search or clearing all filters.</p>
+            <button 
+              onClick={clearAllFilters}
+              className="mt-6 bg-primary text-bg px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-primary/10"
+            >
+              Clear All Filters
+            </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
             {data?.data?.map(name => (
               <NameCard key={name._id} name={name} />
             ))}

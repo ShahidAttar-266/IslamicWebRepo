@@ -2,8 +2,6 @@ import { Link } from 'react-router-dom';
 import { Mail, ArrowRight, ShieldCheck, Globe } from 'lucide-react';
 import logo from '../assets/logo.png';
 
-// Lucide-React might have different names for social icons depending on the version.
-// Using standard ones or fallbacks.
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -38,24 +36,32 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-card border-t border-border mt-auto pt-16 pb-8 text-text">
+    <footer className="bg-card border-t border-border mt-auto pt-10 pb-6 md:pt-16 md:pb-8 text-text">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 md:gap-12 mb-10 md:mb-16">
           
           {/* Brand Section */}
           <div className="lg:col-span-2 space-y-6">
-            <Link to="/" className="flex items-center gap-2">
-              <img src={logo} alt="NoorNames" className="h-10 w-auto" />
-              <span className="font-black text-2xl tracking-tight text-primary">NoorNames</span>
+            <Link to="/" className="flex items-center gap-2 group">
+              <img src={logo} alt="NoorNames" className="h-9 w-auto md:h-10 group-hover:scale-105 transition-transform" />
+              <span className="font-black text-xl md:text-2xl tracking-tight text-primary">NoorNames</span>
             </Link>
-            <p className="text-text-muted leading-relaxed max-w-sm italic">
-              Discover meaningful Islamic names with history and authenticity. Helping families build a timeless legacy for their children.
+            <p className="text-sm text-text-muted leading-relaxed max-w-sm italic">
+              "Discover meaningful Islamic names with history and authenticity. Helping families build a timeless legacy for their children."
             </p>
             <div className="flex items-center gap-4 text-text-muted">
-              <a href="#" className="p-2 bg-bg border border-border rounded-lg hover:text-primary hover:border-primary transition-all shadow-sm">
+              <a 
+                href="#" 
+                className="p-3 bg-bg border border-border rounded-xl hover:text-primary hover:border-primary transition-all shadow-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
+                aria-label="Website"
+              >
                 <Globe size={20} />
               </a>
-              <a href="mailto:support@noornames.com" className="p-2 bg-bg border border-border rounded-lg hover:text-primary hover:border-primary transition-all shadow-sm">
+              <a 
+                href="mailto:support@noornames.com" 
+                className="p-3 bg-bg border border-border rounded-xl hover:text-primary hover:border-primary transition-all shadow-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
+                aria-label="Email"
+              >
                 <Mail size={20} />
               </a>
             </div>
@@ -72,9 +78,9 @@ const Footer = () => {
                   <li key={link.name}>
                     <Link 
                       to={link.path} 
-                      className="text-sm text-text-muted hover:text-text transition-colors flex items-center group gap-1"
+                      className="text-sm text-text-muted hover:text-text transition-colors flex items-center group gap-1 py-1"
                     >
-                      <span className="w-0 overflow-hidden group-hover:w-2 transition-all duration-300 text-primary">•</span>
+                      <span className="w-0 overflow-hidden group-hover:w-2 transition-all duration-300 text-primary font-black">•</span>
                       {link.name}
                     </Link>
                   </li>
@@ -88,15 +94,15 @@ const Footer = () => {
             <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-6">
               Premium Access
             </h3>
-            <div className="bg-primary/5 border border-primary/10 rounded-2xl p-6 space-y-4">
-              <p className="text-xs text-text-muted leading-relaxed">
+            <div className="bg-primary/5 border border-primary/10 rounded-2xl p-5 md:p-6 space-y-4 shadow-inner">
+              <p className="text-xs text-text-muted leading-relaxed font-medium italic">
                 Unlock full history, Quranic ayah texts, and comparison tools.
               </p>
               <Link 
                 to="/pricing" 
-                className="flex items-center justify-center gap-2 bg-primary text-bg px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-opacity-90 transition-all shadow-lg shadow-primary/10"
+                className="flex items-center justify-center gap-2 bg-primary text-bg px-4 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-opacity-90 transition-all shadow-xl shadow-primary/10 min-h-[44px]"
               >
-                Go Pro <ArrowRight size={14} />
+                Go Pro <ArrowRight size={14} strokeWidth={3} />
               </Link>
             </div>
           </div>
@@ -104,17 +110,17 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2 text-text-muted text-xs font-medium">
-            <ShieldCheck size={14} className="text-primary" />
+          <div className="flex items-center gap-2 text-text-muted text-[10px] md:text-xs font-bold uppercase tracking-wider">
+            <ShieldCheck size={16} className="text-primary" />
             <span>Secure SSL Encrypted Platform</span>
           </div>
           
           <div className="text-center md:text-right">
-            <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
+            <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em]">
               © {currentYear} NoorNames. All rights reserved.
             </p>
-            <p className="text-[9px] text-text-muted mt-1">
-              Handcrafted for the Ummah with love.
+            <p className="text-[9px] text-text-muted mt-2 font-bold italic">
+              "Handcrafted for the Ummah with love."
             </p>
           </div>
         </div>

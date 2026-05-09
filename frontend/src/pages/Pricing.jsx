@@ -25,7 +25,6 @@ const Pricing = () => {
       return;
     }
 
-    // Logic: Premium users cannot buy Basic
     if (currentStatus === 'premium' && planId === 'basic') {
       toast.error('You already have a higher tier plan (Premium)');
       return;
@@ -38,7 +37,6 @@ const Pricing = () => {
         billingCycle: isYearly ? 'yearly' : 'monthly'
       });
       
-      // Redirect to Stripe checkout
       window.location.assign(res.data.url);
     } catch {
       toast.error('Could not initiate checkout');
@@ -95,35 +93,35 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="py-12 max-w-7xl mx-auto">
-      <div className="text-center max-w-3xl mx-auto mb-16">
-        <h1 className="text-4xl md:text-5xl font-bold text-text mb-4">Choose Your Plan</h1>
-        <p className="text-lg text-text-muted mb-8">
+    <div className="py-8 md:py-16 lg:py-24 max-w-7xl mx-auto px-4">
+      <div className="text-center max-w-3xl mx-auto mb-8 md:mb-16">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-text mb-6 tracking-tight">Choose Your Plan</h1>
+        <p className="text-base md:text-lg text-text-muted mb-8 md:mb-10 leading-relaxed max-w-2xl mx-auto">
           Unlock the rich history, precise Quranic references, and deep meanings of thousands of authentic Islamic names.
         </p>
 
         {/* Toggle */}
-        <div className="inline-flex items-center bg-card border border-border rounded-full p-1 relative">
+        <div className="inline-flex items-center bg-card border border-border rounded-full p-1.5 relative shadow-inner">
           <button 
-            className={`relative z-10 px-6 py-2 rounded-full text-sm font-bold transition-colors ${!isYearly ? 'text-bg' : 'text-text-muted'}`}
+            className={`relative z-10 px-6 sm:px-8 py-2.5 rounded-full text-sm font-black transition-all duration-300 ${!isYearly ? 'text-bg' : 'text-text-muted hover:text-text'}`}
             onClick={() => setIsYearly(false)}
           >
             Monthly
           </button>
           <button 
-            className={`relative z-10 px-6 py-2 rounded-full text-sm font-bold transition-colors ${isYearly ? 'text-bg' : 'text-text-muted'}`}
+            className={`relative z-10 px-6 sm:px-8 py-2.5 rounded-full text-sm font-black transition-all duration-300 ${isYearly ? 'text-bg' : 'text-text-muted hover:text-text'}`}
             onClick={() => setIsYearly(true)}
           >
-            Yearly <span className="text-accent text-xs ml-1">-20%</span>
+            Yearly <span className={`${isYearly ? 'text-bg/80' : 'text-primary'} text-[10px] ml-1.5 bg-white/10 px-1.5 py-0.5 rounded-full`}>-20%</span>
           </button>
           
           <div 
-            className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-primary rounded-full transition-transform duration-300 ease-in-out ${isYearly ? 'translate-x-full' : 'translate-x-0'}`}
+            className={`absolute top-1.5 bottom-1.5 w-[calc(50%-6px)] bg-primary rounded-full shadow-lg transition-transform duration-500 cubic-bezier(0.4, 0, 0.2, 1) ${isYearly ? 'translate-x-full' : 'translate-x-0'}`}
           ></div>
         </div>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-sm mx-auto md:max-w-none">
         {plans.map((plan) => {
           const isCurrentPlan = currentStatus === plan.id;
           const isDowngrade = currentStatus === 'premium' && plan.id === 'basic';
@@ -131,33 +129,46 @@ const Pricing = () => {
           return (
             <div 
               key={plan.id} 
-              className={`relative bg-card rounded-2xl border ${plan.isPopular ? 'border-primary shadow-xl shadow-primary/10' : 'border-border'} ${isCurrentPlan ? 'ring-2 ring-primary ring-offset-4 ring-offset-bg' : ''} p-8 flex flex-col`}
+              className={`relative bg-card rounded-3xl border transition-all duration-300 flex flex-col p-6 sm:p-8 ${
+                plan.isPopular 
+                  ? 'border-primary shadow-2xl shadow-primary/10 scale-100 lg:scale-105 z-10' 
+                  : 'border-border'
+              } ${isCurrentPlan ? 'ring-2 ring-primary ring-offset-4 ring-offset-bg' : ''}`}
             >
               {isCurrentPlan && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-500 text-bg px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-lg">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-500 text-bg px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-lg whitespace-nowrap">
                   <Check size={12} strokeWidth={3} /> Your Current Plan
                 </div>
               )}
               
               {!isCurrentPlan && plan.isPopular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-bg px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-bg px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg whitespace-nowrap">
                   Most Popular
                 </div>
               )}
               
-              <h3 className="text-2xl font-bold text-text mb-2">{plan.name}</h3>
-              <div className="mb-6">
-                <span className="text-4xl font-bold text-text">
-                  ${isYearly ? plan.priceYearly : plan.priceMonthly}
-                </span>
-                <span className="text-text-muted">/{isYearly ? 'yr' : 'mo'}</span>
+              <div className="mb-8">
+                <h3 className="text-xl md:text-2xl font-black text-text mb-4 uppercase tracking-wider">{plan.name}</h3>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl md:text-4xl font-black text-text">
+                    ${isYearly ? plan.priceYearly : plan.priceMonthly}
+                  </span>
+                  <span className="text-text-muted font-medium text-sm">/{isYearly ? 'yr' : 'mo'}</span>
+                </div>
+                {isYearly && plan.priceYearly > 0 && (
+                  <p className="text-[10px] text-primary font-bold mt-2 bg-primary/10 px-2 py-0.5 rounded-full inline-block">
+                    Only ${(plan.priceYearly / 12).toFixed(2)} / month
+                  </p>
+                )}
               </div>
 
-              <ul className="space-y-4 mb-8 flex-1">
+              <ul className="space-y-4 mb-10 flex-1">
                 {plan.features.map((feature, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <Check size={20} className="text-primary shrink-0" />
-                    <span className="text-text-muted">{feature}</span>
+                    <div className="mt-1 p-0.5 bg-primary/10 rounded-full">
+                      <Check size={14} className="text-primary shrink-0" strokeWidth={4} />
+                    </div>
+                    <span className="text-sm text-text-muted font-medium leading-relaxed">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -165,16 +176,16 @@ const Pricing = () => {
               <button 
                 onClick={() => !isCurrentPlan && !isDowngrade && plan.id !== 'free' && handleCheckout(plan.id)}
                 disabled={loadingPlan === plan.id || isCurrentPlan || isDowngrade || (plan.id === 'free' && currentStatus === 'free')}
-                className={`w-full py-3 rounded-lg font-bold transition-all ${
+                className={`w-full py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all min-h-[48px] ${
                   isCurrentPlan
                     ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 cursor-default'
                     : isDowngrade
                       ? 'bg-bg text-text-muted cursor-not-allowed border border-border opacity-50'
                       : plan.id === 'free' 
-                        ? 'bg-bg text-text-muted cursor-not-allowed border border-border' 
+                        ? 'bg-bg text-text-muted cursor-not-allowed border border-border opacity-50' 
                         : plan.isPopular 
-                          ? 'bg-primary hover:bg-opacity-90 text-bg shadow-lg shadow-primary/20' 
-                          : 'bg-card border-2 border-primary text-primary hover:bg-primary hover:text-bg'
+                          ? 'bg-primary hover:bg-opacity-90 text-bg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95' 
+                          : 'bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-bg hover:scale-[1.02] active:scale-95'
                 }`}
               >
                 {loadingPlan === plan.id ? (

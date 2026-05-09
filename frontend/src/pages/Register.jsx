@@ -33,7 +33,6 @@ const Register = () => {
         password: data.password
       });
 
-      // Use the user and token directly from the register response
       const { user, token } = res.data;
       setAuth(user, token);
 
@@ -59,63 +58,63 @@ const Register = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <div className="bg-card p-8 rounded-2xl border border-border shadow-lg">
+    <div className="max-w-md mx-auto mt-4 sm:mt-10 px-4 sm:px-0">
+      <div className="bg-card p-5 sm:p-8 rounded-3xl border border-border shadow-2xl">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-text mb-2">Create Account</h1>
-          <p className="text-text-muted">Join to save favorites and unlock features</p>
+          <h1 className="text-2xl md:text-3xl font-black text-text mb-2">Create Account</h1>
+          <p className="text-text-muted italic text-sm">Join to save favorites & unlock premium features</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-text mb-1">Full Name</label>
+            <label className="block text-sm font-bold text-text mb-2">Full Name</label>
             <input 
               {...register('name')} 
-              className={`w-full bg-bg border ${errors.name ? 'border-danger' : 'border-border'} focus:border-primary focus:ring-1 focus:ring-primary rounded-lg px-4 py-2.5 text-text outline-none transition-all`}
+              className={`w-full bg-bg border ${errors.name ? 'border-danger' : 'border-border'} focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl px-4 py-3.5 text-text outline-none transition-all text-base`}
               placeholder="John Doe"
             />
-            {errors.name && <p className="text-danger text-sm mt-1">{errors.name.message}</p>}
+            {errors.name && <p className="text-danger text-xs font-bold mt-2 ml-1">{errors.name.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-text mb-1">Email</label>
+            <label className="block text-sm font-bold text-text mb-2">Email Address</label>
             <input 
               {...register('email')} 
               type="email" 
-              className={`w-full bg-bg border ${errors.email ? 'border-danger' : 'border-border'} focus:border-primary focus:ring-1 focus:ring-primary rounded-lg px-4 py-2.5 text-text outline-none transition-all`}
+              className={`w-full bg-bg border ${errors.email ? 'border-danger' : 'border-border'} focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl px-4 py-3.5 text-text outline-none transition-all text-base`}
               placeholder="you@example.com"
             />
-            {errors.email && <p className="text-danger text-sm mt-1">{errors.email.message}</p>}
+            {errors.email && <p className="text-danger text-xs font-bold mt-2 ml-1">{errors.email.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-text mb-1">Password</label>
+            <label className="block text-sm font-bold text-text mb-2">Password</label>
             <input 
               {...register('password')} 
               type="password" 
-              className={`w-full bg-bg border ${errors.password ? 'border-danger' : 'border-border'} focus:border-primary focus:ring-1 focus:ring-primary rounded-lg px-4 py-2.5 text-text outline-none transition-all`}
+              className={`w-full bg-bg border ${errors.password ? 'border-danger' : 'border-border'} focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl px-4 py-3.5 text-text outline-none transition-all text-base`}
               placeholder="••••••••"
             />
-            {errors.password && <p className="text-danger text-sm mt-1">{errors.password.message}</p>}
+            {errors.password && <p className="text-danger text-xs font-bold mt-2 ml-1">{errors.password.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-text mb-1">Confirm Password</label>
+            <label className="block text-sm font-bold text-text mb-2">Confirm Password</label>
             <input 
               {...register('confirmPassword')} 
               type="password" 
-              className={`w-full bg-bg border ${errors.confirmPassword ? 'border-danger' : 'border-border'} focus:border-primary focus:ring-1 focus:ring-primary rounded-lg px-4 py-2.5 text-text outline-none transition-all`}
+              className={`w-full bg-bg border ${errors.confirmPassword ? 'border-danger' : 'border-border'} focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl px-4 py-3.5 text-text outline-none transition-all text-base`}
               placeholder="••••••••"
             />
-            {errors.confirmPassword && <p className="text-danger text-sm mt-1">{errors.confirmPassword.message}</p>}
+            {errors.confirmPassword && <p className="text-danger text-xs font-bold mt-2 ml-1">{errors.confirmPassword.message}</p>}
           </div>
 
           <button 
             type="submit" 
             disabled={isSubmitting}
-            className="w-full bg-primary hover:bg-opacity-90 text-bg font-bold py-3 rounded-lg transition-all mt-2 disabled:opacity-50"
+            className="w-full bg-primary hover:bg-opacity-90 text-bg font-black py-4 rounded-xl transition-all mt-4 disabled:opacity-50 min-h-[48px] uppercase tracking-widest shadow-lg shadow-primary/20"
           >
-            {isSubmitting ? 'Creating account...' : 'Sign Up'}
+            {isSubmitting ? 'Creating...' : 'Sign Up'}
           </button>
         </form>
 
@@ -123,15 +122,15 @@ const Register = () => {
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-border"></div>
           </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-card text-text-muted">Or continue with</span>
+          <div className="relative flex justify-center text-xs uppercase tracking-widest font-black">
+            <span className="px-4 bg-card text-text-muted">Or continue with</span>
           </div>
         </div>
 
         <div className="flex justify-center">
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
-            onError={() => toast.error('Google login failed')}
+            onError={() => toast.error('Google registration failed')}
             useOneTap
             theme="filled_blue"
             shape="pill"
@@ -139,8 +138,8 @@ const Register = () => {
           />
         </div>
 
-        <p className="text-center text-text-muted text-sm mt-6">
-          Already have an account? <Link to="/login" className="text-primary font-medium hover:underline">Login</Link>
+        <p className="text-center text-text-muted text-sm mt-8">
+          Already have an account? <Link to="/login" className="text-primary font-bold hover:underline decoration-2 underline-offset-4">Login</Link>
         </p>
       </div>
     </div>

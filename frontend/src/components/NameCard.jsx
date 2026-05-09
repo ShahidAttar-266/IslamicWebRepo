@@ -77,13 +77,13 @@ const NameCard = ({ name, onFavorite, delay = 0 }) => {
   return (
     <Link 
       to={`/name/${name._id}`} 
-      className="group relative bg-card border border-border rounded-2xl p-6 transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 overflow-hidden flex flex-col h-full"
+      className="group relative bg-card border border-border rounded-2xl p-4 md:p-6 transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 overflow-hidden flex flex-col h-full"
       style={{ animationDelay: `${delay}s` }}
       aria-label={`${name.nameEnglish} — ${name.gender} name`}
     >
       {/* Decorative Arabic Background Letter */}
       <div className="absolute -top-4 -right-4 p-4 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity duration-500">
-        <span className="text-8xl font-arabic select-none pointer-events-none">
+        <span className="text-7xl md:text-8xl font-arabic select-none pointer-events-none">
           {name.nameArabic.charAt(0)}
         </span>
       </div>
@@ -91,12 +91,12 @@ const NameCard = ({ name, onFavorite, delay = 0 }) => {
       <div className="relative z-10 flex flex-col h-full">
         {/* Top Header: Arabic Name & Favorite Action */}
         <div className="flex justify-between items-start mb-6">
-          <div className="text-4xl font-arabic text-primary leading-none group-hover:scale-110 transition-transform duration-500 origin-left">
+          <div className="text-3xl md:text-4xl font-arabic text-primary leading-none group-hover:scale-110 transition-transform duration-500 origin-left">
             {name.nameArabic}
           </div>
           <button 
             onClick={handleFavoriteClick}
-            className="p-2 rounded-full bg-bg/50 border border-border text-text-muted hover:text-danger hover:border-danger/30 transition-all duration-300"
+            className="p-2 rounded-full bg-bg/50 border border-border text-text-muted hover:text-danger hover:border-danger/30 transition-all duration-300 min-w-[36px] min-h-[36px] flex items-center justify-center"
           >
             <Heart size={18} fill={favoriteMutation.isSuccess ? 'currentColor' : 'none'} />
           </button>
@@ -104,11 +104,11 @@ const NameCard = ({ name, onFavorite, delay = 0 }) => {
 
         {/* Middle: English Name & Main Badge */}
         <div className="mb-4">
-          <div className="flex items-center gap-3 mb-1">
-            <h3 className="text-2xl font-bold text-text group-hover:text-primary transition-colors duration-300">
+          <div className="flex flex-wrap items-center gap-2 mb-1">
+            <h3 className="text-xl md:text-2xl font-bold text-text group-hover:text-primary transition-colors duration-300 truncate">
               {name.nameEnglish}
             </h3>
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest border ${genderStyles}`}>
+            <span className={`px-2 py-0.5 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-widest border shrink-0 ${genderStyles}`}>
               {name.gender}
             </span>
           </div>
@@ -116,12 +116,12 @@ const NameCard = ({ name, onFavorite, delay = 0 }) => {
           {/* Secondary Badges */}
           <div className="flex flex-wrap gap-2">
             {(name.isQuranic || name.quranReference?.surah) && (
-              <span className="flex items-center gap-1 text-[10px] font-bold text-accent bg-accent/10 border border-accent/20 px-2 py-0.5 rounded uppercase tracking-tighter">
+              <span className="flex items-center gap-1 text-[9px] md:text-[10px] font-bold text-accent bg-accent/10 border border-accent/20 px-2 py-0.5 rounded uppercase tracking-tighter shrink-0">
                 <Book size={10} /> Quranic
               </span>
             )}
             {name.isPremium && (
-              <span className="flex items-center gap-1 text-[10px] font-bold text-amber-500 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded uppercase tracking-tighter">
+              <span className="flex items-center gap-1 text-[9px] md:text-[10px] font-bold text-amber-500 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded uppercase tracking-tighter shrink-0">
                 <Crown size={10} /> Premium
               </span>
             )}
@@ -129,26 +129,27 @@ const NameCard = ({ name, onFavorite, delay = 0 }) => {
         </div>
 
         {/* Meaning Section */}
-        <div className="relative">
+        <div className="relative flex-1">
           <p className="text-sm text-text-muted line-clamp-2 leading-relaxed italic pr-4">
             "{name.meaning}"
           </p>
         </div>
         
         {/* Footer: Detailed Action */}
-        <div className="mt-6 pt-4 border-t border-border/40 flex justify-between items-center group-hover:border-primary/20 transition-colors">
+        <div className="mt-6 pt-4 border-t border-border/40 flex justify-between items-center group-hover:border-primary/20 transition-colors gap-2">
           <button 
             onClick={handleCompare}
-            className={`flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${
+            className={`flex items-center gap-1.5 text-[9px] md:text-[10px] font-black uppercase tracking-wider md:tracking-[0.2em] transition-colors shrink-0 ${
               isSelected ? 'text-accent' : 'text-text-muted hover:text-primary'
             }`}
           >
             <ArrowLeftRight size={14} className={isSelected ? 'animate-pulse' : ''} />
-            {isSelected ? 'Selected' : 'Compare'}
+            <span className="hidden xs:inline">{isSelected ? 'Selected' : 'Compare'}</span>
+            <span className="xs:hidden">{isSelected ? 'Sel.' : 'Comp.'}</span>
           </button>
-          <div className="flex items-center gap-2 group/action">
-            <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">
-              View Details
+          <div className="flex items-center gap-1.5 group/action shrink-0">
+            <span className="text-[9px] md:text-[10px] font-black text-primary uppercase tracking-wider md:tracking-[0.2em]">
+              Details
             </span>
             <ArrowRight size={16} className="text-primary translate-x-0 group-hover:translate-x-1 transition-transform" />
           </div>
