@@ -6,29 +6,29 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // Crucial for sending/receiving cookies
+  withCredentials: true,
 });
 
-// Request interceptor: No longer need to manually attach token from store
+// Attach Bearer token from memory on every request
 api.interceptors.request.use(
   (config) => {
+    const token = useAuthStore.getState().token;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// Response interceptor
+// Auto logout on 401 (except /auth/me and /subscriptions)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       const url = error.config.url;
-      // Only logout if it's NOT an auth/me check and NOT a subscription-related call
-      // where a 401 might indicate a service error (like Stripe) rather than a session expiry.
       if (!url.includes('/auth/me') && !url.includes('/subscriptions')) {
-        import('../store/useAuthStore').then(({ default: useAuthStore }) => {
-          useAuthStore.getState().logout();
-        });
+        useAuthStore.getState().logout();
       }
     }
     return Promise.reject(error);
