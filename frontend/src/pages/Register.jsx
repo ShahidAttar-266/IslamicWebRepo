@@ -32,13 +32,15 @@ const Register = () => {
         password: data.password
       });
 
-      // After registration, fetch user profile (cookie is set automatically)
-      const userRes = await api.get('/auth/me');
+      // Use the user and token directly from the register response
+      // DO NOT call /auth/me — cookie is blocked cross-origin (Netlify → Vercel)
+      const { user, token } = res.data;
+      setAuth(user, token);
 
-      setAuth(userRes.data.data);
       toast.success('Account created successfully!');
       navigate('/');
-    } catch (err) {      toast.error(err.response?.data?.error || 'Registration failed');
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Registration failed');
     }
   };
 

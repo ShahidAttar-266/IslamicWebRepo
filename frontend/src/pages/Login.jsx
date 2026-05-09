@@ -23,13 +23,15 @@ const Login = () => {
     try {
       const res = await api.post('/auth/login', data);
 
-      // After login, fetch user profile (cookie is set automatically)
-      const userRes = await api.get('/auth/me');
+      // Use the user and token directly from the login response
+      // DO NOT call /auth/me — cookie is blocked cross-origin (Netlify → Vercel)
+      const { user, token } = res.data;
+      setAuth(user, token);
 
-      setAuth(userRes.data.data);
       toast.success('Successfully logged in!');
       navigate('/');
-    } catch (err) {      toast.error(err.response?.data?.error || 'Login failed');
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Login failed');
     }
   };
 
