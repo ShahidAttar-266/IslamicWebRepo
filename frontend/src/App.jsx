@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
-import api from './api/axios';
 import useAuthStore from './store/useAuthStore';
 import { Loader2 } from 'lucide-react';
 
@@ -37,28 +36,28 @@ import AdminSettings from './pages/admin/AdminSettings';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false, // Disable refetch on focus for better UX
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      gcTime: 1000 * 60 * 10, // 10 minutes
-      retry: 1, // Only retry once
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5,  // 5 minutes
+      gcTime: 1000 * 60 * 10,    // 10 minutes
+      retry: 1,
     },
   },
 });
 
 function App() {
-  const { setAuth, setLoaded, isLoaded } = useAuthStore();
+  const { setLoaded, isLoaded } = useAuthStore();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await api.get('/auth/me');
-        setAuth(res.data.data);
-      } catch (err) {
-        setLoaded();
-      }
-    };
-    checkAuth();
-  }, [setAuth, setLoaded]);
+    // Zustand persist (localStorage) already restores user + token on load.
+    // We do NOT call /auth/me here — that relied on cookies which are blocked
+    // cross-origin (Netlify → Vercel). Calling it would wipe the token.
+    // onRehydrateStorage in useAuthStore sets isLoaded=true after rehydration,
+    // but as a fallback we set it here too after a short tick.
+    const timer = setTimeout(() => {
+      setLoaded();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [setLoaded]);
 
   if (!isLoaded) {
     return (
