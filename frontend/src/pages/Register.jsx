@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { GoogleLogin } from '@react-oauth/google';
 import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
 
@@ -33,7 +34,6 @@ const Register = () => {
       });
 
       // Use the user and token directly from the register response
-      // DO NOT call /auth/me — cookie is blocked cross-origin (Netlify → Vercel)
       const { user, token } = res.data;
       setAuth(user, token);
 
@@ -41,6 +41,20 @@ const Register = () => {
       navigate('/');
     } catch (err) {
       toast.error(err.response?.data?.error || 'Registration failed');
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const res = await api.post('/auth/google', {
+        idToken: credentialResponse.credential
+      });
+      const { user, token } = res.data;
+      setAuth(user, token);
+      toast.success('Successfully registered with Google!');
+      navigate('/');
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Google registration failed');
     }
   };
 
@@ -104,6 +118,26 @@ const Register = () => {
             {isSubmitting ? 'Creating account...' : 'Sign Up'}
           </button>
         </form>
+
+        <div className="relative my-8">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-border"></div>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-card text-text-muted">Or continue with</span>
+          </div>
+        </div>
+
+        <div className="flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => toast.error('Google login failed')}
+            useOneTap
+            theme="filled_blue"
+            shape="pill"
+            text="signup_with"
+          />
+        </div>
 
         <p className="text-center text-text-muted text-sm mt-6">
           Already have an account? <Link to="/login" className="text-primary font-medium hover:underline">Login</Link>

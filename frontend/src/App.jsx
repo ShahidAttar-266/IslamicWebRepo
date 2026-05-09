@@ -33,6 +33,8 @@ import AdminUsers from './pages/admin/AdminUsers';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import AdminSettings from './pages/admin/AdminSettings';
 
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -69,40 +71,42 @@ function App() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <Toaster position="top-center" toastOptions={{ className: 'bg-card text-text' }} />
-        <Routes>
-          {/* Public Routes */}
-          <Route element={<MainLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/name/:id" element={<NameDetail />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/favorites" element={<Favorites />} />
-            <Route path="/compare" element={<Compare />} />
-            <Route path="/account" element={<Account />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/refund" element={<Refund />} />
-            <Route path="/disclaimer" element={<Disclaimer />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
+    <GoogleOAuthProvider clientId="359110639713-vqlbfg3di5pv1kphq0d41p3a8nseujbb.apps.googleusercontent.com">
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <Toaster position="top-center" toastOptions={{ className: 'bg-card text-text' }} />
+          <Routes>
+            {/* Public Routes */}
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/name/:id" element={<NameDetail />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/favorites" element={<Favorites />} />
+              <Route path="/compare" element={<Compare />} />
+              <Route path="/account" element={<Account />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/refund" element={<Refund />} />
+              <Route path="/disclaimer" element={<Disclaimer />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
 
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="names" element={<AdminNames />} />
-            <Route path="upload" element={<AdminUpload />} />
-            <Route path="users" element={<AdminUsers />} />
-            <Route path="subscriptions" element={<AdminSubscriptions />} />
-            <Route path="settings" element={<AdminSettings />} />
-          </Route>
-        </Routes>
-      </Router>
-    </QueryClientProvider>
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="names" element={<AdminNames />} />
+              <Route path="upload" element={<AdminUpload />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="subscriptions" element={<AdminSubscriptions />} />
+              <Route path="settings" element={<AdminSettings />} />
+            </Route>
+          </Routes>
+        </Router>
+      </QueryClientProvider>
+    </GoogleOAuthProvider>
   );
 }
 

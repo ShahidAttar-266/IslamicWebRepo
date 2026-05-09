@@ -2,8 +2,9 @@ const express = require('express');
 const {
     register,
     login,
-    logout,
+    googleLogin,
     getMe,
+    logout,
     updateDetails
 } = require('../controllers/auth.controller');
 
@@ -13,6 +14,7 @@ const { protect } = require('../middlewares/auth');
 
 router.post('/register', register);
 router.post('/login', login);
+router.post('/google', googleLogin);
 router.get('/logout', logout);
 router.get('/me', protect, getMe);
 router.put('/me', protect, updateDetails);

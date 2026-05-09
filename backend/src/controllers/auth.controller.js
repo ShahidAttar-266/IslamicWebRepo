@@ -1,6 +1,9 @@
 const ErrorResponse = require('../utils/errorResponse');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { OAuth2Client } = require('google-auth-library');
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Helper to get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {
@@ -25,9 +28,60 @@ const sendTokenResponse = (user, statusCode, res) => {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                subscription: user.subscription
             }
         });
+};
+
+// @desc    Google Login
+// @route   POST /api/v1/auth/google
+// @access  Public
+exports.googleLogin = async (req, res, next) => {
+    try {
+        const { idToken } = req.body;
+
+        if (!idToken) {
+            return next(new ErrorResponse('Please provide a Google ID Token', 400));
+        }
+
+        const ticket = await client.verifyIdToken({
+            idToken,
+            audience: process.env.GOOGLE_CLIENT_ID
+        });
+
+        const { name, email, sub: googleId } = ticket.getPayload();
+
+        // 1. Find user by googleId OR email
+        let user = await User.findOne({ 
+            $or: [{ googleId }, { email }]
+        });
+
+        if (user) {
+            // Update googleId if they had an email account but never used Google
+            if (!user.googleId) {
+                user.googleId = googleId;
+                await user.save();
+            }
+        } else {
+            // 2. Create new user if not found
+            user = await User.create({
+                name,
+                email,
+                googleId,
+                isActive: true
+            });
+        }
+
+        if (!user.isActive) {
+            return next(new ErrorResponse('User account is deactivated', 401));
+        }
+
+        sendTokenResponse(user, 200, res);
+    } catch (err) {
+        console.error('Google Login Error:', err);
+        return next(new ErrorResponse('Google authentication failed', 401));
+    }
 };
 
 // @desc    Logout user / Clear cookie
