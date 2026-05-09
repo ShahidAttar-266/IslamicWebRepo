@@ -16,6 +16,7 @@ const userRoutes = require('./routes/users.routes');
 const errorHandler = require('./middlewares/error');
 
 const app = express();
+app.set('trust proxy', 1); // Required for Vercel / any reverse proxy
 
 // Set security headers
 app.use(helmet());
@@ -49,6 +50,8 @@ methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
 allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.options('*', cors());
+
+app.set('trust proxy', 1); // Trust Vercel's proxy layer
 
 // Rate limiting
 const limiter = rateLimit({
