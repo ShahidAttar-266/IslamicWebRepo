@@ -5,11 +5,20 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const app = require('./app');
 const connectDB = require('./config/db');
+const mongoose = require('mongoose');
 
 const PORT = process.env.PORT || 5000;
 
-// Initialize Database Connection
-connectDB();
+// Serverless-safe DB connection: reuse existing connection on warm invocations
+// without this, each Vercel warm re-use opens a new connection and can exhaust the pool
+let dbConnected = false;
+const connectOnce = async () => {
+    if (!dbConnected && mongoose.connection.readyState === 0) {
+        await connectDB();
+        dbConnected = true;
+    }
+};
+connectOnce();
 
 // Only start the server if we're not running as a Vercel serverless function
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {

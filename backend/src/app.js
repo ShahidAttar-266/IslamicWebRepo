@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-app.use(cors());
 const helmet = require('helmet');
 const morgan = require('morgan');
 const hpp = require('hpp');
