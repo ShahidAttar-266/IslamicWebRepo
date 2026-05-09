@@ -108,6 +108,7 @@ exports.getNames = async (req, res, next) => {
 
         res.status(200).json({
             success: true,
+            total,
             count: names.length,
             pagination,
             data: names
