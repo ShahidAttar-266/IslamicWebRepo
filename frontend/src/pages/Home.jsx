@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { Search as SearchIcon, ArrowRight } from 'lucide-react';
 import api from '../api/axios';
 import NameCard from '../components/NameCard';
+import useAuthStore from '../store/useAuthStore';
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuthStore();
 
   // Fetch some featured/recent names
   const { data: recentNames, isLoading } = useQuery({
@@ -86,8 +88,12 @@ const Home = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {(recentNames || []).map(name => (
-              <NameCard key={name._id} name={name} />
+            {(recentNames || []).map((name, index) => (
+              <NameCard 
+                key={name._id} 
+                name={name} 
+                isLocked={!isAuthenticated && index >= 4}
+              />
             ))}
           </div>
         )}

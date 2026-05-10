@@ -3,12 +3,14 @@ import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../api/axios';
 import NameCard from '../components/NameCard';
+import useAuthStore from '../store/useAuthStore';
 import { Search as SearchIcon, Book, ChevronDown, ChevronUp, X } from 'lucide-react';
 
 const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { isAuthenticated } = useAuthStore();
   const initialQuery = searchParams.get('q') || '';
   const initialLetter = searchParams.get('letter') || '';
   const initialQuranic = searchParams.get('quranic') === 'true';
@@ -215,8 +217,12 @@ const Search = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-            {data?.data?.map(name => (
-              <NameCard key={name._id} name={name} />
+            {data?.data?.map((name, index) => (
+              <NameCard 
+                key={name._id} 
+                name={name} 
+                isLocked={!isAuthenticated && index >= 4}
+              />
             ))}
           </div>
         )}
