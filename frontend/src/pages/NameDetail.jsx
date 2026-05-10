@@ -1,10 +1,39 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Heart, Lock, Book, Info, Copy, ArrowLeft, Crown, Quote, Sparkles, ArrowLeftRight, Loader2 } from 'lucide-react';
+import { Heart, Lock, Book, Info, Copy, ArrowLeft, Crown, Quote, Sparkles, ArrowLeftRight, Loader2, LogIn } from 'lucide-react';
 import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
 import { toast } from 'react-hot-toast';
+
+// Soft login prompt component - appears as a subtle banner for non-authenticated users
+const SoftLoginBanner = ({ onLogin, onDismiss }) => (
+  <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border border-primary/20 rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+    <div className="flex items-center gap-3">
+      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+        <LogIn size={18} className="text-primary" />
+      </div>
+      <div>
+        <p className="text-sm font-bold text-text">Sign in to unlock more features</p>
+        <p className="text-xs text-text-muted">Save names, compare, and access premium content</p>
+      </div>
+    </div>
+    <div className="flex items-center gap-2">
+      <button
+        onClick={onDismiss}
+        className="px-4 py-2 text-xs font-bold text-text-muted hover:text-text transition-colors min-h-[36px]"
+      >
+        Maybe Later
+      </button>
+      <button
+        onClick={onLogin}
+        className="bg-primary hover:bg-primary/90 text-bg px-5 py-2 rounded-lg font-bold text-xs transition-all min-h-[36px]"
+      >
+        Sign In
+      </button>
+    </div>
+  </div>
+);
 
 const GatedSection = ({ title, icon: Icon, isLocked, msg, children, onUnlock }) => {
   if (!isLocked) return (
@@ -47,6 +76,15 @@ const NameDetail = () => {
   const { isAuthenticated, user } = useAuthStore();
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
+  const [showLoginBanner, setShowLoginBanner] = useState(true);
+
+  // Hide banner when user logs in
+  useEffect(() => {
+    if (isAuthenticated) setShowLoginBanner(false);
+  }, [isAuthenticated]);
+
+  const handleLogin = () => navigate('/login');
+  const handleDismissBanner = () => setShowLoginBanner(false);
 
   // Optional login check - only redirect if trying to access premium features
   // Public can view basic name details without login
@@ -95,12 +133,6 @@ const NameDetail = () => {
   });
 
   const handleCompare = () => {
-    if (!isPremium) {
-      toast.error('Name Comparison is a Premium feature', { icon: '👑' });
-      navigate('/pricing');
-      return;
-    }
-
     const params = new URLSearchParams(window.location.search);
     if (isSelected) {
       if (id1 === id) params.delete('id1');
@@ -173,6 +205,11 @@ const NameDetail = () => {
 
   const handleFavorite = (e) => {
     e.preventDefault();
+    if (!isAuthenticated) {
+      toast.success('Please sign in to save names', { icon: '🔐' });
+      navigate('/login');
+      return;
+    }
     toggleFavoriteMutation.mutate();
   };
 
@@ -183,6 +220,11 @@ const NameDetail = () => {
       <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold text-sm min-h-[44px]">
         <ArrowLeft size={18} /> BACK
       </button>
+
+      {/* Soft Login Banner - Only show to non-authenticated users */}
+      {!isAuthenticated && showLoginBanner && (
+        <SoftLoginBanner onLogin={handleLogin} onDismiss={handleDismissBanner} />
+      )}
 
       {/* Hero Section */}
       <section className="relative bg-card border border-border rounded-3xl md:rounded-[2.5rem] p-5 md:p-8 lg:p-12 overflow-hidden shadow-2xl">
