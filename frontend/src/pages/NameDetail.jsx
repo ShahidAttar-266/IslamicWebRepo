@@ -96,6 +96,11 @@ const NameDetail = () => {
 
   const handleCompare = () => {
     if (!isPremium) {
+      if (!isAuthenticated) {
+        toast.error('Please login to compare names', { icon: '🔐' });
+        navigate('/login');
+        return;
+      }
       toast.error('Name Comparison is a Premium feature', { icon: '👑' });
       navigate('/pricing');
       return;
@@ -114,6 +119,16 @@ const NameDetail = () => {
       }
     }
     navigate(`/compare?${params.toString()}`);
+  };
+
+  const handleFavorite = (e) => {
+    e.preventDefault();
+    if (!isAuthenticated) {
+      toast.error('Please login to save favorites', { icon: '🔐' });
+      navigate('/login');
+      return;
+    }
+    toggleFavoriteMutation.mutate();
   };
 
   const hasPremiumAccess = user?.role === 'admin' || ['basic', 'premium'].includes(user?.subscription?.status);
@@ -183,6 +198,27 @@ const NameDetail = () => {
       <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold text-sm min-h-[44px]">
         <ArrowLeft size={18} /> BACK
       </button>
+
+      {/* Login Prompt for Guests */}
+      {!isAuthenticated && (
+        <div className="bg-gradient-to-r from-primary/10 to-accent/10 border border-border rounded-2xl p-4 md:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
+              <Heart size={20} className="text-primary" />
+            </div>
+            <div>
+              <p className="font-bold text-text text-sm md:text-base">Sign in to unlock all features</p>
+              <p className="text-text-muted text-xs md:text-sm">Save favorites, compare names, and access premium content</p>
+            </div>
+          </div>
+          <button
+            onClick={() => navigate('/login')}
+            className="bg-primary hover:bg-opacity-90 text-bg px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-lg shadow-primary/20 min-h-[44px] whitespace-nowrap"
+          >
+            Sign In
+          </button>
+        </div>
+      )}
 
       {/* Hero Section */}
       <section className="relative bg-card border border-border rounded-3xl md:rounded-[2.5rem] p-5 md:p-8 lg:p-12 overflow-hidden shadow-2xl">
