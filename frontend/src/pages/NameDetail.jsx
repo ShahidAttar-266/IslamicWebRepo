@@ -354,24 +354,48 @@ const NameDetail = () => {
         </div>
 
         <div className="space-y-6 md:space-y-8">
-          <GatedSection 
-            title="Notable Bearers" 
-            icon={Crown} 
+          <GatedSection
+            title="Notable Bearers"
+            icon={Crown}
             isLocked={!hasPremiumAccess}
             msg="Explore famous historical figures with this name."
             onUnlock={handleUnlock}
           >
             <div className="space-y-6">
               {name.famousPersonalities && name.famousPersonalities.length > 0 ? (
-                name.famousPersonalities.map((p, i) => (
-                  <div key={i} className="group/item">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px] font-black">{i+1}</div>
-                      <h4 className="font-bold text-text group-hover/item:text-primary transition-colors text-sm md:text-base">{p.name}</h4>
+                name.famousPersonalities.map((p, i) => {
+                  const isHidden = !hasPremiumAccess && i >= 4;
+                  if (isHidden) {
+                    return (
+                      <div key={i} className="group/item relative">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px] font-black">{i+1}</div>
+                          <h4 className="font-bold text-text group-hover/item:text-primary transition-colors text-sm md:text-base blur-[3px] select-none">{p.name}</h4>
+                        </div>
+                        <div className="blur-[3px] select-none">
+                          <p className="text-xs md:text-sm text-text-muted pl-9 leading-relaxed italic">{p.description}</p>
+                        </div>
+                        <div className="absolute inset-0 z-10 flex items-center justify-end pr-4">
+                          <button
+                            onClick={handleLogin}
+                            className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-bg px-4 py-2 rounded-lg font-bold text-xs transition-all shadow-lg min-h-[36px]"
+                          >
+                            <LogIn size={14} /> Sign In to View
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div key={i} className="group/item">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px] font-black">{i+1}</div>
+                        <h4 className="font-bold text-text group-hover/item:text-primary transition-colors text-sm md:text-base">{p.name}</h4>
+                      </div>
+                      <p className="text-xs md:text-sm text-text-muted pl-9 leading-relaxed italic">{p.description}</p>
                     </div>
-                    <p className="text-xs md:text-sm text-text-muted pl-9 leading-relaxed italic">{p.description}</p>
-                  </div>
-                ))
+                  );
+                })
               ) : (
                 <p className="text-sm text-text-muted italic">No records found.</p>
               )}
