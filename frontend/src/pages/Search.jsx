@@ -59,7 +59,7 @@ const Search = () => {
       }
     }, 500);
     return () => clearTimeout(timer);
-  }, [searchTerm, letterFilter, quranicFilter, setSearchParams]);
+  }, [searchTerm, letterFilter, quranicFilter, setSearchParams, searchParams]);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['names', debouncedTerm, genderFilter, letterFilter, quranicFilter],

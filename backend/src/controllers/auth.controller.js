@@ -106,6 +106,11 @@ exports.register = async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
 
+        // Validate required fields
+        if (!name || !email || !password) {
+            return next(new ErrorResponse('Please provide name, email and password', 400));
+        }
+
         // Create user
         const user = await User.create({
             name,

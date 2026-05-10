@@ -48,13 +48,8 @@ const NameDetail = () => {
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
 
-  // Strict Login Check
-  useEffect(() => {
-    if (!isAuthenticated) {
-      toast.error('Please login to view name details');
-      navigate('/login');
-    }
-  }, [isAuthenticated, navigate]);
+  // Optional login check - only redirect if trying to access premium features
+  // Public can view basic name details without login
 
   const isPremium = user?.role === 'admin' || user?.subscription?.status === 'premium';
   const id1 = searchParams.get('id1');
@@ -78,7 +73,7 @@ const NameDetail = () => {
       const res = await api.get(`/names/${id}`);
       return res.data?.data;
     },
-    enabled: !!id && isAuthenticated,
+    enabled: !!id,
     retry: false
   });
 

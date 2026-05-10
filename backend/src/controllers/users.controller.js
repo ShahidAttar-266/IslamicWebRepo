@@ -24,6 +24,9 @@ exports.getFavorites = async (req, res, next) => {
 // @route   POST /api/v1/users/favorites/:nameId
 // @access  Private
 exports.addFavorite = async (req, res, next) => {
+    if (!req.params.nameId.match(/^[0-9a-fA-F]{24}$/)) {
+        return next(new ErrorResponse('Invalid name ID format', 400));
+    }
     try {
         const user = await User.findByIdAndUpdate(
             req.user.id,

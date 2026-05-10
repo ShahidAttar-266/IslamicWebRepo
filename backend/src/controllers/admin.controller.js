@@ -1,6 +1,7 @@
 const ErrorResponse = require('../utils/errorResponse');
 const Name = require('../models/Name');
 const User = require('../models/User');
+const Subscription = require('../models/Subscription');
 const UploadLog = require('../models/UploadLog');
 const xlsx = require('xlsx');
 const { v4: uuidv4 } = require('uuid');
@@ -164,8 +165,6 @@ exports.getUploadLogs = async (req, res, next) => {
 // @access  Private/Admin
 exports.getAnalytics = async (req, res, next) => {
     try {
-        const Subscription = require('../models/Subscription');
-        
         const totalUsers = await User.countDocuments({ role: 'user' });
         const activeSubscribers = await User.countDocuments({
             'subscription.status': { $in: ['basic', 'premium'] }
@@ -306,7 +305,6 @@ exports.updateUserPlan = async (req, res, next) => {
         await user.save();
 
         // Create or Update record in the Subscription collection so it shows in the Admin Dashboard
-        const Subscription = require('../models/Subscription');
         if (plan === 'free') {
             // Mark existing sub as cancelled or delete if manual
             await Subscription.deleteMany({ userId: user._id });
@@ -344,7 +342,6 @@ exports.updateUserPlan = async (req, res, next) => {
 // @access  Private/Admin
 exports.getSubscriptions = async (req, res, next) => {
     try {
-        const Subscription = require('../models/Subscription');
         const subscriptions = await Subscription.find().populate('userId', 'name email').sort({ createdAt: -1 });
         res.status(200).json({
             success: true,

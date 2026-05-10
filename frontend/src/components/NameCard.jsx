@@ -38,10 +38,8 @@ const NameCard = ({ name, onFavorite, delay = 0 }) => {
         params.set('id2', name._id);
       }
     }
-    
-    // Check if we are already on the compare page
-    const basePath = window.location.pathname.includes('/compare') ? '/compare' : '/compare';
-    navigate(`${basePath}?${params.toString()}`);
+
+    navigate(`/compare?${params.toString()}`);
   };
 
   const isBoy = name.gender === 'boy';
@@ -98,7 +96,7 @@ const NameCard = ({ name, onFavorite, delay = 0 }) => {
             onClick={handleFavoriteClick}
             className="p-2 rounded-full bg-bg/50 border border-border text-text-muted hover:text-danger hover:border-danger/30 transition-all duration-300 min-w-[36px] min-h-[36px] flex items-center justify-center"
           >
-            <Heart size={18} fill={favoriteMutation.isSuccess ? 'currentColor' : 'none'} />
+            <Heart size={18} fill={favoriteMutation.isPending ? 'currentColor' : 'none'} />
           </button>
         </div>
 

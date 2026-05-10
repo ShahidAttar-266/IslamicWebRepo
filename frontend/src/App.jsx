@@ -71,7 +71,7 @@ function App() {
   }
 
   return (
-    <GoogleOAuthProvider clientId="359110639713-vqlbfg3di5pv1kphq0d41p3a8nseujbb.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <QueryClientProvider client={queryClient}>
         <Router>
           <Toaster position="top-center" toastOptions={{ className: 'bg-card text-text' }} />

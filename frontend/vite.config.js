@@ -5,5 +5,13 @@ export default defineConfig({
   plugins: [react()],
   build: {
     chunkSizeWarningLimit: 2000,
-  }
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      },
+    },
+  },
 })

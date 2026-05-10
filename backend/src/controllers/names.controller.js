@@ -66,8 +66,8 @@ exports.getNames = async (req, res, next) => {
 
         // Sort & Text Search Score
         if (req.query.q) {
-            // Must project and sort by text score when using $text search
-            query = query.select({ score: { $meta: 'textScore' } })
+            // Must add text score projection while keeping existing select
+            query = query.select('score')
                          .sort({ score: { $meta: 'textScore' } });
         } else if (req.query.sort) {
             const sortBy = req.query.sort.split(',').join(' ');

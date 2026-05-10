@@ -16,34 +16,32 @@ const userRoutes = require('./routes/users.routes');
 const errorHandler = require('./middlewares/error');
 
 const app = express();
-app.set('trust proxy', 1); // Required for Vercel / any reverse proxy
-
 // Set security headers
 app.use(helmet());
 
 // Enable CORS
-const allowedOrigins = ['https://noornames1.netlify.app','https://islamic-web-repo.vercel.app','https://islamic-web-repo-jcwb.vercel.app/'];
-
-// Always allow localhost in development/fallback
-const defaultOrigins = ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:5174', 'https://islamic-web-repo.vercel.app', 'https://noornames1.netlify.app'];
+const allowedOrigins = [
+    'https://noornames1.netlify.app',
+    'https://islamic-web-repo.vercel.app',
+    'https://islamic-web-repo-jcwb.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:5174'
+];
 
 app.use(cors({
     origin: (origin, callback) => {
         // Allow requests with no origin (Postman, curl, server-to-server)
         if (!origin) return callback(null, true);
 
-       const sanitizedOrigin = origin.replace(/\/$/, '');
+        const sanitizedOrigin = origin.replace(/\/$/, '');
 
-if (
-    allowedOrigins.includes(sanitizedOrigin) ||
-    defaultOrigins.includes(sanitizedOrigin) ||
-    process.env.NODE_ENV === 'development'
-) {
-    callback(null, true);
-} else {
-    console.log('Blocked Origin:', sanitizedOrigin);
-    callback(new Error(`Not allowed by CORS: ${sanitizedOrigin}`));
-}
+        if (allowedOrigins.includes(sanitizedOrigin) || process.env.NODE_ENV === 'development') {
+            callback(null, true);
+        } else {
+            console.log('Blocked Origin:', sanitizedOrigin);
+            callback(new Error(`Not allowed by CORS: ${sanitizedOrigin}`));
+        }
 },
 credentials: true,
 methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
