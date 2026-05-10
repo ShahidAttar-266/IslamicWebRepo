@@ -34,6 +34,7 @@ import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import AdminSettings from './pages/admin/AdminSettings';
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import ScrollToTop from './components/ScrollToTop';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -74,6 +75,7 @@ function App() {
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <QueryClientProvider client={queryClient}>
         <Router>
+          <ScrollToTop />
           <Toaster position="top-center" toastOptions={{ className: 'bg-card text-text' }} />
           <Routes>
             {/* Public Routes */}

@@ -50,13 +50,14 @@ const Footer = () => {
               "Discover meaningful Islamic names with history and authenticity. Helping families build a timeless legacy for their children."
             </p>
             <div className="flex items-center gap-4 text-text-muted">
-              <a 
-                href="#" 
+              <button 
+                type="button"
                 className="p-3 bg-bg border border-border rounded-xl hover:text-primary hover:border-primary transition-all shadow-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Website"
+                onClick={(e) => e.preventDefault()}
               >
                 <Globe size={20} />
-              </a>
+              </button>
               <a 
                 href="mailto:support@noornames.com" 
                 className="p-3 bg-bg border border-border rounded-xl hover:text-primary hover:border-primary transition-all shadow-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
