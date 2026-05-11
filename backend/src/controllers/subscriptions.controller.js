@@ -26,9 +26,19 @@ exports.createCheckoutSession = async (req, res, next) => {
         
         const paymentLink = await razorpay.paymentLink.create({
             amount: amount,
-            currency: "USD",
+            currency: "INR",
             accept_partial: false,
             description: `Subscription for ${billingCycle} plan`,
+            options: {
+                checkout: {
+                    method: {
+                        netbanking: "1",
+                        card: "1",
+                        upi: "1",
+                        wallet: "1"
+                    }
+                }
+            },
             customer: {
                 name: req.user.name,
                 email: req.user.email,
