@@ -6,12 +6,12 @@ const subscriptionSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    stripeSubscriptionId: {
+    razorpaySubscriptionId: {
         type: String,
         unique: true,
         sparse: true
     },
-    stripeCustomerId: {
+    razorpayPaymentId: {
         type: String
     },
     planType: {

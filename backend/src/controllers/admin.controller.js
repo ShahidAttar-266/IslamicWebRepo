@@ -319,7 +319,7 @@ exports.updateUserPlan = async (req, res, next) => {
                     billingCycle: 'yearly', // Default for manual
                     startDate: new Date(),
                     endDate: new Date('9999-12-31'),
-                    stripeSubscriptionId: `manual_${Date.now()}`
+                    razorpaySubscriptionId: `manual_${Date.now()}`
                 },
                 { upsert: true, new: true }
             );

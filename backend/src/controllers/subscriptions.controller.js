@@ -1,138 +1,160 @@
 const ErrorResponse = require('../utils/errorResponse');
 const User = require('../models/User');
 const Subscription = require('../models/Subscription');
+const crypto = require('crypto');
 
-// Lazy initialize Stripe to ensure env is loaded
-const getStripe = () => require('stripe')(process.env.STRIPE_SECRET_KEY);
+// Lazy initialize Razorpay
+const getRazorpay = () => {
+    const Razorpay = require('razorpay');
+    return new Razorpay({
+        key_id: process.env.RAZORPAY_KEY_ID,
+        key_secret: process.env.RAZORPAY_KEY_SECRET
+    });
+};
 
-// @desc    Create Stripe checkout session
+// @desc    Create Razorpay payment link
 // @route   POST /api/v1/subscriptions/create-checkout
 // @access  Private
 exports.createCheckoutSession = async (req, res, next) => {
     try {
-        const { planId, billingCycle } = req.body; // Use plan lookup in real implementation
+        const { planId, billingCycle } = req.body;
         
-        // Hardcoded price IDs for demo purposes. In production, fetch from Plan model
-        const priceId = process.env[`STRIPE_PRICE_${billingCycle.toUpperCase()}`]; 
+        // Prices in Paise (e.g. 4.99 USD -> 499 cents -> 499)
+        // Assuming the plans are fixed for now or fetched from env
+        const amount = billingCycle === 'yearly' ? 999900 : 99900; // Example: 99.99 and 9.99
         
-        if (!priceId) {
-             return next(new ErrorResponse('Invalid plan configuration', 400));
-        }
-
-        const stripe = getStripe();
+        const razorpay = getRazorpay();
         
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            mode: 'subscription',
-            customer_email: req.user.email,
-            client_reference_id: req.user.id.toString(),
-            line_items: [
-                {
-                    price: priceId,
-                    quantity: 1
-                }
-            ],
-            success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${process.env.FRONTEND_URL}/cancel`
+        const paymentLink = await razorpay.paymentLink.create({
+            amount: amount,
+            currency: "USD",
+            accept_partial: false,
+            description: `Subscription for ${billingCycle} plan`,
+            customer: {
+                name: req.user.name,
+                email: req.user.email,
+                contact: "" // Add contact if available in user model
+            },
+            notify: {
+                sms: false,
+                email: true
+            },
+            reminder_enable: true,
+            notes: {
+                userId: req.user.id.toString(),
+                billingCycle: billingCycle,
+                planType: 'premium'
+            },
+            callback_url: `${process.env.FRONTEND_URL}/success`,
+            callback_method: "get"
         });
 
         res.status(200).json({
             success: true,
-            url: session.url
+            url: paymentLink.short_url
         });
     } catch (err) {
-        // If it's a Stripe error, it might have a 401 status if the API key is invalid
-        // We don't want to return 401 to the frontend as it triggers logout
-        if (err.type && err.type.startsWith('Stripe')) {
-            return next(new ErrorResponse(`Subscription service error: ${err.message}`, 500));
-        }
-        next(err);
+        console.error('Razorpay Error:', err);
+        next(new ErrorResponse(`Subscription service error: ${err.message}`, 500));
     }
 };
 
-// @desc    Stripe Webhook
+// @desc    Razorpay Webhook
 // @route   POST /api/v1/subscriptions/webhook
 // @access  Public
-exports.stripeWebhook = async (req, res, next) => {
-    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+exports.razorpayWebhook = async (req, res, next) => {
+    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
 
     if (!webhookSecret) {
-        console.error('[STRIPE_WEBHOOK] STRIPE_WEBHOOK_SECRET is not configured');
+        console.error('[RAZORPAY_WEBHOOK] RAZORPAY_WEBHOOK_SECRET is not configured');
         return res.status(500).send('Webhook configuration error');
     }
 
-    const stripe = getStripe();
-    const sig = req.headers['stripe-signature'];
-    let event;
+    const shasum = crypto.createHmac('sha256', webhookSecret);
+    shasum.update(req.body);
+    const digest = shasum.digest('hex');
+    const signature = req.headers['x-razorpay-signature'];
 
-    try {
-        // req.body must be raw buffer for stripe signature verification
-        event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
-    } catch (err) {
-        console.error(`[STRIPE_WEBHOOK_ERROR] ${err.message}`);
+    if (digest !== signature) {
+        console.error('[RAZORPAY_WEBHOOK_ERROR] Invalid Signature');
         return res.status(400).send('Webhook Error: Invalid Signature');
     }
 
-    // Handle the event
+    // Parse the raw body to JSON
+    let body;
     try {
-        switch (event.type) {
-            case 'checkout.session.completed': {
-                const session = event.data.object;
-                const userId = session.client_reference_id;
+        body = JSON.parse(req.body.toString());
+    } catch (e) {
+        return res.status(400).send('Invalid JSON');
+    }
+
+    const event = body.event;
+    const payload = body.payload;
+
+    try {
+        switch (event) {
+            case 'payment_link.paid': {
+                const paymentLink = payload.payment_link.entity;
+                const userId = paymentLink.notes.userId;
+                const billingCycle = paymentLink.notes.billingCycle;
+                const planType = paymentLink.notes.planType;
                 
-                // Retrieve subscription details
-                const subscription = await stripe.subscriptions.retrieve(session.subscription);
-                const interval = subscription.items.data[0]?.plan?.interval; // 'month' or 'year'
-                const billingCycle = interval === 'year' ? 'yearly' : 'monthly';
+                // Calculate end date based on billing cycle
+                const startDate = new Date();
+                const endDate = new Date();
+                if (billingCycle === 'yearly') {
+                    endDate.setFullYear(endDate.getFullYear() + 1);
+                } else {
+                    endDate.setMonth(endDate.getMonth() + 1);
+                }
                 
                 // Create subscription record
                 await Subscription.create({
                     userId,
-                    stripeSubscriptionId: subscription.id,
-                    stripeCustomerId: subscription.customer,
-                    planType: 'premium', // Simplification, extract from line items
+                    razorpaySubscriptionId: paymentLink.id,
+                    razorpayPaymentId: payload.payment.entity.id,
+                    planType: planType,
                     billingCycle: billingCycle,
                     status: 'active',
-                    startDate: new Date(subscription.current_period_start * 1000),
-                    endDate: new Date(subscription.current_period_end * 1000)
+                    startDate,
+                    endDate
                 });
 
                 // Update User
                 await User.findByIdAndUpdate(userId, {
-                    'subscription.status': 'premium',
-                    'subscription.stripeCustomerId': subscription.customer,
-                    'subscription.stripeSubscriptionId': subscription.id,
+                    'subscription.status': planType,
+                    'subscription.razorpayPaymentId': payload.payment.entity.id,
+                    'subscription.razorpaySubscriptionId': paymentLink.id,
                     'subscription.planType': billingCycle,
-                    'subscription.startDate': new Date(subscription.current_period_start * 1000),
-                    'subscription.endDate': new Date(subscription.current_period_end * 1000)
+                    'subscription.startDate': startDate,
+                    'subscription.endDate': endDate
                 });
                 break;
             }
-            case 'customer.subscription.deleted': {
-                const subscription = event.data.object;
+            case 'payment_link.cancelled':
+            case 'payment_link.expired': {
+                const paymentLink = payload.payment_link.entity;
                 
                 // Update subscription record
                 await Subscription.findOneAndUpdate(
-                    { stripeSubscriptionId: subscription.id },
+                    { razorpaySubscriptionId: paymentLink.id },
                     { status: 'cancelled', cancelledAt: new Date() }
                 );
 
                 // Update User
                 await User.findOneAndUpdate(
-                    { 'subscription.stripeSubscriptionId': subscription.id },
+                    { 'subscription.razorpaySubscriptionId': paymentLink.id },
                     { 'subscription.status': 'cancelled' }
                 );
                 break;
             }
-            // Add other events like invoice.payment_failed as needed
             default:
-                console.log(`Unhandled event type ${event.type}`);
+                console.log(`Unhandled event type ${event}`);
         }
 
-        // Return a 200 response to acknowledge receipt of the event
-        res.status(200).send();
+        res.status(200).json({ status: 'ok' });
     } catch (error) {
-        console.error('Error processing webhook:', error);
+        console.error('Error processing Razorpay webhook:', error);
         res.status(500).send('Error processing webhook');
     }
 };

@@ -36,8 +36,8 @@ const userSchema = new mongoose.Schema({
             enum: ['free', 'basic', 'premium', 'cancelled'],
             default: 'free'
         },
-        stripeCustomerId: String,
-        stripeSubscriptionId: String,
+        razorpayPaymentId: String,
+        razorpaySubscriptionId: String,
         planType: {
             type: String,
             enum: ['monthly', 'yearly']

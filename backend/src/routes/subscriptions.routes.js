@@ -1,7 +1,7 @@
 const express = require('express');
 const {
     createCheckoutSession,
-    stripeWebhook,
+    razorpayWebhook,
     getSubscriptionStatus
 } = require('../controllers/subscriptions.controller');
 
@@ -10,7 +10,7 @@ const { protect } = require('../middlewares/auth');
 const router = express.Router();
 
 // Webhook needs raw body, handled in app.js
-router.post('/webhook', stripeWebhook);
+router.post('/webhook', razorpayWebhook);
 
 // Protected routes
 router.use(protect);
