@@ -23,6 +23,7 @@ import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Refund from './pages/Refund';
 import Disclaimer from './pages/Disclaimer';
+import Success from './pages/Success';
 import NotFound from './pages/NotFound';
 
 // Admin Pages
@@ -93,6 +94,7 @@ function App() {
               <Route path="/terms" element={<Terms />} />
               <Route path="/refund" element={<Refund />} />
               <Route path="/disclaimer" element={<Disclaimer />} />
+              <Route path="/success" element={<Success />} />
               <Route path="*" element={<NotFound />} />
             </Route>
 

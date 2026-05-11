@@ -19,9 +19,8 @@ exports.createCheckoutSession = async (req, res, next) => {
     try {
         const { planId, billingCycle } = req.body;
         
-        // Prices in Paise (e.g. 4.99 USD -> 499 cents -> 499)
-        // Assuming the plans are fixed for now or fetched from env
-        const amount = billingCycle === 'yearly' ? 999900 : 99900; // Example: 99.99 and 9.99
+        // Prices in cents for USD (e.g. 4.99 USD -> 499 cents)
+        const amount = billingCycle === 'yearly' ? 3999 : 499; // $39.99 yearly, $4.99 monthly
         
         const razorpay = getRazorpay();
         
