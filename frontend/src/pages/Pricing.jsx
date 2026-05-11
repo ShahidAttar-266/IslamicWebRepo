@@ -62,8 +62,8 @@ const Pricing = () => {
     {
       id: 'basic',
       name: 'Basic',
-      priceMonthly: 4.99,
-      priceYearly: 39.99,
+      priceMonthly: 1,
+      priceYearly: 1,
       features: [
         'Unlimited names',
         'Full historical backgrounds',
@@ -78,8 +78,8 @@ const Pricing = () => {
     {
       id: 'premium',
       name: 'Premium',
-      priceMonthly: 9.99,
-      priceYearly: 79.99,
+      priceMonthly: 1,
+      priceYearly: 1,
       features: [
         'Everything in Basic',
         'Famous personalities list',
