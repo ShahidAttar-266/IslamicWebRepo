@@ -4,6 +4,7 @@ import useAuthStore from '../store/useAuthStore';
 import { Search, LogOut, Heart, Menu, X, ChevronRight, User } from 'lucide-react';
 import logo from '../assets/logo.png';
 import Footer from '../components/Footer';
+import SupportWidget from '../components/SupportWidget';
 
 const MainLayout = () => {
   const { user, isAuthenticated, logout } = useAuthStore();
@@ -50,7 +51,7 @@ const MainLayout = () => {
               <div className="h-9 w-9 md:h-10 md:w-10 flex items-center justify-center overflow-hidden rounded-lg bg-bg/50 border border-border/50 group-hover:border-primary/50 transition-colors">
                 <img src={logo} alt="Logo" className="h-full w-full object-cover" />
               </div>
-              <span className="font-bold text-lg md:text-xl tracking-tight text-primary">NoorNames</span>
+              <span className="font-bold text-lg md:text-xl tracking-tight text-primary">IslamicNames</span>
             </Link>
             
             <nav className="hidden md:flex gap-4 text-sm font-medium text-text-muted">
@@ -149,7 +150,7 @@ const MainLayout = () => {
           <div className="p-4 border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-2">
               <img src={logo} alt="Logo" className="h-8 w-8" />
-              <span className="font-bold text-lg text-primary">NoorNames</span>
+              <span className="font-bold text-lg text-primary">IslamicNames</span>
             </div>
             <button 
               onClick={() => setIsDrawerOpen(false)}
@@ -226,7 +227,7 @@ const MainLayout = () => {
           </div>
 
           <div className="p-6 text-center text-xs text-text-muted border-t border-border">
-            &copy; {new Date().getFullYear()} NoorNames. All rights reserved.
+            &copy; {new Date().getFullYear()} IslamicNames. All rights reserved.
           </div>
         </div>
       </div>
@@ -238,6 +239,9 @@ const MainLayout = () => {
 
       {/* Footer */}
       <Footer />
+
+      {/* Support Widget */}
+      <SupportWidget />
     </div>
   );
 };

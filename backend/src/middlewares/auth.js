@@ -12,29 +12,41 @@ exports.protect = async (req, res, next) => {
     ) {
         // Set token from Bearer token in header
         token = req.headers.authorization.split(' ')[1];
+        console.log('[DEBUG_AUTH] Token found in Authorization header');
     }
     // Set token from cookie
     else if (req.cookies.token) {
         token = req.cookies.token;
+        console.log('[DEBUG_AUTH] Token found in cookie');
     }
 
     // Make sure token exists
     if (!token) {
+        console.error('[DEBUG_AUTH] No token provided in headers or cookies');
         return next(new ErrorResponse('Not authorized to access this route', 401));
     }
 
     try {
         // Verify token
+        console.log('[DEBUG_AUTH] Verifying token with JWT_SECRET length:', process.env.JWT_SECRET?.length || 0);
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log('[DEBUG_AUTH] Token decoded successfully. User ID:', decoded.id);
 
         req.user = await User.findById(decoded.id);
 
-        if (!req.user || !req.user.isActive) {
-             return next(new ErrorResponse('User no longer exists or is deactivated', 401));
+        if (!req.user) {
+             console.error('[DEBUG_AUTH] User not found in database for ID:', decoded.id);
+             return next(new ErrorResponse('User no longer exists', 401));
+        }
+
+        if (!req.user.isActive) {
+             console.error('[DEBUG_AUTH] User account is deactivated:', req.user.email);
+             return next(new ErrorResponse('User account is deactivated', 401));
         }
 
         next();
     } catch (err) {
+        console.error('[DEBUG_AUTH] JWT Verification failed:', err.message);
         return next(new ErrorResponse('Not authorized to access this route', 401));
     }
 };

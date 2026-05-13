@@ -25,7 +25,7 @@ const AdminDashboard = () => {
     { name: 'Total Users', value: analytics?.totalUsers || 0, icon: <Users size={20} />, color: 'text-blue-500', bg: 'bg-blue-500/10' },
     { name: 'Subscribers', value: analytics?.activeSubscribers || 0, icon: <CreditCard size={20} />, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
     { name: 'Total Names', value: analytics?.totalNames || 0, icon: <Database size={20} />, color: 'text-purple-500', bg: 'bg-purple-500/10' },
-    { name: 'Monthly Revenue', value: `$${analytics?.monthlyRevenue || 0}`, icon: <TrendingUp size={20} />, color: 'text-amber-500', bg: 'bg-amber-500/10' },
+    { name: 'Monthly Revenue', value: `₹${analytics?.monthlyRevenue || 0}`, icon: <TrendingUp size={20} />, color: 'text-amber-500', bg: 'bg-amber-500/10' },
   ];
 
   if (isLoading) return (
@@ -39,7 +39,7 @@ const AdminDashboard = () => {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-black text-text mb-2">Welcome Back, Admin</h1>
-        <p className="text-text-muted italic">Here's what's happening with NoorNames today.</p>
+        <p className="text-text-muted italic">Here's what's happening with IslamicNames today.</p>
       </div>
 
       {/* Stats Grid */}
@@ -92,7 +92,7 @@ const AdminDashboard = () => {
                   axisLine={false} 
                   tickLine={false} 
                   tick={{ fontSize: 10, fontWeight: 700, fill: '#6B7280' }}
-                  tickFormatter={(value) => `$${value}`}
+                  tickFormatter={(value) => `₹${value}`}
                 />
                 <Tooltip 
                   contentStyle={{ 

@@ -26,7 +26,7 @@ const Refund = () => {
 
         <div className="prose prose-invert max-w-none space-y-8 text-text-muted leading-relaxed">
           <p className="text-lg text-text font-medium italic">
-            At NoorNames, we strive to provide quality services. By purchasing a subscription, you agree to the following policy.
+            At IslamicNames, we strive to provide quality services. By purchasing a subscription, you agree to the following policy.
           </p>
 
           <section>
@@ -79,10 +79,10 @@ const Refund = () => {
           <div className="pt-8 border-t border-border mt-12 text-center">
             <p className="font-bold text-text mb-2">Support Contact</p>
             <a 
-              href="mailto:support@noornames.com" 
+              href="mailto:support@islamicnames.com" 
               className="text-primary hover:underline font-medium text-lg"
             >
-              support@noornames.com
+              support@islamicnames.com
             </a>
           </div>
         </div>

@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(winget install Ngrok.Ngrok)",
+      "PowerShell(if \\(Test-Path \"C:\\\\Program Files\\\\ngrok\\\\ngrok.exe\"\\) { Write-Output \"Found in Program Files\" } elseif \\(Test-Path \"$env:LOCALAPPDATA\\\\Programs\\\\ngrok\\\\ngrok.exe\"\\) { Write-Output \"Found in LocalAppData\" } elseif \\(Test-Path \"$env:USERPROFILE\\\\ngrok.exe\"\\) { Write-Output \"Found in User Profile\" } else { Write-Output \"Not found in common locations\" })",
+      "PowerShell(ngrok config add-authtoken 3CCplh89H16EDWtEGSqXXoaSvP2_4uEUWRdMZsebpRTkEytab)",
+      "PowerShell(npm install -g ngrok)",
+      "PowerShell(npx ngrok config add-authtoken 3CCplh89H16EDWtEGSqXXoaSvP2_4uEUWRdMZsebpRTkEytab)",
+      "PowerShell(npx ngrok http 5000 --log-level=info)",
+      "PowerShell(npx ngrok http 5000 --authtoken 3CCplh89H16EDWtEGSqXXoaSvP2_4uEUWRdMZsebpRTkEytab)",
+      "PowerShell(netstat -ano)",
+      "Bash(curl -s http://localhost:4040/api/tunnels)",
+      "Bash(node src/server.js)"
+    ]
+  }
+}

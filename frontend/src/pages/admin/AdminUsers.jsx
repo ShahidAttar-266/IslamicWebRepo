@@ -93,16 +93,14 @@ const AdminUsers = () => {
                         className={`bg-bg border border-border rounded-lg px-3 py-1.5 text-xs font-bold focus:border-primary outline-none transition-all cursor-pointer ${
                           updatePlanMutation.isPending ? 'opacity-50 pointer-events-none' : ''
                         } ${
-                          user.subscription?.status === 'premium' ? 'text-amber-600 border-amber-500/20' : 
-                          user.subscription?.status === 'basic' ? 'text-primary border-primary/20' : 'text-text-muted'
+                          user.subscription?.status === 'premium' ? 'text-amber-600 border-amber-500/20' : 'text-text-muted'
                         }`}
                         value={user.subscription?.status || 'free'}
                         onChange={(e) => handlePlanChange(user._id, e.target.value)}
                         disabled={user.role === 'admin'}
                       >
                         <option value="free">Free Tier</option>
-                        <option value="basic">Basic Plan</option>
-                        <option value="premium">Premium Pro</option>
+                        <option value="premium">Premium</option>
                       </select>
                       {user.role === 'admin' && <p className="text-[9px] text-text-muted mt-1 italic">Admins have full access</p>}
                     </td>

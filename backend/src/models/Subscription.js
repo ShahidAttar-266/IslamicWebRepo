@@ -16,7 +16,7 @@ const subscriptionSchema = new mongoose.Schema({
     },
     planType: {
         type: String,
-        enum: ['basic', 'premium'],
+        enum: ['premium'],
         required: true
     },
     billingCycle: {

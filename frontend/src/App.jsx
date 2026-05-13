@@ -24,6 +24,8 @@ import Terms from './pages/Terms';
 import Refund from './pages/Refund';
 import Disclaimer from './pages/Disclaimer';
 import Success from './pages/Success';
+import FAQ from './pages/FAQ';
+import ReportBug from './pages/ReportBug';
 import NotFound from './pages/NotFound';
 
 // Admin Pages
@@ -95,6 +97,8 @@ function App() {
               <Route path="/refund" element={<Refund />} />
               <Route path="/disclaimer" element={<Disclaimer />} />
               <Route path="/success" element={<Success />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/report-bug" element={<ReportBug />} />
               <Route path="*" element={<NotFound />} />
             </Route>
 

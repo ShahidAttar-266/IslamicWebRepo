@@ -28,7 +28,7 @@ const AdminLayout = () => {
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-card">
       <div className="p-6 border-b border-border flex items-center justify-between">
-        <Link to="/admin" className="font-bold text-lg text-primary tracking-tight">NoorNames Admin</Link>
+        <Link to="/admin" className="font-bold text-lg text-primary tracking-tight">IslamicNames Admin</Link>
         <button 
           onClick={() => setIsMobileMenuOpen(false)} 
           className="md:hidden p-2 text-text-muted hover:text-text rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center"

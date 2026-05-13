@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
     subscription: {
         status: {
             type: String,
-            enum: ['free', 'basic', 'premium', 'cancelled'],
+            enum: ['free', 'premium', 'cancelled'],
             default: 'free'
         },
         razorpayPaymentId: String,

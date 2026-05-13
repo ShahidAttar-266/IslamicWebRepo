@@ -29,6 +29,18 @@ const useAuthStore = create(
       setLoaded: () => set({ isLoaded: true }),
 
       getToken: () => get().token,
+
+      getMe: async () => {
+        try {
+          const { data } = await api.get('/auth/me');
+          if (data.success) {
+            set({ user: data.data, isAuthenticated: true });
+          }
+        } catch (err) {
+          console.error('getMe error:', err);
+          // If 401, axios interceptor handles logout
+        }
+      },
     }),
     {
       name: 'auth-storage',         // localStorage key

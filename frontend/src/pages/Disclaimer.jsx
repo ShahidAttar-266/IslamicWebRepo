@@ -26,7 +26,7 @@ const Disclaimer = () => {
 
         <div className="prose prose-invert max-w-none space-y-8 text-text-muted leading-relaxed">
           <p className="text-lg text-text font-medium italic border-l-4 border-amber-500 pl-4 py-2 bg-amber-500/5 rounded-r-xl">
-            The information provided on NoorNames is for general informational purposes only. By using this website, you agree to this disclaimer.
+            The information provided on IslamicNames is for general informational purposes only. By using this website, you agree to this disclaimer.
           </p>
 
           <section className="space-y-4">
@@ -44,7 +44,7 @@ const Disclaimer = () => {
             <h2 className="text-xl font-bold text-text flex items-center gap-2">
               <span className="text-amber-500 text-sm font-black">02.</span> Limitation of Responsibility
             </h2>
-            <p>NoorNames and its operators are not responsible for:</p>
+            <p>IslamicNames and its operators are not responsible for:</p>
             <ul className="list-disc pl-6 space-y-3">
               <li>Any personal or familial decisions made based on the information provided here.</li>
               <li>Any inaccuracies, omissions, or typographical errors in the name database or historical descriptions.</li>
@@ -64,10 +64,10 @@ const Disclaimer = () => {
           <div className="pt-8 border-t border-border mt-12 text-center">
             <p className="font-bold text-text mb-2">Legal Inquiry</p>
             <a 
-              href="mailto:support@noornames.com" 
+              href="mailto:support@islamicnames.com" 
               className="text-primary hover:underline font-medium text-lg"
             >
-              support@noornames.com
+              support@islamicnames.com
             </a>
           </div>
         </div>

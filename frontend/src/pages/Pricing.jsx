@@ -25,25 +25,112 @@ const Pricing = () => {
       return;
     }
 
-    if (currentStatus === 'premium' && planId === 'basic') {
-      toast.error('You already have a higher tier plan (Premium)');
-      return;
-    }
-
     try {
       setLoadingPlan(planId);
-      const res = await api.post('/subscriptions/create-checkout', {
+
+      // 1. Create subscription on backend
+      const { data } = await api.post('/subscriptions/create-checkout', {
         planId,
         billingCycle: isYearly ? 'yearly' : 'monthly'
       });
-      
-      window.location.assign(res.data.url);
-    } catch {
-      toast.error('Could not initiate checkout');
+
+      if (!window.Razorpay) {
+        toast.error('Razorpay SDK failed to load. Please check your internet connection or disable ad-blockers.');
+        setLoadingPlan(null);
+        return;
+      }
+
+      const options = {
+        key: data.data.key,
+        subscription_id: data.data.id,
+        name: data.data.name,
+        description: data.data.description,
+        image: "/favicon.png", // Path to your logo
+        handler: async function (response) {
+          // This only runs on success
+          console.log("[RAZORPAY_SUCCESS]", response);
+          
+          try {
+            toast.loading('Verifying payment...', { id: 'verify-payment' });
+            
+            // 2. Call backend to verify signature and upgrade user
+            const verifyRes = await api.post('/subscriptions/verify-subscription', {
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_subscription_id: response.razorpay_subscription_id,
+              razorpay_signature: response.razorpay_signature,
+              planId: planId
+            });
+
+            if (verifyRes.data.success) {
+              toast.success('Payment Verified! You have been upgraded.', { id: 'verify-payment' });
+              
+              // Refresh auth state to reflect new subscription
+              useAuthStore.getState().getMe();
+
+              setTimeout(() => {
+                navigate('/account');
+              }, 2000);
+            }
+          } catch (verifyError) {
+            console.error("[VERIFY_ERROR]", verifyError);
+            toast.error('Payment succeeded but verification failed. Please contact support.', { id: 'verify-payment' });
+          } finally {
+            setLoadingPlan(null);
+          }
+        },
+        prefill: data.data.prefill,
+        notes: {
+          planId: planId,
+        },
+        theme: data.data.theme,
+        modal: {
+          ondismiss: function () {
+            setLoadingPlan(null);
+            toast('Payment cancelled', { icon: 'ℹ️' });
+          }
+        },
+        // Explicitly force display of all payment methods
+        config: {
+          display: {
+            blocks: {
+              upi: {
+                name: 'UPI / Google Pay / PhonePe',
+                instruments: [{ method: 'upi' }]
+              },
+              card: {
+                name: 'Debit / Credit Card',
+                instruments: [{ method: 'card' }]
+              },
+              netbanking: {
+                name: 'Net Banking',
+                instruments: [{ method: 'netbanking' }]
+              }
+            },
+            sequence: ['block.upi', 'block.card', 'block.netbanking'],
+            preferences: {
+              show_default_blocks: true
+            }
+          }
+        },
+        remember_customer: true,
+      };
+
+      const rzp = new window.Razorpay(options);
+
+      rzp.on('payment.failed', function (response) {
+        console.error("[RAZORPAY_FAILED]", response.error);
+        toast.error(`Payment Failed: ${response.error.description}`);
+        setLoadingPlan(null);
+      });
+
+      rzp.open();
+    } catch (error) {
+      console.error("[CHECKOUT_ERROR]", error);
+      const message = error.response?.data?.error || 'Could not initiate checkout';
+      toast.error(message);
       setLoadingPlan(null);
     }
   };
-
   const plans = [
     {
       id: 'free',
@@ -60,28 +147,15 @@ const Pricing = () => {
       isPopular: false
     },
     {
-      id: 'basic',
-      name: 'Basic',
-      priceMonthly: 1,
-      priceYearly: 1,
+      id: 'premium',
+      name: 'Premium',
+      priceMonthly: 500,
+      priceYearly: 4999,
       features: [
         'Unlimited names',
         'Full historical backgrounds',
         'Quranic references',
-        'Save unlimited favorites'
-      ],
-      buttonText: currentStatus === 'premium' 
-        ? 'Already have Premium' 
-        : currentStatus === 'basic' ? 'Current Plan' : 'Upgrade to Basic',
-      isPopular: false
-    },
-    {
-      id: 'premium',
-      name: 'Premium',
-      priceMonthly: 1,
-      priceYearly: 1,
-      features: [
-        'Everything in Basic',
+        'Save unlimited favorites',
         'Famous personalities list',
         'Side-by-side name comparison',
         'Export favorites to PDF',
@@ -121,10 +195,9 @@ const Pricing = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-sm mx-auto md:max-w-none">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-sm md:max-w-4xl mx-auto">
         {plans.map((plan) => {
           const isCurrentPlan = currentStatus === plan.id;
-          const isDowngrade = currentStatus === 'premium' && plan.id === 'basic';
           
           return (
             <div 
@@ -151,13 +224,13 @@ const Pricing = () => {
                 <h3 className="text-xl md:text-2xl font-black text-text mb-4 uppercase tracking-wider">{plan.name}</h3>
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl md:text-4xl font-black text-text">
-                    ${isYearly ? plan.priceYearly : plan.priceMonthly}
+                    ₹{isYearly ? plan.priceYearly : plan.priceMonthly}
                   </span>
                   <span className="text-text-muted font-medium text-sm">/{isYearly ? 'yr' : 'mo'}</span>
                 </div>
                 {isYearly && plan.priceYearly > 0 && (
                   <p className="text-[10px] text-primary font-bold mt-2 bg-primary/10 px-2 py-0.5 rounded-full inline-block">
-                    Only ${(plan.priceYearly / 12).toFixed(2)} / month
+                    Only ₹{(plan.priceYearly / 12).toFixed(2)} / month
                   </p>
                 )}
               </div>
@@ -174,18 +247,16 @@ const Pricing = () => {
               </ul>
 
               <button 
-                onClick={() => !isCurrentPlan && !isDowngrade && plan.id !== 'free' && handleCheckout(plan.id)}
-                disabled={loadingPlan === plan.id || isCurrentPlan || isDowngrade || (plan.id === 'free' && currentStatus === 'free')}
+                onClick={() => !isCurrentPlan && plan.id !== 'free' && handleCheckout(plan.id)}
+                disabled={loadingPlan === plan.id || isCurrentPlan || (plan.id === 'free' && currentStatus === 'free')}
                 className={`w-full py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all min-h-[48px] ${
                   isCurrentPlan
                     ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 cursor-default'
-                    : isDowngrade
-                      ? 'bg-bg text-text-muted cursor-not-allowed border border-border opacity-50'
-                      : plan.id === 'free' 
-                        ? 'bg-bg text-text-muted cursor-not-allowed border border-border opacity-50' 
-                        : plan.isPopular 
-                          ? 'bg-primary hover:bg-opacity-90 text-bg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95' 
-                          : 'bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-bg hover:scale-[1.02] active:scale-95'
+                    : plan.id === 'free' 
+                      ? 'bg-bg text-text-muted cursor-not-allowed border border-border opacity-50' 
+                      : plan.isPopular 
+                        ? 'bg-primary hover:bg-opacity-90 text-bg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95' 
+                        : 'bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-bg hover:scale-[1.02] active:scale-95'
                 }`}
               >
                 {loadingPlan === plan.id ? (

@@ -147,7 +147,7 @@ exports.getName = async (req, res, next) => {
         if (req.user) {
             if (req.user.role === 'admin') {
                 hasPremiumAccess = true;
-            } else if (req.user.subscription && (req.user.subscription.status === 'premium' || req.user.subscription.status === 'basic')) {
+            } else if (req.user.subscription && req.user.subscription.status === 'premium') {
                 hasPremiumAccess = true;
             }
         }

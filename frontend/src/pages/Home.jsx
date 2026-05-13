@@ -37,7 +37,7 @@ const Home = () => {
       {/* Hero Section */}
       <section className="text-center max-w-3xl mx-auto pt-4 md:pt-10 px-4">
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 md:mb-6 text-text leading-tight tracking-tight">
-          Discover <span className="text-primary">NoorNames</span>
+          Discover <span className="text-primary">IslamicNames</span>
         </h1>
         <p className="text-base md:text-lg lg:text-xl text-text-muted mb-8 md:mb-12 italic max-w-2xl mx-auto">
           "Meaningful Names. Timeless Legacy."

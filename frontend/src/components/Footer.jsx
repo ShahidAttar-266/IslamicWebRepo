@@ -12,6 +12,7 @@ const Footer = () => {
         { name: 'Home', path: '/' },
         { name: 'Browse Names', path: '/search' },
         { name: 'Popular Names', path: '/search?sort=-views' },
+        { name: 'Help & FAQ', path: '/faq' },
         { name: 'Premium Plans', path: '/pricing' },
       ]
     },
@@ -43,8 +44,8 @@ const Footer = () => {
           {/* Brand Section */}
           <div className="lg:col-span-2 space-y-6">
             <Link to="/" className="flex items-center gap-2 group">
-              <img src={logo} alt="NoorNames" className="h-9 w-auto md:h-10 group-hover:scale-105 transition-transform" />
-              <span className="font-black text-xl md:text-2xl tracking-tight text-primary">NoorNames</span>
+              <img src={logo} alt="IslamicNames" className="h-9 w-auto md:h-10 group-hover:scale-105 transition-transform" />
+              <span className="font-black text-xl md:text-2xl tracking-tight text-primary">IslamicNames</span>
             </Link>
             <p className="text-sm text-text-muted leading-relaxed max-w-sm italic">
               "Discover meaningful Islamic names with history and authenticity. Helping families build a timeless legacy for their children."
@@ -59,7 +60,7 @@ const Footer = () => {
                 <Globe size={20} />
               </button>
               <a 
-                href="mailto:support@noornames.com" 
+                href="mailto:support@islamicnames.com" 
                 className="p-3 bg-bg border border-border rounded-xl hover:text-primary hover:border-primary transition-all shadow-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Email"
               >
@@ -118,7 +119,7 @@ const Footer = () => {
           
           <div className="text-center md:text-right">
             <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em]">
-              © {currentYear} NoorNames. All rights reserved.
+              © {currentYear} IslamicNames. All rights reserved.
             </p>
             <p className="text-[9px] text-text-muted mt-2 font-bold italic">
               "Handcrafted for the Ummah with love."

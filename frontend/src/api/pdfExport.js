@@ -102,7 +102,7 @@ function decoratePage(doc, pageNum) {
   doc.setFontSize(8.5);
   doc.setFont('helvetica', 'bold');
   setTxt(doc, COLORS.white);
-  doc.text('NoorNames Database', MARGIN, 6);
+  doc.text('IslamicNames Database', MARGIN, 6);
   doc.setFont('helvetica', 'normal');
   doc.text(`Page ${pageNum}`, PAGE.W - MARGIN, 6, { align: 'right' });
 
@@ -126,7 +126,7 @@ function buildCover(doc, totalCount, arabicEnabled) {
   doc.setFontSize(32);
   doc.setFont('helvetica', 'bold');
   setTxt(doc, COLORS.white);
-  doc.text('NoorNames', PAGE.W / 2, PAGE.H / 2 - 28, { align: 'center' });
+  doc.text('IslamicNames', PAGE.W / 2, PAGE.H / 2 - 28, { align: 'center' });
 
   doc.setFontSize(28);
   setTxt(doc, COLORS.gold);

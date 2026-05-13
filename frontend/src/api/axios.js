@@ -21,13 +21,13 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Auto logout on 401 (except /auth/me and /subscriptions)
+// Auto logout on 401 (except /auth/me)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       const url = error.config.url;
-      if (!url.includes('/auth/me') && !url.includes('/subscriptions')) {
+      if (!url.includes('/auth/me')) {
         useAuthStore.getState().logout();
       }
     }

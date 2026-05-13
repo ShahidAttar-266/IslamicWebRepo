@@ -26,7 +26,7 @@ const Terms = () => {
 
         <div className="prose prose-invert max-w-none space-y-8 text-text-muted leading-relaxed">
           <p className="text-lg text-text font-medium italic border-l-4 border-primary pl-4 py-2 bg-primary/5 rounded-r-xl">
-            By using NoorNames, you agree to the following terms and conditions. Please read them carefully.
+            By using IslamicNames, you agree to the following terms and conditions. Please read them carefully.
           </p>
 
           <section>
@@ -70,7 +70,7 @@ const Terms = () => {
               <span className="text-primary text-sm font-black">05.</span> Intellectual Property
             </h2>
             <p>
-              All content on NoorNames, including text, graphics, logos, and Arabic calligraphy, is the property of NoorNames and may not be copied, reproduced, or redistributed without explicit written permission.
+              All content on IslamicNames, including text, graphics, logos, and Arabic calligraphy, is the property of IslamicNames and may not be copied, reproduced, or redistributed without explicit written permission.
             </p>
           </section>
 
@@ -88,7 +88,7 @@ const Terms = () => {
               <span className="text-primary text-sm font-black">07.</span> Termination
             </h2>
             <p>
-              We reserve the right to suspend or terminate your access to NoorNames if misuse is detected or if these terms are violated.
+              We reserve the right to suspend or terminate your access to IslamicNames if misuse is detected or if these terms are violated.
             </p>
           </section>
 
@@ -104,10 +104,10 @@ const Terms = () => {
           <div className="pt-8 border-t border-border mt-12 text-center">
             <p className="font-bold text-text mb-2">Contact</p>
             <a 
-              href="mailto:support@noornames.com" 
+              href="mailto:support@islamicnames.com" 
               className="text-primary hover:underline font-medium text-lg"
             >
-              support@noornames.com
+              support@islamicnames.com
             </a>
           </div>
         </div>

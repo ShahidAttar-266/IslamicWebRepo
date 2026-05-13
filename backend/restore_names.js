@@ -41,7 +41,7 @@ const restoreNames = async () => {
                     text: row[11] ? String(row[11]).trim() : ''
                 },
                 famousPersonalities,
-                isPremium: String(row[29]).toLowerCase() === 'pro',
+                isPremium: String(row[29]).toLowerCase() === 'premium',
                 isActive: String(row[30]).toLowerCase() === 'published'
             };
         });

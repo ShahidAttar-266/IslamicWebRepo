@@ -148,7 +148,7 @@ const NameDetail = () => {
     navigate(`/compare?${params.toString()}`);
   };
 
-  const hasPremiumAccess = user?.role === 'admin' || ['basic', 'premium'].includes(user?.subscription?.status);
+  const hasPremiumAccess = user?.role === 'admin' || user?.subscription?.status === 'premium';
 
   if (isLoading) return (
     <div className="flex flex-col items-center justify-center py-32 space-y-4 px-4">

@@ -60,7 +60,7 @@ exports.uploadExcel = async (req, res, next) => {
                 origin: getValue('origin'),
                 pronunciation: getValue('pronunciation'),
                 isQuranic: String(getValue('is_quranic') || '').toLowerCase() === 'yes',
-                isPremium: String(getValue('plan_tier') || '').toLowerCase() === 'pro',
+                isPremium: String(getValue('plan_tier') || '').toLowerCase() === 'premium',
                 isActive: String(getValue('status') || '').toLowerCase() !== 'draft',
                 uploadBatchId: batchId
             };
@@ -167,15 +167,14 @@ exports.getAnalytics = async (req, res, next) => {
     try {
         const totalUsers = await User.countDocuments({ role: 'user' });
         const activeSubscribers = await User.countDocuments({
-            'subscription.status': { $in: ['basic', 'premium'] }
+            'subscription.status': 'premium'
         });
         const totalNames = await Name.countDocuments();
         const premiumNames = await Name.countDocuments({ isPremium: true });
 
         // Calculate Revenue Data via Aggregation
         // Pricing constants (fallback if not in env)
-        const PRICE_BASIC = 4.99;
-        const PRICE_PREMIUM = 9.99;
+        const PRICE_PREMIUM = 500; // Monthly base in INR
 
         const revenueData = await Subscription.aggregate([
             {
@@ -185,8 +184,7 @@ exports.getAnalytics = async (req, res, next) => {
                 $group: {
                     _id: {
                         month: { $month: "$createdAt" },
-                        year: { $year: "$createdAt" },
-                        plan: "$planType"
+                        year: { $year: "$createdAt" }
                     },
                     count: { $sum: 1 }
                 }
@@ -196,19 +194,7 @@ exports.getAnalytics = async (req, res, next) => {
                     _id: 0,
                     month: "$_id.month",
                     year: "$_id.year",
-                    plan: { $ifNull: ["$_id.plan", "basic"] },
-                    revenue: {
-                        $multiply: [
-                            "$count",
-                            {
-                                $cond: [
-                                    { $regexMatch: { input: { $ifNull: ["$_id.plan", ""] }, regex: /premium/i } },
-                                    PRICE_PREMIUM,
-                                    PRICE_BASIC
-                                ]
-                            }
-                        ]
-                    }
+                    revenue: { $multiply: ["$count", PRICE_PREMIUM] }
                 }
             },
             {
@@ -283,8 +269,8 @@ exports.updateUserPlan = async (req, res, next) => {
         
         console.log(`[ADMIN_PLAN_UPDATE] User ID: ${req.params.id}, New Plan: ${plan}`);
 
-        if (!['free', 'basic', 'premium'].includes(plan)) {
-            return next(new ErrorResponse('Invalid plan type. Must be free, basic, or premium', 400));
+        if (!['free', 'premium'].includes(plan)) {
+            return next(new ErrorResponse('Invalid plan type. Must be free or premium', 400));
         }
 
         const user = await User.findById(req.params.id);

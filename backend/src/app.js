@@ -12,6 +12,7 @@ const namesRoutes = require('./routes/names.routes');
 const subscriptionRoutes = require('./routes/subscriptions.routes');
 const adminRoutes = require('./routes/admin.routes');
 const userRoutes = require('./routes/users.routes');
+const bugRoutes = require('./routes/bugs.routes');
 
 const errorHandler = require('./middlewares/error');
 
@@ -21,7 +22,7 @@ app.use(helmet());
 
 // Enable CORS
 const allowedOrigins = [
-    'https://noornames1.netlify.app',
+    'https://islamicnames1.netlify.app',
     'https://islamic-web-repo.vercel.app',
     'https://islamic-web-repo-jcwb.vercel.app',
     'http://localhost:5173',
@@ -68,7 +69,10 @@ app.use(limiter);
 
 // Body parser
 // Note: Webhook MUST come before express.json() if it needs raw body
-app.use('/api/v1/subscriptions/webhook', express.raw({ type: 'application/json' }));
+app.use('/api/v1/subscriptions/webhook', (req, res, next) => {
+    console.log('[DEBUG_WEBHOOK] Incoming request to webhook route');
+    next();
+}, express.raw({ type: 'application/json' }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -88,12 +92,13 @@ app.use('/api/v1/names', namesRoutes);
 app.use('/api/v1/subscriptions', subscriptionRoutes);
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/bugs', bugRoutes);
 
 // Basic route for health check
 app.get('/', (req, res) => {
     res.status(200).json({ 
         success: true, 
-        message: 'Welcome to NoorNames API',
+        message: 'Welcome to IslamicNames API',
         docs: 'Please use /api/v1/names for data'
     });
 });

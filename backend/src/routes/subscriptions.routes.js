@@ -1,6 +1,7 @@
 const express = require('express');
 const {
     createCheckoutSession,
+    verifySubscription,
     razorpayWebhook,
     getSubscriptionStatus
 } = require('../controllers/subscriptions.controller');
@@ -15,6 +16,7 @@ router.post('/webhook', razorpayWebhook);
 // Protected routes
 router.use(protect);
 router.post('/create-checkout', createCheckoutSession);
+router.post('/verify-subscription', verifySubscription);
 router.get('/status', getSubscriptionStatus);
 
 module.exports = router;

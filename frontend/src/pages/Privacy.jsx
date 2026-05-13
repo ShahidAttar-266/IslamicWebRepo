@@ -26,7 +26,7 @@ const Privacy = () => {
 
         <div className="prose prose-invert max-w-none space-y-8 text-text-muted leading-relaxed">
           <p className="text-lg text-text font-medium italic">
-            At NoorNames, we value your privacy and are committed to protecting your personal information.
+            At IslamicNames, we value your privacy and are committed to protecting your personal information.
           </p>
 
           <section>
@@ -102,10 +102,10 @@ const Privacy = () => {
           <div className="pt-8 border-t border-border mt-12 text-center">
             <p className="font-bold text-text mb-2">Contact Us</p>
             <a 
-              href="mailto:support@noornames.com" 
+              href="mailto:support@islamicnames.com" 
               className="text-primary hover:underline font-medium text-lg"
             >
-              support@noornames.com
+              support@islamicnames.com
             </a>
           </div>
         </div>
