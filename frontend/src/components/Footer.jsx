@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Mail, ArrowRight, ShieldCheck, Globe } from 'lucide-react';
-import logo from '../assets/logo.webp';
+import logo from '../assets/logo.png';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
