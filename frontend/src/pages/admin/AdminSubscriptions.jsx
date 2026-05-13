@@ -7,7 +7,8 @@ const AdminSubscriptions = () => {
     queryFn: async () => {
       const res = await api.get('/admin/subscriptions');
       return res.data;
-    }
+    },
+    staleTime: 2 * 60 * 1000, // 2 min
   });
 
   return (

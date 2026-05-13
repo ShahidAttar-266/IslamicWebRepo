@@ -74,7 +74,8 @@ const Search = () => {
       
       const res = await api.get(url);
       return res.data;
-    }
+    },
+    staleTime: 3 * 60 * 1000, // 3 min
   });
 
   if (error) {

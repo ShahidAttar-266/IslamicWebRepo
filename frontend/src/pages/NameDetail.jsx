@@ -112,7 +112,8 @@ const NameDetail = () => {
       return res.data?.data;
     },
     enabled: !!id,
-    retry: false
+    retry: false,
+    staleTime: 10 * 60 * 1000, // 10 min
   });
 
   const toggleFavoriteMutation = useMutation({

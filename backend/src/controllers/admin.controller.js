@@ -313,6 +313,14 @@ exports.updateUserPlan = async (req, res, next) => {
         
         console.log(`[ADMIN_PLAN_UPDATE_SUCCESS] User ${user.email} updated to ${plan} and synced to Subscription database`);
 
+        // Invalidate cache
+        await cache.invalidateMany([
+            `user:doc:${user._id}`,
+            'admin:analytics',
+            'admin:users:list',
+            'admin:subscriptions:list'
+        ]);
+
         res.status(200).json({
             success: true,
             data: user
@@ -328,11 +336,16 @@ exports.updateUserPlan = async (req, res, next) => {
 // @access  Private/Admin
 exports.getSubscriptions = async (req, res, next) => {
     try {
-        const subscriptions = await Subscription.find().populate('userId', 'name email').sort({ createdAt: -1 });
+        const fetchSubscriptions = async () => {
+            const subscriptions = await Subscription.find().populate('userId', 'name email').sort({ createdAt: -1 });
+            return { count: subscriptions.length, data: subscriptions };
+        };
+
+        const result = await cache.getOrSet('admin:subscriptions:list', fetchSubscriptions, 120); // 2 min TTL
+
         res.status(200).json({
             success: true,
-            count: subscriptions.length,
-            data: subscriptions
+            ...result
         });
     } catch (err) {
         next(err);

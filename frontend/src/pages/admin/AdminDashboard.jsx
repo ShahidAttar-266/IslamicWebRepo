@@ -18,7 +18,8 @@ const AdminDashboard = () => {
     queryFn: async () => {
       const res = await api.get('/admin/analytics');
       return res.data.data;
-    }
+    },
+    staleTime: 3 * 60 * 1000, // 3 min
   });
 
   const stats = [

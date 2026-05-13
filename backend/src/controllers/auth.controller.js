@@ -2,10 +2,11 @@ const ErrorResponse = require('../utils/errorResponse');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
+const cache = require('../utils/cache');
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// Helper to get token from model, create cookie and send response
+// ... helper to get token ...
 const sendTokenResponse = (user, statusCode, res) => {
     // Create token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -62,6 +63,8 @@ exports.googleLogin = async (req, res, next) => {
             if (!user.googleId) {
                 user.googleId = googleId;
                 await user.save();
+                // Invalidate cache
+                await cache.invalidate(`user:doc:${user._id}`);
             }
         } else {
             // 2. Create new user if not found
@@ -88,6 +91,10 @@ exports.googleLogin = async (req, res, next) => {
 // @route   GET /api/v1/auth/logout
 // @access  Private
 exports.logout = async (req, res, next) => {
+    if (req.user) {
+        await cache.invalidate(`user:doc:${req.user.id}`);
+    }
+
     res.cookie('token', 'none', {
         expires: new Date(Date.now() + 10 * 1000),
         httpOnly: true
@@ -194,6 +201,9 @@ exports.updateDetails = async (req, res, next) => {
             new: true,
             runValidators: true
         });
+
+        // Invalidate cache
+        await cache.invalidate(`user:doc:${req.user.id}`);
 
         res.status(200).json({
             success: true,

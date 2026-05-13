@@ -11,7 +11,8 @@ const AdminUsers = () => {
     queryFn: async () => {
       const res = await api.get('/admin/users');
       return res.data;
-    }
+    },
+    staleTime: 2 * 60 * 1000, // 2 min
   });
 
   const updatePlanMutation = useMutation({

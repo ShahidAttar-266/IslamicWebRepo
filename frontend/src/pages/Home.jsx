@@ -22,7 +22,8 @@ const Home = () => {
         console.error('Home query error:', err);
         return [];
       }
-    }
+    },
+    staleTime: 5 * 60 * 1000, // 5 min
   });
 
   const handleSearch = (e) => {

@@ -1,117 +1,142 @@
 const ErrorResponse = require('../utils/errorResponse');
 const Name = require('../models/Name');
+const cache = require('../utils/cache');
 
 // @desc    Get all names (with pagination & filtering)
 // @route   GET /api/v1/names
 // @access  Public
 exports.getNames = async (req, res, next) => {
     try {
-        let query;
-
-        // Default: Only show active names to public
-        const parsedQuery = {};
+        const isAdmin = req.user && req.user.role === 'admin';
         
-        // If user is not admin, only show active names
-        if (!req.user || req.user.role !== 'admin') {
-            parsedQuery.isActive = true;
-        } else if (req.query.isActive) {
-            // Admin can explicitly filter by status
-            parsedQuery.isActive = req.query.isActive === 'true';
-        }
+        // Build cache key from query string (sorted to avoid duplication)
+        const sortedQuery = Object.keys(req.query)
+            .sort()
+            .map(key => `${key}=${req.query[key]}`)
+            .join('&');
+        const queryHash = Buffer.from(sortedQuery).toString('base64');
+        const cacheKey = `names:list:${queryHash}`;
 
-        // Allowed filters
-        if (req.query.gender && ['boy', 'girl', 'unisex'].includes(req.query.gender)) {
-            parsedQuery.gender = req.query.gender;
-        }
+        const fetchNames = async () => {
+            let query;
 
-        if (req.query.isPremium) {
-            parsedQuery.isPremium = req.query.isPremium === 'true';
-        }
+            // Default: Only show active names to public
+            const parsedQuery = {};
+            
+            // If user is not admin, only show active names
+            if (!isAdmin) {
+                parsedQuery.isActive = true;
+            } else if (req.query.isActive) {
+                // Admin can explicitly filter by status
+                parsedQuery.isActive = req.query.isActive === 'true';
+            }
 
-        if (req.query.origin) {
-            parsedQuery.origin = String(req.query.origin);
-        }
+            // Allowed filters
+            if (req.query.gender && ['boy', 'girl', 'unisex'].includes(req.query.gender)) {
+                parsedQuery.gender = req.query.gender;
+            }
 
-        // Full-text search
-        if (req.query.q) {
-            parsedQuery.$text = { $search: String(req.query.q) };
-        }
+            if (req.query.isPremium) {
+                parsedQuery.isPremium = req.query.isPremium === 'true';
+            }
 
-        // Alphabet filter
-        if (req.query.letter) {
-            const letter = String(req.query.letter).charAt(0);
-            parsedQuery.nameEnglish = { $regex: `^${letter}`, $options: 'i' };
-        }
+            if (req.query.origin) {
+                parsedQuery.origin = String(req.query.origin);
+            }
 
-        // Quranic filter
-        if (req.query.quranic === 'true') {
-            parsedQuery.$or = [
-                { isQuranic: true },
-                { 'quranReference.surah': { $exists: true, $ne: '' } }
-            ];
-        }
+            // Full-text search
+            if (req.query.q) {
+                parsedQuery.$text = { $search: String(req.query.q) };
+            }
 
-        console.log('[getNames] Query:', JSON.stringify(parsedQuery));
+            // Alphabet filter
+            if (req.query.letter) {
+                const letter = String(req.query.letter).charAt(0);
+                parsedQuery.nameEnglish = { $regex: `^${letter}`, $options: 'i' };
+            }
 
-        query = Name.find(parsedQuery);
+            // Quranic filter
+            if (req.query.quranic === 'true') {
+                parsedQuery.$or = [
+                    { isQuranic: true },
+                    { 'quranReference.surah': { $exists: true, $ne: '' } }
+                ];
+            }
 
-        // Select Fields
-        if (req.query.select) {
-            const fields = req.query.select.split(',').join(' ');
-            query = query.select(fields);
-        } else {
-            // Default exclude premium fields for list view unless specified
-            query = query.select('-history -famousPersonalities');
-        }
+            console.log('[getNames] Query:', JSON.stringify(parsedQuery));
 
-        // Sort & Text Search Score
-        if (req.query.q) {
-            // Must add text score projection while keeping existing select
-            query = query.select('score')
-                         .sort({ score: { $meta: 'textScore' } });
-        } else if (req.query.sort) {
-            const sortBy = req.query.sort.split(',').join(' ');
-            query = query.sort(sortBy);
-        } else {
-            // Default sort: premium first, then alphabetical English
-            query = query.sort('-isPremium nameEnglish');
-        }
+            query = Name.find(parsedQuery);
 
-        // Pagination
-        const page = parseInt(req.query.page, 10) || 1;
-        const limit = parseInt(req.query.limit, 10) || 200;
-        const startIndex = (page - 1) * limit;
-        const endIndex = page * limit;
-        const total = await Name.countDocuments(parsedQuery);
+            // Select Fields
+            if (req.query.select) {
+                const fields = req.query.select.split(',').join(' ');
+                query = query.select(fields);
+            } else {
+                // Default exclude premium fields for list view unless specified
+                query = query.select('-history -famousPersonalities');
+            }
 
-        query = query.skip(startIndex).limit(limit);
+            // Sort & Text Search Score
+            if (req.query.q) {
+                // Must add text score projection while keeping existing select
+                query = query.select('score')
+                             .sort({ score: { $meta: 'textScore' } });
+            } else if (req.query.sort) {
+                const sortBy = req.query.sort.split(',').join(' ');
+                query = query.sort(sortBy);
+            } else {
+                // Default sort: premium first, then alphabetical English
+                query = query.sort('-isPremium nameEnglish');
+            }
 
-        // Executing query
-        const names = await query;
+            // Pagination
+            const page = parseInt(req.query.page, 10) || 1;
+            const limit = parseInt(req.query.limit, 10) || 200;
+            const startIndex = (page - 1) * limit;
+            const endIndex = page * limit;
+            const total = await Name.countDocuments(parsedQuery);
 
-        // Pagination result
-        const pagination = {};
+            query = query.skip(startIndex).limit(limit);
 
-        if (endIndex < total) {
-            pagination.next = {
-                page: page + 1,
-                limit
+            // Executing query
+            const names = await query;
+
+            // Pagination result
+            const pagination = {};
+
+            if (endIndex < total) {
+                pagination.next = {
+                    page: page + 1,
+                    limit
+                };
+            }
+
+            if (startIndex > 0) {
+                pagination.prev = {
+                    page: page - 1,
+                    limit
+                };
+            }
+
+            return {
+                total,
+                count: names.length,
+                pagination,
+                data: names
             };
-        }
+        };
 
-        if (startIndex > 0) {
-            pagination.prev = {
-                page: page - 1,
-                limit
-            };
+        // Only cache for non-admin users to avoid leaking inactive names
+        let result;
+        if (!isAdmin) {
+            result = await cache.getOrSet(cacheKey, fetchNames, 300); // 5 min TTL
+        } else {
+            result = await fetchNames();
         }
 
         res.status(200).json({
             success: true,
-            total,
-            count: names.length,
-            pagination,
-            data: names
+            ...result
         });
     } catch (err) {
         next(err);
@@ -130,18 +155,6 @@ exports.getName = async (req, res, next) => {
             return next(new ErrorResponse('Invalid ID format', 400));
         }
 
-        const name = await Name.findById(req.params.id);
-
-        if (!name) {
-            console.log(`[GET_NAME] Name not found for ID: ${req.params.id}`);
-            return next(new ErrorResponse(`Name not found with id of ${req.params.id}`, 404));
-        }
-
-        // Only allow active names to be seen unless user is admin
-        if (!name.isActive && (!req.user || req.user.role !== 'admin')) {
-            return next(new ErrorResponse('This name is currently under review or inactive', 403));
-        }
-
         // Determine if user has premium access
         let hasPremiumAccess = false;
         if (req.user) {
@@ -152,25 +165,51 @@ exports.getName = async (req, res, next) => {
             }
         }
 
-        // Clone the document to manipulate it
-        let responseData = name.toObject();
+        // Cache Key: Premium users skip cache or use a different key
+        const cacheKey = `names:detail:${req.params.id}${hasPremiumAccess ? ':premium' : ':public'}`;
 
-        // If not premium user, hide premium-only data for all names
-        // But keep essential public info
-        if (!hasPremiumAccess) {
-             console.log(`[GET_NAME] Sanitizing premium data for guest/free user`);
-             delete responseData.history;
-             delete responseData.quranReference;
-             delete responseData.famousPersonalities;
-             delete responseData.birthGuidance;
-             delete responseData.variants;
+        const fetchName = async () => {
+            const name = await Name.findById(req.params.id);
+
+            if (!name) {
+                return null;
+            }
+
+            // Only allow active names to be seen unless user is admin
+            if (!name.isActive && (!req.user || req.user.role !== 'admin')) {
+                throw new Error('Name inactive');
+            }
+
+            // Clone the document to manipulate it
+            let responseData = name.toObject();
+
+            // If not premium user, hide premium-only data for all names
+            if (!hasPremiumAccess) {
+                 console.log(`[GET_NAME] Sanitizing premium data for guest/free user`);
+                 delete responseData.history;
+                 delete responseData.quranReference;
+                 delete responseData.famousPersonalities;
+                 delete responseData.birthGuidance;
+                 delete responseData.variants;
+            }
+
+            return responseData;
+        };
+
+        const result = await cache.getOrSet(cacheKey, fetchName, 600); // 10 min TTL
+
+        if (!result) {
+            return next(new ErrorResponse(`Name not found with id of ${req.params.id}`, 404));
         }
 
         res.status(200).json({
             success: true,
-            data: responseData
+            data: result
         });
     } catch (err) {
+        if (err.message === 'Name inactive') {
+            return next(new ErrorResponse('This name is currently under review or inactive', 403));
+        }
         console.error(`[GET_NAME_ERROR] ${err.message}`);
         next(err);
     }
@@ -182,6 +221,9 @@ exports.getName = async (req, res, next) => {
 exports.createName = async (req, res, next) => {
     try {
         const name = await Name.create(req.body);
+
+        // Invalidate list cache
+        await cache.invalidatePattern('names:list:*');
 
         res.status(201).json({
             success: true,
@@ -208,6 +250,13 @@ exports.updateName = async (req, res, next) => {
             runValidators: true
         });
 
+        // Invalidate list and detail cache
+        await cache.invalidatePattern('names:list:*');
+        await cache.invalidateMany([
+            `names:detail:${req.params.id}:public`,
+            `names:detail:${req.params.id}:premium`
+        ]);
+
         res.status(200).json({
             success: true,
             data: name
@@ -229,6 +278,13 @@ exports.deleteName = async (req, res, next) => {
         }
 
         await name.deleteOne();
+
+        // Invalidate list and detail cache
+        await cache.invalidatePattern('names:list:*');
+        await cache.invalidateMany([
+            `names:detail:${req.params.id}:public`,
+            `names:detail:${req.params.id}:premium`
+        ]);
 
         res.status(200).json({
             success: true,

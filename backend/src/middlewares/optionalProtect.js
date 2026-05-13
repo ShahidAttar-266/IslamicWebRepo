@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const cache = require('../utils/cache');
 
 const optionalProtect = async (req, res, next) => {
     let token;
@@ -16,7 +17,11 @@ const optionalProtect = async (req, res, next) => {
     if (token) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = await User.findById(decoded.id);
+            
+            const cacheKey = `user:doc:${decoded.id}`;
+            req.user = await cache.getOrSet(cacheKey, async () => {
+                return await User.findById(decoded.id);
+            }, 300); // 5 min TTL
         } catch (err) {
             // Proceed without user if token is invalid
         }

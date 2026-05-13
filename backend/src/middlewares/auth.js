@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const ErrorResponse = require('../utils/errorResponse');
 const User = require('../models/User');
+const cache = require('../utils/cache');
 
 // Protect routes
 exports.protect = async (req, res, next) => {
@@ -32,7 +33,10 @@ exports.protect = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         console.log('[DEBUG_AUTH] Token decoded successfully. User ID:', decoded.id);
 
-        req.user = await User.findById(decoded.id);
+        const cacheKey = `user:doc:${decoded.id}`;
+        req.user = await cache.getOrSet(cacheKey, async () => {
+            return await User.findById(decoded.id);
+        }, 300); // 5 min TTL
 
         if (!req.user) {
              console.error('[DEBUG_AUTH] User not found in database for ID:', decoded.id);
