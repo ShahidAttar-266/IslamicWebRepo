@@ -1,8 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import critical from 'rollup-plugin-critical'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    critical({
+      criticalUrl: 'https://www.islamicnames.in',
+      criticalBase: './dist',
+      criticalPages: [{ uri: '/', template: 'index' }],
+      criticalConfig: {
+        inline: true,
+        width: 375,
+        height: 812,
+      }
+    })
+  ],
   build: {
     cssCodeSplit: true,
     chunkSizeWarningLimit: 2000,
