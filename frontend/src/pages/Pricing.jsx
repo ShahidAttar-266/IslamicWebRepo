@@ -4,6 +4,7 @@ import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { loadRazorpay } from '../utils/loadRazorpay';
 
 const Pricing = () => {
   const [isYearly, setIsYearly] = useState(false);
@@ -28,17 +29,19 @@ const Pricing = () => {
     try {
       setLoadingPlan(planId);
 
+      // Load Razorpay dynamically
+      const res = await loadRazorpay();
+      if (!res || !window.Razorpay) {
+        toast.error('Razorpay SDK failed to load. Please check your internet connection or disable ad-blockers.');
+        setLoadingPlan(null);
+        return;
+      }
+
       // 1. Create subscription on backend
       const { data } = await api.post('/subscriptions/create-checkout', {
         planId,
         billingCycle: isYearly ? 'yearly' : 'monthly'
       });
-
-      if (!window.Razorpay) {
-        toast.error('Razorpay SDK failed to load. Please check your internet connection or disable ad-blockers.');
-        setLoadingPlan(null);
-        return;
-      }
 
       const options = {
         key: data.data.key,

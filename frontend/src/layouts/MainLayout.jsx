@@ -49,7 +49,7 @@ const MainLayout = () => {
           <div className="flex items-center gap-6">
             <Link to="/" className="flex items-center gap-2 group">
               <div className="h-9 w-9 md:h-10 md:w-10 flex items-center justify-center overflow-hidden rounded-lg bg-bg/50 border border-border/50 group-hover:border-primary/50 transition-colors">
-                <img src={logo} alt="Logo" className="h-full w-full object-cover" />
+                <img src={logo} alt="Logo" width="40" height="40" loading="eager" className="h-full w-full object-cover" />
               </div>
               <span className="font-bold text-lg md:text-xl tracking-tight text-primary">IslamicNames</span>
             </Link>
@@ -149,7 +149,7 @@ const MainLayout = () => {
         <div className="flex flex-col h-full">
           <div className="p-4 border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <img src={logo} alt="Logo" className="h-8 w-8" />
+              <img src={logo} alt="Logo" width="32" height="32" className="h-8 w-8" />
               <span className="font-bold text-lg text-primary">IslamicNames</span>
             </div>
             <button 
