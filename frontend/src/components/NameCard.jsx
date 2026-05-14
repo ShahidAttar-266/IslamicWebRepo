@@ -90,9 +90,10 @@ const NameCard = ({ name, onFavorite, delay = 0, isLocked = false }) => {
         </div>
         <button 
           onClick={handleFavoriteClick}
+          aria-label={favoriteMutation.isPending ? "Adding to favorites" : "Add to favorites"}
           className="p-2 rounded-full bg-bg/50 border border-border text-text-muted hover:text-danger hover:border-danger/30 transition-all duration-300 min-w-[36px] min-h-[36px] flex items-center justify-center"
         >
-          <Heart size={18} fill={favoriteMutation.isPending ? 'currentColor' : 'none'} />
+          <Heart size={18} aria-hidden="true" fill={favoriteMutation.isPending ? 'currentColor' : 'none'} />
         </button>
       </div>
 
@@ -111,12 +112,12 @@ const NameCard = ({ name, onFavorite, delay = 0, isLocked = false }) => {
         <div className="flex flex-wrap gap-2">
           {(name.isQuranic || name.quranReference?.surah) && (
             <span className="flex items-center gap-1 text-[9px] md:text-[10px] font-bold text-accent bg-accent/10 border border-accent/20 px-2 py-0.5 rounded uppercase tracking-tighter shrink-0">
-              <Book size={10} /> Quranic
+              <Book size={10} aria-hidden="true" /> Quranic
             </span>
           )}
           {name.isPremium && (
             <span className="flex items-center gap-1 text-[9px] md:text-[10px] font-bold text-amber-500 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded uppercase tracking-tighter shrink-0">
-              <Crown size={10} /> Premium
+              <Crown size={10} aria-hidden="true" /> Premium
             </span>
           )}
         </div>
@@ -133,11 +134,12 @@ const NameCard = ({ name, onFavorite, delay = 0, isLocked = false }) => {
       <div className="mt-6 pt-4 border-t border-border/40 flex justify-between items-center group-hover:border-primary/20 transition-colors gap-2">
         <button 
           onClick={handleCompare}
+          aria-label={isSelected ? "Remove from comparison" : "Add to comparison"}
           className={`flex items-center gap-1.5 text-[9px] md:text-[10px] font-black uppercase tracking-wider md:tracking-[0.2em] transition-colors shrink-0 ${
             isSelected ? 'text-accent' : 'text-text-muted hover:text-primary'
           }`}
         >
-          <ArrowLeftRight size={14} className={isSelected ? 'animate-pulse' : ''} />
+          <ArrowLeftRight size={14} aria-hidden="true" className={isSelected ? 'animate-pulse' : ''} />
           <span className="hidden xs:inline">{isSelected ? 'Selected' : 'Compare'}</span>
           <span className="xs:hidden">{isSelected ? 'Sel.' : 'Comp.'}</span>
         </button>
@@ -151,7 +153,7 @@ const NameCard = ({ name, onFavorite, delay = 0, isLocked = false }) => {
     </div>
   );
 
-  const cardClasses = "group relative bg-card border border-border rounded-2xl p-4 md:p-6 transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 overflow-hidden flex flex-col h-full min-h-[256px]";
+  const cardClasses = "group relative bg-card border border-border rounded-2xl p-4 md:p-6 transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 overflow-hidden flex flex-col h-full";
 
   if (isLocked) {
     return (

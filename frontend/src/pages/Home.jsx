@@ -130,7 +130,7 @@ const Home = () => {
       </section>
 
       {/* CTA Banner */}
-      <section className="bg-card border border-border rounded-3xl p-6 sm:p-10 md:p-16 text-center relative overflow-hidden shadow-2xl">
+      <section className="min-h-[420px] bg-card border border-border rounded-3xl p-6 sm:p-10 md:p-16 text-center relative overflow-hidden shadow-2xl flex items-center justify-center">
         <div className="absolute right-0 top-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-0"></div>
         <div className="absolute left-0 bottom-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -z-0"></div>
         

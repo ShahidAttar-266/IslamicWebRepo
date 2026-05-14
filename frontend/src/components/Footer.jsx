@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { Mail, ArrowRight, ShieldCheck, Globe } from 'lucide-react';
-import logo from '../assets/logo.webp';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -44,7 +43,23 @@ const Footer = () => {
           {/* Brand Section */}
           <div className="lg:col-span-2 space-y-6">
             <Link to="/" className="flex items-center gap-2 group">
-              <img src={logo} alt="IslamicNames" width="40" height="40" loading="lazy" className="h-9 w-9 md:h-10 md:w-10 group-hover:scale-105 transition-transform" />
+              <picture>
+                <source
+                  type="image/webp"
+                  srcSet="/logo-40.webp 40w, /logo-80.webp 80w, /logo-120.webp 120w"
+                  sizes="(min-resolution: 2dppx) 80px, 40px"
+                />
+                <img 
+                  src="/logo-40.png" 
+                  srcSet="/logo-40.png 40w, /logo-80.png 80w"
+                  alt="IslamicNames" 
+                  width={150} 
+                  height={40} 
+                  loading="lazy" 
+                  decoding="async"
+                  className="h-9 w-auto md:h-10 group-hover:scale-105 transition-transform" 
+                />
+              </picture>
               <span className="font-black text-xl md:text-2xl tracking-tight text-primary">IslamicNames</span>
             </Link>
             <p className="text-sm text-text-muted leading-relaxed max-w-sm italic">
@@ -54,17 +69,17 @@ const Footer = () => {
               <button 
                 type="button"
                 className="p-3 bg-bg border border-border rounded-xl hover:text-primary hover:border-primary transition-all shadow-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
-                aria-label="Website"
+                aria-label="Visit our official website"
                 onClick={(e) => e.preventDefault()}
               >
-                <Globe size={20} />
+                <Globe size={20} aria-hidden="true" />
               </button>
               <a 
                 href="mailto:support@islamicnames.com" 
                 className="p-3 bg-bg border border-border rounded-xl hover:text-primary hover:border-primary transition-all shadow-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
-                aria-label="Email"
+                aria-label="Send us an email"
               >
-                <Mail size={20} />
+                <Mail size={20} aria-hidden="true" />
               </a>
             </div>
           </div>

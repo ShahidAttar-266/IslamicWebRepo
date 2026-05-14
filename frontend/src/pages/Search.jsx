@@ -3,7 +3,13 @@ import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
-import { Search as SearchIcon, Book, ChevronDown, ChevronUp, X } from 'lucide-react';
+import { 
+  Search as SearchIcon, 
+  Book, 
+  ChevronDown, 
+  ChevronUp, 
+  X 
+} from 'lucide-react';
 
 const NameCard = lazy(() => import('../components/NameCard'));
 
@@ -218,23 +224,15 @@ const Search = () => {
             </button>
           </div>
         ) : (
-          <Suspense fallback={
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="bg-card border border-border rounded-2xl h-64 animate-pulse" />
-              ))}
-            </div>
-          }>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-              {data?.data?.map((name, index) => (
-                <NameCard 
-                  key={name._id} 
-                  name={name} 
-                  isLocked={!isAuthenticated && index >= 4}
-                />
-              ))}
-            </div>
-          </Suspense>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+            {data?.data?.map((name, index) => (
+              <NameCard 
+                key={name._id} 
+                name={name} 
+                isLocked={!isAuthenticated && index >= 4}
+              />
+            ))}
+          </div>
         )}
       </div>
     </div>

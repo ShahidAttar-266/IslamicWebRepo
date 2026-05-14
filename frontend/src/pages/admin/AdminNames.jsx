@@ -2,7 +2,16 @@ import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import api from '../../api/axios';
-import { Trash2, Edit, Search, Plus, X, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { 
+  Trash2, 
+  Edit, 
+  Search, 
+  Plus, 
+  X, 
+  ChevronLeft, 
+  ChevronRight, 
+  Loader2 
+} from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 const AdminNames = () => {

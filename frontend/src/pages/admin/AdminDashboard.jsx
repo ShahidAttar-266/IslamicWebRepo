@@ -1,6 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import api from '../../api/axios';
-import { Users, Database, CreditCard, TrendingUp, Upload, Shield, Loader2, ArrowRight } from 'lucide-react';
+import { 
+  Users, 
+  Database, 
+  CreditCard, 
+  TrendingUp, 
+  Upload, 
+  Shield, 
+  Loader2, 
+  ArrowRight 
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { 
   XAxis, 

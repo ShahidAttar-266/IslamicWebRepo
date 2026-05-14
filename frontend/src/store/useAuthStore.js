@@ -8,7 +8,7 @@ const useAuthStore = create(
       user: null,
       token: null,
       isAuthenticated: false,
-      isLoaded: false,
+      isLoaded: true,
 
       setAuth: (user, token) => {
         set({ user, token, isAuthenticated: true, isLoaded: true });

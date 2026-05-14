@@ -2,7 +2,6 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
 import { Search, LogOut, Heart, Menu, X, ChevronRight, User } from 'lucide-react';
-import logo from '../assets/logo.webp';
 
 // Lazy Components
 const Footer = lazy(() => import('../components/Footer'));
@@ -13,6 +12,18 @@ const MainLayout = () => {
   const location = useLocation();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showWidget, setShowWidget] = useState(false);
+
+  useEffect(() => {
+    // Mount after browser finishes first paint or after 3 seconds
+    const id = window.requestIdleCallback
+      ? window.requestIdleCallback(() => setShowWidget(true), { timeout: 3000 })
+      : setTimeout(() => setShowWidget(true), 3000);
+
+    return () => window.cancelIdleCallback
+      ? window.cancelIdleCallback(id)
+      : clearTimeout(id);
+  }, []);
 
   // Close drawer and dropdown on route change
   useEffect(() => {
@@ -51,7 +62,24 @@ const MainLayout = () => {
           <div className="flex items-center gap-6">
             <Link to="/" className="flex items-center gap-2 group">
               <div className="h-9 w-9 md:h-10 md:w-10 flex items-center justify-center overflow-hidden rounded-lg bg-bg/50 border border-border/50 group-hover:border-primary/50 transition-colors">
-                <img src={logo} alt="Logo" width="40" height="40" loading="eager" className="h-full w-full object-cover" />
+                <picture>
+                  <source
+                    type="image/webp"
+                    srcSet="/logo-40.webp 40w, /logo-80.webp 80w, /logo-120.webp 120w"
+                    sizes="(min-resolution: 2dppx) 80px, 40px"
+                  />
+                  <img 
+                    src="/logo-40.png" 
+                    srcSet="/logo-40.png 40w, /logo-80.png 80w"
+                    alt="Logo" 
+                    width={40} 
+                    height={40} 
+                    loading="eager" 
+                    fetchPriority="high"
+                    decoding="async"
+                    className="h-full w-full object-cover" 
+                  />
+                </picture>
               </div>
               <span className="font-bold text-lg md:text-xl tracking-tight text-primary">IslamicNames</span>
             </Link>
@@ -72,20 +100,30 @@ const MainLayout = () => {
           </div>
 
           <div className="flex items-center gap-2 md:gap-4">
-            <Link to="/search" className="p-2.5 md:p-2 hover:bg-bg rounded-full text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center">
-              <Search size={20} />
+            <Link 
+              to="/search" 
+              aria-label="Search Islamic names"
+              className="p-2.5 md:p-2 hover:bg-bg rounded-full text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+            >
+              <Search size={20} aria-hidden="true" />
             </Link>
             
             {isAuthenticated ? (
               <div className="flex items-center gap-1 md:gap-3">
-                <Link to="/favorites" className="p-2.5 md:p-2 hover:bg-bg rounded-full text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center">
-                  <Heart size={20} />
+                <Link 
+                  to="/favorites" 
+                  aria-label="View your favorite names"
+                  className="p-2.5 md:p-2 hover:bg-bg rounded-full text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                >
+                  <Heart size={20} aria-hidden="true" />
                 </Link>
                 
                 {/* Desktop Dropdown */}
                 <div className="relative hidden md:block">
                   <button 
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    aria-label="Toggle user menu"
+                    aria-expanded={isDropdownOpen}
                     className="flex items-center gap-2 p-2 hover:bg-bg rounded-full text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                   >
                     <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs border border-primary/20">
@@ -130,9 +168,10 @@ const MainLayout = () => {
             <button 
               onClick={() => setIsDrawerOpen(true)}
               className="md:hidden p-2.5 hover:bg-bg rounded-lg text-text hover:text-primary transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-              aria-label="Open menu"
+              aria-label="Open navigation menu"
+              aria-expanded={isDrawerOpen}
             >
-              <Menu size={24} />
+              <Menu size={24} aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -151,14 +190,30 @@ const MainLayout = () => {
         <div className="flex flex-col h-full">
           <div className="p-4 border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <img src={logo} alt="Logo" width="32" height="32" loading="eager" className="h-8 w-8" />
+              <picture>
+                <source
+                  type="image/webp"
+                  srcSet="/logo-40.webp 40w, /logo-80.webp 80w"
+                  sizes="32px"
+                />
+                <img 
+                  src="/logo-40.png" 
+                  alt="Logo" 
+                  width={32} 
+                  height={32} 
+                  loading="eager" 
+                  decoding="async"
+                  className="h-8 w-8" 
+                />
+              </picture>
               <span className="font-bold text-lg text-primary">IslamicNames</span>
             </div>
             <button 
               onClick={() => setIsDrawerOpen(false)}
               className="p-2 hover:bg-bg rounded-lg text-text-muted transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+              aria-label="Close navigation menu"
             >
-              <X size={24} />
+              <X size={24} aria-hidden="true" />
             </button>
           </div>
 

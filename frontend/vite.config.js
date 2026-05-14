@@ -5,6 +5,11 @@ export default defineConfig({
   plugins: [
     react()
   ],
+  resolve: {
+    alias: {
+      'lucide-react': 'lucide-react/dist/esm/lucide-react.mjs',
+    },
+  },
   build: {
     cssCodeSplit: true,
     chunkSizeWarningLimit: 2000,
@@ -18,11 +23,11 @@ export default defineConfig({
             if (id.includes('@tanstack/react-query')) {
               return 'query';
             }
-            if (id.includes('framer-motion')) {
-              return 'framer';
+            if (id.includes('axios')) {
+              return 'axios';
             }
-            if (id.includes('jspdf') || id.includes('recharts')) {
-              return 'heavy-utils';
+            if (id.includes('framer-motion') || id.includes('lucide-react') || id.includes('react-hot-toast')) {
+              return 'ui';
             }
             return 'modules';
           }

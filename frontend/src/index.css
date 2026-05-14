@@ -3,9 +3,28 @@
 @tailwind utilities;
 
 @layer base {
+  @font-face {
+    font-family: 'Noto Naskh Arabic';
+    src: url('/fonts/noto-naskh-arabic.woff2') format('woff2');
+    font-display: swap;
+    unicode-range: U+0600-06FF;
+  }
+
   body {
     @apply bg-bg text-text font-sans antialiased;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  /* Minimum 44x44px touch targets (WCAG 2.5.5) */
+  button,
+  [role="button"],
+  a.nav-link,
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px] inline-flex items-center justify-center;
+  }
+
+  [dir="rtl"], .font-arabic {
+    font-family: 'Noto Naskh Arabic', 'Amiri', serif;
+    line-height: 1.8;
   }
 }
 
@@ -14,5 +33,17 @@
     filter: blur(4px);
     user-select: none;
     pointer-events: none;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 }

@@ -4,11 +4,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import useAuthStore from './store/useAuthStore';
 import { Loader2 } from 'lucide-react';
 import ScrollToTop from './components/ScrollToTop';
-import { LazyMotion, domAnimation } from 'framer-motion';
+import { LazyMotion } from 'framer-motion';
+import { Toaster } from 'react-hot-toast';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
-// Lazy Global Components
-const Toaster = lazy(() => import('react-hot-toast').then(mod => ({ default: mod.Toaster })));
-const GoogleOAuthProvider = lazy(() => import('@react-oauth/google').then(mod => ({ default: mod.GoogleOAuthProvider })));
+// Lazy load Framer Motion features
+const loadFeatures = () => import('framer-motion').then(res => res.domAnimation);
 
 // Layouts
 const MainLayout = lazy(() => import('./layouts/MainLayout'));
@@ -44,10 +45,10 @@ const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 5,  // 5 minutes
-      gcTime: 1000 * 60 * 10,    // 10 minutes
-      retry: 1,
+      staleTime: 5 * 60 * 1000,   // 5 minutes
+      gcTime: 10 * 60 * 1000,     // 10 minutes
+      refetchOnWindowFocus: false, // Prevents refetching when user switches tabs
+      retry: 1,                    // Only retry once on failure
     },
   },
 });
@@ -60,15 +61,6 @@ function App() {
     setLoaded();
   }, [setLoaded]);
 
-  if (!isLoaded) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-bg gap-4">
-        <Loader2 className="animate-spin text-primary" size={40} />
-        <p className="text-text-muted font-medium">Initializing...</p>
-      </div>
-    );
-  }
-
   const FallbackLoader = () => (
     <div className="min-h-[50vh] flex flex-col items-center justify-center gap-4">
       <Loader2 className="animate-spin text-primary" size={32} />
@@ -76,15 +68,13 @@ function App() {
   );
 
   return (
-    <Suspense fallback={null}>
-      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+    <Suspense fallback={<FallbackLoader />}>
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
         <QueryClientProvider client={queryClient}>
-          <LazyMotion features={domAnimation} strict>
+          <LazyMotion features={loadFeatures} strict>
             <Router>
               <ScrollToTop />
-              <Suspense fallback={null}>
-                <Toaster position="top-center" toastOptions={{ className: 'bg-card text-text' }} />
-              </Suspense>
+              <Toaster position="top-center" toastOptions={{ className: 'bg-card text-text' }} />
               <Suspense fallback={<FallbackLoader />}>
                 <Routes>
                   {/* Public Routes */}

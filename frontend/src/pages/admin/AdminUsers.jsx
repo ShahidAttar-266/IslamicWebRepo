@@ -1,6 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../api/axios';
-import { Mail, CheckCircle2, XCircle, Shield, User as UserIcon, Loader2 } from 'lucide-react';
+import { 
+  Mail, 
+  CheckCircle2, 
+  XCircle, 
+  Shield, 
+  User as UserIcon, 
+  Loader2 
+} from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 const AdminUsers = () => {
