@@ -37,7 +37,7 @@ const SoftLoginBanner = ({ onLogin, onDismiss }) => (
 
 const GatedSection = ({ title, icon: Icon, isLocked, msg, children, onUnlock }) => {
   if (!isLocked) return (
-    <div className="bg-card border border-border rounded-2xl p-5 md:p-8">
+    <div className="bg-card border border-border rounded-2xl p-6 md:p-8">
       <h3 className="text-lg font-bold text-text mb-6 flex items-center gap-3">
         <div className="p-2 bg-primary/10 rounded-lg text-primary"><Icon size={20} /></div>
         {title}
@@ -70,6 +70,33 @@ const GatedSection = ({ title, icon: Icon, isLocked, msg, children, onUnlock }) 
   );
 };
 
+const NameDetailSkeleton = () => (
+  <div className="max-w-5xl mx-auto px-4 py-4 md:py-8 space-y-8 md:space-y-12 animate-pulse">
+    <div className="h-6 w-20 bg-card rounded-md mb-8" />
+    
+    {/* Hero Skeleton */}
+    <div className="bg-card border border-border rounded-3xl md:rounded-[2.5rem] p-5 md:p-8 lg:p-12 h-64 md:h-80" />
+    
+    {/* Info Grid Skeleton */}
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className="bg-card border border-border h-24 md:h-32 rounded-2xl" />
+      ))}
+    </div>
+
+    {/* Main Content Skeleton */}
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+      <div className="lg:col-span-2 space-y-6 md:space-y-8">
+        <div className="bg-card border border-border rounded-2xl h-64" />
+        <div className="bg-card border border-border rounded-2xl h-48" />
+      </div>
+      <div className="space-y-6 md:space-y-8">
+        <div className="bg-card border border-border rounded-2xl h-96" />
+      </div>
+    </div>
+  </div>
+);
+
 const NameDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -85,14 +112,6 @@ const NameDetail = () => {
 
   const handleLogin = () => navigate('/login');
   const handleDismissBanner = () => setShowLoginBanner(false);
-
-  // Optional login check - only redirect if trying to access premium features
-  // Public can view basic name details without login
-
-  const isPremium = user?.role === 'admin' || user?.subscription?.status === 'premium';
-  const id1 = searchParams.get('id1');
-  const id2 = searchParams.get('id2');
-  const isSelected = id1 === id || id2 === id;
 
   const { data: favorites } = useQuery({
     queryKey: ['favorites'],
@@ -135,6 +154,10 @@ const NameDetail = () => {
 
   const handleCompare = () => {
     const params = new URLSearchParams(window.location.search);
+    const id1 = searchParams.get('id1');
+    const id2 = searchParams.get('id2');
+    const isSelected = id1 === id || id2 === id;
+
     if (isSelected) {
       if (id1 === id) params.delete('id1');
       else if (id2 === id) params.delete('id2');
@@ -151,12 +174,7 @@ const NameDetail = () => {
 
   const hasPremiumAccess = user?.role === 'admin' || user?.subscription?.status === 'premium';
 
-  if (isLoading) return (
-    <div className="flex flex-col items-center justify-center py-32 space-y-4 px-4">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      <p className="text-text-muted font-medium animate-pulse text-center">Loading name details...</p>
-    </div>
-  );
+  if (isLoading) return <NameDetailSkeleton />;
   
   if (error || !name) {
     const status = error?.response?.status;

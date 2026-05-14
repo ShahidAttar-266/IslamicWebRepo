@@ -5,6 +5,7 @@
 @layer base {
   body {
     @apply bg-bg text-text font-sans antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 }
 

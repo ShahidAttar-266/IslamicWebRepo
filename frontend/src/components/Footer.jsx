@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Mail, ArrowRight, ShieldCheck, Globe } from 'lucide-react';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo.webp';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -44,7 +44,7 @@ const Footer = () => {
           {/* Brand Section */}
           <div className="lg:col-span-2 space-y-6">
             <Link to="/" className="flex items-center gap-2 group">
-              <img src={logo} alt="IslamicNames" width="150" height="150" loading="lazy" className="h-9 w-auto md:h-10 group-hover:scale-105 transition-transform" />
+              <img src={logo} alt="IslamicNames" width="40" height="40" loading="lazy" className="h-9 w-9 md:h-10 md:w-10 group-hover:scale-105 transition-transform" />
               <span className="font-black text-xl md:text-2xl tracking-tight text-primary">IslamicNames</span>
             </Link>
             <p className="text-sm text-text-muted leading-relaxed max-w-sm italic">

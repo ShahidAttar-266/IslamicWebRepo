@@ -1,15 +1,18 @@
 import { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Toaster } from 'react-hot-toast';
 import useAuthStore from './store/useAuthStore';
 import { Loader2 } from 'lucide-react';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import ScrollToTop from './components/ScrollToTop';
+import { LazyMotion, domAnimation } from 'framer-motion';
+
+// Lazy Global Components
+const Toaster = lazy(() => import('react-hot-toast').then(mod => ({ default: mod.Toaster })));
+const GoogleOAuthProvider = lazy(() => import('@react-oauth/google').then(mod => ({ default: mod.GoogleOAuthProvider })));
 
 // Layouts
-import MainLayout from './layouts/MainLayout';
-import AdminLayout from './layouts/AdminLayout';
+const MainLayout = lazy(() => import('./layouts/MainLayout'));
+const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
 
 // Lazy Pages
 const Home = lazy(() => import('./pages/Home'));
@@ -53,10 +56,8 @@ function App() {
   const { setLoaded, isLoaded } = useAuthStore();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoaded();
-    }, 100);
-    return () => clearTimeout(timer);
+    // Immediate load for better performance metrics
+    setLoaded();
   }, [setLoaded]);
 
   if (!isLoaded) {
@@ -75,48 +76,54 @@ function App() {
   );
 
   return (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-      <QueryClientProvider client={queryClient}>
-        <Router>
-          <ScrollToTop />
-          <Toaster position="top-center" toastOptions={{ className: 'bg-card text-text' }} />
-          <Suspense fallback={<FallbackLoader />}>
-            <Routes>
-              {/* Public Routes */}
-              <Route element={<MainLayout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/name/:id" element={<NameDetail />} />
-                <Route path="/pricing" element={<Pricing />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/favorites" element={<Favorites />} />
-                <Route path="/compare" element={<Compare />} />
-                <Route path="/account" element={<Account />} />
-                <Route path="/privacy" element={<Privacy />} />
-                <Route path="/terms" element={<Terms />} />
-                <Route path="/refund" element={<Refund />} />
-                <Route path="/disclaimer" element={<Disclaimer />} />
-                <Route path="/success" element={<Success />} />
-                <Route path="/faq" element={<FAQ />} />
-                <Route path="/report-bug" element={<ReportBug />} />
-                <Route path="*" element={<NotFound />} />
-              </Route>
+    <Suspense fallback={null}>
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+        <QueryClientProvider client={queryClient}>
+          <LazyMotion features={domAnimation} strict>
+            <Router>
+              <ScrollToTop />
+              <Suspense fallback={null}>
+                <Toaster position="top-center" toastOptions={{ className: 'bg-card text-text' }} />
+              </Suspense>
+              <Suspense fallback={<FallbackLoader />}>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route element={<MainLayout />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/search" element={<Search />} />
+                    <Route path="/name/:id" element={<NameDetail />} />
+                    <Route path="/pricing" element={<Pricing />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/favorites" element={<Favorites />} />
+                    <Route path="/compare" element={<Compare />} />
+                    <Route path="/account" element={<Account />} />
+                    <Route path="/privacy" element={<Privacy />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/refund" element={<Refund />} />
+                    <Route path="/disclaimer" element={<Disclaimer />} />
+                    <Route path="/success" element={<Success />} />
+                    <Route path="/faq" element={<FAQ />} />
+                    <Route path="/report-bug" element={<ReportBug />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Route>
 
-              {/* Admin Routes */}
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<AdminDashboard />} />
-                <Route path="names" element={<AdminNames />} />
-                <Route path="upload" element={<AdminUpload />} />
-                <Route path="users" element={<AdminUsers />} />
-                <Route path="subscriptions" element={<AdminSubscriptions />} />
-                <Route path="settings" element={<AdminSettings />} />
-              </Route>
-            </Routes>
-          </Suspense>
-        </Router>
-      </QueryClientProvider>
-    </GoogleOAuthProvider>
+                  {/* Admin Routes */}
+                  <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<AdminDashboard />} />
+                    <Route path="names" element={<AdminNames />} />
+                    <Route path="upload" element={<AdminUpload />} />
+                    <Route path="users" element={<AdminUsers />} />
+                    <Route path="subscriptions" element={<AdminSubscriptions />} />
+                    <Route path="settings" element={<AdminSettings />} />
+                  </Route>
+                </Routes>
+              </Suspense>
+            </Router>
+          </LazyMotion>
+        </QueryClientProvider>
+      </GoogleOAuthProvider>
+    </Suspense>
   );
 }
 

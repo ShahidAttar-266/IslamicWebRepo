@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Search as SearchIcon, ArrowRight } from 'lucide-react';
 import api from '../api/axios';
-import NameCard from '../components/NameCard';
 import useAuthStore from '../store/useAuthStore';
+
+const NameCard = lazy(() => import('../components/NameCard'));
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -12,6 +13,8 @@ const Home = () => {
   const { isAuthenticated } = useAuthStore();
 
   // Fetch some featured/recent names
+  const [isVisible, setIsVisible] = useState(false);
+  
   const { data: recentNames, isLoading } = useQuery({
     queryKey: ['recentNames'],
     queryFn: async () => {
@@ -23,8 +26,26 @@ const Home = () => {
         return [];
       }
     },
-    staleTime: 5 * 60 * 1000, // 5 min
+    staleTime: 5 * 60 * 1000,
+    enabled: isVisible, // Only fetch when visible
   });
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const section = document.getElementById('recent-names-section');
+    if (section) observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -67,7 +88,7 @@ const Home = () => {
       </section>
 
       {/* Featured Names */}
-      <section>
+      <section id="recent-names-section">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8">
           <div>
             <h2 className="text-2xl md:text-3xl font-bold text-text mb-2">Recently Added</h2>
@@ -75,7 +96,7 @@ const Home = () => {
           </div>
           <button 
             onClick={() => navigate('/search')} 
-            className="flex items-center gap-2 text-primary text-sm md:text-base font-bold hover:gap-3 transition-all group min-h-[44px]"
+            className="flex items-center gap-2 text-primary text-sm md:text-base font-bold transition-all group min-h-[44px]"
           >
             View All <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </button>
@@ -88,15 +109,23 @@ const Home = () => {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {(recentNames || []).map((name, index) => (
-              <NameCard 
-                key={name._id} 
-                name={name} 
-                isLocked={!isAuthenticated && index >= 4}
-              />
-            ))}
-          </div>
+          <Suspense fallback={
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="bg-card border border-border rounded-2xl h-64 animate-pulse" />
+              ))}
+            </div>
+          }>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+              {(recentNames || []).map((name, index) => (
+                <NameCard 
+                  key={name._id} 
+                  name={name} 
+                  isLocked={!isAuthenticated && index >= 4}
+                />
+              ))}
+            </div>
+          </Suspense>
         )}
       </section>
 

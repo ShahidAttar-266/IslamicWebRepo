@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { 
   MessageCircle, 
   X, 
@@ -104,7 +104,7 @@ const SupportWidget = () => {
       <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end">
         <AnimatePresence>
           {showTooltip && !isOpen && (
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 10, scale: 0.8 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.8 }}
@@ -112,11 +112,11 @@ const SupportWidget = () => {
             >
               Need Help?
               <div className="absolute -bottom-1 right-5 w-2 h-2 bg-text rotate-45"></div>
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
 
-        <motion.button
+        <m.button
           onClick={toggleWidget}
           onMouseEnter={() => setShowTooltip(true)}
           onMouseLeave={() => setShowTooltip(false)}
@@ -125,11 +125,11 @@ const SupportWidget = () => {
           className="relative group flex items-center justify-center gap-3 w-14 h-14 sm:w-auto sm:h-auto sm:px-6 sm:py-4 bg-gradient-to-r from-primary to-emerald-700 text-bg rounded-full shadow-[0_20px_50px_rgba(45,184,122,0.3)] overflow-hidden"
         >
           {/* Subtle Glow Animation */}
-          <motion.div
+          <m.div
             animate={{ opacity: [0.3, 0.6, 0.3] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             className="absolute inset-0 bg-white/20 blur-xl"
-          ></motion.div>
+          ></m.div>
           
           <div className="relative z-10 flex items-center justify-center gap-3">
             <MessageSquare size={22} strokeWidth={2.5} className="shrink-0" />
@@ -140,7 +140,7 @@ const SupportWidget = () => {
           <div className="absolute top-3 right-3 sm:top-3.5 sm:right-4 w-2.5 h-2.5 bg-accent rounded-full border-2 border-primary shadow-sm z-20">
             <div className="absolute inset-0 bg-accent rounded-full animate-ping opacity-75"></div>
           </div>
-        </motion.button>
+        </m.button>
       </div>
 
       {/* Backdrop & Modal Container */}
@@ -148,16 +148,16 @@ const SupportWidget = () => {
         {isOpen && (
           <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 sm:p-6">
             {/* Dark Backdrop */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={toggleWidget}
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            ></motion.div>
+            ></m.div>
 
             {/* Centered Modal */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -224,15 +224,15 @@ const SupportWidget = () => {
                           className="w-full flex items-center justify-between p-4 text-left transition-colors"
                         >
                           <span className="text-xs sm:text-sm font-bold text-text/90 leading-snug">{item.q}</span>
-                          <motion.div
+                          <m.div
                             animate={{ rotate: activeAccordion === i ? 180 : 0, color: activeAccordion === i ? '#2db87a' : '#8ab5a0' }}
                           >
                             <ChevronRight size={16} />
-                          </motion.div>
+                          </m.div>
                         </button>
                         <AnimatePresence>
                           {activeAccordion === i && (
-                            <motion.div
+                            <m.div
                               initial={{ height: 0, opacity: 0 }}
                               animate={{ height: 'auto', opacity: 1 }}
                               exit={{ height: 0, opacity: 0 }}
@@ -243,7 +243,7 @@ const SupportWidget = () => {
                                   {item.a}
                                 </p>
                               </div>
-                            </motion.div>
+                            </m.div>
                           )}
                         </AnimatePresence>
                       </div>
@@ -258,7 +258,7 @@ const SupportWidget = () => {
                   Secured by IslamicNames Cloud Support
                 </p>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         )}
       </AnimatePresence>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Bug, Send, Monitor, Smartphone, Globe, AlertTriangle, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
@@ -93,7 +93,7 @@ const ReportBug = () => {
   if (submitted) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center px-4">
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="bg-card border border-border p-10 rounded-[2.5rem] max-w-lg w-full text-center shadow-2xl"
@@ -111,7 +111,7 @@ const ReportBug = () => {
           >
             Back to Home
           </button>
-        </motion.div>
+        </m.div>
       </div>
     );
   }
@@ -133,7 +133,7 @@ const ReportBug = () => {
         </p>
       </div>
 
-      <motion.div 
+      <m.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-card border border-border rounded-[2.5rem] p-6 md:p-10 shadow-2xl relative overflow-hidden"
@@ -275,7 +275,7 @@ const ReportBug = () => {
             </button>
           </div>
         </form>
-      </motion.div>
+      </m.div>
     </div>
   );
 };

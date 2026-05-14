@@ -151,7 +151,7 @@ const NameCard = ({ name, onFavorite, delay = 0, isLocked = false }) => {
     </div>
   );
 
-  const cardClasses = "group relative bg-card border border-border rounded-2xl p-4 md:p-6 transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 overflow-hidden flex flex-col h-full";
+  const cardClasses = "group relative bg-card border border-border rounded-2xl p-4 md:p-6 transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 overflow-hidden flex flex-col h-full min-h-[256px]";
 
   if (isLocked) {
     return (

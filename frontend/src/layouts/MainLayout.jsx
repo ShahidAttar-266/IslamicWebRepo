@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
 import { Search, LogOut, Heart, Menu, X, ChevronRight, User } from 'lucide-react';
-import logo from '../assets/logo.png';
-import Footer from '../components/Footer';
-import SupportWidget from '../components/SupportWidget';
+import logo from '../assets/logo.webp';
+
+// Lazy Components
+const Footer = lazy(() => import('../components/Footer'));
+const SupportWidget = lazy(() => import('../components/SupportWidget'));
 
 const MainLayout = () => {
   const { user, isAuthenticated, logout } = useAuthStore();
@@ -149,7 +151,7 @@ const MainLayout = () => {
         <div className="flex flex-col h-full">
           <div className="p-4 border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <img src={logo} alt="Logo" width="32" height="32" className="h-8 w-8" />
+              <img src={logo} alt="Logo" width="32" height="32" loading="eager" className="h-8 w-8" />
               <span className="font-bold text-lg text-primary">IslamicNames</span>
             </div>
             <button 
@@ -238,10 +240,14 @@ const MainLayout = () => {
       </main>
 
       {/* Footer */}
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
 
       {/* Support Widget */}
-      <SupportWidget />
+      <Suspense fallback={null}>
+        <SupportWidget />
+      </Suspense>
     </div>
   );
 };

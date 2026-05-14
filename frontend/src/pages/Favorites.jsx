@@ -1,12 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../api/axios';
-import NameCard from '../components/NameCard';
 import { HeartCrack, Download, Loader2, Crown, Heart } from 'lucide-react';
 import { toast } from 'react-hot-toast';
-import { exportFavoritesToPDF } from '../api/pdfExport';
 import useAuthStore from '../store/useAuthStore';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+const NameCard = lazy(() => import('../components/NameCard'));
 
 const Favorites = () => {
   const queryClient = useQueryClient();
@@ -54,6 +54,7 @@ const Favorites = () => {
 
     try {
       setIsExporting(true);
+      const { exportFavoritesToPDF } = await import('../api/pdfExport');
       await exportFavoritesToPDF(favorites);
       toast.success('PDF exported successfully!');
     } catch (err) {
@@ -65,9 +66,19 @@ const Favorites = () => {
   };
 
   if (isLoading) return (
-    <div className="flex flex-col items-center justify-center py-20 gap-4">
-      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
-      <p className="text-text-muted font-bold text-sm animate-pulse">Loading favorites...</p>
+    <div className="space-y-6 md:space-y-10 px-1 animate-pulse">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="space-y-2">
+          <div className="h-8 w-48 bg-card rounded-md" />
+          <div className="h-4 w-32 bg-card rounded-md" />
+        </div>
+        <div className="h-12 w-40 bg-card rounded-xl" />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="bg-card border border-border rounded-2xl h-64" />
+        ))}
+      </div>
     </div>
   );
 
@@ -110,23 +121,31 @@ const Favorites = () => {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {favorites.map(name => (
-            <div key={name._id} className="relative group">
-              <NameCard name={name} />
-              <button 
-                onClick={(e) => {
-                  e.preventDefault();
-                  removeFavoriteMutation.mutate(name._id);
-                }}
-                className="absolute top-4 right-4 p-2.5 bg-card/80 backdrop-blur-md border border-border rounded-full text-danger opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-danger hover:text-white shadow-lg min-w-[36px] min-h-[36px] flex items-center justify-center z-20"
-                title="Remove from favorites"
-              >
-                <Heart size={16} fill="currentColor" />
-              </button>
-            </div>
-          ))}
-        </div>
+        <Suspense fallback={
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+             {[...Array(3)].map((_, i) => (
+               <div key={i} className="bg-card border border-border rounded-2xl h-64 animate-pulse" />
+             ))}
+          </div>
+        }>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {favorites.map(name => (
+              <div key={name._id} className="relative group">
+                <NameCard name={name} />
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    removeFavoriteMutation.mutate(name._id);
+                  }}
+                  className="absolute top-4 right-4 p-2.5 bg-card/80 backdrop-blur-md border border-border rounded-full text-danger opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-danger hover:text-white shadow-lg min-w-[36px] min-h-[36px] flex items-center justify-center z-20"
+                  title="Remove from favorites"
+                >
+                  <Heart size={16} fill="currentColor" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </Suspense>
       )}
     </div>
   );

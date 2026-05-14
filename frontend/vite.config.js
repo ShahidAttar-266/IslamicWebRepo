@@ -18,8 +18,11 @@ export default defineConfig({
             if (id.includes('@tanstack/react-query')) {
               return 'query';
             }
-            if (id.includes('framer-motion') || id.includes('lucide-react') || id.includes('react-hot-toast')) {
-              return 'ui';
+            if (id.includes('framer-motion')) {
+              return 'framer';
+            }
+            if (id.includes('jspdf') || id.includes('recharts')) {
+              return 'heavy-utils';
             }
             return 'modules';
           }
