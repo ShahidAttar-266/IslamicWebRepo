@@ -97,8 +97,8 @@ const Search = () => {
   return (
     <div className="space-y-6 md:space-y-8">
       {/* Search Header */}
-      <div className="bg-card border border-border rounded-2xl p-4 md:p-6 shadow-sm">
-        <div className="flex flex-col gap-4 mb-6">
+      <div className="bg-card border border-border rounded-2xl p-4 md:p-6 shadow-sm flex flex-col gap-6">
+        <div className="flex flex-col gap-4">
           <div className="relative w-full">
             <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" size={20} />
             <input 
@@ -153,7 +153,7 @@ const Search = () => {
 
         {/* Alphabet Filter */}
         <div className="border-t border-border pt-6">
-          <div className="flex items-center justify-between mb-4 md:hidden">
+          <div className="flex items-center justify-between md:hidden mb-4">
             <p className="text-xs text-text-muted uppercase tracking-wider font-bold">Filter by Letter</p>
             <button 
               onClick={() => setIsAlphabetOpen(!isAlphabetOpen)}
@@ -163,34 +163,30 @@ const Search = () => {
             </button>
           </div>
           
-          <div className={`${isAlphabetOpen ? 'block' : 'hidden'} md:block`}>
-            <p className="hidden md:block text-xs text-text-muted mb-4 uppercase tracking-wider font-bold">Filter by Alphabet</p>
-            <div className="grid grid-cols-4 sm:grid-cols-6 md:flex md:flex-wrap gap-2">
+          <div className={`${isAlphabetOpen ? 'grid' : 'hidden'} md:block grid-cols-4 sm:grid-cols-6 md:flex md:flex-wrap gap-2`}>
+            <p className="hidden md:block w-full text-xs text-text-muted mb-4 uppercase tracking-wider font-bold">Filter by Alphabet</p>
+            <button
+              onClick={() => setLetterFilter('')}
+              className={`min-w-[42px] min-h-[42px] flex items-center justify-center rounded-lg text-sm font-black transition-all border ${
+                !letterFilter ? 'bg-primary border-primary text-bg' : 'bg-bg border-border text-text-muted hover:border-primary/50'
+              }`}
+            >
+              ALL
+            </button>
+            {alphabets.map(letter => (
               <button
+                key={letter}
                 onClick={() => {
-                  setLetterFilter('');
+                  setLetterFilter(letter === letterFilter ? '' : letter);
+                  setSearchTerm(''); 
                 }}
                 className={`min-w-[42px] min-h-[42px] flex items-center justify-center rounded-lg text-sm font-black transition-all border ${
-                  !letterFilter ? 'bg-primary border-primary text-bg' : 'bg-bg border-border text-text-muted hover:border-primary/50'
+                  letterFilter === letter ? 'bg-primary border-primary text-bg' : 'bg-bg border-border text-text-muted hover:border-primary/50'
                 }`}
               >
-                ALL
+                {letter}
               </button>
-              {alphabets.map(letter => (
-                <button
-                  key={letter}
-                  onClick={() => {
-                    setLetterFilter(letter === letterFilter ? '' : letter);
-                    setSearchTerm(''); 
-                  }}
-                  className={`min-w-[42px] min-h-[42px] flex items-center justify-center rounded-lg text-sm font-black transition-all border ${
-                    letterFilter === letter ? 'bg-primary border-primary text-bg' : 'bg-bg border-border text-text-muted hover:border-primary/50'
-                  }`}
-                >
-                  {letter}
-                </button>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </div>
@@ -201,10 +197,10 @@ const Search = () => {
           <h2 className="text-base md:text-xl font-bold text-text">
             {data?.count || 0} <span className="text-text-muted font-medium">Names Found</span>
           </h2>
-          {isLoading && <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>}
+          {isLoading && <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary" />}
         </div>
 
-        {isLoading && !data ? (
+        {(isLoading && !data) ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
              {[...Array(8)].map((_, i) => (
                <div key={i} className="bg-card border border-border rounded-2xl h-64 animate-pulse" />

@@ -82,7 +82,7 @@ const NameCard = ({ name, onFavorite, delay = 0, isLocked = false }) => {
   };
 
   const CardContent = (
-    <div className={`relative z-10 flex flex-col h-full ${isLocked ? 'blur-sm select-none pointer-events-none' : ''}`}>
+    <>
       {/* Top Header: Arabic Name & Favorite Action */}
       <div className="flex justify-between items-start mb-6">
         <div className="text-3xl md:text-4xl font-arabic text-primary leading-none group-hover:scale-110 transition-transform duration-500 origin-left">
@@ -150,7 +150,7 @@ const NameCard = ({ name, onFavorite, delay = 0, isLocked = false }) => {
           <ArrowRight size={16} className="text-primary translate-x-0 group-hover:translate-x-1 transition-transform" />
         </div>
       </div>
-    </div>
+    </>
   );
 
   const cardClasses = "group relative bg-card border border-border rounded-2xl p-4 md:p-6 transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 overflow-hidden flex flex-col h-full";
@@ -158,11 +158,11 @@ const NameCard = ({ name, onFavorite, delay = 0, isLocked = false }) => {
   if (isLocked) {
     return (
       <div 
-        className={cardClasses}
+        className={`${cardClasses} blur-sm select-none pointer-events-none`}
         style={{ animationDelay: `${delay}s` }}
       >
         {CardContent}
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 text-center bg-bg/40 backdrop-blur-[2px]">
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 text-center bg-bg/40 backdrop-blur-[2px] pointer-events-auto blur-none">
           <div className="bg-primary/10 p-3 rounded-full mb-4">
             <Crown className="text-primary" size={24} />
           </div>
@@ -189,11 +189,9 @@ const NameCard = ({ name, onFavorite, delay = 0, isLocked = false }) => {
       aria-label={`${name.nameEnglish} — ${name.gender} name`}
     >
       {/* Decorative Arabic Background Letter */}
-      <div className="absolute -top-4 -right-4 p-4 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity duration-500">
-        <span className="text-7xl md:text-8xl font-arabic select-none pointer-events-none">
-          {name.nameArabic.charAt(0)}
-        </span>
-      </div>
+      <span className="absolute -top-4 -right-4 p-4 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity duration-500 text-7xl md:text-8xl font-arabic select-none pointer-events-none">
+        {name.nameArabic.charAt(0)}
+      </span>
 
       {CardContent}
 

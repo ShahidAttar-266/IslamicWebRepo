@@ -51,25 +51,23 @@ const Home = () => {
           "Meaningful Names. Timeless Legacy."
         </p>
 
-        <form onSubmit={handleSearch} className="max-w-xl mx-auto">
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 bg-card/50 sm:bg-card p-2 sm:p-1.5 rounded-2xl sm:rounded-full border border-border focus-within:border-primary transition-all shadow-xl shadow-black/20">
-            <div className="relative flex-1 flex items-center min-h-[48px]">
-              <SearchIcon className="absolute left-4 text-text-muted" size={20} />
-              <input 
-                type="text" 
-                placeholder="Search by name, meaning..." 
-                className="w-full bg-transparent text-text py-2 md:py-3 pl-12 pr-4 outline-none text-base"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <button 
-              type="submit" 
-              className="bg-primary text-bg hover:bg-opacity-90 px-8 py-3.5 sm:py-2.5 rounded-xl sm:rounded-full font-bold transition-all shadow-lg shadow-primary/20 min-h-[48px]"
-            >
-              Search
-            </button>
+        <form onSubmit={handleSearch} className="max-w-xl mx-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3 bg-card/50 sm:bg-card p-2 sm:p-1.5 rounded-2xl sm:rounded-full border border-border focus-within:border-primary transition-all shadow-xl shadow-black/20">
+          <div className="relative flex-1 min-h-[48px]">
+            <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" size={20} />
+            <input 
+              type="text" 
+              placeholder="Search by name, meaning..." 
+              className="w-full bg-transparent text-text py-3 md:py-3.5 pl-12 pr-4 outline-none text-base"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
+          <button 
+            type="submit" 
+            className="bg-primary text-bg hover:bg-opacity-90 px-8 py-3.5 sm:py-2.5 rounded-xl sm:rounded-full font-bold transition-all shadow-lg shadow-primary/20 min-h-[48px]"
+          >
+            Search
+          </button>
         </form>
       </section>
 

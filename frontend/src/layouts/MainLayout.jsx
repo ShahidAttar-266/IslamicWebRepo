@@ -186,108 +186,106 @@ const MainLayout = () => {
       )}
 
       {/* Mobile Drawer */}
-      <div className={`fixed inset-y-0 right-0 w-[280px] sm:w-[320px] bg-card border-l border-border z-[70] md:hidden transform transition-transform duration-300 ease-in-out ${isDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="flex flex-col h-full">
-          <div className="p-4 border-b border-border flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <picture>
-                <source
-                  type="image/webp"
-                  srcSet="/logo-40.webp 40w, /logo-80.webp 80w"
-                  sizes="32px"
-                />
-                <img 
-                  src="/logo-40.png" 
-                  alt="Logo" 
-                  width={32} 
-                  height={32} 
-                  loading="eager" 
-                  decoding="async"
-                  className="h-8 w-8" 
-                />
-              </picture>
-              <span className="font-bold text-lg text-primary">IslamicNames</span>
-            </div>
-            <button 
-              onClick={() => setIsDrawerOpen(false)}
-              className="p-2 hover:bg-bg rounded-lg text-text-muted transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-              aria-label="Close navigation menu"
-            >
-              <X size={24} aria-hidden="true" />
-            </button>
-          </div>
+      <aside className={`fixed inset-y-0 right-0 w-[280px] sm:w-[320px] bg-card border-l border-border z-[70] md:hidden transform transition-transform duration-300 ease-in-out flex flex-col ${isDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="p-4 border-b border-border flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2" onClick={() => setIsDrawerOpen(false)}>
+            <picture>
+              <source
+                type="image/webp"
+                srcSet="/logo-40.webp 40w, /logo-80.webp 80w"
+                sizes="32px"
+              />
+              <img 
+                src="/logo-40.png" 
+                alt="Logo" 
+                width={32} 
+                height={32} 
+                loading="eager" 
+                decoding="async"
+                className="h-8 w-8" 
+              />
+            </picture>
+            <span className="font-bold text-lg text-primary">IslamicNames</span>
+          </Link>
+          <button 
+            onClick={() => setIsDrawerOpen(false)}
+            className="p-2 hover:bg-bg rounded-lg text-text-muted transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label="Close navigation menu"
+          >
+            <X size={24} aria-hidden="true" />
+          </button>
+        </div>
 
-          <div className="flex-1 overflow-y-auto py-4">
-            <nav className="px-4 space-y-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all ${
-                    isActive(link.path) 
-                      ? 'bg-primary/10 text-primary font-semibold' 
-                      : 'text-text-muted hover:bg-bg hover:text-text'
-                  }`}
-                >
-                  {link.name}
-                  {isActive(link.path) && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
-                </Link>
-              ))}
-            </nav>
+        <div className="flex-1 overflow-y-auto py-4">
+          <nav className="px-4 space-y-2">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all ${
+                  isActive(link.path) 
+                    ? 'bg-primary/10 text-primary font-semibold' 
+                    : 'text-text-muted hover:bg-bg hover:text-text'
+                }`}
+              >
+                {link.name}
+                {isActive(link.path) && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
+              </Link>
+            ))}
+          </nav>
 
-            <div className="mt-8 px-4">
-              <div className="h-px bg-border w-full mb-8" />
-              
-              {isAuthenticated ? (
-                <div className="space-y-2">
-                  <div className="px-4 mb-4 flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-lg border border-primary/20">
-                      {userInitial}
-                    </div>
-                    <div className="overflow-hidden">
-                      <p className="font-bold text-text truncate">{user?.name || 'User'}</p>
-                      <p className="text-xs text-text-muted capitalize">{user?.subscription?.status || 'Free'} Plan</p>
-                    </div>
+          <div className="mt-8 px-4">
+            <div className="h-px bg-border w-full mb-8" />
+            
+            {isAuthenticated ? (
+              <div className="space-y-2">
+                <div className="px-4 mb-4 flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-lg border border-primary/20">
+                    {userInitial}
                   </div>
-                  
-                  <Link to="/account" className="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-bg hover:text-text transition-all">
-                    <User size={20} />
-                    <span>My Profile</span>
-                  </Link>
-                  
-                  {user?.role === 'admin' && (
-                    <Link to="/admin" className="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-bg hover:text-text transition-all">
-                      <Search size={20} />
-                      <span>Admin Dashboard</span>
-                    </Link>
-                  )}
-                  
-                  <button 
-                    onClick={logout}
-                    className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-danger hover:bg-danger/5 transition-all mt-4"
-                  >
-                    <LogOut size={20} />
-                    <span>Logout</span>
-                  </button>
+                  <div className="overflow-hidden">
+                    <p className="font-bold text-text truncate">{user?.name || 'User'}</p>
+                    <p className="text-xs text-text-muted capitalize">{user?.subscription?.status || 'Free'} Plan</p>
+                  </div>
                 </div>
-              ) : (
-                <div className="flex flex-col gap-3">
-                  <Link to="/login" className="flex items-center justify-center w-full py-3.5 rounded-xl border border-border font-semibold hover:bg-bg transition-all">
-                    Login
+                
+                <Link to="/account" className="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-bg hover:text-text transition-all">
+                  <User size={20} />
+                  <span>My Profile</span>
+                </Link>
+                
+                {user?.role === 'admin' && (
+                  <Link to="/admin" className="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-bg hover:text-text transition-all">
+                    <Search size={20} />
+                    <span>Admin Dashboard</span>
                   </Link>
-                  <Link to="/register" className="flex items-center justify-center w-full py-3.5 rounded-xl bg-primary text-bg font-bold shadow-lg shadow-primary/20 transition-all">
-                    Sign Up
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="p-6 text-center text-xs text-text-muted border-t border-border">
-            &copy; {new Date().getFullYear()} IslamicNames. All rights reserved.
+                )}
+                
+                <button 
+                  onClick={logout}
+                  className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-danger hover:bg-danger/5 transition-all mt-4"
+                >
+                  <LogOut size={20} />
+                  <span>Logout</span>
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                <Link to="/login" className="flex items-center justify-center w-full py-3.5 rounded-xl border border-border font-semibold hover:bg-bg transition-all">
+                  Login
+                </Link>
+                <Link to="/register" className="flex items-center justify-center w-full py-3.5 rounded-xl bg-primary text-bg font-bold shadow-lg shadow-primary/20 transition-all">
+                  Sign Up
+                </Link>
+              </div>
+            )}
           </div>
         </div>
-      </div>
+
+        <div className="p-6 text-center text-xs text-text-muted border-t border-border">
+          &copy; {new Date().getFullYear()} IslamicNames. All rights reserved.
+        </div>
+      </aside>
 
       {/* Main Content */}
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 lg:py-10">
