@@ -20,8 +20,8 @@ export default {
         success: "#2db87a"
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        arabic: ['Amiri', 'serif'],
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        arabic: ['Amiri', 'Geeza Pro', 'Traditional Arabic', 'Simplified Arabic', 'Times New Roman', 'serif'],
       }
     },
   },
