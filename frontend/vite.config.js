@@ -17,15 +17,18 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+            // Group core dependencies into a single vendor chunk to reduce request chain depth
+            if (
+              id.includes('react') || 
+              id.includes('react-dom') || 
+              id.includes('react-router-dom') ||
+              id.includes('@tanstack/react-query') ||
+              id.includes('axios') ||
+              id.includes('zustand')
+            ) {
               return 'vendor';
             }
-            if (id.includes('@tanstack/react-query')) {
-              return 'query';
-            }
-            if (id.includes('axios')) {
-              return 'axios';
-            }
+            // Keep UI libraries separate as they might be used in different routes
             if (id.includes('framer-motion') || id.includes('lucide-react') || id.includes('react-hot-toast')) {
               return 'ui';
             }
