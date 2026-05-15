@@ -165,9 +165,26 @@ const NameDetail = () => {
   const hasPremiumAccess = user?.role === 'admin' || user?.subscription?.status === 'premium';
 
   if (isLoading) return (
-    <div className="flex flex-col items-center justify-center py-32 space-y-4 px-4">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      <p className="text-text-muted font-medium animate-pulse text-center">Loading name details...</p>
+    <div className="max-w-5xl mx-auto px-4 py-4 md:py-8 space-y-8 md:space-y-12 animate-pulse">
+      <div className="h-6 w-20 bg-card rounded-md mb-8" />
+      
+      {/* Hero Skeleton */}
+      <div className="bg-card border border-border rounded-3xl md:rounded-[2.5rem] p-5 md:p-12 h-[300px] md:h-[400px]" />
+      
+      {/* Grid Skeleton */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="bg-card border border-border h-24 md:h-32 rounded-2xl" />
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="lg:col-span-2 space-y-6 md:space-y-8">
+          <div className="bg-card border border-border h-64 rounded-2xl" />
+          <div className="bg-card border border-border h-64 rounded-2xl" />
+        </div>
+        <div className="bg-card border border-border h-96 rounded-2xl" />
+      </div>
     </div>
   );
   
@@ -237,7 +254,9 @@ const NameDetail = () => {
 
       {/* Soft Login Banner - Only show to non-authenticated users */}
       {!isAuthenticated && showLoginBanner && (
-        <SoftLoginBanner onLogin={handleLogin} onDismiss={handleDismissBanner} />
+        <div className="min-h-[80px]">
+          <SoftLoginBanner onLogin={handleLogin} onDismiss={handleDismissBanner} />
+        </div>
       )}
 
       {/* Hero Section */}
@@ -297,7 +316,7 @@ const NameDetail = () => {
             </div>
           </div>
 
-          <div className="flex flex-col items-center justify-center order-first md:order-last">
+          <div className="flex flex-col items-center justify-center order-first md:order-last min-h-[120px] md:min-h-[160px]">
             <div className="font-arabic text-6xl md:text-8xl lg:text-9xl text-primary leading-none drop-shadow-2xl">
               {name.nameArabic}
             </div>

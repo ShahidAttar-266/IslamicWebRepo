@@ -88,7 +88,7 @@ const Home = () => {
       </section>
 
       {/* Featured Names */}
-      <section id="recent-names-section">
+      <section id="recent-names-section" className="content-visibility-auto">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8">
           <div>
             <h2 className="text-2xl md:text-3xl font-bold text-text mb-2">Recently Added</h2>
@@ -130,7 +130,7 @@ const Home = () => {
       </section>
 
       {/* CTA Banner */}
-      <section className="min-h-[420px] bg-card border border-border rounded-3xl p-6 sm:p-10 md:p-16 text-center relative overflow-hidden shadow-2xl flex items-center justify-center">
+      <section className="min-h-[420px] bg-card border border-border rounded-3xl p-6 sm:p-10 md:p-16 text-center relative overflow-hidden shadow-2xl flex items-center justify-center content-visibility-auto">
         <div className="absolute right-0 top-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-0"></div>
         <div className="absolute left-0 bottom-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -z-0"></div>
         

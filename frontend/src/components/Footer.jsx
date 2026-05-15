@@ -53,11 +53,11 @@ const Footer = () => {
                   src="/logo-40.png" 
                   srcSet="/logo-40.png 40w, /logo-80.png 80w"
                   alt="IslamicNames" 
-                  width={150} 
+                  width={40} 
                   height={40} 
                   loading="lazy" 
                   decoding="async"
-                  className="h-9 w-auto md:h-10 group-hover:scale-105 transition-transform" 
+                  className="h-9 w-9 md:h-10 md:w-10 group-hover:scale-105 transition-transform object-cover" 
                 />
               </picture>
               <span className="font-black text-xl md:text-2xl tracking-tight text-primary">IslamicNames</span>

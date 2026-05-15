@@ -2,9 +2,9 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
 import { Search, LogOut, Heart, Menu, X, ChevronRight, User } from 'lucide-react';
+import Footer from '../components/Footer';
 
 // Lazy Components
-const Footer = lazy(() => import('../components/Footer'));
 const SupportWidget = lazy(() => import('../components/SupportWidget'));
 
 const MainLayout = () => {
@@ -295,9 +295,7 @@ const MainLayout = () => {
       </main>
 
       {/* Footer */}
-      <Suspense fallback={null}>
-        <Footer />
-      </Suspense>
+      <Footer />
 
       {/* Support Widget */}
       <Suspense fallback={null}>

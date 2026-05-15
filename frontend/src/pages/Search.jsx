@@ -197,7 +197,7 @@ const Search = () => {
       </div>
 
       {/* Results */}
-      <div>
+      <div className="content-visibility-auto min-h-[400px]">
         <div className="flex items-center justify-between mb-6 px-1">
           <h2 className="text-base md:text-xl font-bold text-text">
             {data?.count || 0} <span className="text-text-muted font-medium">Names Found</span>
