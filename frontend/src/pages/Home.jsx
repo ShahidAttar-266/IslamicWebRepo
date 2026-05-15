@@ -1,11 +1,10 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Search as SearchIcon, ArrowRight } from 'lucide-react';
 import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
-
-const NameCard = lazy(() => import('../components/NameCard'));
+import NameCard from '../components/NameCard';
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');

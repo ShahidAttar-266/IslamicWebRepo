@@ -16,11 +16,9 @@ import MainLayout from './layouts/MainLayout';
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
 
 // Lazy Pages
-const Home = lazy(() => import('./pages/Home'));
+import Home from './pages/Home';
+import NameDetail from './pages/NameDetail';
 const Search = lazy(() => import('./pages/Search'));
-const Login = lazy(() => import('./pages/Login'));
-const Register = lazy(() => import('./pages/Register'));
-const NameDetail = lazy(() => import('./pages/NameDetail'));
 const Pricing = lazy(() => import('./pages/Pricing'));
 const Favorites = lazy(() => import('./pages/Favorites'));
 const Compare = lazy(() => import('./pages/Compare'));

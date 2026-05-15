@@ -1,8 +1,9 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
+import NameCard from '../components/NameCard';
 import { 
   Search as SearchIcon, 
   Book, 
@@ -10,8 +11,6 @@ import {
   ChevronUp, 
   X 
 } from 'lucide-react';
-
-const NameCard = lazy(() => import('../components/NameCard'));
 
 const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
