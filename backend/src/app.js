@@ -93,6 +93,14 @@ if (process.env.LOG_REQUESTS === 'true') {
 }
 
 // Mount routers
+app.get('/api/v1', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Islamic Web API Running',
+        version: 'v1'
+    });
+});
+
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/names', namesRoutes);
 app.use('/api/v1/subscriptions', subscriptionRoutes);
