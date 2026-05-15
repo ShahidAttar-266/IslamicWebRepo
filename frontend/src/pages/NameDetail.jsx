@@ -427,7 +427,7 @@ const NameDetail = () => {
 
       {/* Upgrade CTA */}
       {!hasPremiumAccess && (
-        <section className="bg-card border border-primary/20 rounded-3xl p-6 sm:p-8 md:p-12 text-center relative overflow-hidden shadow-2xl">
+        <section className="min-h-[320px] bg-card border border-primary/20 rounded-3xl p-6 sm:p-8 md:p-12 text-center relative overflow-hidden shadow-2xl flex items-center justify-center">
           <div className="relative z-10">
             <h2 className="text-2xl md:text-3xl font-black mb-4">Unlock the Full History</h2>
             <p className="text-text-muted mb-8 max-w-2xl mx-auto text-sm md:text-lg leading-relaxed italic">

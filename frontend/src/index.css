@@ -47,7 +47,7 @@
 @layer utilities {
   .content-visibility-auto {
     content-visibility: auto;
-    contain-intrinsic-size: 0 500px;
+    contain-intrinsic-size: auto 500px;
   }
 
   .blurred-content {

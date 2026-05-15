@@ -12,9 +12,6 @@ const Home = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
 
-  // Fetch some featured/recent names
-  const [isVisible, setIsVisible] = useState(false);
-  
   const { data: recentNames, isLoading } = useQuery({
     queryKey: ['recentNames'],
     queryFn: async () => {
@@ -27,25 +24,7 @@ const Home = () => {
       }
     },
     staleTime: 5 * 60 * 1000,
-    enabled: isVisible, // Only fetch when visible
   });
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const section = document.getElementById('recent-names-section');
-    if (section) observer.observe(section);
-
-    return () => observer.disconnect();
-  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -54,10 +33,18 @@ const Home = () => {
     }
   };
 
+  const NamesSkeleton = () => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className="bg-card border border-border rounded-2xl h-[260px] animate-pulse" />
+      ))}
+    </div>
+  );
+
   return (
     <div className="space-y-12 md:space-y-20 lg:space-y-24">
       {/* Hero Section */}
-      <section className="text-center max-w-3xl mx-auto pt-4 md:pt-10 px-4">
+      <section className="text-center max-w-3xl mx-auto pt-4 md:pt-10 px-4 min-h-[300px] flex flex-col justify-center">
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 md:mb-6 text-text leading-tight tracking-tight">
           Discover <span className="text-primary">IslamicNames</span>
         </h1>
@@ -88,7 +75,7 @@ const Home = () => {
       </section>
 
       {/* Featured Names */}
-      <section id="recent-names-section" className="content-visibility-auto">
+      <section id="recent-names-section">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8">
           <div>
             <h2 className="text-2xl md:text-3xl font-bold text-text mb-2">Recently Added</h2>
@@ -102,22 +89,12 @@ const Home = () => {
           </button>
         </div>
 
-        {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="bg-card border border-border rounded-2xl h-64 animate-pulse" />
-            ))}
-          </div>
+        {(isLoading || !recentNames) ? (
+          <NamesSkeleton />
         ) : (
-          <Suspense fallback={
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="bg-card border border-border rounded-2xl h-64 animate-pulse" />
-              ))}
-            </div>
-          }>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-              {(recentNames || []).map((name, index) => (
+          <Suspense fallback={<NamesSkeleton />}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 min-h-[260px]">
+              {recentNames.map((name, index) => (
                 <NameCard 
                   key={name._id} 
                   name={name} 
@@ -130,7 +107,7 @@ const Home = () => {
       </section>
 
       {/* CTA Banner */}
-      <section className="min-h-[420px] bg-card border border-border rounded-3xl p-6 sm:p-10 md:p-16 text-center relative overflow-hidden shadow-2xl flex items-center justify-center content-visibility-auto">
+      <section className="min-h-[420px] bg-card border border-border rounded-3xl p-6 sm:p-10 md:p-16 text-center relative overflow-hidden shadow-2xl flex items-center justify-center">
         <div className="absolute right-0 top-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-0"></div>
         <div className="absolute left-0 bottom-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -z-0"></div>
         
