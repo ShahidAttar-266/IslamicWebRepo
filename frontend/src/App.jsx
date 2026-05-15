@@ -19,6 +19,8 @@ const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
 import Home from './pages/Home';
 import NameDetail from './pages/NameDetail';
 const Search = lazy(() => import('./pages/Search'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
 const Pricing = lazy(() => import('./pages/Pricing'));
 const Favorites = lazy(() => import('./pages/Favorites'));
 const Compare = lazy(() => import('./pages/Compare'));
@@ -52,13 +54,6 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  const { setLoaded, isLoaded } = useAuthStore();
-
-  useEffect(() => {
-    // Immediate load for better performance metrics
-    setLoaded();
-  }, [setLoaded]);
-
   const FallbackLoader = () => (
     <div className="flex-1 flex flex-col items-center justify-center p-12 space-y-4">
       <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
