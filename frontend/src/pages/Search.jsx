@@ -118,7 +118,7 @@ const Search = () => {
               <button
                 key={g}
                 onClick={() => setGenderFilter(genderFilter === g ? '' : g)}
-                className={`flex-1 sm:flex-none px-4 py-3 rounded-xl capitalize text-sm font-bold border transition-all min-h-[44px] ${
+                className={`flex-1 sm:flex-none px-4 py-3 rounded-xl capitalize text-sm font-bold border transition-colors min-h-[44px] ${
                   genderFilter === g 
                     ? 'bg-primary border-primary text-bg' 
                     : 'bg-bg border-border text-text-muted hover:border-primary/50'
@@ -130,7 +130,7 @@ const Search = () => {
             
             <button
                 onClick={() => setQuranicFilter(!quranicFilter)}
-                className={`flex-1 sm:flex-none px-4 py-3 flex items-center justify-center gap-2 rounded-xl text-sm font-bold border transition-all min-h-[44px] ${
+                className={`flex-1 sm:flex-none px-4 py-3 flex items-center justify-center gap-2 rounded-xl text-sm font-bold border transition-colors min-h-[44px] ${
                   quranicFilter 
                     ? 'bg-primary border-primary text-bg' 
                     : 'bg-bg border-border text-text-muted hover:border-primary/50'
@@ -143,7 +143,7 @@ const Search = () => {
             {hasActiveFilters && (
               <button
                 onClick={clearAllFilters}
-                className="flex items-center gap-2 px-4 py-3 text-sm font-bold text-danger hover:bg-danger/5 rounded-xl transition-all min-h-[44px]"
+                className="flex items-center gap-2 px-4 py-3 text-sm font-bold text-danger hover:bg-danger/5 rounded-xl transition-colors min-h-[44px]"
               >
                 <X size={16} /> Clear All
               </button>

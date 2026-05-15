@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Heart, Book, Crown, ArrowRight, ArrowLeftRight } from 'lucide-react';
 import useAuthStore from '../store/useAuthStore';
@@ -5,7 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import api from '../api/axios';
 import { toast } from 'react-hot-toast';
 
-const NameCard = ({ name, onFavorite, delay = 0, isLocked = false }) => {
+const NameCard = React.memo(({ name, onFavorite, delay = 0, isLocked = false }) => {
   const { isAuthenticated, user } = useAuthStore();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -38,7 +39,6 @@ const NameCard = ({ name, onFavorite, delay = 0, isLocked = false }) => {
       if (!id1) params.set('id1', name._id);
       else if (!id2) params.set('id2', name._id);
       else {
-        // If both full, replace the first one with the second, and the second with the new one
         params.set('id1', id2);
         params.set('id2', name._id);
       }
@@ -153,7 +153,7 @@ const NameCard = ({ name, onFavorite, delay = 0, isLocked = false }) => {
     </>
   );
 
-  const cardClasses = "group relative bg-card border border-border rounded-2xl p-4 md:p-6 transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 overflow-hidden flex flex-col h-full";
+  const cardClasses = "group relative bg-card border border-border rounded-2xl p-4 md:p-6 transition-[transform,border-color,shadow] duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 overflow-hidden flex flex-col h-full";
 
   if (isLocked) {
     return (
@@ -199,6 +199,6 @@ const NameCard = ({ name, onFavorite, delay = 0, isLocked = false }) => {
       <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
     </Link>
   );
-};
+});
 
 export default NameCard;
