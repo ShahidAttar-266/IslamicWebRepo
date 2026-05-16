@@ -25,87 +25,131 @@ const Privacy = () => {
         </div>
 
         <div className="prose prose-invert max-w-none space-y-8 text-text-muted leading-relaxed">
-          <p className="text-lg text-text font-medium italic">
-            At IslamicNames, we value your privacy and are committed to protecting your personal information.
+          <p className="text-lg text-text font-medium italic border-l-4 border-primary pl-4 py-2 bg-primary/5 rounded-r-xl">
+            At IslamicNames.in, we value your privacy and are committed to protecting your personal information.
           </p>
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">01.</span> Information We Collect
+              <span className="text-primary text-sm font-black">01.</span> Introduction
             </h2>
-            <p>We may collect:</p>
-            <ul className="list-disc pl-6 space-y-2 mt-2">
-              <li>Name and email address (when you sign up or contact us)</li>
-              <li>Usage data (pages visited, interactions)</li>
-              <li>Payment details (processed securely via third-party providers like Razorpay; we do not store card details)</li>
-            </ul>
+            <p>
+              At IslamicNames.in, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, store, and safeguard user data when you access our website and services.
+            </p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">02.</span> How We Use Your Information
+              <span className="text-primary text-sm font-black">02.</span> Information We Collect
             </h2>
-            <p>We use your data to:</p>
+            <p>
+              We may collect personal information including your name, email address, account details, payment-related information, device information, IP address, browser type, and usage data when you interact with our platform or subscribe to premium services.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
+              <span className="text-primary text-sm font-black">03.</span> Use of Information
+            </h2>
+            <p>The information collected is used to:</p>
             <ul className="list-disc pl-6 space-y-2 mt-2">
               <li>Provide and improve our services</li>
-              <li>Manage user accounts</li>
               <li>Process payments and subscriptions</li>
-              <li>Respond to support requests</li>
+              <li>Manage user accounts</li>
+              <li>Send important notifications and updates</li>
+              <li>Improve website performance and user experience</li>
+              <li>Prevent fraud, abuse, and unauthorized access</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">03.</span> Data Protection
+              <span className="text-primary text-sm font-black">04.</span> Payments & Payment Security
             </h2>
             <p>
-              We implement appropriate security measures to protect your data. However, no method of transmission over the internet is 100% secure.
+              Payments on IslamicNames.in are securely processed through authorized third-party payment gateways such as Razorpay. We do not store complete debit card, credit card, UPI PIN, or banking credentials on our servers. Payment information is handled securely by certified payment providers.
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">04.</span> Third-Party Services
+              <span className="text-primary text-sm font-black">05.</span> Cookies & Tracking Technologies
             </h2>
             <p>
-              We may use trusted third-party services (e.g., payment gateways, analytics) which may collect limited data as per their policies.
+              We may use cookies, analytics tools, and similar technologies to enhance user experience, analyze website traffic, remember preferences, and improve platform functionality. Users may disable cookies through their browser settings if desired.
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">05.</span> Cookies
+              <span className="text-primary text-sm font-black">06.</span> Data Sharing
             </h2>
             <p>
-              We may use cookies to enhance user experience and analyze website usage.
+              We do not sell or rent personal information to third parties. However, we may share limited information with trusted service providers including payment gateways, cloud hosting providers, email delivery services, and analytics platforms strictly for operational purposes.
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">06.</span> Your Rights
+              <span className="text-primary text-sm font-black">07.</span> Data Protection
             </h2>
             <p>
-              You can request access, correction, or deletion of your data by contacting us.
+              We implement reasonable technical and organizational security measures to protect user information from unauthorized access, misuse, disclosure, or alteration. Despite our efforts, no online platform can guarantee absolute security.
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">07.</span> Changes to This Policy
+              <span className="text-primary text-sm font-black">08.</span> Third-Party Services
             </h2>
             <p>
-              We may update this policy from time to time. Continued use of the website implies acceptance of changes.
+              IslamicNames.in may contain links or integrations with third-party services. We are not responsible for the privacy practices, policies, or content of external websites or services.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
+              <span className="text-primary text-sm font-black">09.</span> User Rights
+            </h2>
+            <p>
+              Users may request access, correction, or deletion of their personal data by contacting us through the official support channels provided on the website.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
+              <span className="text-primary text-sm font-black">10.</span> Children's Privacy
+            </h2>
+            <p>
+              IslamicNames.in is not intended for children under the age required by applicable laws without parental supervision. We do not knowingly collect sensitive information from minors.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
+              <span className="text-primary text-sm font-black">11.</span> Policy Updates
+            </h2>
+            <p>
+              We may update this Privacy Policy periodically to reflect changes in our services, technologies, or legal requirements. Continued use of the website after updates constitutes acceptance of the revised policy.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
+              <span className="text-primary text-sm font-black">12.</span> Contact Information
+            </h2>
+            <p>
+              For questions regarding this Privacy Policy or data-related concerns, users may contact us using the contact details available on IslamicNames.in.
             </p>
           </section>
 
           <div className="pt-8 border-t border-border mt-12 text-center">
             <p className="font-bold text-text mb-2">Contact Us</p>
             <a 
-              href="mailto:support@islamicnames.com" 
+              href="mailto:support@islamicnames.in" 
               className="text-primary hover:underline font-medium text-lg"
             >
-              support@islamicnames.com
+              support@islamicnames.in
             </a>
           </div>
         </div>
