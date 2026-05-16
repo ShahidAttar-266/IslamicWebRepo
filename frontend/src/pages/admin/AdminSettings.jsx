@@ -39,7 +39,7 @@ const AdminSettings = () => {
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-text-muted mb-1 text-xs uppercase tracking-wider">Razorpay Key ID</label>
-                <input type="text" placeholder="rzp_test_..." className="w-full bg-bg border border-border focus:border-primary rounded-lg px-4 py-2 text-text outline-none text-sm" />
+                <input type="text" placeholder="rzp_live_..." className="w-full bg-bg border border-border focus:border-primary rounded-lg px-4 py-2 text-text outline-none text-sm" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-text-muted mb-1 text-xs uppercase tracking-wider">Razorpay Key Secret</label>

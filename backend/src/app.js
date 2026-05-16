@@ -27,9 +27,7 @@ const allowedOrigins = [
     'https://islamicnames1.netlify.app',
     'https://islamic-web-repo.vercel.app',
     'https://islamic-web-repo-jcwb.vercel.app',
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'http://localhost:5174'
+    'https://www.islamicnames.in'
 ];
 
 app.use(cors({

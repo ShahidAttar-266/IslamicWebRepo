@@ -48,6 +48,7 @@ const Pricing = () => {
         subscription_id: data.data.id,
         name: data.data.name,
         description: data.data.description,
+        currency: "INR",
         image: "/favicon.png", // Path to your logo
         handler: async function (response) {
           // This only runs on success
@@ -90,29 +91,6 @@ const Pricing = () => {
           ondismiss: function () {
             setLoadingPlan(null);
             toast('Payment cancelled', { icon: 'ℹ️' });
-          }
-        },
-        // Explicitly force display of all payment methods
-        config: {
-          display: {
-            blocks: {
-              upi: {
-                name: 'UPI / Google Pay / PhonePe',
-                instruments: [{ method: 'upi' }]
-              },
-              card: {
-                name: 'Debit / Credit Card',
-                instruments: [{ method: 'card' }]
-              },
-              netbanking: {
-                name: 'Net Banking',
-                instruments: [{ method: 'netbanking' }]
-              }
-            },
-            sequence: ['block.upi', 'block.card', 'block.netbanking'],
-            preferences: {
-              show_default_blocks: true
-            }
           }
         },
         remember_customer: true,

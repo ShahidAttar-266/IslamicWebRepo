@@ -41,7 +41,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'https://www.islamicnames.in',
         changeOrigin: true,
       },
     },
