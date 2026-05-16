@@ -56,7 +56,7 @@ const faqs = [
       },
       {
         q: 'My account still shows "Free" after payment. What should I do?',
-        a: 'Subscription activation takes a few seconds after payment. Please wait one minute and refresh your Account page. If your plan still shows "Free" after 5 minutes, contact us at support@islamicnames.com with your payment reference and we will resolve it immediately.'
+        a: 'Subscription activation takes a few seconds after payment. Please wait one minute and refresh your Account page. If your plan still shows "Free" after 5 minutes, contact us at support@islamicnames.in with your payment reference and we will resolve it immediately.'
       },
       {
         q: 'Can I share my account with my spouse or family?',
@@ -153,7 +153,7 @@ const FAQ = () => {
           <p className="text-text-muted text-base max-w-md mx-auto leading-relaxed">
             Everything you need to know about IslamicNames — names, plans, and features.
             Can't find an answer?{' '}
-            <a href="mailto:support@islamicnames.com" className="text-primary hover:underline">
+            <a href="mailto:support@islamicnames.in" className="text-primary hover:underline">
               Contact us
             </a>.
           </p>
@@ -200,7 +200,7 @@ const FAQ = () => {
             Our team is happy to help. Reach out and we'll respond within 24 hours, in sha Allah.
           </p>
           <a
-            href="mailto:support@islamicnames.com"
+            href="mailto:support@islamicnames.in"
             className="inline-block bg-primary text-bg font-black text-sm uppercase tracking-widest px-8 py-3.5 rounded-full hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
           >
             Email Support

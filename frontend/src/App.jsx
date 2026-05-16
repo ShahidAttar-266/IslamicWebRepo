@@ -85,6 +85,7 @@ function App() {
                     <Route path="/privacy" element={<Privacy />} />
                     <Route path="/terms" element={<Terms />} />
                     <Route path="/refund" element={<Refund />} />
+                    <Route path="/cancellation" element={<Refund />} />
                     <Route path="/disclaimer" element={<Disclaimer />} />
                     <Route path="/success" element={<Success />} />
                     <Route path="/faq" element={<FAQ />} />

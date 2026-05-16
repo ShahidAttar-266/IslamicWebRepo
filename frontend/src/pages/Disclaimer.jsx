@@ -64,10 +64,10 @@ const Disclaimer = () => {
           <div className="pt-8 border-t border-border mt-12 text-center">
             <p className="font-bold text-text mb-2">Legal Inquiry</p>
             <a 
-              href="mailto:support@islamicnames.com" 
+              href="mailto:support@islamicnames.in" 
               className="text-primary hover:underline font-medium text-lg"
             >
-              support@islamicnames.com
+              support@islamicnames.in
             </a>
           </div>
         </div>

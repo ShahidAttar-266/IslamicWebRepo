@@ -30,6 +30,7 @@ const Footer = () => {
         { name: 'Privacy Policy', path: '/privacy' },
         { name: 'Terms & Conditions', path: '/terms' },
         { name: 'Refund Policy', path: '/refund' },
+        { name: 'Cancellation Policy', path: '/cancellation' },
         { name: 'Disclaimer', path: '/disclaimer' },
       ]
     }
@@ -75,7 +76,7 @@ const Footer = () => {
                 <Globe size={20} aria-hidden="true" />
               </button>
               <a 
-                href="mailto:support@islamicnames.com" 
+                href="mailto:support@islamicnames.in" 
                 className="p-3 bg-bg border border-border rounded-xl hover:text-primary hover:border-primary transition-all shadow-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Send us an email"
               >
