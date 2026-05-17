@@ -75,7 +75,10 @@ const SupportWidget = () => {
       title: 'Help Center & FAQ',
       description: 'Quick answers to common questions',
       icon: <HelpCircle className="text-purple-500" size={20} />,
-      action: () => { navigate('/faq'); setIsOpen(false); },
+      action: () => { 
+        navigate('/faq'); 
+        setTimeout(() => setIsOpen(false), 150); 
+      },
       color: 'hover:bg-purple-500/10'
     },
     {
@@ -83,7 +86,10 @@ const SupportWidget = () => {
       title: 'Report a Bug',
       description: 'Help us improve your experience',
       icon: <Bug className="text-rose-500" size={20} />,
-      action: () => { navigate('/report-bug'); setIsOpen(false); },
+      action: () => { 
+        navigate('/report-bug'); 
+        setTimeout(() => setIsOpen(false), 150); 
+      },
       color: 'hover:bg-rose-500/10'
     },
     {
@@ -91,7 +97,10 @@ const SupportWidget = () => {
       title: 'Payment Issue',
       description: 'Failed transactions or refunds',
       icon: <CreditCard className="text-amber-500" size={20} />,
-      action: () => { navigate('/refund'); setIsOpen(false); },
+      action: () => { 
+        navigate('/refund'); 
+        setTimeout(() => setIsOpen(false), 150); 
+      },
       color: 'hover:bg-amber-500/10'
     }
   ];
