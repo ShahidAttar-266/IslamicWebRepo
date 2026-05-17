@@ -35,7 +35,7 @@ const Home = () => {
   const NamesSkeleton = () => (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {[...Array(4)].map((_, i) => (
-        <div key={i} className="bg-card border border-border rounded-2xl h-[260px] animate-pulse" />
+        <div key={i} className="bg-white/5 border border-white/10 rounded-2xl h-[260px] animate-pulse" />
       ))}
     </div>
   );
@@ -57,6 +57,7 @@ const Home = () => {
             <input 
               type="text" 
               placeholder="Search by name, meaning..." 
+              aria-label="Search Islamic names by name or meaning"
               className="w-full bg-transparent text-text py-3 md:py-3.5 pl-12 pr-4 outline-none text-base"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}

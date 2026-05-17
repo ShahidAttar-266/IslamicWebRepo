@@ -104,6 +104,7 @@ const Search = () => {
             <input 
               type="text" 
               placeholder="Search names, meanings..." 
+              aria-label="Search Islamic names by name or meaning"
               className="w-full bg-bg border border-border focus:border-primary focus:ring-1 focus:ring-primary text-text rounded-xl py-3.5 pl-12 pr-4 outline-none transition-all text-base"
               value={searchTerm}
               onChange={(e) => {
@@ -167,6 +168,7 @@ const Search = () => {
             <p className="hidden md:block w-full text-xs text-text-muted mb-4 uppercase tracking-wider font-bold">Filter by Alphabet</p>
             <button
               onClick={() => setLetterFilter('')}
+              aria-label="Show all names"
               className={`min-w-[42px] min-h-[42px] flex items-center justify-center rounded-lg text-sm font-black transition-all border ${
                 !letterFilter ? 'bg-primary border-primary text-bg' : 'bg-bg border-border text-text-muted hover:border-primary/50'
               }`}
@@ -176,6 +178,7 @@ const Search = () => {
             {alphabets.map(letter => (
               <button
                 key={letter}
+                aria-label={`Filter names by letter ${letter}`}
                 onClick={() => {
                   setLetterFilter(letter === letterFilter ? '' : letter);
                   setSearchTerm(''); 
@@ -203,7 +206,7 @@ const Search = () => {
         {(isLoading && !data) ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
              {[...Array(8)].map((_, i) => (
-               <div key={i} className="bg-card border border-border rounded-2xl h-64 animate-pulse" />
+               <div key={i} className="bg-white/5 border border-white/10 rounded-2xl h-64 animate-pulse" />
              ))}
           </div>
         ) : data?.data?.length === 0 ? (
