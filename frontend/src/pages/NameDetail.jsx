@@ -262,6 +262,30 @@ const NameDetail = () => {
         {/* Twitter */}
         <meta property="twitter:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`} />
         <meta property="twitter:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}.`} />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            "name": `${name.nameEnglish} (${name.nameArabic}) Meaning & Origin`,
+            "description": `Detailed information about the Islamic name ${name.nameEnglish}, including its meaning: "${name.meaning}", origin: ${name.origin || 'Arabic'}, and historical context.`,
+            "mainEntity": {
+              "@type": "Thing",
+              "name": name.nameEnglish,
+              "alternateName": name.nameArabic,
+              "description": name.meaning
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "IslamicNames",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.islamicnames.in/logo-120.webp"
+              }
+            }
+          })}
+        </script>
       </Helmet>
 
       <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold text-sm min-h-[44px]">

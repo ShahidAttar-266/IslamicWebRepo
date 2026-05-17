@@ -190,6 +190,38 @@ exports.getName = async (req, res, next) => {
     }
 };
 
+// @desc    Get dynamic sitemap.xml
+// @route   GET /api/v1/names/sitemap.xml
+// @access  Public
+exports.getSitemap = async (req, res, next) => {
+    try {
+        const names = await Name.find({ isActive: true }).select('_id updatedAt');
+        
+        const baseUrl = 'https://www.islamicnames.in';
+        
+        let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+        xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+        
+        // Static routes
+        const staticRoutes = ['', '/search', '/pricing', '/faq', '/compare'];
+        staticRoutes.forEach(route => {
+            xml += `  <url>\n    <loc>${baseUrl}${route}</loc>\n    <changefreq>daily</changefreq>\n    <priority>${route === '' ? '1.0' : '0.8'}</priority>\n  </url>\n`;
+        });
+        
+        // Dynamic name routes
+        names.forEach(name => {
+            xml += `  <url>\n    <loc>${baseUrl}/name/${name._id}</loc>\n    <lastmod>${name.updatedAt.toISOString().split('T')[0]}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
+        });
+        
+        xml += `</urlset>`;
+        
+        res.header('Content-Type', 'application/xml');
+        res.status(200).send(xml);
+    } catch (err) {
+        next(err);
+    }
+};
+
 // @desc    Create new name
 // @route   POST /api/v1/names
 // @access  Private/Admin

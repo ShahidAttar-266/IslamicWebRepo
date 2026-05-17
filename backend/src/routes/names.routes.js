@@ -2,6 +2,7 @@ const express = require('express');
 const {
     getNames,
     getName,
+    getSitemap,
     createName,
     updateName,
     deleteName
@@ -11,6 +12,8 @@ const { protect, authorize } = require('../middlewares/auth');
 const optionalProtect = require('../middlewares/optionalProtect');
 
 const router = express.Router();
+
+router.get('/sitemap.xml', getSitemap);
 
 router.route('/')
     .get(optionalProtect, getNames)
