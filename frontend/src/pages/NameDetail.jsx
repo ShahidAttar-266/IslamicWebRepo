@@ -70,7 +70,7 @@ const GatedSection = ({ title, icon: Icon, isLocked, msg, children, onUnlock }) 
         <div className="w-12 h-12 bg-amber-500/20 text-amber-500 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
           <Lock size={20} />
         </div>
-        <p className="font-black text-[10px] uppercase tracking-widest text-amber-600 mb-1">Premium Feature</p>
+        <p className="font-black text-[10px] uppercase tracking-widest text-amber-400 mb-1">Premium Feature</p>
         <p className="text-sm text-text-muted mb-4 text-center max-w-[250px]">{msg || `Upgrade to unlock ${title}`}</p>
         <button 
           onClick={onUnlock} 

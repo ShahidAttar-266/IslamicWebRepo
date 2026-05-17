@@ -14,7 +14,7 @@ export default {
         border: "#2d4a3e",
         text: {
           DEFAULT: "#e8f5ef",
-          muted: "#8ab5a0"
+          muted: "#a1c2b3"
         },
         danger: "#e53e3e",
         success: "#2db87a"
