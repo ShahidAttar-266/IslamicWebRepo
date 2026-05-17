@@ -18,9 +18,6 @@ exports.getNames = async (req, res, next) => {
         const cacheKey = `names:list:${queryHash}`;
 
         const fetchNames = async () => {
-            let query;
-
-            // Default: Only show active names to public
             const parsedQuery = {};
             
             // If user is not admin, only show active names
@@ -63,9 +60,7 @@ exports.getNames = async (req, res, next) => {
                 ];
             }
 
-            console.log('[getNames] Query:', JSON.stringify(parsedQuery));
-
-            query = Name.find(parsedQuery);
+            let query = Name.find(parsedQuery);
 
             // Select Fields
             if (req.query.select) {
@@ -78,7 +73,6 @@ exports.getNames = async (req, res, next) => {
 
             // Sort & Text Search Score
             if (req.query.q) {
-                // Must add text score projection while keeping existing select
                 query = query.select('score')
                              .sort({ score: { $meta: 'textScore' } });
             } else if (req.query.sort) {
@@ -93,7 +87,6 @@ exports.getNames = async (req, res, next) => {
             const page = parseInt(req.query.page, 10) || 1;
             const limit = parseInt(req.query.limit, 10) || 200;
             const startIndex = (page - 1) * limit;
-            const endIndex = page * limit;
             const total = await Name.countDocuments(parsedQuery);
 
             query = query.skip(startIndex).limit(limit);
@@ -103,19 +96,11 @@ exports.getNames = async (req, res, next) => {
 
             // Pagination result
             const pagination = {};
-
-            if (endIndex < total) {
-                pagination.next = {
-                    page: page + 1,
-                    limit
-                };
+            if (startIndex + names.length < total) {
+                pagination.next = { page: page + 1, limit };
             }
-
             if (startIndex > 0) {
-                pagination.prev = {
-                    page: page - 1,
-                    limit
-                };
+                pagination.prev = { page: page - 1, limit };
             }
 
             return {
@@ -148,9 +133,7 @@ exports.getNames = async (req, res, next) => {
 // @access  Public (Premium fields filtered if not subscribed)
 exports.getName = async (req, res, next) => {
     try {
-        console.log(`[GET_NAME] Fetching name with ID: ${req.params.id}`);
-
-        // Validate ID format (prevent Mongoose CastError crash)
+        // Validate ID format
         if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
             return next(new ErrorResponse('Invalid ID format', 400));
         }
@@ -158,32 +141,26 @@ exports.getName = async (req, res, next) => {
         // Determine if user has premium access
         let hasPremiumAccess = false;
         if (req.user) {
-            if (req.user.role === 'admin') {
-                hasPremiumAccess = true;
-            } else if (req.user.subscription && req.user.subscription.status === 'premium') {
+            if (req.user.role === 'admin' || (req.user.subscription && req.user.subscription.status === 'premium')) {
                 hasPremiumAccess = true;
             }
         }
 
-        // Cache Key: Premium users skip cache or use a different key
         const cacheKey = `names:detail:${req.params.id}${hasPremiumAccess ? ':premium' : ':public'}`;
 
         const fetchName = async () => {
             const name = await Name.findById(req.params.id);
 
-            if (!name) {
-                return null;
-            }
+            if (!name) return null;
 
             // Only allow active names to be seen unless user is admin
             if (!name.isActive && (!req.user || req.user.role !== 'admin')) {
                 throw new Error('Name inactive');
             }
 
-            // Clone the document to manipulate it
             let responseData = name.toObject();
 
-            // If not premium user, hide premium-only data for all names
+            // If not premium user, hide premium-only data
             if (!hasPremiumAccess) {
                  delete responseData.history;
                  delete responseData.quranReference;
@@ -209,7 +186,6 @@ exports.getName = async (req, res, next) => {
         if (err.message === 'Name inactive') {
             return next(new ErrorResponse('This name is currently under review or inactive', 403));
         }
-        console.error(`[GET_NAME_ERROR] ${err.message}`);
         next(err);
     }
 };
@@ -220,14 +196,8 @@ exports.getName = async (req, res, next) => {
 exports.createName = async (req, res, next) => {
     try {
         const name = await Name.create(req.body);
-
-        // Invalidate list cache
         await cache.invalidatePattern('names:list:*');
-
-        res.status(201).json({
-            success: true,
-            data: name
-        });
+        res.status(201).json({ success: true, data: name });
     } catch (err) {
         next(err);
     }
@@ -239,27 +209,20 @@ exports.createName = async (req, res, next) => {
 exports.updateName = async (req, res, next) => {
     try {
         let name = await Name.findById(req.params.id);
-
-        if (!name) {
-            return next(new ErrorResponse(`Name not found with id of ${req.params.id}`, 404));
-        }
+        if (!name) return next(new ErrorResponse(`Name not found`, 404));
 
         name = await Name.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true
         });
 
-        // Invalidate list and detail cache
         await cache.invalidatePattern('names:list:*');
         await cache.invalidateMany([
             `names:detail:${req.params.id}:public`,
             `names:detail:${req.params.id}:premium`
         ]);
 
-        res.status(200).json({
-            success: true,
-            data: name
-        });
+        res.status(200).json({ success: true, data: name });
     } catch (err) {
         next(err);
     }
@@ -271,27 +234,17 @@ exports.updateName = async (req, res, next) => {
 exports.deleteName = async (req, res, next) => {
     try {
         let name = await Name.findById(req.params.id);
-
-        if (!name) {
-             return next(new ErrorResponse(`Name not found with id of ${req.params.id}`, 404));
-        }
+        if (!name) return next(new ErrorResponse(`Name not found`, 404));
 
         await name.deleteOne();
-
-        // Invalidate list and detail cache
         await cache.invalidatePattern('names:list:*');
         await cache.invalidateMany([
             `names:detail:${req.params.id}:public`,
             `names:detail:${req.params.id}:premium`
         ]);
 
-        res.status(200).json({
-            success: true,
-            data: {}
-        });
+        res.status(200).json({ success: true, data: {} });
     } catch (err) {
         next(err);
-    }
-};
     }
 };
