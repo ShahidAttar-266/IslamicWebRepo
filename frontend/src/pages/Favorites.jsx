@@ -3,10 +3,10 @@ import api from '../api/axios';
 import { HeartCrack, Download, Loader2, Crown, Heart } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import useAuthStore from '../store/useAuthStore';
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const NameCard = lazy(() => import('../components/NameCard'));
+import NameCard from '../components/NameCard';
+import { exportFavoritesToPDF } from '../api/pdfExport';
 
 const Favorites = () => {
   const queryClient = useQueryClient();
