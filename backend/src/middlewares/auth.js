@@ -13,12 +13,10 @@ exports.protect = async (req, res, next) => {
     ) {
         // Set token from Bearer token in header
         token = req.headers.authorization.split(' ')[1];
-        console.log('[DEBUG_AUTH] Token found in Authorization header');
     }
     // Set token from cookie
     else if (req.cookies.token) {
         token = req.cookies.token;
-        console.log('[DEBUG_AUTH] Token found in cookie');
     }
 
     // Make sure token exists
@@ -82,9 +80,4 @@ exports.checkSubscription = (...statuses) => {
         }
         next();
     };
-}iption', 403)
-            );
-        }
-        next();
-    };
-}
+};
