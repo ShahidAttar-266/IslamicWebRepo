@@ -12,25 +12,37 @@ export default defineConfig({
   },
   build: {
     cssCodeSplit: true,
-    chunkSizeWarningLimit: 2000,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            // Group core dependencies into a single vendor chunk to reduce request chain depth
+            // Group core framework dependencies
             if (
               id.includes('react') || 
               id.includes('react-dom') || 
-              id.includes('react-router-dom') ||
+              id.includes('react-router-dom')
+            ) {
+              return 'framework';
+            }
+            // Group data fetching and state management
+            if (
               id.includes('@tanstack/react-query') ||
               id.includes('axios') ||
               id.includes('zustand')
             ) {
-              return 'vendor';
+              return 'data';
             }
-            // Keep UI libraries separate as they might be used in different routes
-            if (id.includes('framer-motion') || id.includes('lucide-react') || id.includes('react-hot-toast')) {
-              return 'ui';
+            // Separate heavy UI libraries
+            if (id.includes('framer-motion')) {
+              return 'motion';
+            }
+            if (id.includes('lucide-react')) {
+              return 'icons';
+            }
+            // Utilities
+            if (id.includes('react-hot-toast') || id.includes('zod') || id.includes('react-hook-form')) {
+              return 'utils';
             }
             return 'modules';
           }

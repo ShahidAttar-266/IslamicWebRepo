@@ -23,12 +23,12 @@ const app = express();
 app.use(helmet());
 
 // Enable CORS
-const allowedOrigins = [
+const allowedOrigins = new Set([
     'https://islamicnames1.netlify.app',
     'https://islamic-web-repo.vercel.app',
     'https://islamic-web-repo-jcwb.vercel.app',
     'https://www.islamicnames.in'
-];
+]);
 
 app.use(cors({
     origin: (origin, callback) => {
@@ -37,11 +37,10 @@ app.use(cors({
 
         const sanitizedOrigin = origin.replace(/\/$/, '');
 
-        if (allowedOrigins.includes(sanitizedOrigin) || process.env.NODE_ENV === 'development') {
+        if (allowedOrigins.has(sanitizedOrigin) || process.env.NODE_ENV === 'development') {
             callback(null, true);
         } else {
-            console.log('Blocked Origin:', sanitizedOrigin);
-            callback(new Error(`Not allowed by CORS: ${sanitizedOrigin}`));
+            callback(new Error(`Not allowed by CORS`));
         }
 },
 credentials: true,

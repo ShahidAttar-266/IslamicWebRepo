@@ -55,60 +55,58 @@ const queryClient = new QueryClient({
 
 function App() {
   const FallbackLoader = () => (
-    <div className="flex-1 flex flex-col items-center justify-center p-12 space-y-4">
+    <div className="min-h-[60vh] flex flex-col items-center justify-center p-12 space-y-4">
       <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-      <p className="text-sm font-medium text-text-muted animate-pulse">Loading content...</p>
+      <p className="text-sm font-medium text-text-muted animate-pulse">Loading IslamicNames...</p>
     </div>
   );
 
   return (
-    <Suspense fallback={<FallbackLoader />}>
-      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
-        <QueryClientProvider client={queryClient}>
-          <LazyMotion features={loadFeatures} strict>
-            <Router>
-              <ScrollToTop />
-              <Toaster position="top-center" toastOptions={{ className: 'bg-card text-text' }} />
-              <Suspense fallback={<FallbackLoader />}>
-                <Routes>
-                  {/* Public Routes */}
-                  <Route element={<MainLayout />}>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/search" element={<Search />} />
-                    <Route path="/name/:id" element={<NameDetail />} />
-                    <Route path="/pricing" element={<Pricing />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/favorites" element={<Favorites />} />
-                    <Route path="/compare" element={<Compare />} />
-                    <Route path="/account" element={<Account />} />
-                    <Route path="/privacy" element={<Privacy />} />
-                    <Route path="/terms" element={<Terms />} />
-                    <Route path="/refund" element={<Refund />} />
-                    <Route path="/cancellation" element={<Refund />} />
-                    <Route path="/disclaimer" element={<Disclaimer />} />
-                    <Route path="/success" element={<Success />} />
-                    <Route path="/faq" element={<FAQ />} />
-                    <Route path="/report-bug" element={<ReportBug />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Route>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
+      <QueryClientProvider client={queryClient}>
+        <LazyMotion features={loadFeatures} strict>
+          <Router>
+            <ScrollToTop />
+            <Toaster position="top-center" toastOptions={{ className: 'bg-card text-text' }} />
+            <Suspense fallback={<FallbackLoader />}>
+              <Routes>
+                {/* Public Routes */}
+                <Route element={<MainLayout />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/search" element={<Search />} />
+                  <Route path="/name/:id" element={<NameDetail />} />
+                  <Route path="/pricing" element={<Pricing />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/favorites" element={<Favorites />} />
+                  <Route path="/compare" element={<Compare />} />
+                  <Route path="/account" element={<Account />} />
+                  <Route path="/privacy" element={<Privacy />} />
+                  <Route path="/terms" element={<Terms />} />
+                  <Route path="/refund" element={<Refund />} />
+                  <Route path="/cancellation" element={<Refund />} />
+                  <Route path="/disclaimer" element={<Disclaimer />} />
+                  <Route path="/success" element={<Success />} />
+                  <Route path="/faq" element={<FAQ />} />
+                  <Route path="/report-bug" element={<ReportBug />} />
+                  <Route path="*" element={<NotFound />} />
+                </Route>
 
-                  {/* Admin Routes */}
-                  <Route path="/admin" element={<AdminLayout />}>
-                    <Route index element={<AdminDashboard />} />
-                    <Route path="names" element={<AdminNames />} />
-                    <Route path="upload" element={<AdminUpload />} />
-                    <Route path="users" element={<AdminUsers />} />
-                    <Route path="subscriptions" element={<AdminSubscriptions />} />
-                    <Route path="settings" element={<AdminSettings />} />
-                  </Route>
-                </Routes>
-              </Suspense>
-            </Router>
-          </LazyMotion>
-        </QueryClientProvider>
-      </GoogleOAuthProvider>
-    </Suspense>
+                {/* Admin Routes */}
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="names" element={<AdminNames />} />
+                  <Route path="upload" element={<AdminUpload />} />
+                  <Route path="users" element={<AdminUsers />} />
+                  <Route path="subscriptions" element={<AdminSubscriptions />} />
+                  <Route path="settings" element={<AdminSettings />} />
+                </Route>
+              </Routes>
+            </Suspense>
+          </Router>
+        </LazyMotion>
+      </QueryClientProvider>
+    </GoogleOAuthProvider>
   );
 }
 

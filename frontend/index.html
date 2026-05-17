@@ -10,12 +10,12 @@
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     
-    <!-- Non-blocking Google Fonts loading -->
+    <!-- Non-blocking Google Fonts loading with font-display: swap -->
     <link 
-      rel="preload" 
+      rel="stylesheet" 
       href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" 
-      as="style" 
-      onload="this.onload=null;this.rel='stylesheet'"
+      media="print" 
+      onload="this.media='all'"
     >
     <noscript>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap">

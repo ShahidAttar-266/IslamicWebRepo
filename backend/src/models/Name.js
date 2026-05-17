@@ -76,6 +76,10 @@ const nameSchema = new mongoose.Schema({
 
 // Indexes based on PRD
 nameSchema.index({ nameEnglish: 'text', meaning: 'text', tags: 'text' });
+nameSchema.index({ nameEnglish: 1 }); // For alphabetical sorting and prefix regex
 nameSchema.index({ gender: 1, isPremium: 1, isActive: 1 });
+nameSchema.index({ origin: 1, isActive: 1 });
+nameSchema.index({ isQuranic: 1, isActive: 1 });
+nameSchema.index({ createdAt: -1 }); // For 'Recently Added' sorting
 
 module.exports = mongoose.model('Name', nameSchema);
