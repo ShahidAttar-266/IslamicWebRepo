@@ -185,7 +185,6 @@ exports.getName = async (req, res, next) => {
 
             // If not premium user, hide premium-only data for all names
             if (!hasPremiumAccess) {
-                 console.log(`[GET_NAME] Sanitizing premium data for guest/free user`);
                  delete responseData.history;
                  delete responseData.quranReference;
                  delete responseData.famousPersonalities;
@@ -292,5 +291,7 @@ exports.deleteName = async (req, res, next) => {
         });
     } catch (err) {
         next(err);
+    }
+};
     }
 };

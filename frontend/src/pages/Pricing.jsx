@@ -51,12 +51,8 @@ const Pricing = () => {
         currency: "INR",
         image: "/favicon.png", // Path to your logo
         handler: async function (response) {
-          // This only runs on success
-          console.log("[RAZORPAY_SUCCESS]", response);
-          
           try {
-            toast.loading('Verifying payment...', { id: 'verify-payment' });
-            
+            toast.loading('Verifying payment...', { id: 'verify-payment' });            
             // 2. Call backend to verify signature and upgrade user
             const verifyRes = await api.post('/subscriptions/verify-subscription', {
               razorpay_payment_id: response.razorpay_payment_id,

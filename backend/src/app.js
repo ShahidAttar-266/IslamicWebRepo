@@ -73,7 +73,6 @@ app.use(limiter);
 // Body parser
 // Note: Webhook MUST come before express.json() if it needs raw body
 app.use('/api/v1/subscriptions/webhook', (req, res, next) => {
-    console.log('[DEBUG_WEBHOOK] Incoming request to webhook route');
     next();
 }, express.raw({ type: 'application/json' }));
 

@@ -29,9 +29,7 @@ exports.protect = async (req, res, next) => {
 
     try {
         // Verify token
-        console.log('[DEBUG_AUTH] Verifying token with JWT_SECRET length:', process.env.JWT_SECRET?.length || 0);
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log('[DEBUG_AUTH] Token decoded successfully. User ID:', decoded.id);
 
         const cacheKey = `user:doc:${decoded.id}`;
         req.user = await cache.getOrSet(cacheKey, async () => {
@@ -80,6 +78,11 @@ exports.checkSubscription = (...statuses) => {
             }
             return next(
                 new ErrorResponse('This content requires an active premium subscription', 403)
+            );
+        }
+        next();
+    };
+}iption', 403)
             );
         }
         next();
