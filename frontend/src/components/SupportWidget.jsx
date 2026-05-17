@@ -204,33 +204,32 @@ const SupportWidget = () => {
                         </div>
                         <div className="text-left">
                           <p className="text-sm sm:text-base font-bold text-text group-hover:text-primary transition-colors">{opt.title}</p>
-                          <p className="text-[10px] sm:text-xs text-text-muted font-medium italic opacity-80">{opt.description}</p>
+                          <p className="text-[10px] sm:text-xs text-text-muted font-medium italic">{opt.description}</p>
                         </div>
-                      </div>
-                      <ChevronRight size={18} className="text-text-muted group-hover:text-primary group-hover:translate-x-1 transition-all" />
-                    </button>
-                  ))}
-                </div>
+                        </div>
+                        <ChevronRight size={18} className="text-text-muted group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                        </button>
+                        ))}
+                        </div>
 
-                <div className="pt-4 border-t border-white/5">
-                  <h3 className="text-[10px] font-black uppercase tracking-widest text-primary px-2 mb-4 flex items-center gap-2">
-                    <MessageSquare size={12} /> Quick Answers
-                  </h3>
-                  <div className="space-y-3">
-                    {quickHelp.map((item, i) => (
-                      <div 
+                        <div className="pt-4 border-t border-white/5">
+                        <h3 className="text-[10px] font-black uppercase tracking-widest text-primary px-2 mb-4 flex items-center gap-2">
+                        <MessageSquare size={12} /> Quick Answers
+                        </h3>
+                        <div className="space-y-3">
+                        {quickHelp.map((item, i) => (
+                        <div 
                         key={i} 
                         className="bg-white/[0.02] border border-white/5 rounded-2xl overflow-hidden transition-colors hover:bg-white/[0.04]"
-                      >
+                        >
                         <button
                           onClick={() => setActiveAccordion(activeAccordion === i ? null : i)}
                           className="w-full flex items-center justify-between p-4 text-left transition-colors"
                         >
                           <span className="text-xs sm:text-sm font-bold text-text/90 leading-snug">{item.q}</span>
                           <m.div
-                            animate={{ rotate: activeAccordion === i ? 180 : 0, color: activeAccordion === i ? '#2db87a' : '#8ab5a0' }}
-                          >
-                            <ChevronRight size={16} />
+                            animate={{ rotate: activeAccordion === i ? 180 : 0, color: activeAccordion === i ? '#2db87a' : '#a1c2b3' }}
+                          >                            <ChevronRight size={16} />
                           </m.div>
                         </button>
                         <AnimatePresence>
@@ -257,8 +256,7 @@ const SupportWidget = () => {
 
               {/* Modal Footer */}
               <div className="shrink-0 p-5 sm:p-6 bg-white/[0.02] border-t border-white/5 flex flex-col gap-3">
-                <p className="text-[9px] text-center text-text-muted font-bold uppercase tracking-tighter opacity-50">
-                  Secured by IslamicNames Cloud Support
+                <p className="text-[9px] text-center text-text-muted font-bold uppercase tracking-tighter opacity-80">                  Secured by IslamicNames Cloud Support
                 </p>
               </div>
             </m.div>
