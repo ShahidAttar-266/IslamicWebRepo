@@ -12,6 +12,8 @@ import {
   X 
 } from 'lucide-react';
 
+import { Helmet } from 'react-helmet-async';
+
 const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 const Search = () => {
@@ -29,6 +31,20 @@ const Search = () => {
   const [isAlphabetOpen, setIsAlphabetOpen] = useState(false);
 
   const hasActiveFilters = searchTerm || genderFilter || letterFilter || quranicFilter;
+
+  const getPageTitle = () => {
+    if (debouncedTerm) return `Search Results for "${debouncedTerm}" | IslamicNames`;
+    if (letterFilter) return `Names Starting with "${letterFilter}" | IslamicNames`;
+    if (quranicFilter) return `Quranic Names | IslamicNames`;
+    if (genderFilter) return `${genderFilter.charAt(0).toUpperCase() + genderFilter.slice(1)} Names | IslamicNames`;
+    return 'Browse Islamic Names | IslamicNames';
+  };
+
+  const getPageDescription = () => {
+    if (debouncedTerm) return `Explore search results for "${debouncedTerm}" on IslamicNames. Find meanings and origins of Islamic names.`;
+    if (letterFilter) return `Browse Islamic names starting with the letter ${letterFilter}. Explore meanings, origins, and Quranic references.`;
+    return 'Browse thousands of meaningful Islamic names. Filter by gender, alphabet, or Quranic references.';
+  };
 
   const clearAllFilters = () => {
     setSearchTerm('');
@@ -96,6 +112,11 @@ const Search = () => {
 
   return (
     <div className="space-y-6 md:space-y-8">
+      <Helmet>
+        <title>{getPageTitle()}</title>
+        <meta name="description" content={getPageDescription()} />
+      </Helmet>
+
       {/* Search Header */}
       <div className="bg-card border border-border rounded-2xl p-4 md:p-6 shadow-sm flex flex-col gap-6">
         <div className="flex flex-col gap-4">

@@ -1,6 +1,9 @@
 User-agent: *
 Allow: /
 Disallow: /admin
-Disallow: /api
+Disallow: /login
+Disallow: /register
+Disallow: /account
+Disallow: /success
 
-Sitemap: https://islamic-web-repo.vercel.app/sitemap.xml
+Sitemap: https://www.islamicnames.in/sitemap.xml

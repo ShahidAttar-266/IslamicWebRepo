@@ -6,6 +6,8 @@ import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
 import NameCard from '../components/NameCard';
 
+import { Helmet } from 'react-helmet-async';
+
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
@@ -42,6 +44,12 @@ const Home = () => {
 
   return (
     <div className="space-y-12 md:space-y-20 lg:space-y-24">
+      <Helmet>
+        <title>IslamicNames | Meaningful Names. Timeless Legacy.</title>
+        <meta name="description" content="Discover meaningful Islamic names with authentic Quranic references and historical background." />
+        <link rel="canonical" href="https://www.islamicnames.in/" />
+      </Helmet>
+
       {/* Hero Section */}
       <section className="text-center max-w-3xl mx-auto pt-4 md:pt-10 px-4 min-h-[300px] flex flex-col justify-center">
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 md:mb-6 text-text leading-tight tracking-tight">

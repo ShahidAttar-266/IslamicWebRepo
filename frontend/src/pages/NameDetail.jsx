@@ -20,6 +20,8 @@ import useAuthStore from '../store/useAuthStore';
 import { toast } from 'react-hot-toast';
 
 // Soft login prompt component - appears as a subtle banner for non-authenticated users
+import { Helmet } from 'react-helmet-async';
+
 const SoftLoginBanner = ({ onLogin, onDismiss }) => (
   <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border border-primary/20 rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
     <div className="flex items-center gap-3">
@@ -248,6 +250,20 @@ const NameDetail = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-4 md:py-8 space-y-8 md:space-y-12">
+      <Helmet>
+        <title>{`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`}</title>
+        <meta name="description" content={`Find the meaning, origin, pronunciation, and Quranic reference for the name ${name.nameEnglish}. Explore deep historical background and naming etiquette.`} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`} />
+        <meta property="og:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}.`} />
+        <meta property="og:url" content={`https://www.islamicnames.in/name/${id}`} />
+        
+        {/* Twitter */}
+        <meta property="twitter:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`} />
+        <meta property="twitter:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}.`} />
+      </Helmet>
+
       <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold text-sm min-h-[44px]">
         <ArrowLeft size={18} /> BACK
       </button>
