@@ -166,7 +166,7 @@ const SupportWidget = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                onClick={toggleWidget}
+                onClick={() => setIsOpen(false)}
                 className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               />
             </Suspense>
@@ -191,7 +191,7 @@ const SupportWidget = () => {
                       </div>
                     </div>
                     <button 
-                      onClick={toggleWidget}
+                      onClick={() => setIsOpen(false)}
                       className="p-3 hover:bg-white/10 rounded-2xl text-text-muted hover:text-text transition-all active:scale-90"
                       aria-label="Close Support"
                     >
