@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
 import { Search, LogOut, Heart, Menu, X, ChevronRight, User } from 'lucide-react';
@@ -13,6 +13,8 @@ const MainLayout = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showWidget, setShowWidget] = useState(false);
+  const menuButtonRef = useRef(null);
+  const prevIsDrawerOpen = useRef(false);
 
   useEffect(() => {
     // Mount after browser finishes first paint or after 3 seconds
@@ -30,6 +32,14 @@ const MainLayout = () => {
     setIsDrawerOpen(false);
     setIsDropdownOpen(false);
   }, [location.pathname]);
+
+  // Accessibility: Return focus to menu button when drawer closes
+  useEffect(() => {
+    if (prevIsDrawerOpen.current && !isDrawerOpen) {
+      menuButtonRef.current?.focus();
+    }
+    prevIsDrawerOpen.current = isDrawerOpen;
+  }, [isDrawerOpen]);
 
   // Prevent body scroll when drawer is open
   useEffect(() => {
@@ -166,6 +176,7 @@ const MainLayout = () => {
 
             {/* Hamburger Button */}
             <button 
+              ref={menuButtonRef}
               onClick={() => setIsDrawerOpen(true)}
               className="md:hidden p-2.5 hover:bg-bg rounded-lg text-text hover:text-primary transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Open navigation menu"
