@@ -1,6 +1,7 @@
 const ErrorResponse = require('../utils/errorResponse');
 const User = require('../models/User');
 const Subscription = require('../models/Subscription');
+const cache = require('../utils/cache');
 const crypto = require('crypto');
 
 // ─── Plan IDs from Razorpay Dashboard ───────────────────────────────────
@@ -168,6 +169,13 @@ exports.verifySubscription = async (req, res, next) => {
 
         console.log(`[RAZORPAY_VERIFY] Success: User ${req.user.email} upgraded to ${planId}`);
 
+        // Invalidate cache
+        await cache.invalidateMany([
+            `user:doc:${req.user.id}`,
+            'admin:analytics',
+            'admin:subscriptions:list'
+        ]);
+
         res.status(200).json({
             success: true,
             message: 'Payment verified and subscription activated',
@@ -264,6 +272,13 @@ exports.razorpayWebhook = async (req, res) => {
                 });
 
                 console.log(`[RAZORPAY_WEBHOOK] Subscription activated/charged: User ${userId}, Plan ${planType}`);
+                
+                // Invalidate cache
+                await cache.invalidateMany([
+                    `user:doc:${userId}`,
+                    'admin:analytics',
+                    'admin:subscriptions:list'
+                ]);
                 break;
             }
 
@@ -272,10 +287,18 @@ exports.razorpayWebhook = async (req, res) => {
                 const subId = paymentEntity.subscription_id;
                 
                 if (subId) {
-                    await Subscription.findOneAndUpdate(
+                    const sub = await Subscription.findOneAndUpdate(
                         { razorpaySubscriptionId: subId },
-                        { status: 'past_due' }
+                        { status: 'past_due' },
+                        { new: true }
                     );
+                    if (sub) {
+                        await cache.invalidateMany([
+                            `user:doc:${sub.userId}`,
+                            'admin:analytics',
+                            'admin:subscriptions:list'
+                        ]);
+                    }
                     console.log(`[RAZORPAY_WEBHOOK] Payment failed for subscription: ${subId}`);
                 }
                 break;
@@ -284,15 +307,24 @@ exports.razorpayWebhook = async (req, res) => {
             case 'subscription.cancelled': {
                 const subEntity = payload.subscription.entity;
                 
-                await Subscription.findOneAndUpdate(
+                const sub = await Subscription.findOneAndUpdate(
                     { razorpaySubscriptionId: subEntity.id },
-                    { status: 'cancelled', cancelledAt: new Date() }
+                    { status: 'cancelled', cancelledAt: new Date() },
+                    { new: true }
                 );
 
                 await User.findOneAndUpdate(
                     { 'subscription.razorpaySubscriptionId': subEntity.id },
                     { 'subscription.status': 'cancelled' }
                 );
+
+                if (sub) {
+                    await cache.invalidateMany([
+                        `user:doc:${sub.userId}`,
+                        'admin:analytics',
+                        'admin:subscriptions:list'
+                    ]);
+                }
 
                 console.log(`[RAZORPAY_WEBHOOK] Subscription cancelled: ${subEntity.id}`);
                 break;

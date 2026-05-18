@@ -3,6 +3,7 @@ const Name = require('../models/Name');
 const User = require('../models/User');
 const Subscription = require('../models/Subscription');
 const UploadLog = require('../models/UploadLog');
+const cache = require('../utils/cache');
 const xlsx = require('xlsx');
 const { v4: uuidv4 } = require('uuid');
 
