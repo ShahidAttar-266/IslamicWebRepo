@@ -8,7 +8,7 @@ import { LazyMotion } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
-import { HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 
 // Lazy load Framer Motion features
 const loadFeatures = () => import('framer-motion').then(res => res.domAnimation);
@@ -65,6 +65,25 @@ function App() {
 
   return (
     <HelmetProvider>
+      <Helmet>
+        <title>IslamicNames | Meaningful Names. Timeless Legacy.</title>
+        <meta name="description" content="Discover thousands of meaningful Islamic names with deep etymology, Quranic references, and historical significance." />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.islamicnames.in/" />
+        <meta property="og:title" content="IslamicNames | Meaningful Names. Timeless Legacy." />
+        <meta property="og:description" content="Discover thousands of meaningful Islamic names with deep etymology, Quranic references, and historical significance." />
+        <meta property="og:image" content="https://www.islamicnames.in/logo-120.webp" />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://www.islamicnames.in/" />
+        <meta property="twitter:title" content="IslamicNames | Meaningful Names. Timeless Legacy." />
+        <meta property="twitter:description" content="Discover thousands of meaningful Islamic names with deep etymology, Quranic references, and historical significance." />
+        <meta property="twitter:image" content="https://www.islamicnames.in/logo-120.webp" />
+      </Helmet>
+
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
         <QueryClientProvider client={queryClient}>
           <LazyMotion features={loadFeatures} strict>
