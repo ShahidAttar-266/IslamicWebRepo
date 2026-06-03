@@ -11,7 +11,6 @@ const cookieParser = require('cookie-parser');
 // Route files
 const authRoutes = require('./routes/auth.routes');
 const namesRoutes = require('./routes/names.routes');
-const subscriptionRoutes = require('./routes/subscriptions.routes');
 const adminRoutes = require('./routes/admin.routes');
 const userRoutes = require('./routes/users.routes');
 const bugRoutes = require('./routes/bugs.routes');
@@ -71,11 +70,6 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // Body parser
-// Note: Webhook MUST come before express.json() if it needs raw body
-app.use('/api/v1/subscriptions/webhook', (req, res, next) => {
-    next();
-}, express.raw({ type: 'application/json' }));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -99,7 +93,6 @@ app.get('/api/v1', (req, res) => {
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/names', namesRoutes);
-app.use('/api/v1/subscriptions', subscriptionRoutes);
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/bugs', bugRoutes);

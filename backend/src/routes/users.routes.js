@@ -5,7 +5,7 @@ const {
     removeFavorite
 } = require('../controllers/users.controller');
 
-const { protect, checkSubscription } = require('../middlewares/auth');
+const { protect } = require('../middlewares/auth');
 
 const router = express.Router();
 

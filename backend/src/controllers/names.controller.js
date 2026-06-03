@@ -130,7 +130,7 @@ exports.getNames = async (req, res, next) => {
 
 // @desc    Get single name
 // @route   GET /api/v1/names/:id
-// @access  Public (Premium fields filtered if not subscribed)
+// @access  Public
 exports.getName = async (req, res, next) => {
     try {
         // Validate ID format
@@ -138,15 +138,7 @@ exports.getName = async (req, res, next) => {
             return next(new ErrorResponse('Invalid ID format', 400));
         }
 
-        // Determine if user has premium access
-        let hasPremiumAccess = false;
-        if (req.user) {
-            if (req.user.role === 'admin' || (req.user.subscription && req.user.subscription.status === 'premium')) {
-                hasPremiumAccess = true;
-            }
-        }
-
-        const cacheKey = `names:detail:${req.params.id}${hasPremiumAccess ? ':premium' : ':public'}`;
+        const cacheKey = `names:detail:${req.params.id}`;
 
         const fetchName = async () => {
             const name = await Name.findById(req.params.id);
@@ -158,18 +150,7 @@ exports.getName = async (req, res, next) => {
                 throw new Error('Name inactive');
             }
 
-            let responseData = name.toObject();
-
-            // If not premium user, hide premium-only data
-            if (!hasPremiumAccess) {
-                 delete responseData.history;
-                 delete responseData.quranReference;
-                 delete responseData.famousPersonalities;
-                 delete responseData.birthGuidance;
-                 delete responseData.variants;
-            }
-
-            return responseData;
+            return name.toObject();
         };
 
         const result = await cache.getOrSet(cacheKey, fetchName, 600); // 10 min TTL
@@ -203,7 +184,7 @@ exports.getSitemap = async (req, res, next) => {
         xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
         
         // Static routes
-        const staticRoutes = ['', '/search', '/pricing', '/faq', '/compare'];
+        const staticRoutes = ['', '/search', '/faq', '/compare'];
         staticRoutes.forEach(route => {
             xml += `  <url>\n    <loc>${baseUrl}${route}</loc>\n    <changefreq>daily</changefreq>\n    <priority>${route === '' ? '1.0' : '0.8'}</priority>\n  </url>\n`;
         });
@@ -249,10 +230,7 @@ exports.updateName = async (req, res, next) => {
         });
 
         await cache.invalidatePattern('names:list:*');
-        await cache.invalidateMany([
-            `names:detail:${req.params.id}:public`,
-            `names:detail:${req.params.id}:premium`
-        ]);
+        await cache.invalidate(`names:detail:${req.params.id}`);
 
         res.status(200).json({ success: true, data: name });
     } catch (err) {
@@ -270,10 +248,7 @@ exports.deleteName = async (req, res, next) => {
 
         await name.deleteOne();
         await cache.invalidatePattern('names:list:*');
-        await cache.invalidateMany([
-            `names:detail:${req.params.id}:public`,
-            `names:detail:${req.params.id}:premium`
-        ]);
+        await cache.invalidate(`names:detail:${req.params.id}`);
 
         res.status(200).json({ success: true, data: {} });
     } catch (err) {

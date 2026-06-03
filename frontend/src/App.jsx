@@ -23,15 +23,12 @@ import NameDetail from './pages/NameDetail';
 const Search = lazy(() => import('./pages/Search'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
-const Pricing = lazy(() => import('./pages/Pricing'));
 const Favorites = lazy(() => import('./pages/Favorites'));
 const Compare = lazy(() => import('./pages/Compare'));
 const Account = lazy(() => import('./pages/Account'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
-const Refund = lazy(() => import('./pages/Refund'));
 const Disclaimer = lazy(() => import('./pages/Disclaimer'));
-const Success = lazy(() => import('./pages/Success'));
 const FAQ = lazy(() => import('./pages/FAQ'));
 const ReportBug = lazy(() => import('./pages/ReportBug'));
 const NotFound = lazy(() => import('./pages/NotFound'));
@@ -41,7 +38,6 @@ const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const AdminNames = lazy(() => import('./pages/admin/AdminNames'));
 const AdminUpload = lazy(() => import('./pages/admin/AdminUpload'));
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
-const AdminSubscriptions = lazy(() => import('./pages/admin/AdminSubscriptions'));
 const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
 
 const queryClient = new QueryClient({
@@ -97,7 +93,6 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/name/:id" element={<NameDetail />} />
-                    <Route path="/pricing" element={<Pricing />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/favorites" element={<Favorites />} />
@@ -105,10 +100,7 @@ function App() {
                     <Route path="/account" element={<Account />} />
                     <Route path="/privacy" element={<Privacy />} />
                     <Route path="/terms" element={<Terms />} />
-                    <Route path="/refund" element={<Refund />} />
-                    <Route path="/cancellation" element={<Refund />} />
                     <Route path="/disclaimer" element={<Disclaimer />} />
-                    <Route path="/success" element={<Success />} />
                     <Route path="/faq" element={<FAQ />} />
                     <Route path="/report-bug" element={<ReportBug />} />
                     <Route path="*" element={<NotFound />} />
@@ -120,7 +112,6 @@ function App() {
                     <Route path="names" element={<AdminNames />} />
                     <Route path="upload" element={<AdminUpload />} />
                     <Route path="users" element={<AdminUsers />} />
-                    <Route path="subscriptions" element={<AdminSubscriptions />} />
                     <Route path="settings" element={<AdminSettings />} />
                   </Route>
                 </Routes>
