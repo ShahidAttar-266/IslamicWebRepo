@@ -60,7 +60,6 @@ exports.uploadExcel = async (req, res, next) => {
                 origin: getValue('origin'),
                 pronunciation: getValue('pronunciation'),
                 isQuranic: String(getValue('is_quranic') || '').toLowerCase() === 'yes',
-                isPremium: String(getValue('plan_tier') || '').toLowerCase() === 'premium',
                 isActive: String(getValue('status') || '').toLowerCase() !== 'draft',
                 uploadBatchId: batchId
             };
@@ -167,7 +166,6 @@ exports.getAnalytics = async (req, res, next) => {
     try {
         const totalUsers = await User.countDocuments({ role: 'user' });
         const totalNames = await Name.countDocuments();
-        const premiumNames = await Name.countDocuments({ isPremium: true });
 
         // Get recent logs
         const recentUploads = await UploadLog.find().sort({ createdAt: -1 }).limit(5);
@@ -181,7 +179,6 @@ exports.getAnalytics = async (req, res, next) => {
             data: {
                 totalUsers,
                 totalNames,
-                premiumNames,
                 recentUploads,
                 newUsersThisMonth
             }

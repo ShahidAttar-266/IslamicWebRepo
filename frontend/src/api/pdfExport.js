@@ -209,7 +209,7 @@ function drawNameCard(doc, name, cardX, startY, arabicEnabled) {
     y += 2;
   }
 
-  // Meta row: gender | origin | plan badge
+  // Meta row: gender | origin
   const gender = (name.gender || 'Unknown').toLowerCase();
   const isGirl = gender === 'girl';
   const badgeColor = isGirl ? COLORS.girl : COLORS.boy;
@@ -225,18 +225,6 @@ function drawNameCard(doc, name, cardX, startY, arabicEnabled) {
     setTxt(doc, COLORS.midGray);
     doc.text(`Origin: ${name.origin}`, ix + 18, y);
   }
-
-  // Plan badge
-  const planLbl = name.isPremium ? '★ PRO' : 'FREE';
-  const planColor = name.isPremium ? COLORS.darkGreen : COLORS.teal;
-  const badgeW = 16, badgeH = 5;
-  const bx = ix + iw - badgeW;
-  setFill(doc, planColor);
-  doc.roundedRect(bx, y - 4, badgeW, badgeH, 1, 1, 'F');
-  doc.setFontSize(7);
-  doc.setFont('helvetica', 'bold');
-  setTxt(doc, COLORS.white);
-  doc.text(planLbl, bx + badgeW / 2, y - 0.5, { align: 'center' });
   y += 6;
 
   hrule(doc, ix, y, iw, COLORS.gold, 0.6);

@@ -112,21 +112,21 @@ const Home = () => {
         )}
       </section>
 
-      {/* CTA Banner */}
-      <section className="min-h-[420px] bg-card border border-border rounded-3xl p-6 sm:p-10 md:p-16 text-center relative overflow-hidden shadow-2xl flex items-center justify-center">
+      {/* Benefits Section */}
+      <section className="bg-card border border-border rounded-3xl p-6 sm:p-10 md:p-16 text-center relative overflow-hidden shadow-2xl flex items-center justify-center">
         <div className="absolute right-0 top-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-0"></div>
         <div className="absolute left-0 bottom-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -z-0"></div>
         
         <div className="relative z-10 max-w-2xl mx-auto">
-          <h2 className="text-2xl md:text-4xl font-black mb-4 md:mb-6">Unlock the Full History</h2>
+          <h2 className="text-2xl md:text-4xl font-black mb-4 md:mb-6">Explore the Full Library</h2>
           <p className="text-text-muted text-sm md:text-lg mb-8 md:mb-10 leading-relaxed italic">
-            Upgrade to Premium to reveal detailed historical backgrounds, precise Quranic references, famous personalities, and save unlimited favorites.
+            Access thousands of meaningful names with detailed historical backgrounds, precise Quranic references, and famous personalities for free.
           </p>
           <button 
-            onClick={() => navigate('/pricing')} 
+            onClick={() => navigate('/search')} 
             className="w-full sm:w-auto bg-accent text-bg px-10 py-4 rounded-xl font-black text-sm md:text-base hover:scale-105 transition-all shadow-xl shadow-accent/20 min-h-[48px]"
           >
-            EXPLORE PREMIUM PLANS
+            START BROWSING
           </button>
         </div>
       </section>

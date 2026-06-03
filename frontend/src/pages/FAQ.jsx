@@ -12,55 +12,15 @@ const faqs = [
       },
       {
         q: 'Are the meanings of names verified by Islamic scholars?',
-        a: 'All names in our database are researched from classical Arabic lexicons and reputable Islamic naming references. Names on our Premium plan are additionally marked as scholar-verified, indicating they have been cross-checked with a qualified Islamic scholar for accuracy in meaning and permissibility.'
+        a: 'All names in our database are researched from classical Arabic lexicons and reputable Islamic naming references. Each entry is carefully curated to ensure accuracy in meaning and permissibility.'
       },
       {
         q: 'Can I search for names by meaning or personality trait?',
-        a: 'Yes! You can search by name, meaning, origin, or letter. On our Premium plan, our AI Name Suggester lets you describe a trait or quality — such as "patient", "light", or "brave" — and we will suggest names that carry that meaning in Arabic.'
+        a: 'Yes! You can search by name, meaning, origin, or letter. Our comprehensive search lets you find names that carry specific traits or qualities in Arabic.'
       },
       {
         q: 'Do you include names from the Quran and Hadith?',
-        a: 'Absolutely. You can filter names by Quranic reference and Prophetic Hadith. Each name shows the exact ayah or hadith it is drawn from, so you can verify the source yourself.'
-      },
-    ]
-  },
-  {
-    category: 'Plans & Pricing',
-    icon: '✦',
-    questions: [
-      {
-        q: 'What is the difference between Free and Premium?',
-        a: 'The Free plan allows you to browse 50 basic names and save up to 10 favorites. Premium (₹500/mo) unlocks everything: unlimited names, full historical backgrounds, Quranic references, unlimited favorites, side-by-side comparison, and PDF exports.'
-      },
-      {
-        q: 'Can I try a paid plan before committing?',
-        a: 'Our Free plan gives you a generous taste of IslamicNames. If you want to test the premium features, we occasionally offer a 7-day trial during Ramadan and other special occasions. Follow us to be notified.'
-      },
-      {
-        q: 'Do you offer a yearly billing discount?',
-        a: 'Yes — Premium offers a 20% saving when billed annually at ₹5,000/year (which averages to about ₹416/month compared to the ₹500 monthly rate).'
-      },
-      {
-        q: 'Is my payment secure?',
-        a: 'All payments are processed securely through Razorpay, a PCI-DSS compliant payment gateway. IslamicNames never stores your card or bank details. You can pay via UPI, net banking, credit/debit card, or popular wallets.'
-      },
-    ]
-  },
-  {
-    category: 'Account & Subscription',
-    icon: '◈',
-    questions: [
-      {
-        q: 'How do I cancel or downgrade my subscription?',
-        a: 'You can cancel anytime from your Account page under Subscription Settings. Your access continues until the end of your current billing period — there are no early cancellation penalties and we do not charge hidden fees.'
-      },
-      {
-        q: 'My account still shows "Free" after payment. What should I do?',
-        a: 'Subscription activation takes a few seconds after payment. Please wait one minute and refresh your Account page. If your plan still shows "Free" after 5 minutes, contact us at support@islamicnames.in with your payment reference and we will resolve it immediately.'
-      },
-      {
-        q: 'Can I share my account with my spouse or family?',
-        a: 'Your IslamicNames account is for individual use. However, name cards and lists you create can be shared via a link with anyone — no account required to view them.'
+        a: 'Absolutely. You can filter names by Quranic reference. Each name shows the exact ayah or context it is drawn from, so you can verify the source yourself.'
       },
     ]
   },
@@ -69,16 +29,34 @@ const faqs = [
     icon: '❋',
     questions: [
       {
-        q: 'What does the name certificate include?',
-        a: 'The digital name certificate is a beautifully designed card featuring the name in Arabic calligraphy, its transliteration, full meaning, and a short Islamic blessing — perfect for sharing on WhatsApp, framing, or printing.'
+        q: 'Is everything on IslamicNames free?',
+        a: 'Yes! We have made our entire database, including historical backgrounds, Quranic references, and name comparison features, completely free for all users.'
       },
       {
-        q: 'How does the name pronunciation audio work?',
-        a: 'Each name includes a phonetic pronunciation guide. Premium members have access to deeper meanings and historical contexts that help in understanding the proper articulation and spirit of the name.'
+        q: 'Can I save my favorite names?',
+        a: 'Yes, by creating a free account, you can save unlimited names to your personal favorites list and access them from any device.'
       },
       {
-        q: 'Is there an API for developers?',
-        a: 'Currently, we focus on providing the best experience through our web application. Enterprise or API access for developers is part of our future roadmap.'
+        q: 'How does the name comparison feature work?',
+        a: 'Our side-by-side comparison tool allows you to select any two names and see their meanings, origins, and historical contexts next to each other to help you decide.'
+      },
+      {
+        q: 'Can I export my favorite names as a PDF?',
+        a: 'Yes, once you have saved names to your favorites, you can export your entire list as a beautifully formatted PDF document for printing or sharing.'
+      },
+    ]
+  },
+  {
+    category: 'General',
+    icon: '◈',
+    questions: [
+      {
+        q: 'How can I contribute a new name or report an error?',
+        a: 'We welcome community contributions! Please use our "Report a Bug" feature or email us at support@islamicnames.in if you find any inaccuracies or want to suggest a new name.'
+      },
+      {
+        q: 'Is there a mobile app?',
+        a: 'We are currently a web-app, but you can "Add to Home Screen" on your mobile browser for a native-like experience on your phone.'
       },
     ]
   }
@@ -151,7 +129,7 @@ const FAQ = () => {
           </h1>
 
           <p className="text-text-muted text-base max-w-md mx-auto leading-relaxed">
-            Everything you need to know about IslamicNames — names, plans, and features.
+            Everything you need to know about IslamicNames — our library and features.
             Can't find an answer?{' '}
             <a href="mailto:support@islamicnames.in" className="text-primary hover:underline">
               Contact us

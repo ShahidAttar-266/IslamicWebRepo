@@ -79,8 +79,8 @@ exports.getNames = async (req, res, next) => {
                 const sortBy = req.query.sort.split(',').join(' ');
                 query = query.sort(sortBy);
             } else {
-                // Default sort: premium first, then alphabetical English
-                query = query.sort('-isPremium nameEnglish');
+                // Default sort: alphabetical English
+                query = query.sort('nameEnglish');
             }
 
             // Pagination

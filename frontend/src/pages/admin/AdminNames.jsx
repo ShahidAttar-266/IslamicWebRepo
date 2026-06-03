@@ -74,7 +74,6 @@ const AdminNames = () => {
       nameArabic: name.nameArabic,
       nameUrdu: name.nameUrdu || '',
       gender: name.gender,
-      isPremium: name.isPremium.toString(),
       isQuranic: name.isQuranic?.toString() || 'false',
       meaning: name.meaning,
       origin: name.origin || '',
@@ -98,7 +97,6 @@ const AdminNames = () => {
   const onSubmit = (formData) => {
     const formattedData = {
       ...formData,
-      isPremium: formData.isPremium === 'true',
       isQuranic: formData.isQuranic === 'true',
       isActive: true
     };
@@ -134,7 +132,6 @@ const AdminNames = () => {
                 nameArabic: '',
                 nameUrdu: '',
                 gender: 'boy',
-                isPremium: 'false',
                 isQuranic: 'false',
                 meaning: '',
                 origin: '',
@@ -200,11 +197,6 @@ const AdminNames = () => {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-2">
-                        <span className={`px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest ${
-                          name.isPremium ? 'bg-amber-500/10 text-amber-600 border border-amber-500/20' : 'bg-bg text-text-muted border border-border'
-                        }`}>
-                          {name.isPremium ? 'Premium' : 'Free'}
-                        </span>
                         {name.isQuranic && (
                           <span className="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
                             Quranic
@@ -331,14 +323,7 @@ const AdminNames = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-primary mb-2">Access Type *</label>
-                  <select {...register('isPremium')} className="w-full bg-bg border border-border focus:border-primary rounded-xl px-4 py-3.5 text-text font-bold outline-none cursor-pointer">
-                    <option value="false">Free Access</option>
-                    <option value="true">Premium Only</option>
-                  </select>
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-1 gap-6">
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-primary mb-2">Is Quranic? *</label>
                   <select {...register('isQuranic')} className="w-full bg-bg border border-border focus:border-primary rounded-xl px-4 py-3.5 text-text font-bold outline-none cursor-pointer">
@@ -371,7 +356,7 @@ const AdminNames = () => {
               </div>
               
               <div>
-                <label className="block text-[10px] font-black uppercase tracking-widest text-primary mb-2">Historical Background (Premium)</label>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-primary mb-2">Historical Background</label>
                 <textarea {...register('history')} rows={4} className="w-full bg-bg border border-border focus:border-primary rounded-xl px-4 py-3 text-text font-medium outline-none transition-all resize-none text-sm" placeholder="Detailed historical context..."></textarea>
               </div>
             </form>

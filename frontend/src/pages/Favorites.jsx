@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../api/axios';
-import { HeartCrack, Download, Loader2, Crown, Heart } from 'lucide-react';
+import { HeartCrack, Download, Loader2, Heart } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import useAuthStore from '../store/useAuthStore';
 import { useState, useEffect } from 'react';
@@ -10,7 +10,7 @@ import { exportFavoritesToPDF } from '../api/pdfExport';
 
 const Favorites = () => {
   const queryClient = useQueryClient();
-  const { user, isAuthenticated } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
   const [isExporting, setIsExporting] = useState(false);
 
@@ -38,15 +38,6 @@ const Favorites = () => {
   });
 
   const handleExport = async () => {
-    const isPremium = user?.role === 'admin' || user?.subscription?.status === 'premium';
-    
-    if (!isPremium) {
-      toast.error('PDF Export is a Premium feature', {
-        icon: <Crown className="text-amber-500" size={20} />
-      });
-      return;
-    }
-
     if (!favorites || favorites.length === 0) {
       toast.error('No favorites to export');
       return;
