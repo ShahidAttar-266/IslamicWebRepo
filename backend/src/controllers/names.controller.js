@@ -33,10 +33,6 @@ exports.getNames = async (req, res, next) => {
                 parsedQuery.gender = req.query.gender;
             }
 
-            if (req.query.isPremium) {
-                parsedQuery.isPremium = req.query.isPremium === 'true';
-            }
-
             if (req.query.origin) {
                 parsedQuery.origin = String(req.query.origin);
             }
