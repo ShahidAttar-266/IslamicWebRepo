@@ -47,6 +47,35 @@ const Home = () => {
       <Helmet>
         <meta name="description" content="Discover thousands of meaningful Islamic names for boys and girls with authentic Quranic references and historical background. Explore Islamic names with meanings." />
         <link rel="canonical" href="https://www.islamicnames.in/" />
+        
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "IslamicNames",
+            "url": "https://www.islamicnames.in/",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://www.islamicnames.in/search?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "IslamicNames",
+            "url": "https://www.islamicnames.in/",
+            "logo": "https://www.islamicnames.in/logo-120.webp",
+            "sameAs": [
+              "https://www.facebook.com/islamicnames",
+              "https://twitter.com/islamicnames",
+              "https://www.instagram.com/islamicnames"
+            ]
+          })}
+        </script>
       </Helmet>
 
       {/* Hero Section */}

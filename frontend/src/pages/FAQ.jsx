@@ -136,10 +136,26 @@ const FAQ = () => {
       <Helmet>
         <title>Frequently Asked Questions | Islamic Names & Meanings | IslamicNames</title>
         <meta name="description" content="Find answers to common questions about Islamic names, meanings, naming traditions, and our platform features. Explore best Islamic names for boys and girls." />
-        <meta name="keywords" content="islamic names faq, naming traditions in islam, muslim baby naming sunnah, meaning of islamic names, choosing muslim names" />
         <link rel="canonical" href="https://www.islamicnames.in/faq" />
         <script type="application/ld+json">
           {JSON.stringify(faqSchema)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [{
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.islamicnames.in"
+            },{
+              "@type": "ListItem",
+              "position": 2,
+              "name": "FAQ",
+              "item": "https://www.islamicnames.in/faq"
+            }]
+          })}
         </script>
       </Helmet>
 

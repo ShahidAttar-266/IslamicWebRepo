@@ -53,7 +53,20 @@
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <!-- Static content for SEO and accessibility before JS hydration -->
+    <header style="display:none">
+      <h1>IslamicNames - Discover Meaningful Islamic Names</h1>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/search">Browse Names</a>
+        <a href="/faq">FAQ</a>
+      </nav>
+    </header>
+    <main style="display:none">
+      <p>Discover thousands of meaningful Islamic names for boys and girls with authentic Quranic references and historical background. Explore Islamic names with meanings, origins, and historical context.</p>
+    </main>
+  </div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 

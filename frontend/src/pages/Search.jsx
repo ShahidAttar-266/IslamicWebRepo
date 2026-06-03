@@ -118,13 +118,39 @@ const Search = () => {
     );
   }
 
+  const getCanonicalUrl = () => {
+    const url = new URL('https://www.islamicnames.in/search');
+    if (genderFilter) url.searchParams.set('gender', genderFilter);
+    if (quranicFilter) url.searchParams.set('quranic', 'true');
+    if (letterFilter) url.searchParams.set('letter', letterFilter);
+    // We intentionally don't include 'q' in canonical to consolidate search results
+    // unless it's a very specific filter-like search
+    return url.toString();
+  };
+
   return (
     <div className="space-y-6 md:space-y-8">
       <Helmet>
         <title>{getPageTitle()}</title>
         <meta name="description" content={getPageDescription()} />
-        <meta name="keywords" content={getKeywords()} />
-        <link rel="canonical" href="https://www.islamicnames.in/search" />
+        <link rel="canonical" href={getCanonicalUrl()} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [{
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.islamicnames.in"
+            },{
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Browse Names",
+              "item": "https://www.islamicnames.in/search"
+            }]
+          })}
+        </script>
       </Helmet>
 
       {/* Search Header */}

@@ -223,14 +223,13 @@ const NameDetail = () => {
       <Helmet>
         <title>{`${name.nameEnglish} (${name.nameArabic}) Meaning, Origin & History | IslamicNames`}</title>
         <meta name="description" content={`Find the meaning, origin, pronunciation, and Quranic reference for the Islamic name ${name.nameEnglish}. Explore deep historical background and naming etiquette. Search Islamic names with meanings.`} />
-        <meta name="keywords" content={`${name.nameEnglish} meaning, ${name.nameEnglish} islamic name, ${name.nameEnglish} name history, ${name.nameArabic} meaning, islamic names for ${name.gender}s, islamic names with meanings`} />
-        <link rel="canonical" href={`https://www.islamicnames.in/name/${id}`} />
+        <link rel="canonical" href={`https://www.islamicnames.in/name/${name.slug || id}`} />
 
         {/* Open Graph / Facebook */}
         <meta property="og:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & History | IslamicNames`} />
         <meta property="og:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}. Verified Islamic name with Quranic roots.`} />
         <meta property="og:url" content={`https://www.islamicnames.in/name/${id}`} />
-        <meta property="og:type" content="article" />
+        <meta property="og:type" content="website" />
         <meta property="og:image" content="https://www.islamicnames.in/logo-120.webp" />
         
         {/* Twitter */}
@@ -250,7 +249,7 @@ const NameDetail = () => {
             "inDefinedTermSet": "https://www.islamicnames.in",
             "url": `https://www.islamicnames.in/name/${name.slug || name._id}`,
             "mainEntityOfPage": {
-              "@type": "WebPage",
+              "@type": "ItemPage",
               "@id": `https://www.islamicnames.in/name/${name.slug || name._id}`
             }
           })}

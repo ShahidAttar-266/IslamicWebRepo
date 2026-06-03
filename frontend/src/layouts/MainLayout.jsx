@@ -85,7 +85,7 @@ const MainLayout = () => {
                   <img 
                     src="/logo-40.png" 
                     srcSet="/logo-40.png 40w, /logo-80.png 80w"
-                    alt="Logo" 
+                    alt="IslamicNames - Islamic names with meanings" 
                     width={40} 
                     height={40} 
                     loading="eager" 
@@ -212,7 +212,7 @@ const MainLayout = () => {
               />
               <img 
                 src="/logo-40.png" 
-                alt="Logo" 
+                alt="IslamicNames - Islamic names with meanings" 
                 width={32} 
                 height={32} 
                 loading="eager" 

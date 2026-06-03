@@ -63,7 +63,6 @@ function App() {
       <Helmet>
         <title>Islamic Names | Meaningful Names for Boys & Girls | IslamicNames</title>
         <meta name="description" content="Discover thousands of meaningful Islamic names for boys and girls. Search by Quranic reference, Arabic roots, and historical significance. Explore Islamic names with meanings today." />
-        <meta name="keywords" content="islamicnames, islamic names, islamic names for boys, islamic names for girls, quran islamic names for girls, islamic names for men, islamic names for boys from quran, islamic names of prophets, islamic names Arabic, islamic names with meanings, islamic names for women" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
