@@ -1,4 +1,4 @@
-"use client";
+
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { LazyMotion } from 'framer-motion';
@@ -21,7 +21,7 @@ export default function Providers({ children }) {
   }));
 
   return (
-    <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
       <QueryClientProvider client={queryClient}>
         <LazyMotion features={loadFeatures} strict>
           {children}

@@ -1,4 +1,4 @@
-"use client";
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { 
@@ -10,7 +10,7 @@ import {
   Bug, 
   ChevronRight 
 } from 'lucide-react';
-import { useRouter as useNavigate, useLocation } from 'next/navigation';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 
 const SupportWidget = () => {

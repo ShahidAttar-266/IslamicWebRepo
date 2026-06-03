@@ -1,4 +1,18 @@
 {
+  "rewrites": [
+    {
+      "source": "/api/v1/(.*)",
+      "destination": "https://islamic-web-repo-jcwb.vercel.app/api/v1/$1"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/v1/names/sitemap.xml"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/frontend/dist/index.html"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -28,12 +42,6 @@
           "value": "camera=(), microphone=(), geolocation=()"
         }
       ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/sitemap.xml",
-      "destination": "/api/v1/names/sitemap.xml"
     }
   ]
 }

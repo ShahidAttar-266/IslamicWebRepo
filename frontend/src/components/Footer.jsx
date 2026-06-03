@@ -1,5 +1,5 @@
-"use client";
-import Link from 'next/link';
+
+import { Link } from 'react-router-dom';
 
 import { Mail, ShieldCheck, Globe } from 'lucide-react';
 
@@ -42,7 +42,7 @@ const Footer = () => {
           
           {/* Brand Section */}
           <div className="lg:col-span-2 space-y-6">
-            <Link href="/" className="flex items-center gap-2 group">
+            <Link to="/" className="flex items-center gap-2 group">
               <picture>
                 <source
                   type="image/webp"
@@ -75,7 +75,7 @@ const Footer = () => {
                 <Globe size={20} aria-hidden="true" />
               </button>
               <a 
-                href="mailto:support@islamicnames.in" 
+                to="mailto:support@islamicnames.in" 
                 className="p-3 bg-bg border border-border rounded-xl hover:text-primary hover:border-primary transition-all shadow-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Send us an email"
               >
@@ -94,7 +94,7 @@ const Footer = () => {
                 {section.links.map((link) => (
                   <li key={link.name}>
                     <Link 
-                      href={link.path} 
+                      to={link.path} 
                       className="text-sm text-text-muted hover:text-text transition-colors flex items-center group gap-2 py-1"
                     >
                       <span className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-primary font-black">•</span>

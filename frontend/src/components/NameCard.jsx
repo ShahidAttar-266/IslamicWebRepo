@@ -1,7 +1,7 @@
-"use client";
+
 import React from 'react';
-import { useRouter as useNavigate, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import { useNavigate as useNavigate, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Heart, Book, ArrowRight, ArrowLeftRight } from 'lucide-react';
 import useAuthStore from '@/store/useAuthStore';
@@ -175,7 +175,7 @@ const NameCard = React.memo(({ name, onFavorite, delay = 0, isLocked = false }) 
 
   return (
     <Link 
-      href={`/name/${name.slug || name._id}`} 
+      to={`/name/${name.slug || name._id}`} 
       className={cardClasses}
       style={{ animationDelay: `${delay}s` }}
       aria-label={`${name.nameEnglish} — ${name.gender} name`}

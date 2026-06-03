@@ -1,7 +1,7 @@
-'use client';
+
 
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Heart,
@@ -57,11 +57,11 @@ const Section = ({ title, icon: Icon, children }) => (
   </div>
 );
 
-const NameDetailClient = ({ params }) => {
-  const { id } = params;
-  const router = useRouter();
+const NameDetailClient = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
-  const searchParams = useSearchParams();
+  const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const [showLoginBanner, setShowLoginBanner] = useState(true);
 
@@ -75,7 +75,7 @@ const NameDetailClient = ({ params }) => {
     }
   }, [isAuthenticated, showLoginBanner]);
 
-  const handleLogin = () => router.push('/login');
+  const handleLogin = () => navigate('/login');
   const handleDismissBanner = () => setShowLoginBanner(false);
 
   const id1 = searchParams.get('id1');
@@ -134,7 +134,7 @@ const NameDetailClient = ({ params }) => {
         newParams.set('id2', id);
       }
     }
-    router.push(`/compare?${newParams.toString()}`);
+    navigate(`/compare?${newParams.toString()}`);
   };
 
   if (isLoading) return (
@@ -181,7 +181,7 @@ const NameDetailClient = ({ params }) => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
-              onClick={() => router.push('/search')} 
+              onClick={() => navigate('/search')} 
               className="bg-primary text-bg px-8 py-3.5 rounded-xl font-bold hover:bg-opacity-90 transition-all w-full sm:w-auto min-h-[48px]"
             >
               Back to Search
@@ -211,7 +211,7 @@ const NameDetailClient = ({ params }) => {
     e.preventDefault();
     if (!isAuthenticated) {
       toast.success('Please sign in to save names', { icon: '🔐' });
-      router.push('/login');
+      navigate('/login');
       return;
     }
     toggleFavoriteMutation.mutate();
@@ -219,7 +219,7 @@ const NameDetailClient = ({ params }) => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-4 md:py-8 space-y-8 md:space-y-12">
-      <button onClick={() => router.back()} className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold text-sm min-h-[44px]">
+      <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold text-sm min-h-[44px]">
         <ArrowLeft size={18} /> BACK
       </button>
 
