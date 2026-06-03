@@ -1,11 +1,17 @@
 import { ArrowLeft, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const Privacy = () => {
   const navigate = useNavigate();
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
+      <Helmet>
+        <title>Privacy Policy | Data Protection & Privacy | IslamicNames</title>
+        <meta name="description" content="Review the privacy policy of IslamicNames. Learn how we handle your personal data and protect your privacy on our platform." />
+        <link rel="canonical" href="https://www.islamicnames.in/privacy" />
+      </Helmet>
       <button 
         onClick={() => navigate(-1)} 
         className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-medium mb-8 group"

@@ -1,5 +1,4 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import { m } from 'framer-motion';
 import { 
   Bug, 
   Send, 
@@ -14,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import { toast } from 'react-hot-toast';
 import useAuthStore from '../store/useAuthStore';
+import { Helmet } from 'react-helmet-async';
 
 // Lazy load motion components for maximum bundle optimization
 const MotionDiv = lazy(() => import('framer-motion').then(mod => ({ default: mod.m.div })));
@@ -44,11 +44,14 @@ const ReportBug = () => {
 
     const isMobile = /iPhone|iPad|iPod|Android/i.test(ua);
     
-    setFormData(prev => ({
-      ...prev,
-      browser,
-      deviceType: isMobile ? 'Mobile' : 'Desktop'
-    }));
+    const timer = setTimeout(() => {
+      setFormData(prev => ({
+        ...prev,
+        browser,
+        deviceType: isMobile ? 'Mobile' : 'Desktop'
+      }));
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleChange = (e) => {
@@ -132,6 +135,12 @@ const ReportBug = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 md:py-16">
+      <Helmet>
+        <title>Report a Bug | Help Us Improve | IslamicNames</title>
+        <meta name="description" content="Encountered an issue on IslamicNames? Report a bug to our technical team and help us improve the platform for the Ummah." />
+        <link rel="canonical" href="https://www.islamicnames.in/report-bug" />
+        <meta name="robots" content="noindex, follow" />
+      </Helmet>
       <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold text-xs uppercase tracking-widest mb-8">
         <ArrowLeft size={16} /> Back
       </button>

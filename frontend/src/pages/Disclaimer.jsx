@@ -1,11 +1,17 @@
 import { ArrowLeft, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const Disclaimer = () => {
   const navigate = useNavigate();
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
+      <Helmet>
+        <title>Disclaimer | Content Accuracy & Terms | IslamicNames</title>
+        <meta name="description" content="Read the disclaimer for IslamicNames. Understanding our content accuracy, limitation of responsibility, and institutional affiliation." />
+        <link rel="canonical" href="https://www.islamicnames.in/disclaimer" />
+      </Helmet>
       <button 
         onClick={() => navigate(-1)} 
         className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-medium mb-8 group"

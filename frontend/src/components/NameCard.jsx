@@ -13,7 +13,8 @@ const NameCard = React.memo(({ name, onFavorite, delay = 0, isLocked = false }) 
   
   const id1 = searchParams.get('id1');
   const id2 = searchParams.get('id2');
-  const isSelected = id1 === name._id || id2 === name._id;
+  const identifier = name.slug || name._id;
+  const isSelected = id1 === identifier || id2 === identifier;
 
   const handleCompare = (e) => {
     e.preventDefault();
@@ -26,14 +27,14 @@ const NameCard = React.memo(({ name, onFavorite, delay = 0, isLocked = false }) 
 
     const params = new URLSearchParams(window.location.search);
     if (isSelected) {
-      if (id1 === name._id) params.delete('id1');
-      else if (id2 === name._id) params.delete('id2');
+      if (id1 === identifier) params.delete('id1');
+      else if (id2 === identifier) params.delete('id2');
     } else {
-      if (!id1) params.set('id1', name._id);
-      else if (!id2) params.set('id2', name._id);
+      if (!id1) params.set('id1', identifier);
+      else if (!id2) params.set('id2', identifier);
       else {
         params.set('id1', id2);
-        params.set('id2', name._id);
+        params.set('id2', identifier);
       }
     }
 
@@ -171,7 +172,7 @@ const NameCard = React.memo(({ name, onFavorite, delay = 0, isLocked = false }) 
 
   return (
     <Link 
-      to={`/name/${name._id}`} 
+      to={`/name/${name.slug || name._id}`} 
       className={cardClasses}
       style={{ animationDelay: `${delay}s` }}
       aria-label={`${name.nameEnglish} — ${name.gender} name`}

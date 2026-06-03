@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast';
 import useAuthStore from '../store/useAuthStore';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import NameCard from '../components/NameCard';
 import { exportFavoritesToPDF } from '../api/pdfExport';
 
@@ -64,6 +65,10 @@ const Favorites = () => {
 
   return (
     <div className="space-y-6 md:space-y-10 px-1">
+      <Helmet>
+        <title>My Favorite Names | IslamicNames</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-text mb-2">My Favorites</h1>

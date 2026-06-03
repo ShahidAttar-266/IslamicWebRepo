@@ -68,8 +68,13 @@ const NameDetail = () => {
 
   // Hide banner when user logs in
   useEffect(() => {
-    if (isAuthenticated) setShowLoginBanner(false);
-  }, [isAuthenticated]);
+    if (isAuthenticated && showLoginBanner) {
+      const timer = setTimeout(() => {
+        setShowLoginBanner(false);
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [isAuthenticated, showLoginBanner]);
 
   const handleLogin = () => navigate('/login');
   const handleDismissBanner = () => setShowLoginBanner(false);
@@ -238,28 +243,38 @@ const NameDetail = () => {
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "Article",
-            "headline": `${name.nameEnglish} (${name.nameArabic}) Meaning, Origin & History`,
-            "description": `Detailed information about the Islamic name ${name.nameEnglish}, including its meaning: "${name.meaning}", origin: ${name.origin || 'Arabic'}, and historical context.`,
-            "image": "https://www.islamicnames.in/logo-120.webp",
-            "author": {
-              "@type": "Organization",
-              "name": "IslamicNames"
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "IslamicNames",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://www.islamicnames.in/logo-120.webp"
-              }
-            },
+            "@type": "DefinedTerm",
+            "name": name.nameEnglish,
+            "description": name.meaning,
+            "termCode": name.nameArabic,
+            "inDefinedTermSet": "https://www.islamicnames.in",
+            "url": `https://www.islamicnames.in/name/${name.slug || name._id}`,
             "mainEntityOfPage": {
               "@type": "WebPage",
-              "@id": `https://www.islamicnames.in/name/${id}`
-            },
-            "datePublished": name.createdAt,
-            "dateModified": name.updatedAt
+              "@id": `https://www.islamicnames.in/name/${name.slug || name._id}`
+            }
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [{
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.islamicnames.in"
+            },{
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Browse Names",
+              "item": "https://www.islamicnames.in/search"
+            },{
+              "@type": "ListItem",
+              "position": 3,
+              "name": name.nameEnglish,
+              "item": `https://www.islamicnames.in/name/${name.slug || name._id}`
+            }]
           })}
         </script>
       </Helmet>

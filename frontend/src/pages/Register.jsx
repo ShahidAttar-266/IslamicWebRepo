@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 import { GoogleLogin } from '@react-oauth/google';
 import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
+import { Helmet } from 'react-helmet-async';
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -59,6 +60,12 @@ const Register = () => {
 
   return (
     <div className="max-w-md mx-auto mt-4 sm:mt-10 px-4 sm:px-0">
+      <Helmet>
+        <title>Sign Up | Create Your Account | IslamicNames</title>
+        <meta name="description" content="Create a free account on IslamicNames to save your favorite names, compare them side-by-side, and export lists to PDF." />
+        <link rel="canonical" href="https://www.islamicnames.in/register" />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="bg-card p-5 sm:p-8 rounded-3xl border border-border shadow-2xl">
         <div className="text-center mb-8">
           <h1 className="text-2xl md:text-3xl font-black text-text mb-2">Create Account</h1>

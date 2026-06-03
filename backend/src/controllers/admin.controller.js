@@ -58,6 +58,7 @@ exports.uploadExcel = async (req, res, next) => {
                 gender: String(gender).toLowerCase().trim(),
                 meaning: String(meaningEn).trim(),
                 origin: getValue('origin'),
+                arabicRoot: getValue('arabic_root'),
                 pronunciation: getValue('pronunciation'),
                 isQuranic: String(getValue('is_quranic') || '').toLowerCase() === 'yes',
                 isActive: String(getValue('status') || '').toLowerCase() !== 'draft',

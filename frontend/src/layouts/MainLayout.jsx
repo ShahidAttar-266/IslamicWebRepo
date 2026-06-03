@@ -29,9 +29,14 @@ const MainLayout = () => {
 
   // Close drawer and dropdown on route change
   useEffect(() => {
-    setIsDrawerOpen(false);
-    setIsDropdownOpen(false);
-  }, [location.pathname]);
+    if (isDrawerOpen || isDropdownOpen) {
+      const timer = setTimeout(() => {
+        setIsDrawerOpen(false);
+        setIsDropdownOpen(false);
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname, isDrawerOpen, isDropdownOpen]);
 
   // Accessibility: Return focus to menu button when drawer closes
   useEffect(() => {
@@ -306,9 +311,11 @@ const MainLayout = () => {
       <Footer />
 
       {/* Support Widget */}
-      <Suspense fallback={null}>
-        <SupportWidget />
-      </Suspense>
+      {showWidget && (
+        <Suspense fallback={null}>
+          <SupportWidget />
+        </Suspense>
+      )}
     </div>
   );
 };

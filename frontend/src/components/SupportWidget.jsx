@@ -23,8 +23,13 @@ const SupportWidget = () => {
 
   // Auto-close on route change
   useEffect(() => {
-    closeWidget();
-  }, [location.pathname]);
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        closeWidget();
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname, isOpen]);
 
   const handleEsc = useCallback((event) => {
     if (event.keyCode === 27) closeWidget();

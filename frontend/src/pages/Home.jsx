@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Search as SearchIcon, ArrowRight, Book, Star, Sparkles, Heart } from 'lucide-react';
@@ -7,6 +7,14 @@ import useAuthStore from '../store/useAuthStore';
 import NameCard from '../components/NameCard';
 
 import { Helmet } from 'react-helmet-async';
+
+const NamesSkeleton = () => (
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    {[...Array(4)].map((_, i) => (
+      <div key={i} className="bg-white/5 border border-white/10 rounded-2xl h-[260px] animate-pulse" />
+    ))}
+  </div>
+);
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,14 +41,6 @@ const Home = () => {
       navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
     }
   };
-
-  const NamesSkeleton = () => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {[...Array(4)].map((_, i) => (
-        <div key={i} className="bg-white/5 border border-white/10 rounded-2xl h-[260px] animate-pulse" />
-      ))}
-    </div>
-  );
 
   return (
     <div className="space-y-12 md:space-y-20 lg:space-y-24">

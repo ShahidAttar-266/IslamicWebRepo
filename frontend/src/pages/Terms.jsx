@@ -1,11 +1,17 @@
 import { ArrowLeft, FileText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const Terms = () => {
   const navigate = useNavigate();
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
+      <Helmet>
+        <title>Terms & Conditions | Usage Policy | IslamicNames</title>
+        <meta name="description" content="Read the terms and conditions for using IslamicNames.in. Understanding user responsibilities, content usage, and platform policies." />
+        <link rel="canonical" href="https://www.islamicnames.in/terms" />
+      </Helmet>
       <button 
         onClick={() => navigate(-1)} 
         className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-medium mb-8 group"

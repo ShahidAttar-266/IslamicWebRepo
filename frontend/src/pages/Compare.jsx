@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { X, Plus, ArrowLeftRight, Printer, Search } from 'lucide-react';
+import { X, Plus, Printer, Search } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import api from '../api/axios';
-import { toast } from 'react-hot-toast';
 
 const ComparisonRow = ({ label, val1, val2, isArabic = false }) => (
   <div className="border-b border-border/50 py-6 md:py-4">
@@ -78,8 +78,8 @@ const Compare = () => {
   return (
     <div className="max-w-5xl mx-auto space-y-8 md:space-y-12 py-4 md:py-8 px-4">
       <Helmet>
-        <title>Compare Islamic Names | Side-by-Side Name Analysis | IslamicNames</title>
-        <meta name="description" content="Compare two Islamic names side-by-side. Analyze meanings, origins, and historical contexts to find the perfect name for your child." />
+        <title>Compare Islamic Names | Side-by-Side Analysis | IslamicNames</title>
+        <meta name="description" content="Use our advanced comparison tool to analyze two Islamic names side-by-side. Compare meanings, origins, and Quranic references to find the best name." />
         <link rel="canonical" href="https://www.islamicnames.in/compare" />
       </Helmet>
       <div className="text-center space-y-4">

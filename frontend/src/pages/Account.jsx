@@ -4,6 +4,7 @@ import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
 import { toast } from 'react-hot-toast';
 import { User as UserIcon, Mail, Save } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const Account = () => {
   const { user, updateUser } = useAuthStore();
@@ -36,6 +37,10 @@ const Account = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 md:space-y-10 py-4 md:py-10 px-4">
+      <Helmet>
+        <title>My Profile | Account Settings | IslamicNames</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="text-center md:text-left">
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-text mb-2">My Profile</h1>
         <p className="text-sm md:text-base text-text-muted italic">Manage your account settings.</p>

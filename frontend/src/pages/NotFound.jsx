@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom';
 import { Home, MoveLeft } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const NotFound = () => {
   return (
     <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
+      <Helmet>
+        <title>404 - Page Not Found | IslamicNames</title>
+        <meta name="robots" content="noindex, follow" />
+      </Helmet>
       <div className="relative mb-8">
         <h1 className="text-9xl font-black text-primary/10 select-none">404</h1>
         <div className="absolute inset-0 flex items-center justify-center">

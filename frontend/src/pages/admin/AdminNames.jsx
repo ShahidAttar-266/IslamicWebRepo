@@ -25,10 +25,13 @@ const AdminNames = () => {
 
   // Reset page when search term changes
   useEffect(() => {
-    setPage(1);
+    const timer = setTimeout(() => {
+      setPage(1);
+    }, 0);
+    return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  const { data, isLoading, isFetching } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['admin-names', searchTerm, page],
     queryFn: async () => {
       const url = `/names?q=${searchTerm}&limit=50&page=${page}&sort=nameEnglish`;

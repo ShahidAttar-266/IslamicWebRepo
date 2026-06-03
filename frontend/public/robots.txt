@@ -6,3 +6,4 @@ Disallow: /register
 Disallow: /account
 
 Sitemap: https://www.islamicnames.in/sitemap.xml
+Sitemap: https://www.islamicnames.in/api/v1/names/sitemap.xml

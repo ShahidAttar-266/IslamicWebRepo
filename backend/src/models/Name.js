@@ -29,6 +29,10 @@ const nameSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    arabicRoot: {
+        type: String,
+        trim: true
+    },
     history: {
         type: String,
         trim: true

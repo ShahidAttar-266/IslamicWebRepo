@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 import { GoogleLogin } from '@react-oauth/google';
 import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
+import { Helmet } from 'react-helmet-async';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email'),
@@ -48,6 +49,12 @@ const Login = () => {
 
   return (
     <div className="max-w-md mx-auto mt-4 sm:mt-10 px-4 sm:px-0">
+      <Helmet>
+        <title>Login | Access Your Account | IslamicNames</title>
+        <meta name="description" content="Login to IslamicNames to manage your favorite names and access advanced comparison features." />
+        <link rel="canonical" href="https://www.islamicnames.in/login" />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="bg-card p-5 sm:p-8 rounded-3xl border border-border shadow-2xl">
         <div className="text-center mb-8">
           <h1 className="text-2xl md:text-3xl font-black text-text mb-2">Welcome Back</h1>
