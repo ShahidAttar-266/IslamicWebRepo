@@ -45,13 +45,8 @@ const Home = () => {
   return (
     <div className="space-y-12 md:space-y-20 lg:space-y-24">
       <Helmet>
-        <title>Islamic Names | Meaningful Names for Boys & Girls | IslamicNames</title>
         <meta name="description" content="Discover thousands of meaningful Islamic names for boys and girls with authentic Quranic references and historical background. Explore Islamic names with meanings." />
-        <meta name="keywords" content="islamicnames, islamic names, islamic names for boys, islamic names for girls, quran islamic names for girls, islamic names for men, islamic names for boys from quran, islamic names of prophets, islamic names Arabic, islamic names with meanings, islamic names for women" />
         <link rel="canonical" href="https://www.islamicnames.in/" />
-        
-        <meta property="og:title" content="Islamic Names | Meaningful Names for Boys & Girls" />
-        <meta property="og:description" content="Find the perfect Islamic name with deep meanings and Quranic roots. Authentic and verified." />
       </Helmet>
 
       {/* Hero Section */}

@@ -129,15 +129,18 @@ exports.getNames = async (req, res, next) => {
 // @access  Public
 exports.getName = async (req, res, next) => {
     try {
-        // Validate ID format
-        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-            return next(new ErrorResponse('Invalid ID format', 400));
-        }
+        const identifier = req.params.id;
+        const isObjectId = identifier.match(/^[0-9a-fA-F]{24}$/);
 
-        const cacheKey = `names:detail:${req.params.id}`;
+        const cacheKey = `names:detail:${identifier}`;
 
         const fetchName = async () => {
-            const name = await Name.findById(req.params.id);
+            let name;
+            if (isObjectId) {
+                name = await Name.findById(identifier);
+            } else {
+                name = await Name.findOne({ slug: identifier });
+            }
 
             if (!name) return null;
 
@@ -152,7 +155,7 @@ exports.getName = async (req, res, next) => {
         const result = await cache.getOrSet(cacheKey, fetchName, 600); // 10 min TTL
 
         if (!result) {
-            return next(new ErrorResponse(`Name not found with id of ${req.params.id}`, 404));
+            return next(new ErrorResponse(`Name not found with identifier of ${identifier}`, 404));
         }
 
         res.status(200).json({
@@ -172,7 +175,7 @@ exports.getName = async (req, res, next) => {
 // @access  Public
 exports.getSitemap = async (req, res, next) => {
     try {
-        const names = await Name.find({ isActive: true }).select('_id updatedAt');
+        const names = await Name.find({ isActive: true }).select('slug updatedAt');
         
         const baseUrl = 'https://www.islamicnames.in';
         
@@ -187,7 +190,8 @@ exports.getSitemap = async (req, res, next) => {
         
         // Dynamic name routes
         names.forEach(name => {
-            xml += `  <url>\n    <loc>${baseUrl}/name/${name._id}</loc>\n    <lastmod>${name.updatedAt.toISOString().split('T')[0]}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
+            const path = name.slug || name._id;
+            xml += `  <url>\n    <loc>${baseUrl}/name/${path}</loc>\n    <lastmod>${name.updatedAt.toISOString().split('T')[0]}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
         });
         
         xml += `</urlset>`;
@@ -204,6 +208,9 @@ exports.getSitemap = async (req, res, next) => {
 // @access  Private/Admin
 exports.createName = async (req, res, next) => {
     try {
+        if (req.body.nameEnglish && !req.body.slug) {
+            req.body.slug = req.body.nameEnglish.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
+        }
         const name = await Name.create(req.body);
         await cache.invalidatePattern('names:list:*');
         res.status(201).json({ success: true, data: name });
@@ -219,6 +226,10 @@ exports.updateName = async (req, res, next) => {
     try {
         let name = await Name.findById(req.params.id);
         if (!name) return next(new ErrorResponse(`Name not found`, 404));
+
+        if (req.body.nameEnglish && !req.body.slug) {
+            req.body.slug = req.body.nameEnglish.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
+        }
 
         name = await Name.findByIdAndUpdate(req.params.id, req.body, {
             new: true,

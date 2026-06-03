@@ -219,30 +219,32 @@ const NameDetail = () => {
         <title>{`${name.nameEnglish} (${name.nameArabic}) Meaning, Origin & History | IslamicNames`}</title>
         <meta name="description" content={`Find the meaning, origin, pronunciation, and Quranic reference for the Islamic name ${name.nameEnglish}. Explore deep historical background and naming etiquette. Search Islamic names with meanings.`} />
         <meta name="keywords" content={`${name.nameEnglish} meaning, ${name.nameEnglish} islamic name, ${name.nameEnglish} name history, ${name.nameArabic} meaning, islamic names for ${name.gender}s, islamic names with meanings`} />
-        
+        <link rel="canonical" href={`https://www.islamicnames.in/name/${id}`} />
+
         {/* Open Graph / Facebook */}
-        <meta property="og:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & History`} />
-        <meta property="og:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}. Verified Islamic name.`} />
+        <meta property="og:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & History | IslamicNames`} />
+        <meta property="og:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}. Verified Islamic name with Quranic roots.`} />
         <meta property="og:url" content={`https://www.islamicnames.in/name/${id}`} />
         <meta property="og:type" content="article" />
+        <meta property="og:image" content="https://www.islamicnames.in/logo-120.webp" />
         
         {/* Twitter */}
-        <meta property="twitter:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & History`} />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & History | IslamicNames`} />
         <meta property="twitter:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}.`} />
+        <meta property="twitter:image" content="https://www.islamicnames.in/logo-120.webp" />
 
         {/* Structured Data (JSON-LD) */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "AboutPage",
-            "name": `${name.nameEnglish} (${name.nameArabic}) Meaning & Origin`,
+            "@type": "Article",
+            "headline": `${name.nameEnglish} (${name.nameArabic}) Meaning, Origin & History`,
             "description": `Detailed information about the Islamic name ${name.nameEnglish}, including its meaning: "${name.meaning}", origin: ${name.origin || 'Arabic'}, and historical context.`,
-            "mainEntity": {
-              "@type": "Thing",
-              "name": name.nameEnglish,
-              "alternateName": name.nameArabic,
-              "description": name.meaning,
-              "image": "https://www.islamicnames.in/logo-120.webp"
+            "image": "https://www.islamicnames.in/logo-120.webp",
+            "author": {
+              "@type": "Organization",
+              "name": "IslamicNames"
             },
             "publisher": {
               "@type": "Organization",
@@ -251,7 +253,13 @@ const NameDetail = () => {
                 "@type": "ImageObject",
                 "url": "https://www.islamicnames.in/logo-120.webp"
               }
-            }
+            },
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": `https://www.islamicnames.in/name/${id}`
+            },
+            "datePublished": name.createdAt,
+            "dateModified": name.updatedAt
           })}
         </script>
       </Helmet>

@@ -123,6 +123,8 @@ const Search = () => {
       <Helmet>
         <title>{getPageTitle()}</title>
         <meta name="description" content={getPageDescription()} />
+        <meta name="keywords" content={getKeywords()} />
+        <link rel="canonical" href="https://www.islamicnames.in/search" />
       </Helmet>
 
       {/* Search Header */}

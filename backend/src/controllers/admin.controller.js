@@ -61,6 +61,7 @@ exports.uploadExcel = async (req, res, next) => {
                 pronunciation: getValue('pronunciation'),
                 isQuranic: String(getValue('is_quranic') || '').toLowerCase() === 'yes',
                 isActive: String(getValue('status') || '').toLowerCase() !== 'draft',
+                slug: String(nameEn).toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, ''),
                 uploadBatchId: batchId
             };
 

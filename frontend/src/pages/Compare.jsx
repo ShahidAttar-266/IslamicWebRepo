@@ -77,6 +77,11 @@ const Compare = () => {
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 md:space-y-12 py-4 md:py-8 px-4">
+      <Helmet>
+        <title>Compare Islamic Names | Side-by-Side Name Analysis | IslamicNames</title>
+        <meta name="description" content="Compare two Islamic names side-by-side. Analyze meanings, origins, and historical contexts to find the perfect name for your child." />
+        <link rel="canonical" href="https://www.islamicnames.in/compare" />
+      </Helmet>
       <div className="text-center space-y-4">
         <h1 className="text-3xl md:text-5xl font-black text-text tracking-tight">Compare Names</h1>
         <p className="text-sm md:text-base text-text-muted max-w-xl mx-auto italic">Analyze meanings, origins, and historical contexts side-by-side to find the perfect choice.</p>
