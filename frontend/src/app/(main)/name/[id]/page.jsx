@@ -1,7 +1,7 @@
 import NameDetailClient from '@/components/NameDetailClient';
 
 async function getName(id) {
-  const baseUrl = process.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
   const res = await fetch(`${baseUrl}/names/${id}`, { next: { revalidate: 3600 } });
   
   if (!res.ok) {
@@ -13,7 +13,7 @@ async function getName(id) {
 }
 
 export async function generateMetadata({ params }) {
-  const { id } = params;
+  const { id } = await params;
   const name = await getName(id);
 
   if (!name) {
@@ -49,6 +49,7 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function Page({ params }) {
-  return <NameDetailClient params={params} />;
+export default async function Page({ params }) {
+  const resolvedParams = await params;
+  return <NameDetailClient params={resolvedParams} />;
 }

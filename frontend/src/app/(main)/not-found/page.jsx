@@ -22,7 +22,7 @@ const NotFound = () => {
       
       <div className="flex flex-col sm:flex-row gap-4">
         <Link 
-          to="/" 
+          href="/" 
           className="flex items-center justify-center gap-2 bg-primary text-bg px-8 py-3 rounded-lg font-bold hover:bg-opacity-90 transition-all shadow-lg shadow-primary/20"
         >
           <Home size={20} /> Back to Home

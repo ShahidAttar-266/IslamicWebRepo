@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 import { useQuery } from '@tanstack/react-query';
 import api from '@/api/axios';
@@ -19,7 +19,8 @@ import {
 const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 const SearchContent = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const { isAuthenticated } = useAuthStore();
   const initialQuery = searchParams.get('q') || '';
   const initialLetter = searchParams.get('letter') || '';
@@ -81,11 +82,11 @@ const SearchContent = () => {
       else syncParam('quranic', '');
 
       if (changed) {
-        setSearchParams(params, { replace: true });
+        router.replace(`/search?${params.toString()}`, { scroll: false });
       }
     }, 500);
     return () => clearTimeout(timer);
-  }, [searchTerm, letterFilter, quranicFilter, setSearchParams, searchParams]);
+  }, [searchTerm, letterFilter, quranicFilter, router, searchParams]);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['names', debouncedTerm, genderFilter, letterFilter, quranicFilter],

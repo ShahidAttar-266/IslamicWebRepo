@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -24,6 +25,11 @@ const registerSchema = z.object({
 const Register = () => {
   const navigate = useNavigate();
   const { setAuth } = useAuthStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(registerSchema)
@@ -133,18 +139,20 @@ const Register = () => {
         </div>
 
         <div className="flex justify-center">
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={() => toast.error('Google registration failed')}
-            useOneTap
-            theme="filled_blue"
-            shape="pill"
-            text="signup_with"
-          />
+          {mounted && (
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => toast.error('Google registration failed')}
+              useOneTap
+              theme="filled_blue"
+              shape="pill"
+              text="signup_with"
+            />
+          )}
         </div>
 
         <p className="text-center text-text-muted text-sm mt-8">
-          Already have an account? <Link to="/login" className="text-primary font-bold hover:underline decoration-2 underline-offset-4">Login</Link>
+          Already have an account? <Link href="/login" className="text-primary font-bold hover:underline decoration-2 underline-offset-4">Login</Link>
         </p>
       </div>
     </div>

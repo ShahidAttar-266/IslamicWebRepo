@@ -42,7 +42,7 @@ const Footer = () => {
           
           {/* Brand Section */}
           <div className="lg:col-span-2 space-y-6">
-            <Link to="/" className="flex items-center gap-2 group">
+            <Link href="/" className="flex items-center gap-2 group">
               <picture>
                 <source
                   type="image/webp"
@@ -94,7 +94,7 @@ const Footer = () => {
                 {section.links.map((link) => (
                   <li key={link.name}>
                     <Link 
-                      to={link.path} 
+                      href={link.path} 
                       className="text-sm text-text-muted hover:text-text transition-colors flex items-center group gap-2 py-1"
                     >
                       <span className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-primary font-black">•</span>

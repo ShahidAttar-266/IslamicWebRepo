@@ -1,6 +1,7 @@
 "use client";
+import { Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter as useNavigate, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { X, Plus, Printer, Search } from 'lucide-react';
 
@@ -39,11 +40,10 @@ const EmptySlot = ({ slot, onAdd }) => (
   </button>
 );
 
-import { Suspense } from 'react';
-
 const CompareContent = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const navigate = (path) => router.push(path);
 
   const id1 = searchParams.get('id1');
   const id2 = searchParams.get('id2');
@@ -69,13 +69,13 @@ const CompareContent = () => {
   });
 
   const removeName = (slot) => {
-    const newParams = new URLSearchParams(searchParams);
+    const newParams = new URLSearchParams(searchParams.toString());
     newParams.delete(slot === 1 ? 'id1' : 'id2');
-    setSearchParams(newParams);
+    router.replace(`/compare?${newParams.toString()}`, { scroll: false });
   };
 
   const handleAdd = () => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
     navigate(`/search?${params.toString()}`);
   };
 

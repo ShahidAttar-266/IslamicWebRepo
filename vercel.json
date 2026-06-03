@@ -34,10 +34,6 @@
     {
       "source": "/sitemap.xml",
       "destination": "/api/v1/names/sitemap.xml"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
     }
   ]
 }

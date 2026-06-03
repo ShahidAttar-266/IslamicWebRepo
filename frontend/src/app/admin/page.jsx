@@ -95,7 +95,7 @@ const AdminDashboard = () => {
           <div className="bg-card border border-border rounded-[2rem] p-8 shadow-sm">
             <h2 className="text-xl font-bold text-text mb-6">Quick Actions</h2>
             <div className="space-y-3">
-              <Link to="/admin/upload" className="flex items-center justify-between p-4 bg-bg rounded-2xl border border-border hover:border-primary transition-all group">
+              <Link href="/admin/upload" className="flex items-center justify-between p-4 bg-bg rounded-2xl border border-border hover:border-primary transition-all group">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-primary/10 text-primary rounded-lg">
                     <Upload size={18} />
@@ -104,7 +104,7 @@ const AdminDashboard = () => {
                 </div>
                 <ArrowRight size={16} className="text-text-muted group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link to="/admin/users" className="flex items-center justify-between p-4 bg-bg rounded-2xl border border-border hover:border-primary transition-all group">
+              <Link href="/admin/users" className="flex items-center justify-between p-4 bg-bg rounded-2xl border border-border hover:border-primary transition-all group">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-blue-500/10 text-blue-500 rounded-lg">
                     <Users size={18} />
@@ -113,7 +113,7 @@ const AdminDashboard = () => {
                 </div>
                 <ArrowRight size={16} className="text-text-muted group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link to="/admin/names" className="flex items-center justify-between p-4 bg-bg rounded-2xl border border-border hover:border-primary transition-all group">
+              <Link href="/admin/names" className="flex items-center justify-between p-4 bg-bg rounded-2xl border border-border hover:border-primary transition-all group">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-purple-500/10 text-purple-500 rounded-lg">
                     <Database size={18} />
