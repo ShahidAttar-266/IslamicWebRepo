@@ -1,5 +1,7 @@
+"use client";
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'next/navigation';
+
 
 const ScrollToTop = () => {
   const { pathname, search } = useLocation();

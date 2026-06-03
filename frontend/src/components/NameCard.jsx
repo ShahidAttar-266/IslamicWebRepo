@@ -1,9 +1,12 @@
+"use client";
 import React from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useRouter as useNavigate, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+
 import { Heart, Book, ArrowRight, ArrowLeftRight } from 'lucide-react';
-import useAuthStore from '../store/useAuthStore';
+import useAuthStore from '@/store/useAuthStore';
 import { useMutation } from '@tanstack/react-query';
-import api from '../api/axios';
+import api from '@/api/axios';
 import { toast } from 'react-hot-toast';
 
 const NameCard = React.memo(({ name, onFavorite, delay = 0, isLocked = false }) => {

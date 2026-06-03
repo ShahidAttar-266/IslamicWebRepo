@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { 
@@ -9,7 +10,8 @@ import {
   Bug, 
   ChevronRight 
 } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useRouter as useNavigate, useLocation } from 'next/navigation';
+
 
 const SupportWidget = () => {
   const [isOpen, setIsOpen] = useState(false);

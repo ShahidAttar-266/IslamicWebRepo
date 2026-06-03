@@ -1,15 +1,15 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { Outlet, Navigate, useLocation } from 'next/navigation';
-import Link from 'next/link';
 
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import useAuthStore from '@/store/useAuthStore';
 import { Home, Users, Database, Upload, Settings, LogOut, ArrowLeft, Menu, X } from 'lucide-react';
 
-const SidebarContent = ({ navItems, location, setIsMobileMenuOpen, user, logout }) => (
+const SidebarContent = ({ navItems, pathname, setIsMobileMenuOpen, user, logout }) => (
   <div className="flex flex-col h-full bg-card">
     <div className="p-6 border-b border-border flex items-center justify-between">
-      <Link to="/admin" className="font-bold text-lg text-primary tracking-tight">IslamicNames Admin</Link>
+      <Link href="/admin" className="font-bold text-lg text-primary tracking-tight">IslamicNames Admin</Link>
       <button 
         onClick={() => setIsMobileMenuOpen(false)} 
         className="md:hidden p-2 text-text-muted hover:text-text rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center"
@@ -20,11 +20,11 @@ const SidebarContent = ({ navItems, location, setIsMobileMenuOpen, user, logout 
     
     <nav className="flex-1 py-6 px-3 space-y-1 overflow-y-auto">
       {navItems.map((item) => {
-        const isActive = location.pathname === item.path || (item.path !== '/admin' && location.pathname.startsWith(item.path));
+        const isActive = pathname === item.path || (item.path !== '/admin' && pathname.startsWith(item.path));
         return (
           <Link
             key={item.name}
-            to={item.path}
+            href={item.path}
             className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all group ${
               isActive 
                 ? 'bg-primary/10 text-primary border-r-2 border-primary' 
@@ -61,10 +61,11 @@ const SidebarContent = ({ navItems, location, setIsMobileMenuOpen, user, logout 
   </div>
 );
 
-const AdminLayout = () => {
+const AdminLayout = ({ children }) => {
   const { user, isAuthenticated, logout } = useAuthStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -73,10 +74,17 @@ const AdminLayout = () => {
       }, 0);
       return () => clearTimeout(timer);
     }
-  }, [location.pathname, isMobileMenuOpen]);
+  }, [pathname, isMobileMenuOpen]);
+
+  useEffect(() => {
+    // Only redirect once client has mounted and auth state is evaluated
+    if (!isAuthenticated || user?.role !== 'admin') {
+      router.replace('/login');
+    }
+  }, [isAuthenticated, user, router]);
 
   if (!isAuthenticated || user?.role !== 'admin') {
-    return <Navigate to="/login" replace />;
+    return null; // Return null while redirecting
   }
 
   const navItems = [
@@ -103,7 +111,7 @@ const AdminLayout = () => {
       }`}>
         <SidebarContent 
           navItems={navItems} 
-          location={location} 
+          pathname={pathname} 
           setIsMobileMenuOpen={setIsMobileMenuOpen} 
           user={user} 
           logout={logout} 
@@ -114,7 +122,7 @@ const AdminLayout = () => {
       <aside className="w-56 bg-card border-r border-border hidden md:flex flex-col sticky top-0 h-screen shrink-0">
         <SidebarContent 
           navItems={navItems} 
-          location={location} 
+          pathname={pathname} 
           setIsMobileMenuOpen={setIsMobileMenuOpen} 
           user={user} 
           logout={logout} 
@@ -135,13 +143,13 @@ const AdminLayout = () => {
           </div>
           
           <div className="flex items-center gap-4">
-            <Link to="/" className="flex items-center gap-2 text-sm font-medium text-text-muted hover:text-primary transition-colors px-3 py-2 rounded-lg hover:bg-bg">
+            <Link href="/" className="flex items-center gap-2 text-sm font-medium text-text-muted hover:text-primary transition-colors px-3 py-2 rounded-lg hover:bg-bg">
               <ArrowLeft size={16} /> <span className="hidden sm:inline">Back to Site</span>
             </Link>
           </div>
         </header>
         <main className="flex-1 p-4 md:p-6 lg:p-8">
-          <Outlet />
+          {children}
         </main>
       </div>
     </div>

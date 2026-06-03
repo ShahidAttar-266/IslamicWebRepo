@@ -1,18 +1,18 @@
 "use client";
-import { useState, useEffect, useRef, lazy, Suspense } from 'react';
-import { Outlet, useLocation } from 'next/navigation';
-import Link from 'next/link';
 
+import { useState, useEffect, useRef, Suspense } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import useAuthStore from '@/store/useAuthStore';
 import { Search, LogOut, Heart, Menu, X, ChevronRight, User } from 'lucide-react';
 import Footer from '@/components/Footer';
+import dynamic from 'next/dynamic';
 
-// Lazy Components
-const SupportWidget = lazy(() => import('../components/SupportWidget'));
+const SupportWidget = dynamic(() => import('../../components/SupportWidget'), { ssr: false });
 
-const MainLayout = () => {
+const MainLayout = ({ children }) => {
   const { user, isAuthenticated, logout } = useAuthStore();
-  const location = useLocation();
+  const pathname = usePathname();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showWidget, setShowWidget] = useState(false);
@@ -20,7 +20,6 @@ const MainLayout = () => {
   const prevIsDrawerOpen = useRef(false);
 
   useEffect(() => {
-    // Mount after browser finishes first paint or after 3 seconds
     const id = window.requestIdleCallback
       ? window.requestIdleCallback(() => setShowWidget(true), { timeout: 3000 })
       : setTimeout(() => setShowWidget(true), 3000);
@@ -30,7 +29,6 @@ const MainLayout = () => {
       : clearTimeout(id);
   }, []);
 
-  // Close drawer and dropdown on route change
   useEffect(() => {
     if (isDrawerOpen || isDropdownOpen) {
       const timer = setTimeout(() => {
@@ -39,9 +37,8 @@ const MainLayout = () => {
       }, 0);
       return () => clearTimeout(timer);
     }
-  }, [location.pathname, isDrawerOpen, isDropdownOpen]);
+  }, [pathname, isDrawerOpen, isDropdownOpen]);
 
-  // Accessibility: Return focus to menu button when drawer closes
   useEffect(() => {
     if (prevIsDrawerOpen.current && !isDrawerOpen) {
       menuButtonRef.current?.focus();
@@ -49,7 +46,6 @@ const MainLayout = () => {
     prevIsDrawerOpen.current = isDrawerOpen;
   }, [isDrawerOpen]);
 
-  // Prevent body scroll when drawer is open
   useEffect(() => {
     if (isDrawerOpen) {
       document.body.style.overflow = 'hidden';
@@ -63,7 +59,7 @@ const MainLayout = () => {
 
   const userInitial = user?.name?.charAt(0) || user?.email?.charAt(0) || '?';
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => pathname === path;
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -77,7 +73,7 @@ const MainLayout = () => {
       <header className="bg-card border-b border-border sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <Link to="/" className="flex items-center gap-2 group">
+            <Link href="/" className="flex items-center gap-2 group">
               <div className="h-9 w-9 md:h-10 md:w-10 flex items-center justify-center overflow-hidden rounded-lg bg-bg/50 border border-border/50 group-hover:border-primary/50 transition-colors">
                 <picture>
                   <source
@@ -105,7 +101,7 @@ const MainLayout = () => {
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
-                  to={link.path}
+                  href={link.path}
                   className={`px-3 py-2 rounded-md transition-colors ${
                     isActive(link.path) ? 'bg-primary/10 text-primary' : 'hover:text-primary'
                   }`}
@@ -118,7 +114,7 @@ const MainLayout = () => {
 
           <div className="flex items-center gap-2 md:gap-4">
             <Link 
-              to="/search" 
+              href="/search" 
               aria-label="Search Islamic names"
               className="p-2.5 md:p-2 hover:bg-bg rounded-full text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
             >
@@ -128,7 +124,7 @@ const MainLayout = () => {
             {isAuthenticated ? (
               <div className="flex items-center gap-1 md:gap-3">
                 <Link 
-                  to="/favorites" 
+                  href="/favorites" 
                   aria-label="View your favorite names"
                   className="p-2.5 md:p-2 hover:bg-bg rounded-full text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                 >
@@ -156,12 +152,12 @@ const MainLayout = () => {
                           <p className="font-medium text-sm text-text truncate">{user?.name || 'User'}</p>
                           <p className="text-xs text-text-muted truncate">{user?.email}</p>
                         </div>
-                        <Link to="/account" className="block w-full text-left px-4 py-3 text-sm text-text hover:bg-bg transition-colors flex items-center justify-between group">
+                        <Link href="/account" className="block w-full text-left px-4 py-3 text-sm text-text hover:bg-bg transition-colors flex items-center justify-between group">
                           My Profile
                           <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                         </Link>
                         {user?.role === 'admin' && (
-                           <Link to="/admin" className="block w-full text-left px-4 py-3 text-sm text-text hover:bg-bg transition-colors flex items-center justify-between group">
+                           <Link href="/admin" className="block w-full text-left px-4 py-3 text-sm text-text hover:bg-bg transition-colors flex items-center justify-between group">
                             Admin Dashboard
                             <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                           </Link>
@@ -176,8 +172,8 @@ const MainLayout = () => {
               </div>
             ) : (
               <div className="hidden md:flex items-center gap-3">
-                <Link to="/login" className="text-sm font-medium text-text hover:text-primary transition-colors px-3 py-2">Login</Link>
-                <Link to="/register" className="bg-primary hover:bg-opacity-90 text-bg px-5 py-2.5 rounded-lg text-sm font-bold transition-all shadow-lg shadow-primary/10">Sign Up</Link>
+                <Link href="/login" className="text-sm font-medium text-text hover:text-primary transition-colors px-3 py-2">Login</Link>
+                <Link href="/register" className="bg-primary hover:bg-opacity-90 text-bg px-5 py-2.5 rounded-lg text-sm font-bold transition-all shadow-lg shadow-primary/10">Sign Up</Link>
               </div>
             )}
 
@@ -206,7 +202,7 @@ const MainLayout = () => {
       {/* Mobile Drawer */}
       <aside className={`fixed inset-y-0 right-0 w-[280px] sm:w-[320px] bg-card border-l border-border z-[70] md:hidden transform transition-transform duration-300 ease-in-out flex flex-col ${isDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="p-4 border-b border-border flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2" onClick={() => setIsDrawerOpen(false)}>
+          <Link href="/" className="flex items-center gap-2" onClick={() => setIsDrawerOpen(false)}>
             <picture>
               <source
                 type="image/webp"
@@ -239,7 +235,7 @@ const MainLayout = () => {
             {navLinks.map((link) => (
               <Link
                 key={link.path}
-                to={link.path}
+                href={link.path}
                 className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all ${
                   isActive(link.path) 
                     ? 'bg-primary/10 text-primary font-semibold' 
@@ -267,13 +263,13 @@ const MainLayout = () => {
                   </div>
                 </div>
                 
-                <Link to="/account" className="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-bg hover:text-text transition-all">
+                <Link href="/account" className="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-bg hover:text-text transition-all">
                   <User size={20} />
                   <span>My Profile</span>
                 </Link>
                 
                 {user?.role === 'admin' && (
-                  <Link to="/admin" className="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-bg hover:text-text transition-all">
+                  <Link href="/admin" className="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-bg hover:text-text transition-all">
                     <Search size={20} />
                     <span>Admin Dashboard</span>
                   </Link>
@@ -289,10 +285,10 @@ const MainLayout = () => {
               </div>
             ) : (
               <div className="flex flex-col gap-3">
-                <Link to="/login" className="flex items-center justify-center w-full py-3.5 rounded-xl border border-border font-semibold hover:bg-bg transition-all">
+                <Link href="/login" className="flex items-center justify-center w-full py-3.5 rounded-xl border border-border font-semibold hover:bg-bg transition-all">
                   Login
                 </Link>
-                <Link to="/register" className="flex items-center justify-center w-full py-3.5 rounded-xl bg-primary text-bg font-bold shadow-lg shadow-primary/20 transition-all">
+                <Link href="/register" className="flex items-center justify-center w-full py-3.5 rounded-xl bg-primary text-bg font-bold shadow-lg shadow-primary/20 transition-all">
                   Sign Up
                 </Link>
               </div>
@@ -307,7 +303,7 @@ const MainLayout = () => {
 
       {/* Main Content */}
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 lg:py-10">
-        <Outlet />
+        {children}
       </main>
 
       {/* Footer */}

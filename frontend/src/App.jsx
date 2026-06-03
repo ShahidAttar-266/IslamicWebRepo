@@ -1,5 +1,7 @@
+"use client";
 import { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'next/navigation';
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ScrollToTop from './components/ScrollToTop';
 import { LazyMotion } from 'framer-motion';
@@ -59,27 +61,10 @@ const FallbackLoader = () => (
 function App() {
 
   return (
-    <HelmetProvider>
-      <Helmet>
-        <title>Islamic Names | Meaningful Names for Boys & Girls | IslamicNames</title>
-        <meta name="description" content="Discover thousands of meaningful Islamic names for boys and girls. Search by Quranic reference, Arabic roots, and historical significance. Explore Islamic names with meanings today." />
-        
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.islamicnames.in/" />
-        <meta property="og:title" content="Islamic Names | Meaningful Names for Boys & Girls" />
-        <meta property="og:description" content="Explore thousands of authentic Islamic names with meanings, Quranic references, and historical contexts. Free for everyone." />
-        <meta property="og:image" content="https://www.islamicnames.in/logo-120.webp" />
+    
+      
 
-        {/* Twitter */}
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://www.islamicnames.in/" />
-        <meta property="twitter:title" content="Islamic Names | Meaningful Names for Boys & Girls" />
-        <meta property="twitter:description" content="Explore thousands of authentic Islamic names with meanings, Quranic references, and historical contexts." />
-        <meta property="twitter:image" content="https://www.islamicnames.in/logo-120.webp" />
-      </Helmet>
-
-      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
+      <GoogleOAuthProvider clientId={process.env.VITE_GOOGLE_CLIENT_ID || ""}>
         <QueryClientProvider client={queryClient}>
           <LazyMotion features={loadFeatures} strict>
             <Router>
@@ -119,7 +104,7 @@ function App() {
           </LazyMotion>
         </QueryClientProvider>
       </GoogleOAuthProvider>
-    </HelmetProvider>
+    
   );
 }
 
