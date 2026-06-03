@@ -1,15 +1,11 @@
-
 import { ArrowLeft, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
-
 
 const Disclaimer = () => {
   const navigate = useNavigate();
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
-      
       <button 
         onClick={() => navigate(-1)} 
         className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-medium mb-8 group"
@@ -68,7 +64,7 @@ const Disclaimer = () => {
           <div className="pt-8 border-t border-border mt-12 text-center">
             <p className="font-bold text-text mb-2">Legal Inquiry</p>
             <a 
-              to="mailto:support@islamicnames.in" 
+              href="mailto:support@islamicnames.in" 
               className="text-primary hover:underline font-medium text-lg"
             >
               support@islamicnames.in

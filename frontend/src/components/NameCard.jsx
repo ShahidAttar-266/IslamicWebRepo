@@ -1,23 +1,20 @@
-
 import React from 'react';
-import { useNavigate as useNavigate, useSearchParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-
-import { Heart, Book, ArrowRight, ArrowLeftRight } from 'lucide-react';
-import useAuthStore from '@/store/useAuthStore';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Heart, Book, Crown, ArrowRight, ArrowLeftRight } from 'lucide-react';
+import useAuthStore from '../store/useAuthStore';
 import { useMutation } from '@tanstack/react-query';
-import api from '@/api/axios';
+import api from '../api/axios';
 import { toast } from 'react-hot-toast';
 
 const NameCard = React.memo(({ name, onFavorite, delay = 0, isLocked = false }) => {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   
+  const isPremium = user?.role === 'admin' || user?.subscription?.status === 'premium';
   const id1 = searchParams.get('id1');
   const id2 = searchParams.get('id2');
-  const identifier = name.slug || name._id;
-  const isSelected = id1 === identifier || id2 === identifier;
+  const isSelected = id1 === name._id || id2 === name._id;
 
   const handleCompare = (e) => {
     e.preventDefault();
@@ -28,16 +25,22 @@ const NameCard = React.memo(({ name, onFavorite, delay = 0, isLocked = false }) 
       return;
     }
 
+    if (!isPremium) {
+      toast.error('Name Comparison is a Premium feature', { icon: '👑' });
+      navigate('/pricing');
+      return;
+    }
+
     const params = new URLSearchParams(window.location.search);
     if (isSelected) {
-      if (id1 === identifier) params.delete('id1');
-      else if (id2 === identifier) params.delete('id2');
+      if (id1 === name._id) params.delete('id1');
+      else if (id2 === name._id) params.delete('id2');
     } else {
-      if (!id1) params.set('id1', identifier);
-      else if (!id2) params.set('id2', identifier);
+      if (!id1) params.set('id1', name._id);
+      else if (!id2) params.set('id2', name._id);
       else {
         params.set('id1', id2);
-        params.set('id2', identifier);
+        params.set('id2', name._id);
       }
     }
 
@@ -112,6 +115,11 @@ const NameCard = React.memo(({ name, onFavorite, delay = 0, isLocked = false }) 
               <Book size={10} aria-hidden="true" /> Quranic
             </span>
           )}
+          {name.isPremium && (
+            <span className="flex items-center gap-1 text-[9px] md:text-[10px] font-bold text-amber-500 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded uppercase tracking-tighter shrink-0">
+              <Crown size={10} aria-hidden="true" /> Premium
+            </span>
+          )}
         </div>
       </div>
 
@@ -156,7 +164,7 @@ const NameCard = React.memo(({ name, onFavorite, delay = 0, isLocked = false }) 
         {CardContent}
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 text-center bg-bg/40 backdrop-blur-[2px] pointer-events-auto blur-none">
           <div className="bg-primary/10 p-3 rounded-full mb-4">
-            <Book className="text-primary" size={24} />
+            <Crown className="text-primary" size={24} />
           </div>
           <h4 className="text-lg font-bold text-text mb-2">Login Required</h4>
           <p className="text-xs text-text-muted mb-6 leading-relaxed">
@@ -175,7 +183,7 @@ const NameCard = React.memo(({ name, onFavorite, delay = 0, isLocked = false }) 
 
   return (
     <Link 
-      to={`/name/${name.slug || name._id}`} 
+      to={`/name/${name._id}`} 
       className={cardClasses}
       style={{ animationDelay: `${delay}s` }}
       aria-label={`${name.nameEnglish} — ${name.gender} name`}

@@ -1,16 +1,11 @@
-
-import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-
+import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { GoogleLogin } from '@react-oauth/google';
-import api from '@/api/axios';
-import useAuthStore from '@/store/useAuthStore';
-
+import api from '../api/axios';
+import useAuthStore from '../store/useAuthStore';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email'),
@@ -20,11 +15,6 @@ const loginSchema = z.object({
 const Login = () => {
   const navigate = useNavigate();
   const { setAuth } = useAuthStore();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
   
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(loginSchema)
@@ -58,7 +48,6 @@ const Login = () => {
 
   return (
     <div className="max-w-md mx-auto mt-4 sm:mt-10 px-4 sm:px-0">
-      
       <div className="bg-card p-5 sm:p-8 rounded-3xl border border-border shadow-2xl">
         <div className="text-center mb-8">
           <h1 className="text-2xl md:text-3xl font-black text-text mb-2">Welcome Back</h1>
@@ -116,16 +105,14 @@ const Login = () => {
         </div>
 
         <div className="flex justify-center">
-          {mounted && (
-            <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={() => toast.error('Google login failed')}
-              useOneTap
-              theme="filled_blue"
-              shape="pill"
-              text="signin_with"
-            />
-          )}
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => toast.error('Google login failed')}
+            useOneTap
+            theme="filled_blue"
+            shape="pill"
+            text="signin_with"
+          />
         </div>
 
         <p className="text-center text-text-muted text-sm mt-8">

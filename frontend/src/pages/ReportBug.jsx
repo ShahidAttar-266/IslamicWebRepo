@@ -1,5 +1,5 @@
-
 import { useState, useEffect, lazy, Suspense } from 'react';
+import { m } from 'framer-motion';
 import { 
   Bug, 
   Send, 
@@ -11,11 +11,9 @@ import {
   ArrowLeft 
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
 import emailjs from '@emailjs/browser';
 import { toast } from 'react-hot-toast';
-import useAuthStore from '@/store/useAuthStore';
-
+import useAuthStore from '../store/useAuthStore';
 
 // Lazy load motion components for maximum bundle optimization
 const MotionDiv = lazy(() => import('framer-motion').then(mod => ({ default: mod.m.div })));
@@ -46,14 +44,11 @@ const ReportBug = () => {
 
     const isMobile = /iPhone|iPad|iPod|Android/i.test(ua);
     
-    const timer = setTimeout(() => {
-      setFormData(prev => ({
-        ...prev,
-        browser,
-        deviceType: isMobile ? 'Mobile' : 'Desktop'
-      }));
-    }, 0);
-    return () => clearTimeout(timer);
+    setFormData(prev => ({
+      ...prev,
+      browser,
+      deviceType: isMobile ? 'Mobile' : 'Desktop'
+    }));
   }, []);
 
   const handleChange = (e) => {
@@ -80,10 +75,10 @@ const ReportBug = () => {
 
       // 2. Send Email
       await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         templateParams,
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );
 
       setSubmitted(true);
@@ -137,7 +132,6 @@ const ReportBug = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 md:py-16">
-      
       <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold text-xs uppercase tracking-widest mb-8">
         <ArrowLeft size={16} /> Back
       </button>

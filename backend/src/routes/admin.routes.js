@@ -5,7 +5,9 @@ const {
     uploadExcel,
     getUploadLogs,
     getAnalytics,
-    getUsers
+    getUsers,
+    updateUserPlan,
+    getSubscriptions
 } = require('../controllers/admin.controller');
 
 const { protect, authorize } = require('../middlewares/auth');
@@ -39,5 +41,7 @@ router.post('/names/upload-excel', upload.single('file'), uploadExcel);
 router.get('/names/upload-logs', getUploadLogs);
 router.get('/analytics', getAnalytics);
 router.get('/users', getUsers);
+router.put('/users/:id/plan', updateUserPlan);
+router.get('/subscriptions', getSubscriptions);
 
 module.exports = router;

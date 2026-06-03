@@ -1,9 +1,9 @@
 import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import api from '@/api/axios';
-import useAuthStore from '@/store/useAuthStore';
-import NameCard from '@/components/NameCard';
+import api from '../api/axios';
+import useAuthStore from '../store/useAuthStore';
+import NameCard from '../components/NameCard';
 import { 
   Search as SearchIcon, 
   Book, 
@@ -12,11 +12,12 @@ import {
   X 
 } from 'lucide-react';
 
+import { Helmet } from 'react-helmet-async';
+
 const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
-const SearchContent = () => {
+const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
   const initialQuery = searchParams.get('q') || '';
   const initialLetter = searchParams.get('letter') || '';
@@ -30,6 +31,20 @@ const SearchContent = () => {
   const [isAlphabetOpen, setIsAlphabetOpen] = useState(false);
 
   const hasActiveFilters = searchTerm || genderFilter || letterFilter || quranicFilter;
+
+  const getPageTitle = () => {
+    if (debouncedTerm) return `Search Results for "${debouncedTerm}" | IslamicNames`;
+    if (letterFilter) return `Names Starting with "${letterFilter}" | IslamicNames`;
+    if (quranicFilter) return `Quranic Names | IslamicNames`;
+    if (genderFilter) return `${genderFilter.charAt(0).toUpperCase() + genderFilter.slice(1)} Names | IslamicNames`;
+    return 'Browse Islamic Names | IslamicNames';
+  };
+
+  const getPageDescription = () => {
+    if (debouncedTerm) return `Explore search results for "${debouncedTerm}" on IslamicNames. Find meanings and origins of Islamic names.`;
+    if (letterFilter) return `Browse Islamic names starting with the letter ${letterFilter}. Explore meanings, origins, and Quranic references.`;
+    return 'Browse thousands of meaningful Islamic names. Filter by gender, alphabet, or Quranic references.';
+  };
 
   const clearAllFilters = () => {
     setSearchTerm('');
@@ -68,7 +83,7 @@ const SearchContent = () => {
       }
     }, 500);
     return () => clearTimeout(timer);
-  }, [searchTerm, letterFilter, quranicFilter, searchParams, setSearchParams]);
+  }, [searchTerm, letterFilter, quranicFilter, setSearchParams, searchParams]);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['names', debouncedTerm, genderFilter, letterFilter, quranicFilter],
@@ -97,6 +112,11 @@ const SearchContent = () => {
 
   return (
     <div className="space-y-6 md:space-y-8">
+      <Helmet>
+        <title>{getPageTitle()}</title>
+        <meta name="description" content={getPageDescription()} />
+      </Helmet>
+
       {/* Search Header */}
       <div className="bg-card border border-border rounded-2xl p-4 md:p-6 shadow-sm flex flex-col gap-6">
         <div className="flex flex-col gap-4">
@@ -237,11 +257,5 @@ const SearchContent = () => {
     </div>
   );
 };
-
-const Search = () => (
-  <Suspense fallback={<div className="flex justify-center items-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div></div>}>
-    <SearchContent />
-  </Suspense>
-);
 
 export default Search;

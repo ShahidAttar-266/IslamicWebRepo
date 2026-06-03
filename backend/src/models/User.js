@@ -30,6 +30,25 @@ const userSchema = new mongoose.Schema({
         enum: ['user', 'admin'],
         default: 'user'
     },
+    subscription: {
+        status: {
+            type: String,
+            enum: ['free', 'premium', 'cancelled'],
+            default: 'free'
+        },
+        razorpayPaymentId: String,
+        razorpaySubscriptionId: String,
+        planType: {
+            type: String,
+            enum: ['monthly', 'yearly']
+        },
+        isManual: {
+            type: Boolean,
+            default: false
+        },
+        startDate: Date,
+        endDate: Date
+    },
     savedNames: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Name'

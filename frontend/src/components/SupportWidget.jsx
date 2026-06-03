@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { 
@@ -8,10 +7,10 @@ import {
   MessageSquare, 
   HelpCircle, 
   Bug, 
+  CreditCard, 
   ChevronRight 
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-
 
 const SupportWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,13 +24,8 @@ const SupportWidget = () => {
 
   // Auto-close on route change
   useEffect(() => {
-    if (isOpen) {
-      const timer = setTimeout(() => {
-        closeWidget();
-      }, 0);
-      return () => clearTimeout(timer);
-    }
-  }, [location.pathname, isOpen]);
+    closeWidget();
+  }, [location.pathname]);
 
   const handleEsc = useCallback((event) => {
     if (event.keyCode === 27) closeWidget();
@@ -92,10 +86,19 @@ const SupportWidget = () => {
       icon: <Bug className="text-rose-500" size={20} />,
       action: () => navigate('/report-bug'),
       color: 'hover:bg-rose-500/10'
+    },
+    {
+      id: 'payment',
+      title: 'Payment Issue',
+      description: 'Failed transactions or refunds',
+      icon: <CreditCard className="text-amber-500" size={20} />,
+      action: () => navigate('/refund'),
+      color: 'hover:bg-amber-500/10'
     }
   ];
 
   const quickHelp = [
+    { q: "How do I upgrade to Premium?", a: "Go to the Pricing page, choose the Premium plan, and complete the Razorpay payment." },
     { q: "Can I save names as a guest?", a: "No, you must create a free account to save names to your favorites list." },
     { q: "Is there a mobile app?", a: "We are currently a web-app, but you can 'Add to Home Screen' for a native-like experience." }
   ];

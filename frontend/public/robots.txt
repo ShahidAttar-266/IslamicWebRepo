@@ -4,5 +4,7 @@ Disallow: /admin
 Disallow: /login
 Disallow: /register
 Disallow: /account
+Disallow: /success
+Disallow: /cancellation
 
-Sitemap: https://www.islamicnames.in/api/v1/names/sitemap.xml
+Sitemap: https://www.islamicnames.in/sitemap.xml

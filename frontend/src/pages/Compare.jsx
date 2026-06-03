@@ -1,11 +1,10 @@
-
-import { Suspense } from 'react';
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-
-import { X, Plus, Printer, Search } from 'lucide-react';
-
-import api from '@/api/axios';
+import { X, Plus, Crown, ArrowLeftRight, Printer, Search } from 'lucide-react';
+import api from '../api/axios';
+import useAuthStore from '../store/useAuthStore';
+import { toast } from 'react-hot-toast';
 
 const ComparisonRow = ({ label, val1, val2, isArabic = false }) => (
   <div className="border-b border-border/50 py-6 md:py-4">
@@ -40,12 +39,22 @@ const EmptySlot = ({ slot, onAdd }) => (
   </button>
 );
 
-const CompareContent = () => {
-  const [searchParams] = useSearchParams();
+const Compare = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { user } = useAuthStore();
   const navigate = useNavigate();
 
   const id1 = searchParams.get('id1');
   const id2 = searchParams.get('id2');
+
+  const isPremium = user?.role === 'admin' || user?.subscription?.status === 'premium';
+
+  useEffect(() => {
+    if (!isPremium) {
+      toast.error('Name Comparison is a Premium feature', { icon: '👑' });
+      navigate('/pricing');
+    }
+  }, [isPremium, navigate]);
 
   const { data: name1 } = useQuery({
     queryKey: ['name', id1],
@@ -68,20 +77,24 @@ const CompareContent = () => {
   });
 
   const removeName = (slot) => {
-    const newParams = new URLSearchParams(searchParams.toString());
+    const newParams = new URLSearchParams(searchParams);
     newParams.delete(slot === 1 ? 'id1' : 'id2');
-    navigate(`/compare?${newParams.toString()}`, { scroll: false });
+    setSearchParams(newParams);
   };
 
   const handleAdd = () => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams);
     navigate(`/search?${params.toString()}`);
   };
 
+  if (!isPremium) return null;
+
   return (
     <div className="max-w-5xl mx-auto space-y-8 md:space-y-12 py-4 md:py-8 px-4">
-      
       <div className="text-center space-y-4">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-500/10 text-amber-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-amber-500/20">
+          <Crown size={14} /> Premium Feature
+        </div>
         <h1 className="text-3xl md:text-5xl font-black text-text tracking-tight">Compare Names</h1>
         <p className="text-sm md:text-base text-text-muted max-w-xl mx-auto italic">Analyze meanings, origins, and historical contexts side-by-side to find the perfect choice.</p>
       </div>
@@ -182,11 +195,5 @@ const CompareContent = () => {
     </div>
   );
 };
-
-const Compare = () => (
-  <Suspense fallback={<div className="flex justify-center items-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div></div>}>
-    <CompareContent />
-  </Suspense>
-);
 
 export default Compare;

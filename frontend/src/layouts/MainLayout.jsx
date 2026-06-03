@@ -1,15 +1,15 @@
-import { useState, useEffect, useRef, Suspense, lazy } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import useAuthStore from '@/store/useAuthStore';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { Outlet, Link, useLocation } from 'react-router-dom';
+import useAuthStore from '../store/useAuthStore';
 import { Search, LogOut, Heart, Menu, X, ChevronRight, User } from 'lucide-react';
-import Footer from '@/components/Footer';
+import Footer from '../components/Footer';
 
-const SupportWidget = lazy(() => import('./SupportWidget'));
+// Lazy Components
+const SupportWidget = lazy(() => import('../components/SupportWidget'));
 
-const MainLayout = ({ children }) => {
+const MainLayout = () => {
   const { user, isAuthenticated, logout } = useAuthStore();
   const location = useLocation();
-  const pathname = location.pathname;
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showWidget, setShowWidget] = useState(false);
@@ -17,6 +17,7 @@ const MainLayout = ({ children }) => {
   const prevIsDrawerOpen = useRef(false);
 
   useEffect(() => {
+    // Mount after browser finishes first paint or after 3 seconds
     const id = window.requestIdleCallback
       ? window.requestIdleCallback(() => setShowWidget(true), { timeout: 3000 })
       : setTimeout(() => setShowWidget(true), 3000);
@@ -26,16 +27,13 @@ const MainLayout = ({ children }) => {
       : clearTimeout(id);
   }, []);
 
+  // Close drawer and dropdown on route change
   useEffect(() => {
-    if (isDrawerOpen || isDropdownOpen) {
-      const timer = setTimeout(() => {
-        setIsDrawerOpen(false);
-        setIsDropdownOpen(false);
-      }, 0);
-      return () => clearTimeout(timer);
-    }
-  }, [pathname, isDrawerOpen, isDropdownOpen]);
+    setIsDrawerOpen(false);
+    setIsDropdownOpen(false);
+  }, [location.pathname]);
 
+  // Accessibility: Return focus to menu button when drawer closes
   useEffect(() => {
     if (prevIsDrawerOpen.current && !isDrawerOpen) {
       menuButtonRef.current?.focus();
@@ -43,6 +41,7 @@ const MainLayout = ({ children }) => {
     prevIsDrawerOpen.current = isDrawerOpen;
   }, [isDrawerOpen]);
 
+  // Prevent body scroll when drawer is open
   useEffect(() => {
     if (isDrawerOpen) {
       document.body.style.overflow = 'hidden';
@@ -56,11 +55,12 @@ const MainLayout = ({ children }) => {
 
   const userInitial = user?.name?.charAt(0) || user?.email?.charAt(0) || '?';
 
-  const isActive = (path) => pathname === path;
+  const isActive = (path) => location.pathname === path;
 
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Browse Names', path: '/search' },
+    { name: 'Premium', path: '/pricing' },
     ...(isAuthenticated ? [{ name: 'Compare', path: '/compare' }] : []),
   ];
 
@@ -81,10 +81,12 @@ const MainLayout = ({ children }) => {
                   <img 
                     src="/logo-40.png" 
                     srcSet="/logo-40.png 40w, /logo-80.png 80w"
-                    alt="IslamicNames - Islamic names with meanings" 
+                    alt="Logo" 
                     width={40} 
                     height={40} 
                     loading="eager" 
+                    fetchPriority="high"
+                    decoding="async"
                     className="h-full w-full object-cover" 
                   />
                 </picture>
@@ -145,7 +147,7 @@ const MainLayout = ({ children }) => {
                       <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-lg shadow-xl z-20 overflow-hidden">
                         <div className="p-3 border-b border-border bg-bg/50">
                           <p className="font-medium text-sm text-text truncate">{user?.name || 'User'}</p>
-                          <p className="text-xs text-text-muted truncate">{user?.email}</p>
+                          <p className="text-xs text-text-muted capitalize">{user?.subscription?.status || 'Free'} Plan</p>
                         </div>
                         <Link to="/account" className="block w-full text-left px-4 py-3 text-sm text-text hover:bg-bg transition-colors flex items-center justify-between group">
                           My Profile
@@ -206,10 +208,11 @@ const MainLayout = ({ children }) => {
               />
               <img 
                 src="/logo-40.png" 
-                alt="IslamicNames - Islamic names with meanings" 
+                alt="Logo" 
                 width={32} 
                 height={32} 
                 loading="eager" 
+                decoding="async"
                 className="h-8 w-8" 
               />
             </picture>
@@ -253,7 +256,7 @@ const MainLayout = ({ children }) => {
                   </div>
                   <div className="overflow-hidden">
                     <p className="font-bold text-text truncate">{user?.name || 'User'}</p>
-                    <p className="text-xs text-text-muted truncate">{user?.email}</p>
+                    <p className="text-xs text-text-muted capitalize">{user?.subscription?.status || 'Free'} Plan</p>
                   </div>
                 </div>
                 
@@ -297,18 +300,16 @@ const MainLayout = ({ children }) => {
 
       {/* Main Content */}
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 lg:py-10">
-        {children}
+        <Outlet />
       </main>
 
       {/* Footer */}
       <Footer />
 
       {/* Support Widget */}
-      {showWidget && (
-        <Suspense fallback={null}>
-          <SupportWidget />
-        </Suspense>
-      )}
+      <Suspense fallback={null}>
+        <SupportWidget />
+      </Suspense>
     </div>
   );
 };

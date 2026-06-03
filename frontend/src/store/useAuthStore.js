@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import api from '@/api/axios';
+import api from '../api/axios';
 
 const useAuthStore = create(
   persist(

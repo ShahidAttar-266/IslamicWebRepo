@@ -1,23 +1,26 @@
-
-
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Heart,
+  Lock,
   Book,
   Info,
   Copy,
   ArrowLeft,
+  Crown,
   Quote,
   Sparkles,
   ArrowLeftRight,
   Loader2,
   LogIn
 } from 'lucide-react';
-import api from '@/api/axios';
-import useAuthStore from '@/store/useAuthStore';
+import api from '../api/axios';
+import useAuthStore from '../store/useAuthStore';
 import { toast } from 'react-hot-toast';
+
+// Soft login prompt component - appears as a subtle banner for non-authenticated users
+import { Helmet } from 'react-helmet-async';
 
 const SoftLoginBanner = ({ onLogin, onDismiss }) => (
   <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border border-primary/20 rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
@@ -27,7 +30,7 @@ const SoftLoginBanner = ({ onLogin, onDismiss }) => (
       </div>
       <div>
         <p className="text-sm font-bold text-text">Sign in to unlock more features</p>
-        <p className="text-xs text-text-muted">Save names and compare</p>
+        <p className="text-xs text-text-muted">Save names, compare, and access premium content</p>
       </div>
     </div>
     <div className="flex items-center gap-2">
@@ -47,37 +50,61 @@ const SoftLoginBanner = ({ onLogin, onDismiss }) => (
   </div>
 );
 
-const Section = ({ title, icon: Icon, children }) => (
-  <div className="bg-card border border-border rounded-2xl p-5 md:p-8">
-    <h3 className="text-lg font-bold text-text mb-6 flex items-center gap-3">
-      <div className="p-2 bg-primary/10 rounded-lg text-primary"><Icon size={20} /></div>
-      {title}
-    </h3>
-    {children}
-  </div>
-);
+const GatedSection = ({ title, icon: Icon, isLocked, msg, children, onUnlock }) => {
+  if (!isLocked) return (
+    <div className="bg-card border border-border rounded-2xl p-5 md:p-8">
+      <h3 className="text-lg font-bold text-text mb-6 flex items-center gap-3">
+        <div className="p-2 bg-primary/10 rounded-lg text-primary"><Icon size={20} /></div>
+        {title}
+      </h3>
+      {children}
+    </div>
+  );
 
-const NameDetailClient = () => {
+  return (
+    <div className="relative bg-card border border-border rounded-2xl p-6 md:p-8 overflow-hidden group">
+      <div className="blur-[4px] select-none opacity-40">
+         <h3 className="text-lg font-bold text-text mb-4 flex items-center gap-3"><Icon size={20} /> {title}</h3>
+         <p>This content is reserved for our premium members. It contains deep insights, historical context, and authentic references.</p>
+         <div className="h-20 bg-bg/50 rounded-lg mt-4"></div>
+      </div>
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-6 bg-card/60 backdrop-blur-[2px]">
+        <div className="w-12 h-12 bg-amber-500/20 text-amber-500 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
+          <Lock size={20} />
+        </div>
+        <p className="font-black text-[10px] uppercase tracking-widest text-amber-400 mb-1">Premium Feature</p>
+        <p className="text-sm text-text-muted mb-4 text-center max-w-[250px]">{msg || `Upgrade to unlock ${title}`}</p>
+        <button 
+          onClick={onUnlock} 
+          className="bg-amber-500 hover:bg-amber-600 text-bg px-6 py-2.5 rounded-full font-bold text-xs transition-all shadow-lg shadow-amber-500/20 min-h-[44px]"
+        >
+          Unlock Now
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const NameDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const [showLoginBanner, setShowLoginBanner] = useState(true);
 
   // Hide banner when user logs in
   useEffect(() => {
-    if (isAuthenticated && showLoginBanner) {
-      const timer = setTimeout(() => {
-        setShowLoginBanner(false);
-      }, 0);
-      return () => clearTimeout(timer);
-    }
-  }, [isAuthenticated, showLoginBanner]);
+    if (isAuthenticated) setShowLoginBanner(false);
+  }, [isAuthenticated]);
 
   const handleLogin = () => navigate('/login');
   const handleDismissBanner = () => setShowLoginBanner(false);
 
+  // Optional login check - only redirect if trying to access premium features
+  // Public can view basic name details without login
+
+  const isPremium = user?.role === 'admin' || user?.subscription?.status === 'premium';
   const id1 = searchParams.get('id1');
   const id2 = searchParams.get('id2');
   const isSelected = id1 === id || id2 === id;
@@ -122,20 +149,22 @@ const NameDetailClient = () => {
   });
 
   const handleCompare = () => {
-    const newParams = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(window.location.search);
     if (isSelected) {
-      if (id1 === id) newParams.delete('id1');
-      else if (id2 === id) newParams.delete('id2');
+      if (id1 === id) params.delete('id1');
+      else if (id2 === id) params.delete('id2');
     } else {
-      if (!id1) newParams.set('id1', id);
-      else if (!id2) newParams.set('id2', id);
+      if (!id1) params.set('id1', id);
+      else if (!id2) params.set('id2', id);
       else {
-        newParams.set('id1', id2);
-        newParams.set('id2', id);
+        params.set('id1', id2);
+        params.set('id2', id);
       }
     }
-    navigate(`/compare?${newParams.toString()}`);
+    navigate(`/compare?${params.toString()}`);
   };
+
+  const hasPremiumAccess = user?.role === 'admin' || user?.subscription?.status === 'premium';
 
   if (isLoading) return (
     <div className="max-w-5xl mx-auto px-4 py-4 md:py-8 space-y-8 md:space-y-12 animate-pulse">
@@ -171,9 +200,9 @@ const NameDetailClient = () => {
           <div className="w-16 h-16 md:w-20 md:h-20 bg-danger/10 text-danger rounded-full flex items-center justify-center mx-auto mb-6">
             <Info size={32} />
           </div>
-          <h2 className="text-2xl md:text-3xl font-black text-text mb-4">
+          <h1 className="text-2xl md:text-3xl font-black text-text mb-4">
             {isNotFound ? 'Name Not Found' : 'Something went wrong'}
-          </h2>
+          </h1>
           <p className="text-sm md:text-base text-text-muted mb-8 leading-relaxed italic">
             {isNotFound 
               ? "We couldn't find the name you're looking for. It might have been removed or the link might be incorrect." 
@@ -217,8 +246,48 @@ const NameDetailClient = () => {
     toggleFavoriteMutation.mutate();
   };
 
+  const handleUnlock = () => navigate('/pricing');
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-4 md:py-8 space-y-8 md:space-y-12">
+      <Helmet>
+        <title>{`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`}</title>
+        <meta name="description" content={`Find the meaning, origin, pronunciation, and Quranic reference for the name ${name.nameEnglish}. Explore deep historical background and naming etiquette.`} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`} />
+        <meta property="og:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}.`} />
+        <meta property="og:url" content={`https://www.islamicnames.in/name/${id}`} />
+        
+        {/* Twitter */}
+        <meta property="twitter:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`} />
+        <meta property="twitter:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}.`} />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            "name": `${name.nameEnglish} (${name.nameArabic}) Meaning & Origin`,
+            "description": `Detailed information about the Islamic name ${name.nameEnglish}, including its meaning: "${name.meaning}", origin: ${name.origin || 'Arabic'}, and historical context.`,
+            "mainEntity": {
+              "@type": "Thing",
+              "name": name.nameEnglish,
+              "alternateName": name.nameArabic,
+              "description": name.meaning
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "IslamicNames",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.islamicnames.in/logo-120.webp"
+              }
+            }
+          })}
+        </script>
+      </Helmet>
+
       <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold text-sm min-h-[44px]">
         <ArrowLeft size={18} /> BACK
       </button>
@@ -315,14 +384,26 @@ const NameDetailClient = () => {
       {/* Main Content Sections */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
         <div className="lg:col-span-2 space-y-6 md:space-y-8">
-          <Section title="Historical Background" icon={Info}>
+          <GatedSection 
+            title="Historical Background" 
+            icon={Info} 
+            isLocked={!hasPremiumAccess}
+            msg="Unlock detailed historical etymology and cultural significance."
+            onUnlock={handleUnlock}
+          >
             <div className="prose prose-invert max-w-none text-text-muted leading-relaxed text-base md:text-lg whitespace-pre-line italic">
               {name.history || "No historical background currently available for this name."}
             </div>
-          </Section>
+          </GatedSection>
 
           {(name.isQuranic || name.quranReference?.surah) && (
-            <Section title="Quranic Reference" icon={Book}>
+            <GatedSection 
+              title="Quranic Reference" 
+              icon={Book} 
+              isLocked={!hasPremiumAccess}
+              msg="View full surah context, verse text, and translations."
+              onUnlock={handleUnlock}
+            >
               <div className="bg-bg/50 border border-primary/20 rounded-2xl p-5 md:p-6 relative overflow-hidden">
                 <div className="relative z-10">
                   <div className="flex justify-between items-center mb-6">
@@ -341,12 +422,18 @@ const NameDetailClient = () => {
                   </div>
                 </div>
               </div>
-            </Section>
+            </GatedSection>
           )}
         </div>
 
         <div className="space-y-6 md:space-y-8">
-          <Section title="Notable Bearers" icon={Sparkles}>
+          <GatedSection 
+            title="Notable Bearers" 
+            icon={Crown} 
+            isLocked={!hasPremiumAccess}
+            msg="Explore famous historical figures with this name."
+            onUnlock={handleUnlock}
+          >
             <div className="space-y-6">
               {name.famousPersonalities && name.famousPersonalities.length > 0 ? (
                 name.famousPersonalities.map((p, i) => (
@@ -362,17 +449,49 @@ const NameDetailClient = () => {
                 <p className="text-sm text-text-muted italic">No records found.</p>
               )}
             </div>
-          </Section>
+          </GatedSection>
 
-          <Section title="Islamic Guidance" icon={Sparkles}>
+          <GatedSection 
+            title="Islamic Guidance" 
+            icon={Sparkles} 
+            isLocked={!hasPremiumAccess}
+            msg="Access naming etiquette and guidance."
+            onUnlock={handleUnlock}
+          >
             <div className="bg-primary/5 border border-primary/10 p-5 rounded-xl text-sm text-text-muted leading-relaxed italic">
               {name.birthGuidance || "Naming in Islam is a sacred responsibility. This name is considered highly recommended for its noble meanings."}
             </div>
-          </Section>
+          </GatedSection>
         </div>
       </div>
+
+      {/* Upgrade CTA */}
+      {!hasPremiumAccess && (
+        <section className="min-h-[320px] bg-card border border-primary/20 rounded-3xl p-6 sm:p-8 md:p-12 text-center relative overflow-hidden shadow-2xl flex items-center justify-center">
+          <div className="relative z-10">
+            <h2 className="text-2xl md:text-3xl font-black mb-4">Unlock the Full History</h2>
+            <p className="text-text-muted mb-8 max-w-2xl mx-auto text-sm md:text-lg leading-relaxed italic">
+              Get all Quranic ayah text, historical holders, and naming etiquette with a Premium subscription.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center">
+              <button 
+                onClick={() => navigate('/pricing')} 
+                className="bg-amber-500 hover:bg-amber-600 text-bg px-10 py-4 rounded-xl font-black text-xs md:text-sm transition-all shadow-xl shadow-amber-500/20 uppercase tracking-widest min-h-[48px] w-full sm:w-auto"
+              >
+                Upgrade to Premium
+              </button>
+              <button 
+                onClick={() => navigate('/search')} 
+                className="bg-bg border border-border hover:border-primary px-10 py-4 rounded-xl font-black text-xs md:text-sm transition-all uppercase tracking-widest min-h-[48px] w-full sm:w-auto"
+              >
+                Continue Browsing
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 };
 
-export default NameDetailClient;
+export default NameDetail;

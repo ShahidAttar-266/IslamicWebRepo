@@ -1,6 +1,7 @@
 const ErrorResponse = require('../utils/errorResponse');
 const Name = require('../models/Name');
 const User = require('../models/User');
+const Subscription = require('../models/Subscription');
 const UploadLog = require('../models/UploadLog');
 const cache = require('../utils/cache');
 const xlsx = require('xlsx');
@@ -58,11 +59,10 @@ exports.uploadExcel = async (req, res, next) => {
                 gender: String(gender).toLowerCase().trim(),
                 meaning: String(meaningEn).trim(),
                 origin: getValue('origin'),
-                arabicRoot: getValue('arabic_root'),
                 pronunciation: getValue('pronunciation'),
                 isQuranic: String(getValue('is_quranic') || '').toLowerCase() === 'yes',
+                isPremium: String(getValue('plan_tier') || '').toLowerCase() === 'premium',
                 isActive: String(getValue('status') || '').toLowerCase() !== 'draft',
-                slug: String(nameEn).toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, ''),
                 uploadBatchId: batchId
             };
 
@@ -167,12 +167,62 @@ exports.getUploadLogs = async (req, res, next) => {
 exports.getAnalytics = async (req, res, next) => {
     try {
         const totalUsers = await User.countDocuments({ role: 'user' });
+        const activeSubscribers = await User.countDocuments({
+            'subscription.status': 'premium'
+        });
         const totalNames = await Name.countDocuments();
+        const premiumNames = await Name.countDocuments({ isPremium: true });
+
+        // Calculate Revenue Data via Aggregation
+        // Pricing constants (fallback if not in env)
+        const PRICE_PREMIUM = 500; // Monthly base in INR
+
+        const revenueData = await Subscription.aggregate([
+            {
+                $match: { status: 'active' }
+            },
+            {
+                $group: {
+                    _id: {
+                        month: { $month: "$createdAt" },
+                        year: { $year: "$createdAt" }
+                    },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    month: "$_id.month",
+                    year: "$_id.year",
+                    revenue: { $multiply: ["$count", PRICE_PREMIUM] }
+                }
+            },
+            {
+                $group: {
+                    _id: { month: "$month", year: "$year" },
+                    totalRevenue: { $sum: "$revenue" }
+                }
+            },
+            { $sort: { "_id.year": 1, "_id.month": 1 } }
+        ]);
+
+        // Format for Chart (last 6 months)
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const formattedRevenue = revenueData.map(item => ({
+            name: `${monthNames[item._id.month - 1]} ${item._id.year}`,
+            revenue: parseFloat(item.totalRevenue.toFixed(2))
+        })).slice(-6);
+
+        // Current Monthly Revenue
+        const now = new Date();
+        const currentMonthRevenue = revenueData.find(r => 
+            r._id.month === (now.getMonth() + 1) && r._id.year === now.getFullYear()
+        )?.totalRevenue || 0;
 
         // Get recent logs
         const recentUploads = await UploadLog.find().sort({ createdAt: -1 }).limit(5);
 
-        const now = new Date();
         const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
         const newUsersThisMonth = await User.countDocuments({ createdAt: { $gte: firstDay } });
 
@@ -180,9 +230,13 @@ exports.getAnalytics = async (req, res, next) => {
             success: true,
             data: {
                 totalUsers,
+                activeSubscribers,
                 totalNames,
+                premiumNames,
                 recentUploads,
-                newUsersThisMonth
+                newUsersThisMonth,
+                monthlyRevenue: parseFloat(currentMonthRevenue.toFixed(2)),
+                revenueByMonth: formattedRevenue
             }
         });
     } catch (err) {
@@ -201,6 +255,98 @@ exports.getUsers = async (req, res, next) => {
             success: true,
             count: users.length,
             data: users
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Update user plan manually
+// @route   PUT /api/v1/admin/users/:id/plan
+// @access  Private/Admin
+exports.updateUserPlan = async (req, res, next) => {
+    try {
+        const { plan } = req.body; // 'free', 'basic', or 'premium'
+        
+        console.log(`[ADMIN_PLAN_UPDATE] User ID: ${req.params.id}, New Plan: ${plan}`);
+
+        if (!['free', 'premium'].includes(plan)) {
+            return next(new ErrorResponse('Invalid plan type. Must be free or premium', 400));
+        }
+
+        const user = await User.findById(req.params.id);
+
+        if (!user) {
+            return next(new ErrorResponse('User not found', 404));
+        }
+
+        // Set subscription details based on User model schema
+        // For manual plans, we use isManual: true and a far future date as a sentinel
+        user.subscription = {
+            status: plan,
+            isManual: plan !== 'free',
+            startDate: plan === 'free' ? null : new Date(),
+            endDate: plan === 'free' ? null : new Date('9999-12-31')
+        };
+
+        await user.save();
+
+        // Create or Update record in the Subscription collection so it shows in the Admin Dashboard
+        if (plan === 'free') {
+            // Mark existing sub as cancelled or delete if manual
+            await Subscription.deleteMany({ userId: user._id });
+        } else {
+            // Upsert a manual subscription record
+            await Subscription.findOneAndUpdate(
+                { userId: user._id },
+                {
+                    status: 'active',
+                    planType: plan,
+                    isManual: true,
+                    billingCycle: 'yearly', // Default for manual
+                    startDate: new Date(),
+                    endDate: new Date('9999-12-31'),
+                    razorpaySubscriptionId: `manual_${Date.now()}`
+                },
+                { upsert: true, new: true }
+            );
+        }
+        
+        console.log(`[ADMIN_PLAN_UPDATE_SUCCESS] User ${user.email} updated to ${plan} and synced to Subscription database`);
+
+        // Invalidate cache
+        await cache.invalidateMany([
+            `user:doc:${user._id}`,
+            'admin:analytics',
+            'admin:users:list',
+            'admin:subscriptions:list'
+        ]);
+
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch (err) {
+        console.error(`[ADMIN_PLAN_UPDATE_ERROR] ${err.message}`);
+        next(err);
+    }
+};
+
+// @desc    Get all subscriptions
+// @route   GET /api/v1/admin/subscriptions
+// @access  Private/Admin
+exports.getSubscriptions = async (req, res, next) => {
+    try {
+        const fetchSubscriptions = async () => {
+            const subscriptions = await Subscription.find().populate('userId', 'name email').sort({ createdAt: -1 });
+            return { count: subscriptions.length, data: subscriptions };
+        };
+
+        const result = await cache.getOrSet('admin:subscriptions:list', fetchSubscriptions, 120); // 2 min TTL
+
+        res.status(200).json({
+            success: true,
+            ...result
         });
     } catch (err) {
         next(err);

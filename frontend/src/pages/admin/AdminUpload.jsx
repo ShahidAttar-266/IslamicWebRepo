@@ -1,7 +1,6 @@
-
 import { useState } from 'react';
 import { Upload as UploadIcon, CheckCircle, AlertTriangle } from 'lucide-react';
-import api from '@/api/axios';
+import api from '../../api/axios';
 import { toast } from 'react-hot-toast';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
 

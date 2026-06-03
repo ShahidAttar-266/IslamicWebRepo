@@ -1,17 +1,25 @@
-
 import { useQuery } from '@tanstack/react-query';
-import api from '@/api/axios';
+import api from '../../api/axios';
 import { 
   Users, 
   Database, 
+  CreditCard, 
+  TrendingUp, 
   Upload, 
   Shield, 
   Loader2, 
-  ArrowRight,
-  Plus
+  ArrowRight 
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
+import { 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer, 
+  AreaChart, 
+  Area 
+} from 'recharts';
 
 const AdminDashboard = () => {
   const { data: analytics, isLoading } = useQuery({
@@ -25,8 +33,9 @@ const AdminDashboard = () => {
 
   const stats = [
     { name: 'Total Users', value: analytics?.totalUsers || 0, icon: <Users size={20} />, color: 'text-blue-500', bg: 'bg-blue-500/10' },
+    { name: 'Subscribers', value: analytics?.activeSubscribers || 0, icon: <CreditCard size={20} />, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
     { name: 'Total Names', value: analytics?.totalNames || 0, icon: <Database size={20} />, color: 'text-purple-500', bg: 'bg-purple-500/10' },
-    { name: 'New Users (Month)', value: analytics?.newUsersThisMonth || 0, icon: <Plus size={20} />, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+    { name: 'Monthly Revenue', value: `₹${analytics?.monthlyRevenue || 0}`, icon: <TrendingUp size={20} />, color: 'text-amber-500', bg: 'bg-amber-500/10' },
   ];
 
   if (isLoading) return (
@@ -44,7 +53,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat) => (
           <div key={stat.name} className="bg-card border border-border p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-4">
@@ -60,33 +69,61 @@ const AdminDashboard = () => {
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Recent Activity */}
+        {/* Revenue Chart */}
         <div className="lg:col-span-2 bg-card border border-border rounded-[2rem] p-8 shadow-sm">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-xl font-bold text-text">Recent Uploads</h2>
-              <p className="text-xs text-text-muted">Latest bulk name additions</p>
+              <h2 className="text-xl font-bold text-text">Revenue Overview</h2>
+              <p className="text-xs text-text-muted">Projected monthly earnings (last 6 months)</p>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1 bg-primary/5 text-primary rounded-full text-[10px] font-black uppercase tracking-widest">
+              <TrendingUp size={12} /> Real-time
             </div>
           </div>
           
-          <div className="space-y-4">
-            {analytics?.recentUploads?.length > 0 ? (
-              analytics.recentUploads.map((log) => (
-                <div key={log._id} className="flex items-center justify-between p-4 bg-bg rounded-xl border border-border/50">
-                  <div>
-                    <p className="font-bold text-sm text-text">{log.fileName}</p>
-                    <p className="text-[10px] text-text-muted uppercase tracking-wider">
-                      {new Date(log.createdAt).toLocaleDateString()} • {log.successCount} names added
-                    </p>
-                  </div>
-                  <div className="text-emerald-500">
-                    <Shield size={16} />
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-sm text-text-muted italic py-10 text-center">No recent uploads found.</p>
-            )}
+          <div className="h-[300px] w-full mt-4">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={analytics?.revenueByMonth || []}>
+                <defs>
+                  <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#2DB87A" stopOpacity={0.2}/>
+                    <stop offset="95%" stopColor="#2DB87A" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+                <XAxis 
+                  dataKey="name" 
+                  axisLine={false} 
+                  tickLine={false} 
+                  tick={{ fontSize: 10, fontWeight: 700, fill: '#6B7280' }}
+                  dy={10}
+                />
+                <YAxis 
+                  axisLine={false} 
+                  tickLine={false} 
+                  tick={{ fontSize: 10, fontWeight: 700, fill: '#6B7280' }}
+                  tickFormatter={(value) => `₹${value}`}
+                />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: '#ffffff', 
+                    borderRadius: '16px', 
+                    border: '1px solid #E5E7EB',
+                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                    fontWeight: 800
+                  }}
+                  itemStyle={{ color: '#2DB87A' }}
+                />
+                <Area 
+                  type="monotone" 
+                  dataKey="revenue" 
+                  stroke="#2DB87A" 
+                  strokeWidth={4} 
+                  fillOpacity={1} 
+                  fill="url(#colorRevenue)" 
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
@@ -129,7 +166,7 @@ const AdminDashboard = () => {
              <Shield className="text-primary mx-auto mb-4" size={32} />
              <p className="text-xs font-black uppercase tracking-widest text-primary mb-2">Security Note</p>
              <p className="text-xs text-text-muted leading-relaxed">
-               All manual database changes are logged. Ensure you verify data accuracy before activating names.
+               All manual database changes are logged. Ensure you verify premium uploads before activating.
              </p>
           </div>
         </div>

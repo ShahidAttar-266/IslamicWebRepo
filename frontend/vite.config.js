@@ -1,26 +1,61 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import path from 'path'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react()
+  ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
-  server: {
-    port: 3000,
-    proxy: {
-      '/api/v1': {
-        target: 'http://localhost:5000',
-        changeOrigin: true,
-      },
+      'lucide-react': 'lucide-react/dist/esm/lucide-react.mjs',
     },
   },
   build: {
-    outDir: 'dist',
-    sourcemap: true,
+    cssCodeSplit: true,
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            // Group core framework dependencies
+            if (
+              id.includes('react') || 
+              id.includes('react-dom') || 
+              id.includes('react-router-dom')
+            ) {
+              return 'framework';
+            }
+            // Group data fetching and state management
+            if (
+              id.includes('@tanstack/react-query') ||
+              id.includes('axios') ||
+              id.includes('zustand')
+            ) {
+              return 'data';
+            }
+            // Separate heavy UI libraries
+            if (id.includes('framer-motion')) {
+              return 'motion';
+            }
+            if (id.includes('lucide-react')) {
+              return 'icons';
+            }
+            // Utilities
+            if (id.includes('react-hot-toast') || id.includes('zod') || id.includes('react-hook-form')) {
+              return 'utils';
+            }
+            return 'modules';
+          }
+        }
+      }
+    }
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://www.islamicnames.in',
+        changeOrigin: true,
+      },
+    },
   },
 })

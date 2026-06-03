@@ -1,62 +1,135 @@
-import { Routes, Route } from 'react-router-dom';
-import { Suspense, lazy } from 'react';
-import MainLayout from './components/MainLayout.jsx';
-import ScrollToTop from './components/ScrollToTop.jsx';
+import { useEffect, Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import useAuthStore from './store/useAuthStore';
+import { Loader2 } from 'lucide-react';
+import ScrollToTop from './components/ScrollToTop';
+import { LazyMotion } from 'framer-motion';
+import { Toaster } from 'react-hot-toast';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
-// Pages
-import Home from './pages/Home.jsx';
-import Search from './pages/Search.jsx';
-import NameDetail from './components/NameDetailClient.jsx';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 
-// Lazy load other pages
-const Login = lazy(() => import('./pages/Login.jsx'));
-const Register = lazy(() => import('./pages/Register.jsx'));
-const Account = lazy(() => import('./pages/Account.jsx'));
-const Favorites = lazy(() => import('./pages/Favorites.jsx'));
-const Compare = lazy(() => import('./pages/Compare.jsx'));
-const FAQ = lazy(() => import('./pages/FAQ.jsx'));
-const Privacy = lazy(() => import('./pages/Privacy.jsx'));
-const Terms = lazy(() => import('./pages/Terms.jsx'));
-const Disclaimer = lazy(() => import('./pages/Disclaimer.jsx'));
-const ReportBug = lazy(() => import('./pages/ReportBug.jsx'));
+// Lazy load Framer Motion features
+const loadFeatures = () => import('framer-motion').then(res => res.domAnimation);
 
-// Admin pages
-const AdminDashboard = lazy(() => import('./pages/admin/Dashboard.jsx'));
-const AdminNames = lazy(() => import('./pages/admin/Names.jsx'));
-const AdminUsers = lazy(() => import('./pages/admin/Users.jsx'));
-const AdminUpload = lazy(() => import('./pages/admin/Upload.jsx'));
-const AdminSettings = lazy(() => import('./pages/admin/Settings.jsx'));
+// Layouts
+import MainLayout from './layouts/MainLayout';
+const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
+
+// Lazy Pages
+import Home from './pages/Home';
+import NameDetail from './pages/NameDetail';
+const Search = lazy(() => import('./pages/Search'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const Pricing = lazy(() => import('./pages/Pricing'));
+const Favorites = lazy(() => import('./pages/Favorites'));
+const Compare = lazy(() => import('./pages/Compare'));
+const Account = lazy(() => import('./pages/Account'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Terms = lazy(() => import('./pages/Terms'));
+const Refund = lazy(() => import('./pages/Refund'));
+const Disclaimer = lazy(() => import('./pages/Disclaimer'));
+const Success = lazy(() => import('./pages/Success'));
+const FAQ = lazy(() => import('./pages/FAQ'));
+const ReportBug = lazy(() => import('./pages/ReportBug'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+
+// Lazy Admin Pages
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const AdminNames = lazy(() => import('./pages/admin/AdminNames'));
+const AdminUpload = lazy(() => import('./pages/admin/AdminUpload'));
+const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
+const AdminSubscriptions = lazy(() => import('./pages/admin/AdminSubscriptions'));
+const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,   // 5 minutes
+      gcTime: 10 * 60 * 1000,     // 10 minutes
+      refetchOnWindowFocus: false, // Prevents refetching when user switches tabs
+      retry: 1,                    // Only retry once on failure
+    },
+  },
+});
 
 function App() {
+  const FallbackLoader = () => (
+    <div className="min-h-[60vh] flex flex-col items-center justify-center p-12 space-y-4">
+      <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+      <p className="text-sm font-medium text-text-muted animate-pulse">Loading IslamicNames...</p>
+    </div>
+  );
+
   return (
-    <>
-      <ScrollToTop />
-      <Routes>
-        <Route element={<MainLayout><Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}><Home /></Suspense></MainLayout>} path="/" />
-        <Route element={<MainLayout><Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}><Search /></Suspense></MainLayout>} path="/search" />
-        <Route element={<MainLayout><Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}><NameDetail /></Suspense></MainLayout>} path="/name/:id" />
+    <HelmetProvider>
+      <Helmet>
+        <title>IslamicNames | Meaningful Names. Timeless Legacy.</title>
+        <meta name="description" content="Discover thousands of meaningful Islamic names with deep etymology, Quranic references, and historical significance." />
         
-        <Route element={<MainLayout><Suspense fallback={<div>Loading...</div>}><Login /></Suspense></MainLayout>} path="/login" />
-        <Route element={<MainLayout><Suspense fallback={<div>Loading...</div>}><Register /></Suspense></MainLayout>} path="/register" />
-        <Route element={<MainLayout><Suspense fallback={<div>Loading...</div>}><Account /></Suspense></MainLayout>} path="/account" />
-        <Route element={<MainLayout><Suspense fallback={<div>Loading...</div>}><Favorites /></Suspense></MainLayout>} path="/favorites" />
-        <Route element={<MainLayout><Suspense fallback={<div>Loading...</div>}><Compare /></Suspense></MainLayout>} path="/compare" />
-        <Route element={<MainLayout><Suspense fallback={<div>Loading...</div>}><FAQ /></Suspense></MainLayout>} path="/faq" />
-        <Route element={<MainLayout><Suspense fallback={<div>Loading...</div>}><Privacy /></Suspense></MainLayout>} path="/privacy" />
-        <Route element={<MainLayout><Suspense fallback={<div>Loading...</div>}><Terms /></Suspense></MainLayout>} path="/terms" />
-        <Route element={<MainLayout><Suspense fallback={<div>Loading...</div>}><Disclaimer /></Suspense></MainLayout>} path="/disclaimer" />
-        <Route element={<MainLayout><Suspense fallback={<div>Loading...</div>}><ReportBug /></Suspense></MainLayout>} path="/report-bug" />
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.islamicnames.in/" />
+        <meta property="og:title" content="IslamicNames | Meaningful Names. Timeless Legacy." />
+        <meta property="og:description" content="Discover thousands of meaningful Islamic names with deep etymology, Quranic references, and historical significance." />
+        <meta property="og:image" content="https://www.islamicnames.in/logo-120.webp" />
 
-        {/* Admin Routes */}
-        <Route element={<Suspense fallback={<div>Loading...</div>}><AdminDashboard /></Suspense>} path="/admin" />
-        <Route element={<Suspense fallback={<div>Loading...</div>}><AdminNames /></Suspense>} path="/admin/names" />
-        <Route element={<Suspense fallback={<div>Loading...</div>}><AdminUsers /></Suspense>} path="/admin/users" />
-        <Route element={<Suspense fallback={<div>Loading...</div>}><AdminUpload /></Suspense>} path="/admin/upload" />
-        <Route element={<Suspense fallback={<div>Loading...</div>}><AdminSettings /></Suspense>} path="/admin/settings" />
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://www.islamicnames.in/" />
+        <meta property="twitter:title" content="IslamicNames | Meaningful Names. Timeless Legacy." />
+        <meta property="twitter:description" content="Discover thousands of meaningful Islamic names with deep etymology, Quranic references, and historical significance." />
+        <meta property="twitter:image" content="https://www.islamicnames.in/logo-120.webp" />
+      </Helmet>
 
-        <Route element={<MainLayout><div className="text-center py-20"><h1>404 - Page Not Found</h1></div></MainLayout>} path="*" />
-      </Routes>
-    </>
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
+        <QueryClientProvider client={queryClient}>
+          <LazyMotion features={loadFeatures} strict>
+            <Router>
+              <ScrollToTop />
+              <Toaster position="top-center" toastOptions={{ className: 'bg-card text-text' }} />
+              <Suspense fallback={<FallbackLoader />}>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route element={<MainLayout />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/search" element={<Search />} />
+                    <Route path="/name/:id" element={<NameDetail />} />
+                    <Route path="/pricing" element={<Pricing />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/favorites" element={<Favorites />} />
+                    <Route path="/compare" element={<Compare />} />
+                    <Route path="/account" element={<Account />} />
+                    <Route path="/privacy" element={<Privacy />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/refund" element={<Refund />} />
+                    <Route path="/cancellation" element={<Refund />} />
+                    <Route path="/disclaimer" element={<Disclaimer />} />
+                    <Route path="/success" element={<Success />} />
+                    <Route path="/faq" element={<FAQ />} />
+                    <Route path="/report-bug" element={<ReportBug />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Route>
+
+                  {/* Admin Routes */}
+                  <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<AdminDashboard />} />
+                    <Route path="names" element={<AdminNames />} />
+                    <Route path="upload" element={<AdminUpload />} />
+                    <Route path="users" element={<AdminUsers />} />
+                    <Route path="subscriptions" element={<AdminSubscriptions />} />
+                    <Route path="settings" element={<AdminSettings />} />
+                  </Route>
+                </Routes>
+              </Suspense>
+            </Router>
+          </LazyMotion>
+        </QueryClientProvider>
+      </GoogleOAuthProvider>
+    </HelmetProvider>
   );
 }
 

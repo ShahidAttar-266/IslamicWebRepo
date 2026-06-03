@@ -1,18 +1,12 @@
-import { useState, Suspense } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Search as SearchIcon, ArrowRight, Book, Star, Sparkles, Heart } from 'lucide-react';
-import api from '@/api/axios';
-import useAuthStore from '@/store/useAuthStore';
-import NameCard from '@/components/NameCard';
+import { Search as SearchIcon, ArrowRight } from 'lucide-react';
+import api from '../api/axios';
+import useAuthStore from '../store/useAuthStore';
+import NameCard from '../components/NameCard';
 
-const NamesSkeleton = () => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-    {[...Array(4)].map((_, i) => (
-      <div key={i} className="bg-white/5 border border-white/10 rounded-2xl h-[260px] animate-pulse" />
-    ))}
-  </div>
-);
+import { Helmet } from 'react-helmet-async';
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -40,12 +34,26 @@ const Home = () => {
     }
   };
 
+  const NamesSkeleton = () => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className="bg-white/5 border border-white/10 rounded-2xl h-[260px] animate-pulse" />
+      ))}
+    </div>
+  );
+
   return (
     <div className="space-y-12 md:space-y-20 lg:space-y-24">
+      <Helmet>
+        <title>IslamicNames | Meaningful Names. Timeless Legacy.</title>
+        <meta name="description" content="Discover meaningful Islamic names with authentic Quranic references and historical background." />
+        <link rel="canonical" href="https://www.islamicnames.in/" />
+      </Helmet>
+
       {/* Hero Section */}
       <section className="text-center max-w-3xl mx-auto pt-4 md:pt-10 px-4 min-h-[300px] flex flex-col justify-center">
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 md:mb-6 text-text leading-tight tracking-tight">
-          Discover <span className="text-primary">Islamic Names</span>
+          Discover <span className="text-primary">IslamicNames</span>
         </h1>
         <p className="text-base md:text-lg lg:text-xl text-text-muted mb-8 md:mb-12 italic max-w-2xl mx-auto">
           "Meaningful Names. Timeless Legacy."
@@ -104,81 +112,21 @@ const Home = () => {
         )}
       </section>
 
-      {/* SEO Content Section */}
-      <section className="max-w-4xl mx-auto px-4 py-16 border-t border-border/50">
-        <div className="prose prose-invert max-w-none space-y-12">
-          <div className="text-center space-y-4 mb-16">
-             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text leading-tight">
-               The Ultimate Resource for <span className="text-primary">Islamic Names</span> with Meanings
-             </h2>
-             <div className="w-24 h-1.5 bg-primary mx-auto rounded-full"></div>
-          </div>
-
-          <div className="grid gap-10">
-            <div className="space-y-4">
-              <p className="text-lg text-text-muted leading-relaxed italic">
-                Choosing the perfect name for your child is one of the most important responsibilities for Muslim parents. In Islam, a name is not just a label but a prayer and a lifelong identity that carries spiritual and social significance. Our comprehensive tool, <strong>IslamicNames</strong>, is designed to help you navigate the vast and beautiful world of Islamic naming traditions. Whether you are looking for meaningful choices for boys or girls, our database provides verified information rooted in tradition and scholarship. We focus on providing names with authentic meanings to ensure every choice is intentional and beautiful.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-card p-8 rounded-[2rem] border border-border shadow-xl">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-blue-500/10 text-blue-500 rounded-2xl"><Star size={24} /></div>
-                  <h3 className="text-xl font-bold text-text m-0">Names for Boys: Strength and Faith</h3>
-                </div>
-                <p className="text-sm text-text-muted leading-relaxed">
-                  When searching for a name for a baby boy, many parents look for attributes of strength, leadership, and devotion. Our collection includes classic names of Prophets such as Muhammad, Ibrahim, and Musa, which remain evergreen choices for Muslim families worldwide. Additionally, we offer a curated list of names mentioned in the Quran, highlighting their direct contextual meanings. From names like Zayd and Yahya to modern yet traditional variations, our library provides a bridge between ancient wisdom and contemporary naming trends. Choosing a name like Abdullah or Hamza ensures that your son carries a legacy of faith and character throughout his life.
-                </p>
-              </div>
-
-              <div className="bg-card p-8 rounded-[2rem] border border-border shadow-xl">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-pink-500/10 text-pink-500 rounded-2xl"><Sparkles size={24} /></div>
-                  <h3 className="text-xl font-bold text-text m-0">Names for Girls: Elegance and Quranic Roots</h3>
-                </div>
-                <p className="text-sm text-text-muted leading-relaxed">
-                  For parents seeking a name for their daughter, the emphasis often lies on beauty, grace, and spiritual depth. Our tool features an extensive range of elegant names drawn directly from the verses of the Quran, providing options like Maryam, Sarah, and Hawa. These names carry a timeless appeal and are deeply respected within the Ummah. We also specialize in names that honor the Sahabiyat (companions of the Prophet) and influential figures in Islamic history, such as Khadija and Aisha. By providing the original Arabic script alongside their English transliteration and deep meanings, we make it easy to find a name that resonates with your heart and heritage.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-primary/5 border border-primary/20 p-8 md:p-12 rounded-[2.5rem]">
-              <div className="flex items-center gap-4 mb-8">
-                <div className="p-4 bg-primary/20 text-primary rounded-2xl"><Book size={32} /></div>
-                <h3 className="text-2xl font-black text-text m-0">The Significance of Arabic Roots and Quranic Context</h3>
-              </div>
-              <p className="text-base text-text-muted leading-relaxed">
-                The beauty of these names lies in their linguistic precision and the layered meanings they convey. Every entry in our database is analyzed for its etymological root, providing parents with a clear understanding of what a name truly represents. Finding a name with a profound meaning is vital because the Prophet (peace be upon him) encouraged parents to give their children good names. Our platform simplifies this search by allowing you to filter by 'Quranic' status, ensuring that you can easily find options that have a direct divine connection. Whether it's a name signifying light (Noor), patience (Sabr), or gratitude (Shakir), our tool ensures you have all the information needed to make an informed decision for your family's future.
-              </p>
-            </div>
-
-            <div className="bg-card p-10 rounded-[2.5rem] border border-border shadow-2xl text-center">
-              <div className="inline-flex p-4 bg-accent/10 text-accent rounded-full mb-6"><Heart size={32} fill="currentColor" className="animate-pulse" /></div>
-              <h3 className="text-2xl font-black text-text mb-6">Why Choose IslamicNames?</h3>
-              <p className="text-lg text-text-muted leading-relaxed max-w-3xl mx-auto italic">
-                <strong>IslamicNames</strong> is more than just a directory; it is a curated experience for the modern Muslim family. We understand that finding the right name involves more than just a list of words. That’s why we provide historical backgrounds, side-by-side comparisons, and even PDF exports to make your naming journey as smooth as possible. From names for men to names for women, our commitment to authenticity and ease of use makes us the preferred choice for millions. Explore our library today and discover the perfect name that your child will carry with pride.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits Section */}
-      <section className="bg-card border border-border rounded-3xl p-6 sm:p-10 md:p-16 text-center relative overflow-hidden shadow-2xl flex items-center justify-center">
+      {/* CTA Banner */}
+      <section className="min-h-[420px] bg-card border border-border rounded-3xl p-6 sm:p-10 md:p-16 text-center relative overflow-hidden shadow-2xl flex items-center justify-center">
         <div className="absolute right-0 top-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-0"></div>
         <div className="absolute left-0 bottom-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -z-0"></div>
         
         <div className="relative z-10 max-w-2xl mx-auto">
-          <h2 className="text-2xl md:text-4xl font-black mb-4 md:mb-6">Explore the Full Library</h2>
+          <h2 className="text-2xl md:text-4xl font-black mb-4 md:mb-6">Unlock the Full History</h2>
           <p className="text-text-muted text-sm md:text-lg mb-8 md:mb-10 leading-relaxed italic">
-            Access thousands of meaningful names with detailed historical backgrounds, precise Quranic references, and famous personalities for free.
+            Upgrade to Premium to reveal detailed historical backgrounds, precise Quranic references, famous personalities, and save unlimited favorites.
           </p>
           <button 
-            onClick={() => navigate('/search')} 
+            onClick={() => navigate('/pricing')} 
             className="w-full sm:w-auto bg-accent text-bg px-10 py-4 rounded-xl font-black text-sm md:text-base hover:scale-105 transition-all shadow-xl shadow-accent/20 min-h-[48px]"
           >
-            START BROWSING
+            EXPLORE PREMIUM PLANS
           </button>
         </div>
       </section>

@@ -65,3 +65,19 @@ exports.authorize = (...roles) => {
         next();
     };
 };
+
+// Check subscription status
+exports.checkSubscription = (...statuses) => {
+    return (req, res, next) => {
+        if (!req.user || !req.user.subscription || !statuses.includes(req.user.subscription.status)) {
+            // Also let admin pass
+            if (req.user && req.user.role === 'admin') {
+                return next();
+            }
+            return next(
+                new ErrorResponse('This content requires an active premium subscription', 403)
+            );
+        }
+        next();
+    };
+};

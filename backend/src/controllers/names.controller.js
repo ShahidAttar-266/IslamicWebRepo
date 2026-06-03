@@ -33,6 +33,10 @@ exports.getNames = async (req, res, next) => {
                 parsedQuery.gender = req.query.gender;
             }
 
+            if (req.query.isPremium) {
+                parsedQuery.isPremium = req.query.isPremium === 'true';
+            }
+
             if (req.query.origin) {
                 parsedQuery.origin = String(req.query.origin);
             }
@@ -75,8 +79,8 @@ exports.getNames = async (req, res, next) => {
                 const sortBy = req.query.sort.split(',').join(' ');
                 query = query.sort(sortBy);
             } else {
-                // Default sort: alphabetical English
-                query = query.sort('nameEnglish');
+                // Default sort: premium first, then alphabetical English
+                query = query.sort('-isPremium nameEnglish');
             }
 
             // Pagination
@@ -126,21 +130,26 @@ exports.getNames = async (req, res, next) => {
 
 // @desc    Get single name
 // @route   GET /api/v1/names/:id
-// @access  Public
+// @access  Public (Premium fields filtered if not subscribed)
 exports.getName = async (req, res, next) => {
     try {
-        const identifier = req.params.id;
-        const isObjectId = identifier.match(/^[0-9a-fA-F]{24}$/);
+        // Validate ID format
+        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+            return next(new ErrorResponse('Invalid ID format', 400));
+        }
 
-        const cacheKey = `names:detail:${identifier}`;
+        // Determine if user has premium access
+        let hasPremiumAccess = false;
+        if (req.user) {
+            if (req.user.role === 'admin' || (req.user.subscription && req.user.subscription.status === 'premium')) {
+                hasPremiumAccess = true;
+            }
+        }
+
+        const cacheKey = `names:detail:${req.params.id}${hasPremiumAccess ? ':premium' : ':public'}`;
 
         const fetchName = async () => {
-            let name;
-            if (isObjectId) {
-                name = await Name.findById(identifier);
-            } else {
-                name = await Name.findOne({ slug: identifier });
-            }
+            const name = await Name.findById(req.params.id);
 
             if (!name) return null;
 
@@ -149,13 +158,24 @@ exports.getName = async (req, res, next) => {
                 throw new Error('Name inactive');
             }
 
-            return name.toObject();
+            let responseData = name.toObject();
+
+            // If not premium user, hide premium-only data
+            if (!hasPremiumAccess) {
+                 delete responseData.history;
+                 delete responseData.quranReference;
+                 delete responseData.famousPersonalities;
+                 delete responseData.birthGuidance;
+                 delete responseData.variants;
+            }
+
+            return responseData;
         };
 
         const result = await cache.getOrSet(cacheKey, fetchName, 600); // 10 min TTL
 
         if (!result) {
-            return next(new ErrorResponse(`Name not found with identifier of ${identifier}`, 404));
+            return next(new ErrorResponse(`Name not found with id of ${req.params.id}`, 404));
         }
 
         res.status(200).json({
@@ -175,7 +195,7 @@ exports.getName = async (req, res, next) => {
 // @access  Public
 exports.getSitemap = async (req, res, next) => {
     try {
-        const names = await Name.find({ isActive: true }).select('slug updatedAt');
+        const names = await Name.find({ isActive: true }).select('_id updatedAt');
         
         const baseUrl = 'https://www.islamicnames.in';
         
@@ -183,15 +203,14 @@ exports.getSitemap = async (req, res, next) => {
         xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
         
         // Static routes
-        const staticRoutes = ['', '/search', '/faq', '/compare', '/disclaimer', '/privacy', '/terms', '/report-bug'];
+        const staticRoutes = ['', '/search', '/pricing', '/faq', '/compare'];
         staticRoutes.forEach(route => {
             xml += `  <url>\n    <loc>${baseUrl}${route}</loc>\n    <changefreq>daily</changefreq>\n    <priority>${route === '' ? '1.0' : '0.8'}</priority>\n  </url>\n`;
         });
         
         // Dynamic name routes
         names.forEach(name => {
-            const path = name.slug || name._id;
-            xml += `  <url>\n    <loc>${baseUrl}/name/${path}</loc>\n    <lastmod>${name.updatedAt.toISOString().split('T')[0]}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
+            xml += `  <url>\n    <loc>${baseUrl}/name/${name._id}</loc>\n    <lastmod>${name.updatedAt.toISOString().split('T')[0]}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
         });
         
         xml += `</urlset>`;
@@ -208,9 +227,6 @@ exports.getSitemap = async (req, res, next) => {
 // @access  Private/Admin
 exports.createName = async (req, res, next) => {
     try {
-        if (req.body.nameEnglish && !req.body.slug) {
-            req.body.slug = req.body.nameEnglish.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
-        }
         const name = await Name.create(req.body);
         await cache.invalidatePattern('names:list:*');
         res.status(201).json({ success: true, data: name });
@@ -227,17 +243,16 @@ exports.updateName = async (req, res, next) => {
         let name = await Name.findById(req.params.id);
         if (!name) return next(new ErrorResponse(`Name not found`, 404));
 
-        if (req.body.nameEnglish && !req.body.slug) {
-            req.body.slug = req.body.nameEnglish.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
-        }
-
         name = await Name.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true
         });
 
         await cache.invalidatePattern('names:list:*');
-        await cache.invalidate(`names:detail:${req.params.id}`);
+        await cache.invalidateMany([
+            `names:detail:${req.params.id}:public`,
+            `names:detail:${req.params.id}:premium`
+        ]);
 
         res.status(200).json({ success: true, data: name });
     } catch (err) {
@@ -255,7 +270,10 @@ exports.deleteName = async (req, res, next) => {
 
         await name.deleteOne();
         await cache.invalidatePattern('names:list:*');
-        await cache.invalidate(`names:detail:${req.params.id}`);
+        await cache.invalidateMany([
+            `names:detail:${req.params.id}:public`,
+            `names:detail:${req.params.id}:premium`
+        ]);
 
         res.status(200).json({ success: true, data: {} });
     } catch (err) {

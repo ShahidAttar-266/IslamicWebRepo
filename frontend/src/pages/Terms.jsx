@@ -1,15 +1,11 @@
-
 import { ArrowLeft, FileText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
-
 
 const Terms = () => {
   const navigate = useNavigate();
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
-      
       <button 
         onClick={() => navigate(-1)} 
         className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-medium mb-8 group"
@@ -24,7 +20,7 @@ const Terms = () => {
           </div>
           <div>
             <h1 className="text-3xl md:text-4xl font-black text-text">Terms & Conditions</h1>
-            <p className="text-text-muted mt-1">Effective Date: June 2026</p>
+            <p className="text-text-muted mt-1">Effective Date: May 2026</p>
           </div>
         </div>
 
@@ -62,19 +58,19 @@ const Terms = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">04.</span> Free Access & Features
+              <span className="text-primary text-sm font-black">04.</span> Payments & Subscriptions
             </h2>
             <p>
-              IslamicNames.in provides its entire database and core features, including historical backgrounds, Quranic references, and name comparison tools, free of charge. We reserve the right to modify the availability of features or introduce new services in the future.
+              IslamicNames.in offers premium features, subscription plans, and digital services that require successful online payment through authorized payment gateways such as Razorpay. Subscription fees, pricing, and feature availability may change at any time without prior notice. Access to premium services is granted only after successful payment confirmation.
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">05.</span> Community Contributions
+              <span className="text-primary text-sm font-black">05.</span> Refunds & Cancellation
             </h2>
             <p>
-              Users may suggest new names or report errors through the provided channels. While we appreciate community input, IslamicNames.in reserves the right to review, edit, or reject any submitted content to maintain the quality and accuracy of our database.
+              Refunds and subscription cancellations are governed by our Refund Policy and Cancellation Policy available on the website. Users are advised to review these policies before making payments or subscribing to premium services.
             </p>
           </section>
 
@@ -92,7 +88,7 @@ const Terms = () => {
               <span className="text-primary text-sm font-black">07.</span> Limitation of Liability
             </h2>
             <p>
-              IslamicNames.in shall not be held liable for any direct, indirect, incidental, or consequential damages arising from the use of the website or its content. Users access and use the platform at their own discretion and risk.
+              IslamicNames.in shall not be held liable for any direct, indirect, incidental, or consequential damages arising from the use of the website, its content, or premium services. Users access and use the platform at their own discretion and risk.
             </p>
           </section>
 
@@ -101,7 +97,7 @@ const Terms = () => {
               <span className="text-primary text-sm font-black">08.</span> Third-Party Services
             </h2>
             <p>
-              The website may integrate third-party services including analytics tools, cloud hosting providers, and communication services. IslamicNames.in is not responsible for the policies, practices, or service interruptions of third-party providers.
+              The website may integrate third-party services including payment gateways, analytics tools, cloud hosting providers, and communication services. IslamicNames.in is not responsible for the policies, practices, or service interruptions of third-party providers.
             </p>
           </section>
 
@@ -110,7 +106,7 @@ const Terms = () => {
               <span className="text-primary text-sm font-black">09.</span> Termination of Access
             </h2>
             <p>
-              We reserve the right to suspend, restrict, or terminate access to the website without prior notice if any misuse, violation of terms, or suspicious activity is detected.
+              We reserve the right to suspend, restrict, or terminate access to the website or premium services without prior notice if any misuse, violation of terms, fraudulent transaction, or suspicious activity is detected.
             </p>
           </section>
 
@@ -128,14 +124,14 @@ const Terms = () => {
               <span className="text-primary text-sm font-black">11.</span> Contact Information
             </h2>
             <p>
-              For support or legal concerns, users may contact us through the official contact details provided on the website.
+              For support, payment-related issues, or legal concerns, users may contact us through the official contact details provided on the website.
             </p>
           </section>
 
           <div className="pt-8 border-t border-border mt-12 text-center">
             <p className="font-bold text-text mb-2">Contact</p>
             <a 
-              to="mailto:support@islamicnames.in" 
+              href="mailto:support@islamicnames.in" 
               className="text-primary hover:underline font-medium text-lg"
             >
               support@islamicnames.in
