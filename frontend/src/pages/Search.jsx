@@ -43,7 +43,15 @@ const Search = () => {
   const getPageDescription = () => {
     if (debouncedTerm) return `Explore search results for "${debouncedTerm}" on IslamicNames. Find meanings and origins of Islamic names.`;
     if (letterFilter) return `Browse Islamic names starting with the letter ${letterFilter}. Explore meanings, origins, and Quranic references.`;
-    return 'Browse thousands of meaningful Islamic names. Filter by gender, alphabet, or Quranic references.';
+    return 'Browse thousands of meaningful Islamic names. Filter by gender, alphabet, or Quranic references. Explore Islamic names for boys and girls with meanings.';
+  };
+
+  const getKeywords = () => {
+    let base = "islamicnames, islamic names, islamic names with meanings";
+    if (debouncedTerm) base += `, ${debouncedTerm} meaning, ${debouncedTerm} islamic name`;
+    if (genderFilter) base += `, islamic names for ${genderFilter}s`;
+    if (quranicFilter) base += `, quran islamic names, islamic names from quran`;
+    return base;
   };
 
   const clearAllFilters = () => {

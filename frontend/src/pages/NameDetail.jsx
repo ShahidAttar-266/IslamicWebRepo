@@ -216,16 +216,18 @@ const NameDetail = () => {
   return (
     <div className="max-w-5xl mx-auto px-4 py-4 md:py-8 space-y-8 md:space-y-12">
       <Helmet>
-        <title>{`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`}</title>
-        <meta name="description" content={`Find the meaning, origin, pronunciation, and Quranic reference for the name ${name.nameEnglish}. Explore deep historical background and naming etiquette.`} />
+        <title>{`${name.nameEnglish} (${name.nameArabic}) Meaning, Origin & History | IslamicNames`}</title>
+        <meta name="description" content={`Find the meaning, origin, pronunciation, and Quranic reference for the Islamic name ${name.nameEnglish}. Explore deep historical background and naming etiquette. Search Islamic names with meanings.`} />
+        <meta name="keywords" content={`${name.nameEnglish} meaning, ${name.nameEnglish} islamic name, ${name.nameEnglish} name history, ${name.nameArabic} meaning, islamic names for ${name.gender}s, islamic names with meanings`} />
         
         {/* Open Graph / Facebook */}
-        <meta property="og:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`} />
-        <meta property="og:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}.`} />
+        <meta property="og:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & History`} />
+        <meta property="og:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}. Verified Islamic name.`} />
         <meta property="og:url" content={`https://www.islamicnames.in/name/${id}`} />
+        <meta property="og:type" content="article" />
         
         {/* Twitter */}
-        <meta property="twitter:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`} />
+        <meta property="twitter:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & History`} />
         <meta property="twitter:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}.`} />
 
         {/* Structured Data (JSON-LD) */}
@@ -239,7 +241,8 @@ const NameDetail = () => {
               "@type": "Thing",
               "name": name.nameEnglish,
               "alternateName": name.nameArabic,
-              "description": name.meaning
+              "description": name.meaning,
+              "image": "https://www.islamicnames.in/logo-120.webp"
             },
             "publisher": {
               "@type": "Organization",
