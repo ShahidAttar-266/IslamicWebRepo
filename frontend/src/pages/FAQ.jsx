@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const faqs = [
   {
@@ -7,20 +8,44 @@ const faqs = [
     icon: '☽',
     questions: [
       {
-        q: 'How many Islamic names are in the IslamicNames database?',
-        a: 'IslamicNames currently has thousands of verified Islamic names for boys and girls, each with Arabic script, phonetic pronunciation, root meaning, and origin. We add new names regularly based on classical sources and scholarly references.'
+        q: 'What is the importance of name meanings in Islam?',
+        a: 'In Islam, a name is considered a prayer and a lifelong identity. The Prophet Muhammad (peace be upon him) emphasized giving children good, meaningful names as they impact a person\'s character and are the names by which they will be called on the Day of Judgment.'
       },
       {
-        q: 'Are the meanings of names verified by Islamic scholars?',
-        a: 'All names in our database are researched from classical Arabic lexicons and reputable Islamic naming references. Each entry is carefully curated to ensure accuracy in meaning and permissibility.'
+        q: 'What are some unique Muslim baby boy names with meaning?',
+        a: 'Some unique and meaningful names for boys include: Zayd (Growth), Arham (Merciful), Shahzain (Brave), and Rayyan (Gate of Paradise). Our database features thousands of such unique options with verified meanings.'
       },
       {
-        q: 'Can I search for names by meaning or personality trait?',
-        a: 'Yes! You can search by name, meaning, origin, or letter. Our comprehensive search lets you find names that carry specific traits or qualities in Arabic.'
+        q: 'Are these names suitable for Indian Muslim families?',
+        a: 'Yes, our collection is curated to include names that are widely accepted and popular among Indian Muslim families, balancing traditional Arabic roots with names that are easy to pronounce and culturally resonant in India.'
       },
       {
-        q: 'Do you include names from the Quran and Hadith?',
-        a: 'Absolutely. You can filter names by Quranic reference. Each name shows the exact ayah or context it is drawn from, so you can verify the source yourself.'
+        q: 'When should a Muslim baby be named?',
+        a: 'According to Sunnah, a baby is ideally named on the seventh day after birth, often accompanying the Aqiqah ceremony. However, naming can also be done on the day of birth or any time thereafter.'
+      },
+      {
+        q: 'Can modern or unique names be used in Islam?',
+        a: 'Yes, as long as the name has a good meaning and does not contradict Islamic beliefs or values. Islam encourages names that signify positive traits, devotion to Allah, or honor the Prophets and righteous predecessors.'
+      },
+      {
+        q: 'Is it Sunnah to give a child a meaningful name?',
+        a: 'Absolutely. It is a highly recommended Sunnah (practice of the Prophet) to choose names with beautiful meanings. The Prophet (pbuh) himself changed names of individuals that carried negative or un-Islamic connotations to better, meaningful ones.'
+      },
+      {
+        q: 'What is the best islamic name for a girl names?',
+        a: 'While "best" is subjective, names of the Sahabiyat and mothers of the believers like Khadija, Aisha, Maryam, and Fatima are considered highly blessed. Other beautiful options include Sarah, Hawa, and Zaynab.'
+      },
+      {
+        q: 'What is the best islamic name for a boy names?',
+        a: 'The Prophet (pbuh) mentioned that the most beloved names to Allah are Abdullah and Abdur-Rahman. Other excellent choices include Muhammad, Ahmad, and the names of other Prophets like Ibrahim and Yusuf.'
+      },
+      {
+        q: 'What are the names of islamic months?',
+        a: 'The twelve months of the Islamic Hijri calendar are: 1. Muharram, 2. Safar, 3. Rabi\' al-Awwal, 4. Rabi\' ath-Thani, 5. Jumada al-Ula, 6. Jumada al-Akhira, 7. Rajab, 8. Sha\'ban, 9. Ramadan, 10. Shawwal, 11. Dhu al-Qi\'dah, and 12. Dhu al-Hijjah.'
+      },
+      {
+        q: 'What is the best islamic names for a boy in urdu?',
+        a: 'Popular and meaningful Islamic names for boys in Urdu-speaking communities include Shahzain, Zohan, Ayan, Hamza, and Bilal. These names carry deep spiritual significance and have a beautiful Urdu phonetic appeal.'
       },
     ]
   },
@@ -43,20 +68,6 @@ const faqs = [
       {
         q: 'Can I export my favorite names as a PDF?',
         a: 'Yes, once you have saved names to your favorites, you can export your entire list as a beautifully formatted PDF document for printing or sharing.'
-      },
-    ]
-  },
-  {
-    category: 'General',
-    icon: '◈',
-    questions: [
-      {
-        q: 'How can I contribute a new name or report an error?',
-        a: 'We welcome community contributions! Please use our "Report a Bug" feature or email us at support@islamicnames.in if you find any inaccuracies or want to suggest a new name.'
-      },
-      {
-        q: 'Is there a mobile app?',
-        a: 'We are currently a web-app, but you can "Add to Home Screen" on your mobile browser for a native-like experience on your phone.'
       },
     ]
   }
@@ -104,8 +115,32 @@ const FAQ = () => {
 
   const toggle = (key) => setOpenItem(prev => prev === key ? null : key);
 
+  // Generate JSON-LD Schema
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.flatMap(section => 
+      section.questions.map(q => ({
+        "@type": "Question",
+        "name": q.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": q.a
+        }
+      }))
+    )
+  };
+
   return (
     <div className="min-h-screen bg-bg">
+      <Helmet>
+        <title>Frequently Asked Questions | Islamic Names & Meanings | IslamicNames</title>
+        <meta name="description" content="Find answers to common questions about Islamic names, meanings, naming traditions, and our platform features. Explore best Islamic names for boys and girls." />
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
+      </Helmet>
+
       {/* Arabic geometric background pattern */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.025]"
         style={{
@@ -129,7 +164,7 @@ const FAQ = () => {
           </h1>
 
           <p className="text-text-muted text-base max-w-md mx-auto leading-relaxed">
-            Everything you need to know about IslamicNames — our library and features.
+            Everything you need to know about Islamic names — meanings, traditions, and our library.
             Can't find an answer?{' '}
             <a href="mailto:support@islamicnames.in" className="text-primary hover:underline">
               Contact us
