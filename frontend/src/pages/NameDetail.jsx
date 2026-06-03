@@ -167,9 +167,9 @@ const NameDetail = () => {
           <div className="w-16 h-16 md:w-20 md:h-20 bg-danger/10 text-danger rounded-full flex items-center justify-center mx-auto mb-6">
             <Info size={32} />
           </div>
-          <h1 className="text-2xl md:text-3xl font-black text-text mb-4">
+          <h2 className="text-2xl md:text-3xl font-black text-text mb-4">
             {isNotFound ? 'Name Not Found' : 'Something went wrong'}
-          </h1>
+          </h2>
           <p className="text-sm md:text-base text-text-muted mb-8 leading-relaxed italic">
             {isNotFound 
               ? "We couldn't find the name you're looking for. It might have been removed or the link might be incorrect." 
