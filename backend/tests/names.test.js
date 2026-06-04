@@ -125,4 +125,39 @@ describe('Names API', () => {
             expect(res.body.error).toBe('Invalid ID format');
         });
     });
+
+    describe('GET /api/v1/names/render/:idOrSlug', () => {
+        const validId = '507f1f77bcf86cd799439011';
+
+        it('should render the name HTML page successfully', async () => {
+            const mockName = {
+                _id: validId,
+                nameEnglish: 'Ahmed',
+                nameArabic: 'أحمد',
+                meaning: 'Praiseworthy',
+                gender: 'boy',
+                origin: 'Arabic',
+                isActive: true
+            };
+            Name.findById.mockResolvedValue(mockName);
+
+            const res = await request(app).get(`/api/v1/names/render/${validId}`);
+
+            expect(res.statusCode).toEqual(200);
+            expect(res.headers['content-type']).toContain('text/html');
+            expect(res.text).toContain('Ahmed');
+            expect(res.text).toContain('Praiseworthy');
+            expect(res.text).toContain('Arabic');
+        });
+
+        it('should return 404 HTML if name is not found', async () => {
+            Name.findOne.mockResolvedValue(null);
+
+            const res = await request(app).get('/api/v1/names/render/nonexistent');
+
+            expect(res.statusCode).toEqual(404);
+            expect(res.headers['content-type']).toContain('text/html');
+            expect(res.text).toContain('Name Not Found');
+        });
+    });
 });
