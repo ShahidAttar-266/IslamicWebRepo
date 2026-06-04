@@ -114,11 +114,3 @@ app.get('/api/v1/health', (req, res) => {
 app.use(errorHandler);
 
 module.exports = app;
-', (req, res) => {
-    res.status(200).json({ status: 'success', message: 'API is running' });
-});
-
-// Error handling middleware
-app.use(errorHandler);
-
-module.exports = app;
