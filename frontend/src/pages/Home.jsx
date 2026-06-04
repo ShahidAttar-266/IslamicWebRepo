@@ -5,6 +5,7 @@ import { Search as SearchIcon, ArrowRight } from 'lucide-react';
 import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
 import NameCard from '../components/NameCard';
+import HomeFAQ from '../components/HomeFAQ';
 
 import { Helmet } from 'react-helmet-async';
 
@@ -111,6 +112,9 @@ const Home = () => {
           </Suspense>
         )}
       </section>
+
+      {/* SEO FAQ Section */}
+      <HomeFAQ />
 
       {/* CTA Banner */}
       <section className="min-h-[420px] bg-card border border-border rounded-3xl p-6 sm:p-10 md:p-16 text-center relative overflow-hidden shadow-2xl flex items-center justify-center">

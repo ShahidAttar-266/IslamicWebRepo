@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const faqs = [
   {
@@ -22,6 +23,52 @@ const faqs = [
         q: 'Do you include names from the Quran and Hadith?',
         a: 'Absolutely. You can filter names by Quranic reference and Prophetic Hadith. Each name shows the exact ayah or hadith it is drawn from, so you can verify the source yourself.'
       },
+    ]
+  },
+  {
+    category: 'General Islamic Naming',
+    icon: '☪',
+    questions: [
+      {
+        q: 'What is the importance of name meanings in Islam?',
+        a: 'In Islam, a name is considered a significant part of a person\'s identity and is believed to have a profound impact on their life and character. Prophet Muhammad (PBUH) emphasized choosing names with good and noble meanings, as people will be called by their names and their fathers\' names on the Day of Resurrection.'
+      },
+      {
+        q: 'What are some unique Muslim baby boy names with meaning?',
+        a: 'Some unique Muslim baby boy names include Aydin (Brilliant, Enlightened), Zayd (Growth, Abundance), Rayyan (Gates of Heaven), and Ihsan (Perfection, Excellence). You can explore our database to find more unique names tailored to your preferences.'
+      },
+      {
+        q: 'Are these names suitable for Indian Muslim families?',
+        a: 'Yes, our collection includes a wide variety of names that are perfectly suitable for Indian Muslim families. We offer names that are popular across different cultures and regions, including traditional, modern, and Urdu-origin names that are widely used in India.'
+      },
+      {
+        q: 'When should a Muslim baby be named?',
+        a: 'According to Islamic tradition (Sunnah), it is recommended to name a baby on the first day of birth, or on the seventh day during the Aqiqah ceremony. Both practices are accepted and widely followed in the Muslim community.'
+      },
+      {
+        q: 'Can modern or unique names be used in Islam?',
+        a: 'Yes, modern or unique names can be used in Islam as long as they hold a good meaning, do not contradict Islamic monotheism (Tawheed), and are not associated with negative traits or polytheism.'
+      },
+      {
+        q: 'Is it Sunnah to give a child a meaningful name?',
+        a: 'Yes, it is highly recommended and considered a Sunnah to give a child a beautiful and meaningful name. The Prophet (PBUH) often changed names of people and places if they had negative or unpleasant meanings.'
+      },
+      {
+        q: 'what is the best islamic name for a girl names?',
+        a: 'The "best" name is subjective, but some of the most highly regarded Islamic names for girls include Maryam, Fatima, Aisha, and Khadija, who were significant women in Islamic history. Other beautiful names include Aayat (Sign/Miracle), Noor (Light), and Inaya (Care/Concern).'
+      },
+      {
+        q: 'what is the best islamic name for a boy names?',
+        a: 'The Prophet Muhammad (PBUH) mentioned that the most beloved names to Allah are Abdullah (Servant of Allah) and Abdur-Rahman (Servant of the Most Merciful). Other excellent choices include Muhammad, Ibrahim, Umar, and Ali.'
+      },
+      {
+        q: 'what are the names of islamic months',
+        a: 'The 12 Islamic (Hijri) months are: Muharram, Safar, Rabi\' al-Awwal, Rabi\' al-Thani, Jumada al-Awwal, Jumada al-Thani, Rajab, Sha\'ban, Ramadan, Shawwal, Dhu al-Qi\'dah, and Dhu al-Hijjah.'
+      },
+      {
+        q: 'what is the best islamic names for a boy in urdu',
+        a: 'Some of the best Islamic names for boys popular in Urdu-speaking cultures include Arham (Merciful), Zeeshan (Dignified), Faizan (Grace/Beneficence), and Shahzaib (Crown of a King).'
+      }
     ]
   },
   {
@@ -84,6 +131,21 @@ const faqs = [
   }
 ];
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.flatMap(section => 
+    section.questions.map(q => ({
+      "@type": "Question",
+      "name": q.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": `<p>${q.a}</p>`
+      }
+    }))
+  )
+};
+
 const FAQItem = ({ q, a, isOpen, onClick }) => (
   <div
     className={`border border-border rounded-2xl overflow-hidden transition-all duration-300 ${
@@ -128,6 +190,12 @@ const FAQ = () => {
 
   return (
     <div className="min-h-screen bg-bg">
+      <Helmet>
+        <title>FAQ | IslamicNames</title>
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
+      </Helmet>
       {/* Arabic geometric background pattern */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.025]"
         style={{
