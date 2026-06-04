@@ -83,8 +83,33 @@ describe('Names API', () => {
             expect(res.body.data.nameEnglish).toBe('Ahmed');
         });
 
+        it('should fetch a single name by slug', async () => {
+            const mockName = {
+                _id: validId,
+                nameEnglish: 'Ahmed',
+                slug: 'ahmed',
+                isActive: true,
+                toObject: jest.fn().mockReturnValue({
+                    _id: validId,
+                    nameEnglish: 'Ahmed',
+                    slug: 'ahmed',
+                    isActive: true
+                })
+            };
+            
+            Name.findOne.mockResolvedValue(mockName);
+
+            const res = await request(app).get('/api/v1/names/ahmed');
+
+            expect(res.statusCode).toEqual(200);
+            expect(res.body.success).toBe(true);
+            expect(res.body.data.nameEnglish).toBe('Ahmed');
+            expect(Name.findOne).toHaveBeenCalledWith({ slug: 'ahmed' });
+        });
+
         it('should return 404 if name not found', async () => {
             Name.findById.mockResolvedValue(null);
+            Name.findOne.mockResolvedValue(null);
 
             const res = await request(app).get(`/api/v1/names/${validId}`);
 
@@ -93,7 +118,7 @@ describe('Names API', () => {
         });
 
         it('should return 400 for invalid ID format', async () => {
-            const res = await request(app).get('/api/v1/names/invalid-id');
+            const res = await request(app).get('/api/v1/names/invalid id!');
 
             expect(res.statusCode).toEqual(400);
             expect(res.body.success).toBe(false);

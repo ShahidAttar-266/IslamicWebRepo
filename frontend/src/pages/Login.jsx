@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 import { GoogleLogin } from '@react-oauth/google';
 import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
+import { Helmet } from 'react-helmet-async';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email'),
@@ -48,6 +49,24 @@ const Login = () => {
 
   return (
     <div className="max-w-md mx-auto mt-4 sm:mt-10 px-4 sm:px-0">
+      <Helmet>
+        <title>Login | IslamicNames</title>
+        <meta name="description" content="Sign in to your IslamicNames account to save your favorite names, access premium tools, and more." />
+        <link rel="canonical" href="https://www.islamicnames.in/login" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:title" content="Login | IslamicNames" />
+        <meta property="og:description" content="Sign in to your IslamicNames account to save your favorite names, access premium tools, and more." />
+        <meta property="og:url" content="https://www.islamicnames.in/login" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Login | IslamicNames" />
+        <meta name="twitter:description" content="Sign in to your IslamicNames account to save your favorite names, access premium tools, and more." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+      </Helmet>
       <div className="bg-card p-5 sm:p-8 rounded-3xl border border-border shadow-2xl">
         <div className="text-center mb-8">
           <h1 className="text-2xl md:text-3xl font-black text-text mb-2">Welcome Back</h1>

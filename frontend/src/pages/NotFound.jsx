@@ -1,9 +1,28 @@
 import { Link } from 'react-router-dom';
 import { Home, MoveLeft } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const NotFound = () => {
   return (
     <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
+      <Helmet>
+        <title>Page Not Found | IslamicNames</title>
+        <meta name="description" content="The page you are looking for does not exist on IslamicNames." />
+        <link rel="canonical" href="https://www.islamicnames.in/404" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:title" content="Page Not Found | IslamicNames" />
+        <meta property="og:description" content="The page you are looking for does not exist on IslamicNames." />
+        <meta property="og:url" content="https://www.islamicnames.in/404" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Page Not Found | IslamicNames" />
+        <meta name="twitter:description" content="The page you are looking for does not exist on IslamicNames." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+      </Helmet>
       <div className="relative mb-8">
         <h1 className="text-9xl font-black text-primary/10 select-none">404</h1>
         <div className="absolute inset-0 flex items-center justify-center">

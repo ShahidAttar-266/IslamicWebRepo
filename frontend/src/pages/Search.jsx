@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../api/axios';
@@ -115,6 +115,20 @@ const Search = () => {
       <Helmet>
         <title>{getPageTitle()}</title>
         <meta name="description" content={getPageDescription()} />
+        <link rel="canonical" href="https://www.islamicnames.in/search" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:title" content={getPageTitle()} />
+        <meta property="og:description" content={getPageDescription()} />
+        <meta property="og:url" content="https://www.islamicnames.in/search" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={getPageTitle()} />
+        <meta name="twitter:description" content={getPageDescription()} />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
       </Helmet>
 
       {/* Search Header */}

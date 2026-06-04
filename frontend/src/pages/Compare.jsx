@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { X, Plus, ArrowLeftRight, Printer, Search } from 'lucide-react';
+import { X, Plus, Printer, Search } from 'lucide-react';
 import api from '../api/axios';
-import useAuthStore from '../store/useAuthStore';
+import { Helmet } from 'react-helmet-async';
 
 const ComparisonRow = ({ label, val1, val2, isArabic = false }) => (
   <div className="border-b border-border/50 py-6 md:py-4">
@@ -39,7 +39,6 @@ const EmptySlot = ({ slot, onAdd }) => (
 
 const Compare = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { user } = useAuthStore();
   const navigate = useNavigate();
 
   const id1 = searchParams.get('id1');
@@ -78,6 +77,24 @@ const Compare = () => {
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 md:space-y-12 py-4 md:py-8 px-4">
+      <Helmet>
+        <title>Compare Islamic Names | IslamicNames</title>
+        <meta name="description" content="Compare meanings, origins, and Quranic contexts of multiple Islamic names side-by-side to find the perfect choice." />
+        <link rel="canonical" href="https://www.islamicnames.in/compare" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:title" content="Compare Islamic Names | IslamicNames" />
+        <meta property="og:description" content="Compare meanings, origins, and Quranic contexts of multiple Islamic names side-by-side to find the perfect choice." />
+        <meta property="og:url" content="https://www.islamicnames.in/compare" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Compare Islamic Names | IslamicNames" />
+        <meta name="twitter:description" content="Compare meanings, origins, and Quranic contexts of multiple Islamic names side-by-side to find the perfect choice." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+      </Helmet>
       <div className="text-center space-y-4">
         <h1 className="text-3xl md:text-5xl font-black text-text tracking-tight">Compare Names</h1>
         <p className="text-sm md:text-base text-text-muted max-w-xl mx-auto italic">Analyze meanings, origins, and historical contexts side-by-side to find the perfect choice.</p>

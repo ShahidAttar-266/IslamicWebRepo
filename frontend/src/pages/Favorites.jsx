@@ -1,16 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../api/axios';
-import { HeartCrack, Download, Loader2, Crown, Heart } from 'lucide-react';
+import { HeartCrack, Download, Loader2, Heart } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import useAuthStore from '../store/useAuthStore';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NameCard from '../components/NameCard';
 import { exportFavoritesToPDF } from '../api/pdfExport';
+import { Helmet } from 'react-helmet-async';
 
 const Favorites = () => {
   const queryClient = useQueryClient();
-  const { user, isAuthenticated } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
   const [isExporting, setIsExporting] = useState(false);
 
@@ -64,6 +65,24 @@ const Favorites = () => {
 
   return (
     <div className="space-y-6 md:space-y-10 px-1">
+      <Helmet>
+        <title>My Favorite Names | IslamicNames</title>
+        <meta name="description" content="View and manage your saved favorite Islamic names." />
+        <link rel="canonical" href="https://www.islamicnames.in/favorites" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:title" content="My Favorite Names | IslamicNames" />
+        <meta property="og:description" content="View and manage your saved favorite Islamic names." />
+        <meta property="og:url" content="https://www.islamicnames.in/favorites" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="My Favorite Names | IslamicNames" />
+        <meta name="twitter:description" content="View and manage your saved favorite Islamic names." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+      </Helmet>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-text mb-2">My Favorites</h1>

@@ -136,7 +136,7 @@ const NameCard = React.memo(({ name, onFavorite, delay = 0 }) => {
 
   return (
     <Link 
-      to={`/name/${name._id}`} 
+      to={`/name/${name.slug || name._id}`} 
       className={cardClasses}
       style={{ animationDelay: `${delay}s` }}
       aria-label={`${name.nameEnglish} — ${name.gender} name`}

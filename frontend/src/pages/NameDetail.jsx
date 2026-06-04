@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Heart,
-  Lock,
   Book,
   Info,
   Copy,
@@ -65,15 +64,10 @@ const Section = ({ title, icon: Icon, children }) => {
 const NameDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
-  const [showLoginBanner, setShowLoginBanner] = useState(true);
-
-  // Hide banner when user logs in
-  useEffect(() => {
-    if (isAuthenticated) setShowLoginBanner(false);
-  }, [isAuthenticated]);
+  const [showLoginBanner, setShowLoginBanner] = useState(!isAuthenticated);
 
   const handleLogin = () => navigate('/login');
   const handleDismissBanner = () => setShowLoginBanner(false);
@@ -222,15 +216,20 @@ const NameDetail = () => {
       <Helmet>
         <title>{`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`}</title>
         <meta name="description" content={`Find the meaning, origin, pronunciation, and Quranic reference for the name ${name.nameEnglish}. Explore deep historical background and naming etiquette.`} />
+        <link rel="canonical" href={`https://www.islamicnames.in/name/${name.slug || id}`} />
         
         {/* Open Graph / Facebook */}
         <meta property="og:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`} />
         <meta property="og:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}.`} />
-        <meta property="og:url" content={`https://www.islamicnames.in/name/${id}`} />
+        <meta property="og:url" content={`https://www.islamicnames.in/name/${name.slug || id}`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
         
         {/* Twitter */}
-        <meta property="twitter:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`} />
-        <meta property="twitter:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}.`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`} />
+        <meta name="twitter:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}.`} />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
 
         {/* Structured Data (JSON-LD) */}
         <script type="application/ld+json">

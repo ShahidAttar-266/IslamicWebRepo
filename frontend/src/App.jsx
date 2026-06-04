@@ -73,11 +73,11 @@ function App() {
         <meta property="og:image" content="https://www.islamicnames.in/logo-120.webp" />
 
         {/* Twitter */}
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://www.islamicnames.in/" />
-        <meta property="twitter:title" content="IslamicNames | Meaningful Names. Timeless Legacy." />
-        <meta property="twitter:description" content="Discover thousands of meaningful Islamic names with deep etymology, Quranic references, and historical significance." />
-        <meta property="twitter:image" content="https://www.islamicnames.in/logo-120.webp" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.islamicnames.in/" />
+        <meta name="twitter:title" content="IslamicNames | Meaningful Names. Timeless Legacy." />
+        <meta name="twitter:description" content="Discover thousands of meaningful Islamic names with deep etymology, Quranic references, and historical significance." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/logo-120.webp" />
       </Helmet>
 
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>

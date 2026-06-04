@@ -1,5 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
-import { m } from 'framer-motion';
+import { useState, lazy, Suspense } from 'react';
 import { 
   Bug, 
   Send, 
@@ -13,6 +12,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import { toast } from 'react-hot-toast';
+import { Helmet } from 'react-helmet-async';
 import useAuthStore from '../store/useAuthStore';
 
 // Lazy load motion components for maximum bundle optimization
@@ -23,19 +23,8 @@ const ReportBug = () => {
   const { user } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [formData, setFormData] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
-    title: '',
-    description: '',
-    deviceType: 'Desktop',
-    browser: '',
-    severity: 'medium'
-  });
-
-  // Auto-detect browser and device
-  useEffect(() => {
-    const ua = navigator.userAgent;
+  const [formData, setFormData] = useState(() => {
+    const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
     let browser = 'Unknown';
     if (ua.includes('Chrome')) browser = 'Chrome';
     else if (ua.includes('Firefox')) browser = 'Firefox';
@@ -43,13 +32,17 @@ const ReportBug = () => {
     else if (ua.includes('Edge')) browser = 'Edge';
 
     const isMobile = /iPhone|iPad|iPod|Android/i.test(ua);
-    
-    setFormData(prev => ({
-      ...prev,
+
+    return {
+      name: user?.name || '',
+      email: user?.email || '',
+      title: '',
+      description: '',
+      deviceType: isMobile ? 'Mobile' : 'Desktop',
       browser,
-      deviceType: isMobile ? 'Mobile' : 'Desktop'
-    }));
-  }, []);
+      severity: 'medium'
+    };
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -132,6 +125,24 @@ const ReportBug = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 md:py-16">
+      <Helmet>
+        <title>Report a Bug | IslamicNames</title>
+        <meta name="description" content="Submit feedback or report issues to help us improve the IslamicNames platform." />
+        <link rel="canonical" href="https://www.islamicnames.in/report-bug" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:title" content="Report a Bug | IslamicNames" />
+        <meta property="og:description" content="Submit feedback or report issues to help us improve the IslamicNames platform." />
+        <meta property="og:url" content="https://www.islamicnames.in/report-bug" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Report a Bug | IslamicNames" />
+        <meta name="twitter:description" content="Submit feedback or report issues to help us improve the IslamicNames platform." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+      </Helmet>
       <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold text-xs uppercase tracking-widest mb-8">
         <ArrowLeft size={16} /> Back
       </button>

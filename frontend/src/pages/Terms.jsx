@@ -1,11 +1,30 @@
 import { ArrowLeft, FileText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const Terms = () => {
   const navigate = useNavigate();
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
+      <Helmet>
+        <title>Terms & Conditions | IslamicNames</title>
+        <meta name="description" content="Read the terms of service and usage guidelines for IslamicNames." />
+        <link rel="canonical" href="https://www.islamicnames.in/terms" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:title" content="Terms & Conditions | IslamicNames" />
+        <meta property="og:description" content="Read the terms of service and usage guidelines for IslamicNames." />
+        <meta property="og:url" content="https://www.islamicnames.in/terms" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Terms & Conditions | IslamicNames" />
+        <meta name="twitter:description" content="Read the terms of service and usage guidelines for IslamicNames." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+      </Helmet>
       <button 
         onClick={() => navigate(-1)} 
         className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-medium mb-8 group"

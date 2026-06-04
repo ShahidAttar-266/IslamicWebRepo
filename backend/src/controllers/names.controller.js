@@ -126,15 +126,25 @@ exports.getNames = async (req, res, next) => {
 // @access  Public
 exports.getName = async (req, res, next) => {
     try {
-        // Validate ID format
-        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+        const isObjectId = req.params.id.match(/^[0-9a-fA-F]{24}$/);
+        const isSlug = req.params.id.match(/^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$/);
+
+        if (!isObjectId && !isSlug) {
             return next(new ErrorResponse('Invalid ID format', 400));
         }
 
         const cacheKey = `names:detail:${req.params.id}:public`;
 
         const fetchName = async () => {
-            const name = await Name.findById(req.params.id);
+            let name;
+            
+            if (isObjectId) {
+                name = await Name.findById(req.params.id);
+            }
+            
+            if (!name) {
+                name = await Name.findOne({ slug: req.params.id.toLowerCase() });
+            }
 
             if (!name) return null;
 
@@ -169,7 +179,7 @@ exports.getName = async (req, res, next) => {
 // @access  Public
 exports.getSitemap = async (req, res, next) => {
     try {
-        const names = await Name.find({ isActive: true }).select('_id updatedAt');
+        const names = await Name.find({ isActive: true }).select('_id slug updatedAt');
         
         const baseUrl = 'https://www.islamicnames.in';
         
@@ -184,7 +194,7 @@ exports.getSitemap = async (req, res, next) => {
         
         // Dynamic name routes
         names.forEach(name => {
-            xml += `  <url>\n    <loc>${baseUrl}/name/${name._id}</loc>\n    <lastmod>${name.updatedAt.toISOString().split('T')[0]}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
+            xml += `  <url>\n    <loc>${baseUrl}/name/${name.slug || name._id}</loc>\n    <lastmod>${name.updatedAt.toISOString().split('T')[0]}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
         });
         
         xml += `</urlset>`;

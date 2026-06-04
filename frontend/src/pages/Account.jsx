@@ -4,6 +4,7 @@ import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
 import { toast } from 'react-hot-toast';
 import { User as UserIcon, Mail, Save } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const Account = () => {
   const { user, updateUser } = useAuthStore();
@@ -36,6 +37,24 @@ const Account = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 md:space-y-10 py-4 md:py-10 px-4">
+      <Helmet>
+        <title>My Account | IslamicNames</title>
+        <meta name="description" content="Manage your account, preferences, and subscriptions on IslamicNames." />
+        <link rel="canonical" href="https://www.islamicnames.in/account" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:title" content="My Account | IslamicNames" />
+        <meta property="og:description" content="Manage your account, preferences, and subscriptions on IslamicNames." />
+        <meta property="og:url" content="https://www.islamicnames.in/account" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="My Account | IslamicNames" />
+        <meta name="twitter:description" content="Manage your account, preferences, and subscriptions on IslamicNames." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+      </Helmet>
       <div className="text-center md:text-left">
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-text mb-2">My Profile</h1>
         <p className="text-sm md:text-base text-text-muted italic">Manage your account settings.</p>

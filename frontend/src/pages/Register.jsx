@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 import { GoogleLogin } from '@react-oauth/google';
 import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
+import { Helmet } from 'react-helmet-async';
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -59,6 +60,24 @@ const Register = () => {
 
   return (
     <div className="max-w-md mx-auto mt-4 sm:mt-10 px-4 sm:px-0">
+      <Helmet>
+        <title>Register | IslamicNames</title>
+        <meta name="description" content="Create an account on IslamicNames to save names, receive recommendations, and unlock premium features." />
+        <link rel="canonical" href="https://www.islamicnames.in/register" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:title" content="Register | IslamicNames" />
+        <meta property="og:description" content="Create an account on IslamicNames to save names, receive recommendations, and unlock premium features." />
+        <meta property="og:url" content="https://www.islamicnames.in/register" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Register | IslamicNames" />
+        <meta name="twitter:description" content="Create an account on IslamicNames to save names, receive recommendations, and unlock premium features." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+      </Helmet>
       <div className="bg-card p-5 sm:p-8 rounded-3xl border border-border shadow-2xl">
         <div className="text-center mb-8">
           <h1 className="text-2xl md:text-3xl font-black text-text mb-2">Create Account</h1>

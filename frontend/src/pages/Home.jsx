@@ -1,18 +1,24 @@
-import { useState, useEffect, Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Search as SearchIcon, ArrowRight } from 'lucide-react';
 import api from '../api/axios';
-import useAuthStore from '../store/useAuthStore';
 import NameCard from '../components/NameCard';
 import HomeFAQ from '../components/HomeFAQ';
 
 import { Helmet } from 'react-helmet-async';
 
+const NamesSkeleton = () => (
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    {[...Array(4)].map((_, i) => (
+      <div key={i} className="bg-white/5 border border-white/10 rounded-2xl h-[260px] animate-pulse" />
+    ))}
+  </div>
+);
+
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuthStore();
 
   const { data: recentNames, isLoading } = useQuery({
     queryKey: ['recentNames'],
@@ -35,13 +41,7 @@ const Home = () => {
     }
   };
 
-  const NamesSkeleton = () => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {[...Array(4)].map((_, i) => (
-        <div key={i} className="bg-white/5 border border-white/10 rounded-2xl h-[260px] animate-pulse" />
-      ))}
-    </div>
-  );
+
 
   return (
     <div className="space-y-12 md:space-y-20 lg:space-y-24">
@@ -56,14 +56,14 @@ const Home = () => {
         <meta property="og:description" content="Explore thousands of Islamic names for boys and girls with authentic meanings. Find Quranic names, names of prophets, and unique Arabic Muslim baby names with rich historical backgrounds." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.islamicnames.in/" />
-        <meta property="og:image" content="https://www.islamicnames.in/logo-120.webp" />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
         <meta property="og:site_name" content="IslamicNames" />
         
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Islamic Names - Discover Meaningful Muslim Names for Boys & Girls" />
         <meta name="twitter:description" content="Explore thousands of Islamic names for boys and girls with authentic meanings. Find Quranic names, names of prophets, and unique Arabic Muslim baby names with rich historical backgrounds." />
-        <meta name="twitter:image" content="https://www.islamicnames.in/logo-120.webp" />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
       </Helmet>
 
       {/* Hero Section */}
@@ -116,7 +116,7 @@ const Home = () => {
         ) : (
           <Suspense fallback={<NamesSkeleton />}>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 min-h-[260px]">
-              {recentNames.map((name, index) => (
+              {recentNames.map((name) => (
                 <NameCard 
                   key={name._id} 
                   name={name} 
