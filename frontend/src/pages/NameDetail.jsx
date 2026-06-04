@@ -218,7 +218,7 @@ const NameDetail = () => {
       <Helmet>
         <title>{`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`}</title>
         <meta name="description" content={`Find the meaning, origin, pronunciation, and Quranic reference for the name ${name.nameEnglish}. Explore deep historical background and naming etiquette.`} />
-        <meta name="keywords" content={`${name.nameEnglish} meaning, ${name.nameEnglish} islamic name, ${name.nameArabic} meaning, muslim name ${name.nameEnglish}`} />
+        <meta name="keywords" content={`${name.nameEnglish} meaning, ${name.nameEnglish} islamic name, ${name.nameEnglish} muslim name, ${name.nameArabic} meaning, islamic name ${name.nameEnglish}, meaning of ${name.nameEnglish}, ${name.nameEnglish} origin, muslim baby name ${name.nameEnglish}`} />
         <link rel="canonical" href={`https://www.islamicnames.in/name/${name.slug || id}`} />
         
         {/* Open Graph / Facebook */}

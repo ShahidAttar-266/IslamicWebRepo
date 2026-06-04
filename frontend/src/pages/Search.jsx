@@ -115,7 +115,7 @@ const Search = () => {
       <Helmet>
         <title>{getPageTitle()}</title>
         <meta name="description" content={getPageDescription()} />
-        <meta name="keywords" content="islamic names search, muslim baby names, arabic names meaning, quranic names list" />
+        <meta name="keywords" content="islamic names, islamic names for boys, islamic names for girls, muslim baby names, arabic names with meaning, quranic names, islamic names search, muslim names list, arabic muslim names, islamic names for newborn" />
         <link rel="canonical" href="https://www.islamicnames.in/search" />
         
         {/* Open Graph / Facebook */}
