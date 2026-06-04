@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Mail, ArrowRight, ShieldCheck, Globe } from 'lucide-react';
+import { Mail, ShieldCheck, Globe } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -12,7 +12,6 @@ const Footer = () => {
         { name: 'Browse Names', path: '/search' },
         { name: 'Popular Names', path: '/search?sort=-views' },
         { name: 'Help & FAQ', path: '/faq' },
-        { name: 'Premium Plans', path: '/pricing' },
       ]
     },
     {
@@ -29,8 +28,6 @@ const Footer = () => {
       links: [
         { name: 'Privacy Policy', path: '/privacy' },
         { name: 'Terms & Conditions', path: '/terms' },
-        { name: 'Refund Policy', path: '/refund' },
-        { name: 'Cancellation Policy', path: '/cancellation' },
         { name: 'Disclaimer', path: '/disclaimer' },
       ]
     }
@@ -107,23 +104,6 @@ const Footer = () => {
             </div>
           ))}
 
-          {/* CTA Section */}
-          <div className="lg:col-span-1">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-6">
-              Premium Access
-            </h3>
-            <div className="bg-primary/5 border border-primary/10 rounded-2xl p-5 md:p-6 space-y-4 shadow-inner">
-              <p className="text-xs text-text-muted leading-relaxed font-medium italic">
-                Unlock full history, Quranic ayah texts, and comparison tools.
-              </p>
-              <Link 
-                to="/pricing" 
-                className="flex items-center justify-center gap-2 bg-primary text-bg px-4 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-opacity-90 transition-all shadow-xl shadow-primary/10 min-h-[44px]"
-              >
-                Go Pro <ArrowRight size={14} strokeWidth={3} />
-              </Link>
-            </div>
-          </div>
         </div>
 
         {/* Bottom Bar */}

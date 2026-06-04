@@ -60,7 +60,6 @@ const MainLayout = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Browse Names', path: '/search' },
-    { name: 'Premium', path: '/pricing' },
     ...(isAuthenticated ? [{ name: 'Compare', path: '/compare' }] : []),
   ];
 

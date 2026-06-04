@@ -177,7 +177,7 @@ exports.getSitemap = async (req, res, next) => {
         xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
         
         // Static routes
-        const staticRoutes = ['', '/search', '/pricing', '/faq', '/compare'];
+        const staticRoutes = ['', '/search', '/faq', '/compare'];
         staticRoutes.forEach(route => {
             xml += `  <url>\n    <loc>${baseUrl}${route}</loc>\n    <changefreq>daily</changefreq>\n    <priority>${route === '' ? '1.0' : '0.8'}</priority>\n  </url>\n`;
         });
