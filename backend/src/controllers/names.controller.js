@@ -33,10 +33,6 @@ exports.getNames = async (req, res, next) => {
                 parsedQuery.gender = req.query.gender;
             }
 
-            if (req.query.isPremium) {
-                parsedQuery.isPremium = req.query.isPremium === 'true';
-            }
-
             if (req.query.origin) {
                 parsedQuery.origin = String(req.query.origin);
             }
@@ -66,9 +62,6 @@ exports.getNames = async (req, res, next) => {
             if (req.query.select) {
                 const fields = req.query.select.split(',').join(' ');
                 query = query.select(fields);
-            } else {
-                // Default exclude premium fields for list view unless specified
-                query = query.select('-history -famousPersonalities');
             }
 
             // Sort & Text Search Score
@@ -79,8 +72,8 @@ exports.getNames = async (req, res, next) => {
                 const sortBy = req.query.sort.split(',').join(' ');
                 query = query.sort(sortBy);
             } else {
-                // Default sort: premium first, then alphabetical English
-                query = query.sort('-isPremium nameEnglish');
+                // Default sort: alphabetical English
+                query = query.sort('nameEnglish');
             }
 
             // Pagination
@@ -130,7 +123,7 @@ exports.getNames = async (req, res, next) => {
 
 // @desc    Get single name
 // @route   GET /api/v1/names/:id
-// @access  Public (Premium fields filtered if not subscribed)
+// @access  Public
 exports.getName = async (req, res, next) => {
     try {
         // Validate ID format
@@ -138,15 +131,7 @@ exports.getName = async (req, res, next) => {
             return next(new ErrorResponse('Invalid ID format', 400));
         }
 
-        // Determine if user has premium access
-        let hasPremiumAccess = false;
-        if (req.user) {
-            if (req.user.role === 'admin' || (req.user.subscription && req.user.subscription.status === 'premium')) {
-                hasPremiumAccess = true;
-            }
-        }
-
-        const cacheKey = `names:detail:${req.params.id}${hasPremiumAccess ? ':premium' : ':public'}`;
+        const cacheKey = `names:detail:${req.params.id}:public`;
 
         const fetchName = async () => {
             const name = await Name.findById(req.params.id);
@@ -158,18 +143,7 @@ exports.getName = async (req, res, next) => {
                 throw new Error('Name inactive');
             }
 
-            let responseData = name.toObject();
-
-            // If not premium user, hide premium-only data
-            if (!hasPremiumAccess) {
-                 delete responseData.history;
-                 delete responseData.quranReference;
-                 delete responseData.famousPersonalities;
-                 delete responseData.birthGuidance;
-                 delete responseData.variants;
-            }
-
-            return responseData;
+            return name.toObject();
         };
 
         const result = await cache.getOrSet(cacheKey, fetchName, 600); // 10 min TTL
@@ -250,8 +224,7 @@ exports.updateName = async (req, res, next) => {
 
         await cache.invalidatePattern('names:list:*');
         await cache.invalidateMany([
-            `names:detail:${req.params.id}:public`,
-            `names:detail:${req.params.id}:premium`
+            `names:detail:${req.params.id}:public`
         ]);
 
         res.status(200).json({ success: true, data: name });
@@ -271,11 +244,15 @@ exports.deleteName = async (req, res, next) => {
         await name.deleteOne();
         await cache.invalidatePattern('names:list:*');
         await cache.invalidateMany([
-            `names:detail:${req.params.id}:public`,
-            `names:detail:${req.params.id}:premium`
+            `names:detail:${req.params.id}:public`
         ]);
 
         res.status(200).json({ success: true, data: {} });
+    } catch (err) {
+        next(err);
+    }
+};
+ess: true, data: {} });
     } catch (err) {
         next(err);
     }

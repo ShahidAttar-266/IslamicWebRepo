@@ -147,7 +147,7 @@ const MainLayout = () => {
                       <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-lg shadow-xl z-20 overflow-hidden">
                         <div className="p-3 border-b border-border bg-bg/50">
                           <p className="font-medium text-sm text-text truncate">{user?.name || 'User'}</p>
-                          <p className="text-xs text-text-muted capitalize">{user?.subscription?.status || 'Free'} Plan</p>
+                          <p className="text-xs text-text-muted">{user?.email}</p>
                         </div>
                         <Link to="/account" className="block w-full text-left px-4 py-3 text-sm text-text hover:bg-bg transition-colors flex items-center justify-between group">
                           My Profile
@@ -256,7 +256,7 @@ const MainLayout = () => {
                   </div>
                   <div className="overflow-hidden">
                     <p className="font-bold text-text truncate">{user?.name || 'User'}</p>
-                    <p className="text-xs text-text-muted capitalize">{user?.subscription?.status || 'Free'} Plan</p>
+                    <p className="text-xs text-text-muted">{user?.email}</p>
                   </div>
                 </div>
                 
@@ -314,4 +314,4 @@ const MainLayout = () => {
   );
 };
 
-export default MainLayout;
+export default MainLayout;MainLayout;

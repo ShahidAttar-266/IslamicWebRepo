@@ -120,7 +120,6 @@ const Home = () => {
                 <NameCard 
                   key={name._id} 
                   name={name} 
-                  isLocked={!isAuthenticated && index >= 4}
                 />
               ))}
             </div>
@@ -151,25 +150,6 @@ const Home = () => {
 
         <h3 className="text-xl md:text-2xl font-bold text-text mt-8 mb-4">Why Choose IslamicNames?</h3>
         <p>Our ultimate goal is to make your naming journey as joyful, seamless, and informed as possible. By providing accurate phonetic pronunciations, stunning Arabic script, detailed historical background, and scholar-verified meanings, we completely remove the guesswork from finding the perfect name. We believe that every child deserves a beautiful legacy, and that legacy begins the moment they are named. Explore our rich, user-friendly library today to find the perfect name that honors your deeply held faith, reflects your highest hopes, and brings lasting, abundant blessings to your family for generations to come.</p>
-      </section>
-
-      {/* CTA Banner */}
-      <section className="min-h-[420px] bg-card border border-border rounded-3xl p-6 sm:p-10 md:p-16 text-center relative overflow-hidden shadow-2xl flex items-center justify-center">
-        <div className="absolute right-0 top-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-0"></div>
-        <div className="absolute left-0 bottom-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -z-0"></div>
-        
-        <div className="relative z-10 max-w-2xl mx-auto">
-          <h2 className="text-2xl md:text-4xl font-black mb-4 md:mb-6">Unlock the Full History</h2>
-          <p className="text-text-muted text-sm md:text-lg mb-8 md:mb-10 leading-relaxed italic">
-            Upgrade to Premium to reveal detailed historical backgrounds, precise Quranic references, famous personalities, and save unlimited favorites.
-          </p>
-          <button 
-            onClick={() => navigate('/pricing')} 
-            className="w-full sm:w-auto bg-accent text-bg px-10 py-4 rounded-xl font-black text-sm md:text-base hover:scale-105 transition-all shadow-xl shadow-accent/20 min-h-[48px]"
-          >
-            EXPLORE PREMIUM PLANS
-          </button>
-        </div>
       </section>
     </div>
   );

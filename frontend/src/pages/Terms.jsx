@@ -58,25 +58,16 @@ const Terms = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">04.</span> Payments & Subscriptions
+              <span className="text-primary text-sm font-black">04.</span> Free Service
             </h2>
             <p>
-              IslamicNames.in offers premium features, subscription plans, and digital services that require successful online payment through authorized payment gateways such as Razorpay. Subscription fees, pricing, and feature availability may change at any time without prior notice. Access to premium services is granted only after successful payment confirmation.
+              IslamicNames.in is a completely free service dedicated to providing accessible Islamic name information. We do not charge subscriptions, hide content behind paywalls, or collect payment information. 
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">05.</span> Refunds & Cancellation
-            </h2>
-            <p>
-              Refunds and subscription cancellations are governed by our Refund Policy and Cancellation Policy available on the website. Users are advised to review these policies before making payments or subscribing to premium services.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">06.</span> Intellectual Property
+              <span className="text-primary text-sm font-black">05.</span> Intellectual Property
             </h2>
             <p>
               All content available on IslamicNames.in, including but not limited to text, graphics, logos, Arabic calligraphy, website design, branding elements, and software components, is the intellectual property of IslamicNames.in and is protected under applicable copyright and intellectual property laws. Unauthorized reproduction or redistribution is strictly prohibited.
@@ -85,7 +76,7 @@ const Terms = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">07.</span> Limitation of Liability
+              <span className="text-primary text-sm font-black">06.</span> Limitation of Liability
             </h2>
             <p>
               IslamicNames.in shall not be held liable for any direct, indirect, incidental, or consequential damages arising from the use of the website, its content, or premium services. Users access and use the platform at their own discretion and risk.
@@ -94,7 +85,7 @@ const Terms = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">08.</span> Third-Party Services
+              <span className="text-primary text-sm font-black">07.</span> Third-Party Services
             </h2>
             <p>
               The website may integrate third-party services including payment gateways, analytics tools, cloud hosting providers, and communication services. IslamicNames.in is not responsible for the policies, practices, or service interruptions of third-party providers.
@@ -103,7 +94,7 @@ const Terms = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">09.</span> Termination of Access
+              <span className="text-primary text-sm font-black">08.</span> Termination of Access
             </h2>
             <p>
               We reserve the right to suspend, restrict, or terminate access to the website or premium services without prior notice if any misuse, violation of terms, fraudulent transaction, or suspicious activity is detected.
@@ -112,7 +103,7 @@ const Terms = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">10.</span> Changes to Terms
+              <span className="text-primary text-sm font-black">09.</span> Changes to Terms
             </h2>
             <p>
               IslamicNames.in reserves the right to modify or update these Terms & Conditions at any time. Continued use of the platform after changes are published constitutes acceptance of the revised terms.
@@ -121,7 +112,7 @@ const Terms = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">11.</span> Contact Information
+              <span className="text-primary text-sm font-black">10.</span> Contact Information
             </h2>
             <p>
               For support, payment-related issues, or legal concerns, users may contact us through the official contact details provided on the website.

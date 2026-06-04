@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import api from '../../api/axios';
 import { 
   Mail, 
@@ -22,26 +22,6 @@ const AdminUsers = () => {
     staleTime: 2 * 60 * 1000, // 2 min
   });
 
-  const updatePlanMutation = useMutation({
-    mutationFn: async ({ userId, plan }) => {
-      const res = await api.put(`/admin/users/${userId}/plan`, { plan });
-      return res.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
-      toast.success('User plan updated successfully');
-    },
-    onError: (err) => {
-      toast.error(err.response?.data?.error || 'Failed to update user plan');
-    }
-  });
-
-  const handlePlanChange = (userId, newPlan) => {
-    if (window.confirm(`Are you sure you want to change this user to ${newPlan} plan?`)) {
-      updatePlanMutation.mutate({ userId, plan: newPlan });
-    }
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -58,7 +38,6 @@ const AdminUsers = () => {
               <tr className="bg-bg/50 border-b border-border text-text-muted text-[10px] uppercase tracking-[0.2em]">
                 <th className="px-6 py-4 font-black">User Info</th>
                 <th className="px-6 py-4 font-black">Role</th>
-                <th className="px-6 py-4 font-black">Subscription Tier</th>
                 <th className="px-6 py-4 font-black">Status</th>
                 <th className="px-6 py-4 font-black">Joined Date</th>
               </tr>
@@ -66,14 +45,14 @@ const AdminUsers = () => {
             <tbody className="divide-y divide-border/50 text-sm">
               {isLoading ? (
                 <tr>
-                  <td colSpan="5" className="px-6 py-12 text-center text-text-muted">
+                  <td colSpan="4" className="px-6 py-12 text-center text-text-muted">
                     <Loader2 className="animate-spin mx-auto mb-2 text-primary" />
                     Loading users...
                   </td>
                 </tr>
               ) : data?.data?.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="px-6 py-12 text-center text-text-muted">No users found in database.</td>
+                  <td colSpan="4" className="px-6 py-12 text-center text-text-muted">No users found in database.</td>
                 </tr>
               ) : (
                 data?.data?.map((user) => (
@@ -95,22 +74,6 @@ const AdminUsers = () => {
                       }`}>
                         {user.role}
                       </span>
-                    </td>
-                    <td className="px-6 py-5">
-                      <select 
-                        className={`bg-bg border border-border rounded-lg px-3 py-1.5 text-xs font-bold focus:border-primary outline-none transition-all cursor-pointer ${
-                          updatePlanMutation.isPending ? 'opacity-50 pointer-events-none' : ''
-                        } ${
-                          user.subscription?.status === 'premium' ? 'text-amber-600 border-amber-500/20' : 'text-text-muted'
-                        }`}
-                        value={user.subscription?.status || 'free'}
-                        onChange={(e) => handlePlanChange(user._id, e.target.value)}
-                        disabled={user.role === 'admin'}
-                      >
-                        <option value="free">Free Tier</option>
-                        <option value="premium">Premium</option>
-                      </select>
-                      {user.role === 'admin' && <p className="text-[9px] text-text-muted mt-1 italic">Admins have full access</p>}
                     </td>
                     <td className="px-6 py-5">
                       {user.isActive ? (

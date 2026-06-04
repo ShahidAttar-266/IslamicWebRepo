@@ -35,7 +35,6 @@
     "multer": "^2.1.1",
     "puppeteer-core": "^22.15.0",
     "rate-limit-redis": "^5.0.0",
-    "razorpay": "^2.9.6",
     "uuid": "^11.1.1",
     "xlsx": "0.18.5",
     "zod": "^3.25.76"

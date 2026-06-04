@@ -29,8 +29,8 @@ const SoftLoginBanner = ({ onLogin, onDismiss }) => (
         <LogIn size={18} className="text-primary" />
       </div>
       <div>
-        <p className="text-sm font-bold text-text">Sign in to unlock more features</p>
-        <p className="text-xs text-text-muted">Save names, compare, and access premium content</p>
+        <p className="text-sm font-bold text-text">Sign in to save names and compare</p>
+        <p className="text-xs text-text-muted">Save your favorites and compare names easily</p>
       </div>
     </div>
     <div className="flex items-center gap-2">
@@ -50,37 +50,14 @@ const SoftLoginBanner = ({ onLogin, onDismiss }) => (
   </div>
 );
 
-const GatedSection = ({ title, icon: Icon, isLocked, msg, children, onUnlock }) => {
-  if (!isLocked) return (
+const Section = ({ title, icon: Icon, children }) => {
+  return (
     <div className="bg-card border border-border rounded-2xl p-5 md:p-8">
       <h3 className="text-lg font-bold text-text mb-6 flex items-center gap-3">
         <div className="p-2 bg-primary/10 rounded-lg text-primary"><Icon size={20} /></div>
         {title}
       </h3>
       {children}
-    </div>
-  );
-
-  return (
-    <div className="relative bg-card border border-border rounded-2xl p-6 md:p-8 overflow-hidden group">
-      <div className="blur-[4px] select-none opacity-40">
-         <h3 className="text-lg font-bold text-text mb-4 flex items-center gap-3"><Icon size={20} /> {title}</h3>
-         <p>This content is reserved for our premium members. It contains deep insights, historical context, and authentic references.</p>
-         <div className="h-20 bg-bg/50 rounded-lg mt-4"></div>
-      </div>
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-6 bg-card/60 backdrop-blur-[2px]">
-        <div className="w-12 h-12 bg-amber-500/20 text-amber-500 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
-          <Lock size={20} />
-        </div>
-        <p className="font-black text-[10px] uppercase tracking-widest text-amber-400 mb-1">Premium Feature</p>
-        <p className="text-sm text-text-muted mb-4 text-center max-w-[250px]">{msg || `Upgrade to unlock ${title}`}</p>
-        <button 
-          onClick={onUnlock} 
-          className="bg-amber-500 hover:bg-amber-600 text-bg px-6 py-2.5 rounded-full font-bold text-xs transition-all shadow-lg shadow-amber-500/20 min-h-[44px]"
-        >
-          Unlock Now
-        </button>
-      </div>
     </div>
   );
 };
@@ -101,10 +78,6 @@ const NameDetail = () => {
   const handleLogin = () => navigate('/login');
   const handleDismissBanner = () => setShowLoginBanner(false);
 
-  // Optional login check - only redirect if trying to access premium features
-  // Public can view basic name details without login
-
-  const isPremium = user?.role === 'admin' || user?.subscription?.status === 'premium';
   const id1 = searchParams.get('id1');
   const id2 = searchParams.get('id2');
   const isSelected = id1 === id || id2 === id;
@@ -163,8 +136,6 @@ const NameDetail = () => {
     }
     navigate(`/compare?${params.toString()}`);
   };
-
-  const hasPremiumAccess = user?.role === 'admin' || user?.subscription?.status === 'premium';
 
   if (isLoading) return (
     <div className="max-w-5xl mx-auto px-4 py-4 md:py-8 space-y-8 md:space-y-12 animate-pulse">
@@ -245,8 +216,6 @@ const NameDetail = () => {
     }
     toggleFavoriteMutation.mutate();
   };
-
-  const handleUnlock = () => navigate('/pricing');
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-4 md:py-8 space-y-8 md:space-y-12">
@@ -384,25 +353,19 @@ const NameDetail = () => {
       {/* Main Content Sections */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
         <div className="lg:col-span-2 space-y-6 md:space-y-8">
-          <GatedSection 
+          <Section 
             title="Historical Background" 
             icon={Info} 
-            isLocked={!hasPremiumAccess}
-            msg="Unlock detailed historical etymology and cultural significance."
-            onUnlock={handleUnlock}
           >
             <div className="prose prose-invert max-w-none text-text-muted leading-relaxed text-base md:text-lg whitespace-pre-line italic">
               {name.history || "No historical background currently available for this name."}
             </div>
-          </GatedSection>
+          </Section>
 
           {(name.isQuranic || name.quranReference?.surah) && (
-            <GatedSection 
+            <Section 
               title="Quranic Reference" 
               icon={Book} 
-              isLocked={!hasPremiumAccess}
-              msg="View full surah context, verse text, and translations."
-              onUnlock={handleUnlock}
             >
               <div className="bg-bg/50 border border-primary/20 rounded-2xl p-5 md:p-6 relative overflow-hidden">
                 <div className="relative z-10">
@@ -422,17 +385,14 @@ const NameDetail = () => {
                   </div>
                 </div>
               </div>
-            </GatedSection>
+            </Section>
           )}
         </div>
 
         <div className="space-y-6 md:space-y-8">
-          <GatedSection 
+          <Section 
             title="Notable Bearers" 
             icon={Crown} 
-            isLocked={!hasPremiumAccess}
-            msg="Explore famous historical figures with this name."
-            onUnlock={handleUnlock}
           >
             <div className="space-y-6">
               {name.famousPersonalities && name.famousPersonalities.length > 0 ? (
@@ -449,47 +409,18 @@ const NameDetail = () => {
                 <p className="text-sm text-text-muted italic">No records found.</p>
               )}
             </div>
-          </GatedSection>
+          </Section>
 
-          <GatedSection 
+          <Section 
             title="Islamic Guidance" 
             icon={Sparkles} 
-            isLocked={!hasPremiumAccess}
-            msg="Access naming etiquette and guidance."
-            onUnlock={handleUnlock}
           >
             <div className="bg-primary/5 border border-primary/10 p-5 rounded-xl text-sm text-text-muted leading-relaxed italic">
               {name.birthGuidance || "Naming in Islam is a sacred responsibility. This name is considered highly recommended for its noble meanings."}
             </div>
-          </GatedSection>
+          </Section>
         </div>
       </div>
-
-      {/* Upgrade CTA */}
-      {!hasPremiumAccess && (
-        <section className="min-h-[320px] bg-card border border-primary/20 rounded-3xl p-6 sm:p-8 md:p-12 text-center relative overflow-hidden shadow-2xl flex items-center justify-center">
-          <div className="relative z-10">
-            <h2 className="text-2xl md:text-3xl font-black mb-4">Unlock the Full History</h2>
-            <p className="text-text-muted mb-8 max-w-2xl mx-auto text-sm md:text-lg leading-relaxed italic">
-              Get all Quranic ayah text, historical holders, and naming etiquette with a Premium subscription.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center">
-              <button 
-                onClick={() => navigate('/pricing')} 
-                className="bg-amber-500 hover:bg-amber-600 text-bg px-10 py-4 rounded-xl font-black text-xs md:text-sm transition-all shadow-xl shadow-amber-500/20 uppercase tracking-widest min-h-[48px] w-full sm:w-auto"
-              >
-                Upgrade to Premium
-              </button>
-              <button 
-                onClick={() => navigate('/search')} 
-                className="bg-bg border border-border hover:border-primary px-10 py-4 rounded-xl font-black text-xs md:text-sm transition-all uppercase tracking-widest min-h-[48px] w-full sm:w-auto"
-              >
-                Continue Browsing
-              </button>
-            </div>
-          </div>
-        </section>
-      )}
     </div>
   );
 };

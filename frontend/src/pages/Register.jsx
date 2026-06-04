@@ -62,7 +62,7 @@ const Register = () => {
       <div className="bg-card p-5 sm:p-8 rounded-3xl border border-border shadow-2xl">
         <div className="text-center mb-8">
           <h1 className="text-2xl md:text-3xl font-black text-text mb-2">Create Account</h1>
-          <p className="text-text-muted italic text-sm">Join to save favorites & unlock premium features</p>
+          <p className="text-text-muted italic text-sm">Join to save favorites & compare names easily</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

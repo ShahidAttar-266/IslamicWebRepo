@@ -14,12 +14,6 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.islamicnames.in/pricing</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://www.islamicnames.in/compare</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>monthly</changefreq>
@@ -31,12 +25,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <url>
-    <loc>https://www.islamicnames.in/favorites</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
   
   <!-- Information Pages -->
   <url>
@@ -47,12 +35,6 @@
   </url>
   <url>
     <loc>https://www.islamicnames.in/terms</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.islamicnames.in/refund</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>

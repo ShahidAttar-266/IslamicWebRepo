@@ -39,7 +39,7 @@ const Footer = () => {
   return (
     <footer className="bg-card border-t border-border mt-auto pt-10 pb-6 md:pt-16 md:pb-8 text-text">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 md:gap-12 mb-10 md:mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 mb-10 md:mb-16">
           
           {/* Brand Section */}
           <div className="lg:col-span-2 space-y-6">

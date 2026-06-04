@@ -33,9 +33,7 @@ const AdminDashboard = () => {
 
   const stats = [
     { name: 'Total Users', value: analytics?.totalUsers || 0, icon: <Users size={20} />, color: 'text-blue-500', bg: 'bg-blue-500/10' },
-    { name: 'Subscribers', value: analytics?.activeSubscribers || 0, icon: <CreditCard size={20} />, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
     { name: 'Total Names', value: analytics?.totalNames || 0, icon: <Database size={20} />, color: 'text-purple-500', bg: 'bg-purple-500/10' },
-    { name: 'Monthly Revenue', value: `₹${analytics?.monthlyRevenue || 0}`, icon: <TrendingUp size={20} />, color: 'text-amber-500', bg: 'bg-amber-500/10' },
   ];
 
   if (isLoading) return (
@@ -53,7 +51,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {stats.map((stat) => (
           <div key={stat.name} className="bg-card border border-border p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-4">
@@ -69,69 +67,11 @@ const AdminDashboard = () => {
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Revenue Chart */}
-        <div className="lg:col-span-2 bg-card border border-border rounded-[2rem] p-8 shadow-sm">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-xl font-bold text-text">Revenue Overview</h2>
-              <p className="text-xs text-text-muted">Projected monthly earnings (last 6 months)</p>
-            </div>
-            <div className="flex items-center gap-1.5 px-3 py-1 bg-primary/5 text-primary rounded-full text-[10px] font-black uppercase tracking-widest">
-              <TrendingUp size={12} /> Real-time
-            </div>
-          </div>
-          
-          <div className="h-[300px] w-full mt-4">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={analytics?.revenueByMonth || []}>
-                <defs>
-                  <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#2DB87A" stopOpacity={0.2}/>
-                    <stop offset="95%" stopColor="#2DB87A" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
-                <XAxis 
-                  dataKey="name" 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fontSize: 10, fontWeight: 700, fill: '#6B7280' }}
-                  dy={10}
-                />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fontSize: 10, fontWeight: 700, fill: '#6B7280' }}
-                  tickFormatter={(value) => `₹${value}`}
-                />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: '#ffffff', 
-                    borderRadius: '16px', 
-                    border: '1px solid #E5E7EB',
-                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-                    fontWeight: 800
-                  }}
-                  itemStyle={{ color: '#2DB87A' }}
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="revenue" 
-                  stroke="#2DB87A" 
-                  strokeWidth={4} 
-                  fillOpacity={1} 
-                  fill="url(#colorRevenue)" 
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
         {/* Quick Actions */}
-        <div className="space-y-6">
+        <div className="lg:col-span-3 space-y-6">
           <div className="bg-card border border-border rounded-[2rem] p-8 shadow-sm">
             <h2 className="text-xl font-bold text-text mb-6">Quick Actions</h2>
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Link to="/admin/upload" className="flex items-center justify-between p-4 bg-bg rounded-2xl border border-border hover:border-primary transition-all group">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-primary/10 text-primary rounded-lg">
@@ -160,14 +100,6 @@ const AdminDashboard = () => {
                 <ArrowRight size={16} className="text-text-muted group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
-          </div>
-
-          <div className="bg-primary/5 border border-primary/20 rounded-[2rem] p-6 text-center">
-             <Shield className="text-primary mx-auto mb-4" size={32} />
-             <p className="text-xs font-black uppercase tracking-widest text-primary mb-2">Security Note</p>
-             <p className="text-xs text-text-muted leading-relaxed">
-               All manual database changes are logged. Ensure you verify premium uploads before activating.
-             </p>
           </div>
         </div>
       </div>

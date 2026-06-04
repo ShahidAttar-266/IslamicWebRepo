@@ -72,46 +72,6 @@ const faqs = [
     ]
   },
   {
-    category: 'Plans & Pricing',
-    icon: '✦',
-    questions: [
-      {
-        q: 'What is the difference between Free and Premium?',
-        a: 'The Free plan allows you to browse 50 basic names and save up to 10 favorites. Premium (₹500/mo) unlocks everything: unlimited names, full historical backgrounds, Quranic references, unlimited favorites, side-by-side comparison, and PDF exports.'
-      },
-      {
-        q: 'Can I try a paid plan before committing?',
-        a: 'Our Free plan gives you a generous taste of IslamicNames. If you want to test the premium features, we occasionally offer a 7-day trial during Ramadan and other special occasions. Follow us to be notified.'
-      },
-      {
-        q: 'Do you offer a yearly billing discount?',
-        a: 'Yes — Premium offers a 20% saving when billed annually at ₹5,000/year (which averages to about ₹416/month compared to the ₹500 monthly rate).'
-      },
-      {
-        q: 'Is my payment secure?',
-        a: 'All payments are processed securely through Razorpay, a PCI-DSS compliant payment gateway. IslamicNames never stores your card or bank details. You can pay via UPI, net banking, credit/debit card, or popular wallets.'
-      },
-    ]
-  },
-  {
-    category: 'Account & Subscription',
-    icon: '◈',
-    questions: [
-      {
-        q: 'How do I cancel or downgrade my subscription?',
-        a: 'You can cancel anytime from your Account page under Subscription Settings. Your access continues until the end of your current billing period — there are no early cancellation penalties and we do not charge hidden fees.'
-      },
-      {
-        q: 'My account still shows "Free" after payment. What should I do?',
-        a: 'Subscription activation takes a few seconds after payment. Please wait one minute and refresh your Account page. If your plan still shows "Free" after 5 minutes, contact us at support@islamicnames.in with your payment reference and we will resolve it immediately.'
-      },
-      {
-        q: 'Can I share my account with my spouse or family?',
-        a: 'Your IslamicNames account is for individual use. However, name cards and lists you create can be shared via a link with anyone — no account required to view them.'
-      },
-    ]
-  },
-  {
     category: 'Features',
     icon: '❋',
     questions: [
@@ -121,7 +81,7 @@ const faqs = [
       },
       {
         q: 'How does the name pronunciation audio work?',
-        a: 'Each name includes a phonetic pronunciation guide. Premium members have access to deeper meanings and historical contexts that help in understanding the proper articulation and spirit of the name.'
+        a: 'Each name includes a phonetic pronunciation guide to help in understanding the proper articulation.'
       },
       {
         q: 'Is there an API for developers?',

@@ -92,9 +92,6 @@ const Compare = () => {
   return (
     <div className="max-w-5xl mx-auto space-y-8 md:space-y-12 py-4 md:py-8 px-4">
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-500/10 text-amber-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-amber-500/20">
-          <Crown size={14} /> Premium Feature
-        </div>
         <h1 className="text-3xl md:text-5xl font-black text-text tracking-tight">Compare Names</h1>
         <p className="text-sm md:text-base text-text-muted max-w-xl mx-auto italic">Analyze meanings, origins, and historical contexts side-by-side to find the perfect choice.</p>
       </div>

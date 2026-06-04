@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Navigate, Link, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
-import { Home, Users, Database, Upload, CreditCard, Settings, LogOut, ArrowLeft, Menu, X, User } from 'lucide-react';
+import { Home, Users, Database, Upload, Settings, LogOut, ArrowLeft, Menu, X, User } from 'lucide-react';
 
 const AdminLayout = () => {
   const { user, isAuthenticated, logout } = useAuthStore();
@@ -21,7 +21,6 @@ const AdminLayout = () => {
     { name: 'Names', path: '/admin/names', icon: <Database size={20} /> },
     { name: 'Upload', path: '/admin/upload', icon: <Upload size={20} /> },
     { name: 'Users', path: '/admin/users', icon: <Users size={20} /> },
-    { name: 'Subscriptions', path: '/admin/subscriptions', icon: <CreditCard size={20} /> },
     { name: 'Settings', path: '/admin/settings', icon: <Settings size={20} /> },
   ];
 
