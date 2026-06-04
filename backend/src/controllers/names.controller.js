@@ -252,8 +252,3 @@ exports.deleteName = async (req, res, next) => {
         next(err);
     }
 };
-ess: true, data: {} });
-    } catch (err) {
-        next(err);
-    }
-};

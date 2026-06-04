@@ -4,8 +4,6 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const hpp = require('hpp');
 const rateLimit = require('express-rate-limit');
-const { RedisStore } = require('rate-limit-redis');
-const { getRedisClient } = require('./lib/redis');
 const cookieParser = require('cookie-parser');
 
 // Route files
@@ -50,16 +48,12 @@ app.options('*', cors());
 
 app.set('trust proxy', 1); // Trust Vercel's proxy layer
 
-// Rate limiting
-const redisClient = getRedisClient();
+// Rate limiting (in-memory store — safe for serverless)
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 mins
-    max: process.env.NODE_ENV === 'development' ? 10000 : 100, // much higher limit for dev
+    max: process.env.NODE_ENV === 'development' ? 10000 : 100,
     standardHeaders: true,
     legacyHeaders: false,
-    store: redisClient ? new RedisStore({
-        sendCommand: (...args) => redisClient.call(...args),
-    }) : undefined,
     handler: (req, res) => {
         res.status(429).json({
             success: false,

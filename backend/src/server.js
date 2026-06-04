@@ -18,7 +18,9 @@ const connectOnce = async () => {
         dbConnected = true;
     }
 };
-connectOnce();
+connectOnce().catch((err) => {
+    console.error('Failed to connect to database:', err.message);
+});
 
 // Only start the server if we're not running as a Vercel serverless function
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
