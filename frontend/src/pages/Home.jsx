@@ -127,9 +127,6 @@ const Home = () => {
         )}
       </section>
 
-      {/* SEO FAQ Section */}
-      <HomeFAQ />
-
       {/* SEO Content Section */}
       <section className="max-w-4xl mx-auto px-4 py-16 text-text-muted leading-relaxed space-y-6 text-sm md:text-base text-justify">
         <h2 className="text-2xl md:text-3xl font-black text-text mb-6">Welcome to IslamicNames: The Ultimate Resource for Meaningful Muslim Baby Names</h2>
@@ -151,6 +148,9 @@ const Home = () => {
         <h3 className="text-xl md:text-2xl font-bold text-text mt-8 mb-4">Why Choose IslamicNames?</h3>
         <p>Our ultimate goal is to make your naming journey as joyful, seamless, and informed as possible. By providing accurate phonetic pronunciations, stunning Arabic script, detailed historical background, and scholar-verified meanings, we completely remove the guesswork from finding the perfect name. We believe that every child deserves a beautiful legacy, and that legacy begins the moment they are named. Explore our rich, user-friendly library today to find the perfect name that honors your deeply held faith, reflects your highest hopes, and brings lasting, abundant blessings to your family for generations to come.</p>
       </section>
+
+      {/* SEO FAQ Section */}
+      <HomeFAQ />
     </div>
   );
 };
