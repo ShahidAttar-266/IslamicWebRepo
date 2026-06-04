@@ -34,3 +34,5 @@ Thumbs.db
 # Project specific
 names_database_only.xlsx
 *.docx
+.puppeteer_user_data/
+**/.puppeteer_user_data/

@@ -151,12 +151,12 @@ const FAQ = () => {
   return (
     <div className="min-h-screen bg-bg">
       <Helmet>
-        <title>FAQ | IslamicNames</title>
+        <title>Frequently Asked Questions About Islamic Names | IslamicNames</title>
         <meta name="description" content="Frequently Asked Questions about Islamic names, meanings, scholars verification, and how to choose the right name." />
         <link rel="canonical" href="https://www.islamicnames.in/faq" />
         
         {/* Open Graph / Facebook */}
-        <meta property="og:title" content="FAQ | IslamicNames" />
+        <meta property="og:title" content="Frequently Asked Questions About Islamic Names | IslamicNames" />
         <meta property="og:description" content="Frequently Asked Questions about Islamic names, meanings, scholars verification, and how to choose the right name." />
         <meta property="og:url" content="https://www.islamicnames.in/faq" />
         <meta property="og:type" content="website" />
@@ -164,7 +164,7 @@ const FAQ = () => {
         
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="FAQ | IslamicNames" />
+        <meta name="twitter:title" content="Frequently Asked Questions About Islamic Names | IslamicNames" />
         <meta name="twitter:description" content="Frequently Asked Questions about Islamic names, meanings, scholars verification, and how to choose the right name." />
         <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
 
