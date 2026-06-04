@@ -39,12 +39,12 @@ const Account = () => {
     <div className="max-w-4xl mx-auto space-y-6 md:space-y-10 py-4 md:py-10 px-4">
       <Helmet>
         <title>My Account | IslamicNames</title>
-        <meta name="description" content="Manage your account, preferences, and subscriptions on IslamicNames." />
+        <meta name="description" content="Manage your account and preferences on IslamicNames." />
         <link rel="canonical" href="https://www.islamicnames.in/account" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:title" content="My Account | IslamicNames" />
-        <meta property="og:description" content="Manage your account, preferences, and subscriptions on IslamicNames." />
+        <meta property="og:description" content="Manage your account and preferences on IslamicNames." />
         <meta property="og:url" content="https://www.islamicnames.in/account" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
@@ -52,7 +52,7 @@ const Account = () => {
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="My Account | IslamicNames" />
-        <meta name="twitter:description" content="Manage your account, preferences, and subscriptions on IslamicNames." />
+        <meta name="twitter:description" content="Manage your account and preferences on IslamicNames." />
         <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
       </Helmet>
       <div className="text-center md:text-left">

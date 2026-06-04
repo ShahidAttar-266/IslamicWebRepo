@@ -72,21 +72,6 @@ const NameDetail = () => {
   const handleLogin = () => navigate('/login');
   const handleDismissBanner = () => setShowLoginBanner(false);
 
-  const id1 = searchParams.get('id1');
-  const id2 = searchParams.get('id2');
-  const isSelected = id1 === id || id2 === id;
-
-  const { data: favorites } = useQuery({
-    queryKey: ['favorites'],
-    queryFn: async () => {
-      const res = await api.get('/users/favorites');
-      return res.data.data;
-    },
-    enabled: isAuthenticated
-  });
-
-  const isFavorited = favorites?.some(f => f._id === id);
-
   const { data: name, isLoading, error } = useQuery({
     queryKey: ['name', id],
     queryFn: async () => {
@@ -98,12 +83,28 @@ const NameDetail = () => {
     staleTime: 10 * 60 * 1000, // 10 min
   });
 
+  const id1 = searchParams.get('id1');
+  const id2 = searchParams.get('id2');
+  const isSelected = id1 === (name?.slug || id) || id2 === (name?.slug || id);
+
+  const { data: favorites } = useQuery({
+    queryKey: ['favorites'],
+    queryFn: async () => {
+      const res = await api.get('/users/favorites');
+      return res.data.data;
+    },
+    enabled: isAuthenticated
+  });
+
+  const isFavorited = favorites?.some(f => f._id === name?._id);
+
   const toggleFavoriteMutation = useMutation({
     mutationFn: async () => {
+      if (!name?._id) return;
       if (isFavorited) {
-        return api.delete(`/users/favorites/${id}`);
+        return api.delete(`/users/favorites/${name._id}`);
       } else {
-        return api.post(`/users/favorites/${id}`);
+        return api.post(`/users/favorites/${name._id}`);
       }
     },
     onSuccess: () => {
@@ -117,15 +118,16 @@ const NameDetail = () => {
 
   const handleCompare = () => {
     const params = new URLSearchParams(window.location.search);
+    const targetId = name?.slug || id;
     if (isSelected) {
-      if (id1 === id) params.delete('id1');
-      else if (id2 === id) params.delete('id2');
+      if (id1 === targetId) params.delete('id1');
+      else if (id2 === targetId) params.delete('id2');
     } else {
-      if (!id1) params.set('id1', id);
-      else if (!id2) params.set('id2', id);
+      if (!id1) params.set('id1', targetId);
+      else if (!id2) params.set('id2', targetId);
       else {
         params.set('id1', id2);
-        params.set('id2', id);
+        params.set('id2', targetId);
       }
     }
     navigate(`/compare?${params.toString()}`);
