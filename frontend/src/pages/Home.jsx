@@ -46,9 +46,24 @@ const Home = () => {
   return (
     <div className="space-y-12 md:space-y-20 lg:space-y-24">
       <Helmet>
-        <title>IslamicNames | Meaningful Names. Timeless Legacy.</title>
-        <meta name="description" content="Discover meaningful Islamic names with authentic Quranic references and historical background." />
+        <title>Islamic Names - Discover Meaningful Muslim Names for Boys & Girls</title>
+        <meta name="description" content="Explore thousands of Islamic names for boys and girls with authentic meanings. Find Quranic names, names of prophets, and unique Arabic Muslim baby names with rich historical backgrounds." />
+        <meta name="keywords" content="islamicnames, islamic names, islamic names for boys, islamic names for girls, quran islamic names for girls, islamic names for men, islamic names for boys from quran, islamic names of prophets, islamic names Arabic, islamic names with meanings, islamic names for women" />
         <link rel="canonical" href="https://www.islamicnames.in/" />
+        
+        {/* Open Graph Tags */}
+        <meta property="og:title" content="Islamic Names - Discover Meaningful Muslim Names for Boys & Girls" />
+        <meta property="og:description" content="Explore thousands of Islamic names for boys and girls with authentic meanings. Find Quranic names, names of prophets, and unique Arabic Muslim baby names with rich historical backgrounds." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.islamicnames.in/" />
+        <meta property="og:image" content="https://www.islamicnames.in/logo-120.webp" />
+        <meta property="og:site_name" content="IslamicNames" />
+        
+        {/* Twitter Card Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Islamic Names - Discover Meaningful Muslim Names for Boys & Girls" />
+        <meta name="twitter:description" content="Explore thousands of Islamic names for boys and girls with authentic meanings. Find Quranic names, names of prophets, and unique Arabic Muslim baby names with rich historical backgrounds." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/logo-120.webp" />
       </Helmet>
 
       {/* Hero Section */}
@@ -115,6 +130,28 @@ const Home = () => {
 
       {/* SEO FAQ Section */}
       <HomeFAQ />
+
+      {/* SEO Content Section */}
+      <section className="max-w-4xl mx-auto px-4 py-16 text-text-muted leading-relaxed space-y-6 text-sm md:text-base text-justify">
+        <h2 className="text-2xl md:text-3xl font-black text-text mb-6">Welcome to IslamicNames: The Ultimate Resource for Meaningful Muslim Baby Names</h2>
+        
+        <p>Choosing the perfect name for your child is one of the most important and joyous responsibilities in Islam. A name is not just a simple identifier; it is a profound prayer, an aspiration, and an integral part of a person's lifelong identity. According to Islamic tradition, a good name brings blessings and shapes character. At <strong>IslamicNames</strong>, our mission is to assist you in discovering the most beautiful, authentic, and deeply meaningful <strong>islamic names</strong>. Whether you are looking for timeless classical names or unique modern choices, our comprehensive database covers a vast array of options tailored for every family across the globe.</p>
+
+        <h3 className="text-xl md:text-2xl font-bold text-text mt-8 mb-4">Discover Beautiful Islamic Names for Boys and Girls</h3>
+        <p>Our platform is meticulously curated to offer an extensive and diverse collection of <strong>islamic names for boys</strong> and <strong>islamic names for girls</strong>. For parents seeking strong, noble qualities, our selection of <strong>islamic names for men</strong> includes powerful historical figures, brave warriors, and righteous scholars who have shaped Islamic history. For your daughters, you will find an exquisite array of elegant, graceful, and historically significant <strong>islamic names for women</strong> that beautifully reflect purity, faith, modesty, and virtue. Each name is thoroughly researched to ensure its root meaning perfectly aligns with the beautiful teachings and values of Islam.</p>
+        
+        <h3 className="text-xl md:text-2xl font-bold text-text mt-8 mb-4">The Blessing of Quranic Islamic Names</h3>
+        <p>There is a unique, unparalleled blessing in selecting a name directly from the Holy Quran. We have carefully compiled dedicated lists of <strong>quran islamic names for girls</strong> and <strong>islamic names for boys from quran</strong>. Naming your precious child after beautiful words, divine signs, or the righteous individuals explicitly mentioned by Allah (SWT) provides a continuous, lifelong spiritual connection. Names such as Maryam, Sarah, Yahya, and Musa not only carry incredible historical weight but also bring a profound sense of divine peace, resilience, and legacy to your child's life. We provide the exact Ayah (verse) reference so you can read and verify the divine context yourself.</p>
+
+        <h3 className="text-xl md:text-2xl font-bold text-text mt-8 mb-4">Honoring the Prophets and Preserving Arabic Heritage</h3>
+        <p>Many devoted families deeply desire to honor the rich spiritual history of Islam by choosing <strong>islamic names of prophets</strong>. Bestowing a noble prophetic name like Muhammad, Ibrahim, Isa, Nuh, or Yusuf upon your son is a beautiful way to constantly inspire him with the exemplary character, immense patience, and unwavering faith of these great messengers. Furthermore, if you are looking for authentic linguistic roots, our comprehensive catalog of <strong>islamic names Arabic</strong> origin will connect your child to the beautiful language of the Quran. We provide clear Arabic calligraphy and phonetic spelling, ensuring exact pronunciation and precise translation.</p>
+
+        <h3 className="text-xl md:text-2xl font-bold text-text mt-8 mb-4">Authentic Islamic Names With Meanings</h3>
+        <p>We deeply understand that an authentic and positive meaning is the very core of any good name. That's why we focus heavily on providing verified <strong>islamic names with meanings</strong>. The Prophet Muhammad (PBUH) instructed us to give our children good, wholesome names, reminding us that people will be called by their names and their fathers' names on the Day of Resurrection. Every single entry in our <strong>islamicnames</strong> database is rigorously cross-referenced with classical Arabic lexicons and reputable scholarly sources. This guarantees that whether you are searching for a name that means "divine light," "unyielding bravery," "infinite mercy," or "profound wisdom," the definition you read is entirely accurate, culturally respectful, and Islamically permissible.</p>
+
+        <h3 className="text-xl md:text-2xl font-bold text-text mt-8 mb-4">Why Choose IslamicNames?</h3>
+        <p>Our ultimate goal is to make your naming journey as joyful, seamless, and informed as possible. By providing accurate phonetic pronunciations, stunning Arabic script, detailed historical background, and scholar-verified meanings, we completely remove the guesswork from finding the perfect name. We believe that every child deserves a beautiful legacy, and that legacy begins the moment they are named. Explore our rich, user-friendly library today to find the perfect name that honors your deeply held faith, reflects your highest hopes, and brings lasting, abundant blessings to your family for generations to come.</p>
+      </section>
 
       {/* CTA Banner */}
       <section className="min-h-[420px] bg-card border border-border rounded-3xl p-6 sm:p-10 md:p-16 text-center relative overflow-hidden shadow-2xl flex items-center justify-center">
