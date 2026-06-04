@@ -7,8 +7,6 @@ import NameCard from '../components/NameCard';
 import { 
   Search as SearchIcon, 
   Book, 
-  ChevronDown, 
-  ChevronUp, 
   X 
 } from 'lucide-react';
 
@@ -28,7 +26,6 @@ const Search = () => {
   const [genderFilter, setGenderFilter] = useState('');
   const [letterFilter, setLetterFilter] = useState(initialLetter);
   const [quranicFilter, setQuranicFilter] = useState(initialQuranic);
-  const [isAlphabetOpen, setIsAlphabetOpen] = useState(false);
 
   const hasActiveFilters = searchTerm || genderFilter || letterFilter || quranicFilter;
 
@@ -150,22 +147,25 @@ const Search = () => {
             />
           </div>
           
-          <div className="flex flex-wrap items-center gap-2">
-            {['boy', 'girl', 'unisex'].map(g => (
-              <button
-                key={g}
-                onClick={() => setGenderFilter(genderFilter === g ? '' : g)}
-                className={`flex-1 sm:flex-none px-4 py-3 rounded-xl capitalize text-sm font-bold border transition-colors min-h-[44px] ${
-                  genderFilter === g 
-                    ? 'bg-primary border-primary text-bg' 
-                    : 'bg-bg border-border text-text-muted hover:border-primary/50'
-                }`}
-              >
-                {g}
-              </button>
-            ))}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="grid grid-cols-3 gap-2 w-full sm:w-auto">
+              {['boy', 'girl', 'unisex'].map(g => (
+                <button
+                  key={g}
+                  onClick={() => setGenderFilter(genderFilter === g ? '' : g)}
+                  className={`px-4 py-3 rounded-xl capitalize text-sm font-bold border transition-colors min-h-[44px] text-center ${
+                    genderFilter === g 
+                      ? 'bg-primary border-primary text-bg' 
+                      : 'bg-bg border-border text-text-muted hover:border-primary/50'
+                  }`}
+                >
+                  {g}
+                </button>
+              ))}
+            </div>
             
-            <button
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <button
                 onClick={() => setQuranicFilter(!quranicFilter)}
                 className={`flex-1 sm:flex-none px-4 py-3 flex items-center justify-center gap-2 rounded-xl text-sm font-bold border transition-colors min-h-[44px] ${
                   quranicFilter 
@@ -175,37 +175,28 @@ const Search = () => {
               >
                 <Book size={16} />
                 <span>Quranic<span className="hidden sm:inline"> Only</span></span>
-            </button>
-
-            {hasActiveFilters && (
-              <button
-                onClick={clearAllFilters}
-                className="flex items-center gap-2 px-4 py-3 text-sm font-bold text-danger hover:bg-danger/5 rounded-xl transition-colors min-h-[44px]"
-              >
-                <X size={16} /> Clear All
               </button>
-            )}
+
+              {hasActiveFilters && (
+                <button
+                  onClick={clearAllFilters}
+                  className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold text-danger hover:bg-danger/5 rounded-xl transition-colors min-h-[44px]"
+                >
+                  <X size={16} /> Clear All
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Alphabet Filter */}
         <div className="border-t border-border pt-6">
-          <div className="flex items-center justify-between md:hidden mb-4">
-            <p className="text-xs text-text-muted uppercase tracking-wider font-bold">Filter by Letter</p>
-            <button 
-              onClick={() => setIsAlphabetOpen(!isAlphabetOpen)}
-              className="p-2 text-primary hover:bg-primary/5 rounded-lg transition-colors flex items-center gap-1 text-sm font-bold"
-            >
-              {isAlphabetOpen ? <><ChevronUp size={18} /> Hide</> : <><ChevronDown size={18} /> Show</>}
-            </button>
-          </div>
-          
-          <div className={`${isAlphabetOpen ? 'grid' : 'hidden'} md:block grid-cols-4 sm:grid-cols-6 md:flex md:flex-wrap gap-2`}>
-            <p className="hidden md:block w-full text-xs text-text-muted mb-4 uppercase tracking-wider font-bold">Filter by Alphabet</p>
+          <p className="text-xs text-text-muted mb-4 uppercase tracking-wider font-bold">Filter by Alphabet</p>
+          <div className="flex items-center gap-2 overflow-x-auto pb-3 md:pb-0 md:flex-wrap custom-scrollbar scroll-smooth">
             <button
               onClick={() => setLetterFilter('')}
               aria-label="Show all names"
-              className={`min-w-[42px] min-h-[42px] flex items-center justify-center rounded-lg text-sm font-black transition-all border ${
+              className={`min-w-[42px] min-h-[42px] shrink-0 flex items-center justify-center rounded-lg text-sm font-black transition-all border ${
                 !letterFilter ? 'bg-primary border-primary text-bg' : 'bg-bg border-border text-text-muted hover:border-primary/50'
               }`}
             >
@@ -219,7 +210,7 @@ const Search = () => {
                   setLetterFilter(letter === letterFilter ? '' : letter);
                   setSearchTerm(''); 
                 }}
-                className={`min-w-[42px] min-h-[42px] flex items-center justify-center rounded-lg text-sm font-black transition-all border ${
+                className={`min-w-[42px] min-h-[42px] shrink-0 flex items-center justify-center rounded-lg text-sm font-black transition-all border ${
                   letterFilter === letter ? 'bg-primary border-primary text-bg' : 'bg-bg border-border text-text-muted hover:border-primary/50'
                 }`}
               >
