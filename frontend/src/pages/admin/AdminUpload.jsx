@@ -90,7 +90,7 @@ const AdminUpload = () => {
       {result && (
         <div className="bg-card border border-primary/30 p-6 rounded-xl">
           <h3 className="text-lg font-bold text-text mb-4">Import Results</h3>
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
             <div className="bg-bg p-4 rounded-lg flex items-center gap-3">
               <CheckCircle className="text-primary" />
               <div>
