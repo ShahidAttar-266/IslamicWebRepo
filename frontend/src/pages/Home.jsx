@@ -32,6 +32,12 @@ const Home = () => {
       }
     },
     staleTime: 5 * 60 * 1000,
+    initialData: () => {
+      if (typeof window !== 'undefined' && window.__INITIAL_DATA__?.recentNames) {
+        return window.__INITIAL_DATA__.recentNames;
+      }
+      return undefined;
+    },
   });
 
   const handleSearch = (e) => {

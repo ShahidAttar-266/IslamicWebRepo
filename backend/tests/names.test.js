@@ -19,8 +19,18 @@ describe('Names API', () => {
         select: jest.fn().mockReturnThis(),
         sort: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
-        limit: jest.fn().mockImplementation(function() {
-            // This is the end of the chain in our controller
+        limit: jest.fn().mockReturnThis(),
+        lean: jest.fn().mockResolvedValue([
+            {
+                _id: '507f1f77bcf86cd799439011',
+                nameEnglish: 'Ahmed',
+                nameArabic: 'أحمد',
+                meaning: 'Praiseworthy',
+                isActive: true,
+                isPremium: false,
+            }
+        ]),
+        then: jest.fn().mockImplementation(function(callback) {
             return Promise.resolve([
                 {
                     _id: '507f1f77bcf86cd799439011',
@@ -31,7 +41,7 @@ describe('Names API', () => {
                     isPremium: false,
                     toObject: function() { return this; }
                 }
-            ]);
+            ]).then(callback);
         })
     };
 
@@ -158,6 +168,20 @@ describe('Names API', () => {
             expect(res.statusCode).toEqual(404);
             expect(res.headers['content-type']).toContain('text/html');
             expect(res.text).toContain('Name Not Found');
+        });
+    });
+
+    describe('GET /api/v1/names/render-home', () => {
+        it('should render the home HTML page successfully', async () => {
+            Name.find.mockReturnValue(mockNameQuery);
+
+            const res = await request(app).get('/api/v1/names/render-home');
+
+            expect(res.statusCode).toEqual(200);
+            expect(res.headers['content-type']).toContain('text/html');
+            expect(res.text).toContain('IslamicNames');
+            expect(res.text).toContain('Ahmed');
+            expect(res.text).toContain('Praiseworthy');
         });
     });
 });

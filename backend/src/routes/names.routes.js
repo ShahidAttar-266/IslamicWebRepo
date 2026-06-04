@@ -7,7 +7,7 @@ const {
     updateName,
     deleteName
 } = require('../controllers/names.controller');
-const { renderNamePage } = require('../controllers/render.controller');
+const { renderNamePage, renderHomePage } = require('../controllers/render.controller');
 
 const { protect, authorize } = require('../middlewares/auth');
 const optionalProtect = require('../middlewares/optionalProtect');
@@ -16,6 +16,7 @@ const router = express.Router();
 
 router.get('/sitemap.xml', getSitemap);
 router.get('/render/:idOrSlug', renderNamePage);
+router.get('/render-home', renderHomePage);
 
 router.route('/')
     .get(optionalProtect, getNames)

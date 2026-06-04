@@ -158,12 +158,71 @@ exports.renderNamePage = async (req, res, next) => {
         const title = `${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`;
         const description = `Find the meaning, origin, pronunciation, and Quranic reference for the name ${name.nameEnglish}. Meaning: "${name.meaning}".`;
 
+        // Inject initial data script safely
+        const initialDataScript = `<script>window.__INITIAL_DATA__ = ${JSON.stringify({ name }).replace(/</g, '\\u003c')};</script>`;
+
         // Inject dynamic tags and HTML body structure
-        html = html.replace('<head>', `<head>${generateSEOInjectHTML(name)}`);
+        html = html.replace('<head>', `<head>${initialDataScript}${generateSEOInjectHTML(name)}`);
         html = html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i, `<meta name="description" content="${description}" />`);
         html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:title" content="${title}" />`);
         html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:description" content="${description}" />`);
         html = html.replace('<div id="root"></div>', `<div id="root">${generateFallbackBodyHTML(name)}</div>`);
+
+        res.header('Content-Type', 'text/html');
+        return res.status(200).send(html);
+    } catch (err) {
+        next(err);
+    }
+};
+
+/**
+ * Generate fallback HTML for home page
+ * @param {Array} recentNames
+ * @returns {string}
+ */
+function generateHomeFallbackBodyHTML(recentNames) {
+    const namesHtml = recentNames.map(name => `
+        <div style="padding: 16px; border: 1px solid #1f4037; border-radius: 12px; margin-bottom: 16px; background-color: #122c25;">
+            <h3 style="font-size: 1.25rem; color: #10b981; margin: 0 0 8px 0; font-family: Amiri, serif;">${name.nameArabic}</h3>
+            <h4 style="font-size: 1.1rem; font-weight: bold; color: #e8f5ef; margin: 0 0 4px 0;">${name.nameEnglish}</h4>
+            <p style="font-size: 0.875rem; color: #9ca3af; margin: 0; font-style: italic;">"${name.meaning}"</p>
+        </div>
+    `).join('');
+
+    return `
+  <main style="max-width: 800px; margin: 40px auto; padding: 20px; font-family: system-ui, -apple-system, sans-serif; background-color: #0d1f1a; color: #e8f5ef;">
+    <header style="text-align: center; margin-bottom: 40px;">
+      <h1 style="font-size: 2.5rem; color: #10b981; margin: 0 0 10px 0;">IslamicNames</h1>
+      <p style="font-size: 1.2rem; color: #9ca3af; margin: 0; font-style: italic;">"Meaningful Names. Timeless Legacy."</p>
+    </header>
+    <section>
+      <h2 style="font-size: 1.5rem; color: #10b981; margin: 0 0 20px 0; border-bottom: 1px solid #1f4037; padding-bottom: 8px;">Recently Added</h2>
+      <div style="display: grid; grid-template-columns: 1fr; gap: 16px;">
+        ${namesHtml}
+      </div>
+    </section>
+  </main>
+    `;
+}
+
+/**
+ * Render home page dynamically with pre-populated HTML and preloaded state
+ */
+exports.renderHomePage = async (req, res, next) => {
+    try {
+        const recentNames = await Name.find({ isActive: true })
+            .sort('-createdAt')
+            .limit(8)
+            .lean();
+
+        let html = await getTemplate();
+
+        // Inject initial data script safely
+        const initialDataScript = `<script>window.__INITIAL_DATA__ = ${JSON.stringify({ recentNames }).replace(/</g, '\\u003c')};</script>`;
+
+        // Inject dynamic tags and HTML body structure
+        html = html.replace('<head>', `<head>${initialDataScript}`);
+        html = html.replace('<div id="root"></div>', `<div id="root">${generateHomeFallbackBodyHTML(recentNames)}</div>`);
 
         res.header('Content-Type', 'text/html');
         return res.status(200).send(html);

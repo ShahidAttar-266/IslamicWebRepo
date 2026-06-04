@@ -40,6 +40,10 @@
       "destination": "/api/v1/names/render/:slug"
     },
     {
+      "source": "/",
+      "destination": "/api/v1/names/render-home"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

@@ -81,6 +81,15 @@ const NameDetail = () => {
     enabled: !!id,
     retry: false,
     staleTime: 10 * 60 * 1000, // 10 min
+    initialData: () => {
+      if (typeof window !== 'undefined' && window.__INITIAL_DATA__?.name) {
+        const preloaded = window.__INITIAL_DATA__.name;
+        if (preloaded._id === id || preloaded.slug === id) {
+          return preloaded;
+        }
+      }
+      return undefined;
+    },
   });
 
   const id1 = searchParams.get('id1');
