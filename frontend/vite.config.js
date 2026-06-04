@@ -20,34 +20,38 @@ try {
   // Silent fallback if module is missing or unable to patch
 }
 
+const isVercel = process.env.VERCEL === '1'
+
 export default defineConfig({
   plugins: [
     react(),
-    prerender({
-      staticDir: path.join(__dirname, 'dist'),
-      routes: ['/', '/search', '/privacy', '/terms', '/disclaimer', '/faq'],
-      renderer: '@prerenderer/renderer-puppeteer',
-      rendererOptions: {
-        renderAfterTime: 2000,
-        timeout: 20000,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        userDataDir: path.join(__dirname, '.puppeteer_user_data'),
-        navigationOptions: {
-          waitUntil: 'domcontentloaded',
-        }
-      },
-      postProcess(renderedRoute) {
-        if (renderedRoute.route === '/') {
-          const fs = require('fs')
-          const fsPath = require('path')
-          const distDir = fsPath.join(__dirname, 'dist')
-          if (!fs.existsSync(distDir)) {
-            fs.mkdirSync(distDir, { recursive: true })
+    ...(!isVercel ? [
+      prerender({
+        staticDir: path.join(__dirname, 'dist'),
+        routes: ['/', '/search', '/privacy', '/terms', '/disclaimer', '/faq'],
+        renderer: '@prerenderer/renderer-puppeteer',
+        rendererOptions: {
+          renderAfterTime: 2000,
+          timeout: 20000,
+          args: ['--no-sandbox', '--disable-setuid-sandbox'],
+          userDataDir: path.join(__dirname, '.puppeteer_user_data'),
+          navigationOptions: {
+            waitUntil: 'domcontentloaded',
           }
-          fs.writeFileSync(fsPath.join(distDir, 'index.html'), renderedRoute.html)
+        },
+        postProcess(renderedRoute) {
+          if (renderedRoute.route === '/') {
+            const fs = require('fs')
+            const fsPath = require('path')
+            const distDir = fsPath.join(__dirname, 'dist')
+            if (!fs.existsSync(distDir)) {
+              fs.mkdirSync(distDir, { recursive: true })
+            }
+            fs.writeFileSync(fsPath.join(distDir, 'index.html'), renderedRoute.html)
+          }
         }
-      }
-    })
+      })
+    ] : [])
   ],
   resolve: {
     alias: {
