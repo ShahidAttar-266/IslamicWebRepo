@@ -3,6 +3,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
 import { Search, LogOut, Heart, Menu, X, ChevronRight, User } from 'lucide-react';
 import Footer from '../components/Footer';
+import { AnnouncementBar } from '../components/AnnouncementBar';
 
 // Lazy Components
 const SupportWidget = lazy(() => import('../components/SupportWidget'));
@@ -65,8 +66,11 @@ const MainLayout = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-bg text-text">
-      {/* Navbar */}
-      <header className="bg-card border-b border-border sticky top-0 z-50">
+      {/* Sticky shell: announcement bar + navbar scroll as one unit */}
+      <div className="sticky top-0 z-50">
+        <AnnouncementBar />
+        {/* Navbar */}
+        <header className="bg-card border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Link to="/" className="flex items-center gap-2 group">
@@ -185,7 +189,8 @@ const MainLayout = () => {
             </button>
           </div>
         </div>
-      </header>
+        </header>
+      </div>{/* end sticky shell */}
 
       {/* Mobile Drawer Overlay */}
       {isDrawerOpen && (
