@@ -61,7 +61,7 @@ const AdminLayout = () => {
       <div className="p-4 border-t border-border bg-bg/20">
         <div className="px-4 py-4 mb-2 flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold border border-primary/20 shrink-0">
-            {user?.name?.charAt(0).toUpperCase()}
+            {user?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || '?'}
           </div>
           <div className="overflow-hidden">
             <p className="text-sm font-bold text-text truncate">{user?.name}</p>

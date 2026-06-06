@@ -18,7 +18,7 @@ const Account = () => {
     },
     onSuccess: (data) => {
       updateUser(data.data);
-      queryClient.invalidateQueries(['auth']);
+      queryClient.invalidateQueries({ queryKey: ['auth'] });
       toast.success('Profile updated successfully');
     },
     onError: (error) => {
@@ -65,7 +65,7 @@ const Account = () => {
         <div className="space-y-6">
           <div className="bg-card border border-border rounded-2xl md:rounded-[2rem] p-5 sm:p-6 md:p-8 text-center shadow-2xl">
             <div className="w-20 h-20 md:w-24 md:h-24 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-4 font-black text-2xl md:text-3xl border border-primary/20">
-              {user?.name?.charAt(0).toUpperCase() || <UserIcon size={40} />}
+              {user?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || <UserIcon size={40} />}
             </div>
             <h2 className="text-xl font-bold text-text mb-1 truncate">{user?.name}</h2>
             <p className="text-xs md:text-sm text-text-muted mb-5 truncate italic">{user?.email}</p>

@@ -137,7 +137,7 @@ const MainLayout = () => {
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                     aria-label="Toggle user menu"
                     aria-expanded={isDropdownOpen}
-                    className="flex items-center gap-2 p-2 hover:bg-bg rounded-full text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                    className="flex items-center gap-2 p-2 hover:bg-bg rounded-full text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[44px] justify-center"
                   >
                     <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs border border-primary/20">
                       {userInitial}
@@ -318,4 +318,4 @@ const MainLayout = () => {
   );
 };
 
-export default MainLayout;MainLayout;
+export default MainLayout;

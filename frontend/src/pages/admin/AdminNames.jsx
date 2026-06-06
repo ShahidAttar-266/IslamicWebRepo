@@ -34,13 +34,13 @@ const AdminNames = () => {
       const res = await api.get(url);
       return res.data;
     },
-    keepPreviousData: true
+    placeholderData: (prev) => prev
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id) => api.delete(`/names/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries(['admin-names']);
+      queryClient.invalidateQueries({ queryKey: ['admin-names'] });
       toast.success('Name deleted successfully');
     },
     onError: (err) => {
@@ -56,7 +56,7 @@ const AdminNames = () => {
       return api.post('/names', formData);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['admin-names']);
+      queryClient.invalidateQueries({ queryKey: ['admin-names'] });
       toast.success(editingName ? 'Name updated successfully' : 'Name added successfully');
       handleCloseModal();
     },

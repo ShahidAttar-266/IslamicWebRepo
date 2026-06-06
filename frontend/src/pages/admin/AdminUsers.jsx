@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import api from '../../api/axios';
 import { 
   Mail, 
@@ -8,11 +8,8 @@ import {
   User as UserIcon, 
   Loader2 
 } from 'lucide-react';
-import { toast } from 'react-hot-toast';
 
 const AdminUsers = () => {
-  const queryClient = useQueryClient();
-
   const { data, isLoading } = useQuery({
     queryKey: ['admin-users'],
     queryFn: async () => {
@@ -60,7 +57,7 @@ const AdminUsers = () => {
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
-                          {user.name?.charAt(0).toUpperCase() || <UserIcon size={18} />}
+                          {user.name?.charAt(0)?.toUpperCase() || user.email?.charAt(0)?.toUpperCase() || <UserIcon size={18} />}
                         </div>
                         <div>
                           <p className="font-bold text-text">{user.name}</p>
