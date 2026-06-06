@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { X } from 'lucide-react';
+
 
 const WHATSAPP_NUMBER = '918275360063';
 const WHATSAPP_MESSAGE = encodeURIComponent(
@@ -8,14 +7,10 @@ const WHATSAPP_MESSAGE = encodeURIComponent(
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
 
 /**
- * A premium, dismissible sticky announcement bar displayed above the site header.
+ * A premium sticky announcement bar displayed above the site header.
  * Matches the green Islamic theme defined in tailwind.config.js.
  */
 const AnnouncementBar = () => {
-  const [isDismissed, setIsDismissed] = useState(false);
-
-  if (isDismissed) return null;
-
   return (
     <div
       role="banner"
@@ -38,7 +33,7 @@ const AnnouncementBar = () => {
 
       {/* Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3">
-        <div className="flex flex-col xs:flex-row items-center justify-center gap-2 sm:gap-4 pr-8 sm:pr-10">
+        <div className="flex flex-col xs:flex-row items-center justify-center gap-2 sm:gap-4">
 
           {/* Message block */}
           <div className="flex flex-col xs:flex-row items-center gap-1.5 xs:gap-3 text-center xs:text-left">
@@ -95,22 +90,7 @@ const AnnouncementBar = () => {
         </div>
       </div>
 
-      {/* Dismiss button */}
-      <button
-        onClick={() => setIsDismissed(true)}
-        aria-label="Dismiss announcement"
-        className="
-          absolute right-3 top-1/2 -translate-y-1/2
-          p-1.5 rounded-full
-          text-[#a1c2b3] hover:text-[#e8f5ef]
-          hover:bg-[#2d4a3e]/60
-          transition-all duration-200
-          flex items-center justify-center
-        "
-        style={{ minWidth: '32px', minHeight: '32px' }}
-      >
-        <X size={15} aria-hidden="true" />
-      </button>
+
     </div>
   );
 };
