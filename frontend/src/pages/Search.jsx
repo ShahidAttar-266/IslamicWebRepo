@@ -30,6 +30,15 @@ const Search = () => {
   const [quranicFilter, setQuranicFilter] = useState(initQuranic.current);
 
   const debounceTimer = useRef(null);
+  const inputRef = useRef(null);
+
+  /** Dismisses the mobile keyboard on all major mobile browsers. */
+  const blurInput = () => {
+    setTimeout(() => {
+      inputRef.current?.blur();
+      document.activeElement?.blur();
+    }, 100);
+  };
 
   const hasActiveFilters = searchTerm || genderFilter || letterFilter || quranicFilter;
 
@@ -75,6 +84,7 @@ const Search = () => {
     setSearchTerm('');
     setDebouncedTerm('');
     setLetterFilter(prev => (prev === letter ? '' : letter));
+    blurInput();
   };
 
   // ── Clear all ──────────────────────────────────────────────────────────
@@ -85,6 +95,24 @@ const Search = () => {
     setGenderFilter('');
     setLetterFilter('');
     setQuranicFilter(false);
+    blurInput();
+  };
+
+  /** Flushes debounce immediately and dismisses the mobile keyboard on Enter. */
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+      setDebouncedTerm(searchTerm);
+      blurInput();
+    }
+  };
+
+  /** Form submit handler — fires when the virtual keyboard's Go/Search action is tapped. */
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    setDebouncedTerm(searchTerm);
+    blurInput();
   };
 
   // ── Query ─────────────────────────────────────────────────────────────
@@ -151,17 +179,19 @@ const Search = () => {
         <div className="flex flex-col gap-4">
 
           {/* Text input */}
-          <div className="relative w-full">
+          <form onSubmit={handleFormSubmit} className="relative w-full" role="search">
             <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" size={20} />
             <input
-              type="text"
+              ref={inputRef}
+              type="search"
               placeholder="Search names, meanings..."
               aria-label="Search Islamic names by name or meaning"
               className="w-full bg-bg border border-border focus:border-primary focus:ring-1 focus:ring-primary text-text rounded-xl py-3.5 pl-12 pr-4 outline-none transition-all text-base"
               value={searchTerm}
               onChange={(e) => handleSearchInput(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
-          </div>
+          </form>
 
           {/* Gender + Quranic filters */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
