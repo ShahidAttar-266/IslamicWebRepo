@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../api/axios';
 import useAuthStore from '../store/useAuthStore';
 import NameCard from '../components/NameCard';
-import { 
-  Search as SearchIcon, 
-  Book, 
-  X 
+import {
+  Search as SearchIcon,
+  Book,
+  X
 } from 'lucide-react';
-
 import { Helmet } from 'react-helmet-async';
 
 const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -17,33 +16,58 @@ const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { isAuthenticated } = useAuthStore();
-  const initialQuery = searchParams.get('q') || '';
-  const initialLetter = searchParams.get('letter') || '';
-  const initialQuranic = searchParams.get('quranic') === 'true';
-  
-  const [searchTerm, setSearchTerm] = useState(initialQuery);
-  const [debouncedTerm, setDebouncedTerm] = useState(initialQuery);
-  const [genderFilter, setGenderFilter] = useState('');
-  const [letterFilter, setLetterFilter] = useState(initialLetter);
-  const [quranicFilter, setQuranicFilter] = useState(initialQuranic);
+
+  // Read initial values from URL once on mount only
+  const [searchTerm, setSearchTerm]       = useState(() => searchParams.get('q')      || '');
+  const [debouncedTerm, setDebouncedTerm] = useState(() => searchParams.get('q')      || '');
+  const [genderFilter, setGenderFilter]   = useState('');
+  const [letterFilter, setLetterFilter]   = useState(() => searchParams.get('letter') || '');
+  const [quranicFilter, setQuranicFilter] = useState(() => searchParams.get('quranic') === 'true');
+
+  const debounceTimer = useRef(null);
 
   const hasActiveFilters = searchTerm || genderFilter || letterFilter || quranicFilter;
 
-  const getPageTitle = () => {
-    if (debouncedTerm) return `Search Results for "${debouncedTerm}" | IslamicNames`;
-    if (letterFilter) return `Names Starting with "${letterFilter}" | IslamicNames`;
-    if (quranicFilter) return `Quranic Names | IslamicNames`;
-    if (genderFilter) return `${genderFilter.charAt(0).toUpperCase() + genderFilter.slice(1)} Names | IslamicNames`;
-    return 'Browse Islamic Names | IslamicNames';
+  // ─── Debounce: only fires when the user types in the search box ───────────
+  const handleSearchInput = (value) => {
+    setSearchTerm(value);
+
+    // Typing clears the letter filter
+    if (value && letterFilter) setLetterFilter('');
+
+    // Cancel any pending debounce
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+
+    debounceTimer.current = setTimeout(() => {
+      setDebouncedTerm(value);
+    }, 400);
   };
 
-  const getPageDescription = () => {
-    if (debouncedTerm) return `Explore search results for "${debouncedTerm}" on IslamicNames. Find meanings and origins of Islamic names.`;
-    if (letterFilter) return `Browse Islamic names starting with the letter ${letterFilter}. Explore meanings, origins, and Quranic references.`;
-    return 'Browse thousands of meaningful Islamic names. Filter by gender, alphabet, or Quranic references.';
+  // Cleanup timer on unmount
+  useEffect(() => () => {
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+  }, []);
+
+  // ─── URL sync (runs after state settles, no loop risk) ───────────────────
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (debouncedTerm) params.set('q', debouncedTerm);
+    if (letterFilter)  params.set('letter', letterFilter);
+    if (quranicFilter) params.set('quranic', 'true');
+    setSearchParams(params, { replace: true });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedTerm, letterFilter, quranicFilter]);
+
+  // ─── Letter / filter actions ─────────────────────────────────────────────
+  const selectLetter = (letter) => {
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    setSearchTerm('');
+    setDebouncedTerm('');
+    setLetterFilter(prev => (prev === letter ? '' : letter));
   };
 
   const clearAllFilters = () => {
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
     setSearchTerm('');
     setDebouncedTerm('');
     setGenderFilter('');
@@ -51,55 +75,36 @@ const Search = () => {
     setQuranicFilter(false);
   };
 
-  // Debounce search and sync URL
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedTerm(searchTerm);
-      
-      const params = new URLSearchParams(searchParams.toString());
-      let changed = false;
-
-      const syncParam = (key, value) => {
-        if (value) {
-          if (params.get(key) !== String(value)) {
-            params.set(key, value);
-            changed = true;
-          }
-        } else if (params.has(key)) {
-          params.delete(key);
-          changed = true;
-        }
-      };
-
-      syncParam('q', searchTerm);
-      syncParam('letter', letterFilter);
-      if (quranicFilter) syncParam('quranic', 'true');
-      else syncParam('quranic', '');
-
-      if (changed) {
-        setSearchParams(params, { replace: true });
-      }
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [searchTerm, letterFilter, quranicFilter, setSearchParams, searchParams]);
-
+  // ─── Query ────────────────────────────────────────────────────────────────
   const { data, isLoading, error } = useQuery({
     queryKey: ['names', debouncedTerm, genderFilter, letterFilter, quranicFilter],
     queryFn: async () => {
-      // Only apply -createdAt sort when browsing with no filters (shows newest names first).
-      // For any search/filter, omit sort so the backend uses alphabetical nameEnglish order.
-      const hasAnyFilter = debouncedTerm || genderFilter || letterFilter || quranicFilter;
-      let url = `/names?limit=200${hasAnyFilter ? '' : '&sort=-createdAt'}`;
+      const hasFilter = debouncedTerm || genderFilter || letterFilter || quranicFilter;
+      let url = `/names?limit=200${hasFilter ? '' : '&sort=-createdAt'}`;
       if (debouncedTerm) url += `&q=${encodeURIComponent(debouncedTerm)}`;
-      if (genderFilter) url += `&gender=${genderFilter}`;
-      if (letterFilter) url += `&letter=${letterFilter}`;
+      if (genderFilter)  url += `&gender=${genderFilter}`;
+      if (letterFilter)  url += `&letter=${letterFilter}`;
       if (quranicFilter) url += `&quranic=true`;
-      
       const res = await api.get(url);
       return res.data;
     },
-    staleTime: 3 * 60 * 1000, // 3 min
+    staleTime: 0, // always fetch fresh when queryKey changes
   });
+
+  // ─── SEO helpers ─────────────────────────────────────────────────────────
+  const getPageTitle = () => {
+    if (debouncedTerm) return `Search Results for "${debouncedTerm}" | IslamicNames`;
+    if (letterFilter)  return `Names Starting with "${letterFilter}" | IslamicNames`;
+    if (quranicFilter) return `Quranic Names | IslamicNames`;
+    if (genderFilter)  return `${genderFilter.charAt(0).toUpperCase() + genderFilter.slice(1)} Names | IslamicNames`;
+    return 'Browse Islamic Names | IslamicNames';
+  };
+
+  const getPageDescription = () => {
+    if (debouncedTerm) return `Explore search results for "${debouncedTerm}" on IslamicNames. Find meanings and origins of Islamic names.`;
+    if (letterFilter)  return `Browse Islamic names starting with the letter ${letterFilter}. Explore meanings, origins, and Quranic references.`;
+    return 'Browse thousands of meaningful Islamic names. Filter by gender, alphabet, or Quranic references.';
+  };
 
   if (error) {
     return (
@@ -118,14 +123,14 @@ const Search = () => {
         <meta name="description" content={getPageDescription()} />
         <meta name="keywords" content="islamic names, islamic names for boys, islamic names for girls, muslim baby names, arabic names with meaning, quranic names, islamic names search, muslim names list, arabic muslim names, islamic names for newborn" />
         <link rel="canonical" href="https://www.islamicnames.in/search" />
-        
+
         {/* Open Graph / Facebook */}
         <meta property="og:title" content={getPageTitle()} />
         <meta property="og:description" content={getPageDescription()} />
         <meta property="og:url" content="https://www.islamicnames.in/search" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
-        
+
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={getPageTitle()} />
@@ -138,19 +143,16 @@ const Search = () => {
         <div className="flex flex-col gap-4">
           <div className="relative w-full">
             <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" size={20} />
-            <input 
-              type="text" 
-              placeholder="Search names, meanings..." 
+            <input
+              type="text"
+              placeholder="Search names, meanings..."
               aria-label="Search Islamic names by name or meaning"
               className="w-full bg-bg border border-border focus:border-primary focus:ring-1 focus:ring-primary text-text rounded-xl py-3.5 pl-12 pr-4 outline-none transition-all text-base"
               value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                if (e.target.value && letterFilter) setLetterFilter(''); 
-              }}
+              onChange={(e) => handleSearchInput(e.target.value)}
             />
           </div>
-          
+
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="grid grid-cols-3 gap-2 w-full sm:w-auto">
               {['boy', 'girl', 'unisex'].map(g => (
@@ -158,8 +160,8 @@ const Search = () => {
                   key={g}
                   onClick={() => setGenderFilter(genderFilter === g ? '' : g)}
                   className={`px-4 py-3 rounded-xl capitalize text-sm font-bold border transition-colors min-h-[44px] text-center ${
-                    genderFilter === g 
-                      ? 'bg-primary border-primary text-bg' 
+                    genderFilter === g
+                      ? 'bg-primary border-primary text-bg'
                       : 'bg-bg border-border text-text-muted hover:border-primary/50'
                   }`}
                 >
@@ -167,13 +169,13 @@ const Search = () => {
                 </button>
               ))}
             </div>
-            
+
             <div className="flex items-center gap-2 w-full sm:w-auto">
               <button
                 onClick={() => setQuranicFilter(!quranicFilter)}
                 className={`flex-1 sm:flex-none px-4 py-3 flex items-center justify-center gap-2 rounded-xl text-sm font-bold border transition-colors min-h-[44px] ${
-                  quranicFilter 
-                    ? 'bg-primary border-primary text-bg' 
+                  quranicFilter
+                    ? 'bg-primary border-primary text-bg'
                     : 'bg-bg border-border text-text-muted hover:border-primary/50'
                 }`}
               >
@@ -198,11 +200,7 @@ const Search = () => {
           <p className="text-xs text-text-muted mb-4 uppercase tracking-wider font-bold">Filter by Alphabet</p>
           <div className="flex items-center gap-2 overflow-x-auto pb-3 md:pb-0 md:flex-wrap custom-scrollbar scroll-smooth">
             <button
-              onClick={() => {
-                setLetterFilter('');
-                setSearchTerm('');
-                setDebouncedTerm('');
-              }}
+              onClick={() => selectLetter('')}
               aria-label="Show all names"
               className={`min-w-[42px] min-h-[42px] shrink-0 flex items-center justify-center rounded-lg text-sm font-black transition-all border ${
                 !letterFilter ? 'bg-primary border-primary text-bg' : 'bg-bg border-border text-text-muted hover:border-primary/50'
@@ -214,11 +212,7 @@ const Search = () => {
               <button
                 key={letter}
                 aria-label={`Filter names by letter ${letter}`}
-                onClick={() => {
-                  setLetterFilter(letter === letterFilter ? '' : letter);
-                  setSearchTerm('');
-                  setDebouncedTerm('');
-                }}
+                onClick={() => selectLetter(letter)}
                 className={`min-w-[42px] min-h-[42px] shrink-0 flex items-center justify-center rounded-lg text-sm font-black transition-all border ${
                   letterFilter === letter ? 'bg-primary border-primary text-bg' : 'bg-bg border-border text-text-muted hover:border-primary/50'
                 }`}
@@ -241,16 +235,16 @@ const Search = () => {
 
         {(isLoading && !data) ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-             {[...Array(8)].map((_, i) => (
-               <div key={i} className="bg-white/5 border border-white/10 rounded-2xl h-64 animate-pulse" />
-             ))}
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="bg-white/5 border border-white/10 rounded-2xl h-64 animate-pulse" />
+            ))}
           </div>
         ) : data?.data?.length === 0 ? (
           <div className="text-center py-20 bg-card border border-border rounded-2xl shadow-sm px-4">
             <SearchIcon size={64} className="mx-auto mb-6 text-border" />
             <p className="text-xl font-bold text-text">No names found</p>
             <p className="text-text-muted mt-2 max-w-md mx-auto">We couldn't find any names matching your current filters. Try adjusting your search or clearing all filters.</p>
-            <button 
+            <button
               onClick={clearAllFilters}
               className="mt-6 bg-primary text-bg px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-primary/10"
             >
@@ -260,9 +254,9 @@ const Search = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
             {data?.data?.map((name, index) => (
-              <NameCard 
-                key={name._id} 
-                name={name} 
+              <NameCard
+                key={name._id}
+                name={name}
                 isLocked={!isAuthenticated && index >= 4}
               />
             ))}
