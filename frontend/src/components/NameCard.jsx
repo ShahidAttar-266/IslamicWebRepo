@@ -6,7 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import api from '../api/axios';
 import { toast } from 'react-hot-toast';
 
-const NameCard = React.memo(({ name, onFavorite, delay = 0, isLocked = false }) => {
+const NameCard = React.memo(({ name, onFavorite, delay = 0 }) => {
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -148,15 +148,7 @@ const NameCard = React.memo(({ name, onFavorite, delay = 0, isLocked = false }) 
 
       {CardContent}
 
-      {/* Lock overlay for unauthenticated users */}
-      {isLocked && (
-        <div className="absolute inset-0 bg-card/80 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center gap-3 z-10">
-          <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          </div>
-          <p className="text-xs font-bold text-text-muted text-center px-4">Sign in to view all names</p>
-        </div>
-      )}
+
 
       {/* Hover Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
