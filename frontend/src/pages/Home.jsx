@@ -134,8 +134,8 @@ const Home = () => {
       </section>
 
       {/* SEO Content Section */}
-      <section className="max-w-4xl mx-auto px-4 py-16 text-text-muted leading-relaxed space-y-6 text-sm md:text-base text-justify">
-        <h2 className="text-2xl md:text-3xl font-black text-text mb-6 text-left">Welcome to IslamicNames: The Ultimate Resource for Meaningful Muslim Baby Names</h2>
+      <section className="max-w-4xl mx-auto px-4 py-16 text-text-muted leading-relaxed space-y-6 text-sm md:text-base text-left">
+        <h2 className="text-2xl md:text-3xl font-black text-text mb-6">Welcome to IslamicNames: The Ultimate Resource for Meaningful Muslim Baby Names</h2>
         
         <p>Choosing the perfect name for your child is one of the most important and joyous responsibilities in Islam. A name is not just a simple identifier; it is a profound prayer, an aspiration, and an integral part of a person's lifelong identity. According to Islamic tradition, a good name brings blessings and shapes character. At <strong>IslamicNames</strong>, our mission is to assist you in discovering the most beautiful, authentic, and deeply meaningful <strong>islamic names</strong>. Whether you are looking for timeless classical names or unique modern choices, our comprehensive database covers a vast array of options tailored for every family across the globe.</p>
 
