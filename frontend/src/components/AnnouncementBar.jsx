@@ -5,6 +5,8 @@ const WHATSAPP_MESSAGE = encodeURIComponent(
   'Assalamu Alaikum! I am interested in getting personal Islamic name suggestions for my baby. Please help me.'
 );
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
+const EMAIL_ADDRESS = 'islamicnameshelp@gmail.com';
+const EMAIL_URL = `mailto:${EMAIL_ADDRESS}`;
 
 /**
  * A premium sticky announcement bar displayed above the site header.
@@ -59,34 +61,74 @@ const AnnouncementBar = () => {
                 +91 82753 60063
               </a>
             </span>
+            <span
+              className="hidden sm:inline-flex items-center text-[#a1c2b3] text-xs font-medium shrink-0 whitespace-nowrap"
+              aria-label="Email contact"
+            >
+              <span className="inline-block w-px h-3.5 bg-[#2d4a3e] mx-3" aria-hidden="true" />
+              ✉️&nbsp;Email:&nbsp;
+              <a
+                href={EMAIL_URL}
+                className="text-[#2db87a] font-semibold hover:text-[#d4a843] transition-colors duration-200 underline underline-offset-2 decoration-dotted"
+                aria-label="Email us at islamicnameshelp@gmail.com"
+              >
+                {EMAIL_ADDRESS}
+              </a>
+            </span>
           </div>
 
-          {/* WhatsApp CTA Button */}
-          <a
-            id="announcement-whatsapp-cta"
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Get personal Islamic name suggestions via WhatsApp"
-            className="
-              inline-flex items-center justify-center gap-2
-              bg-[#2db87a] hover:bg-[#25a068]
-              active:bg-[#1e8a58]
-              text-[#0d1f1a] font-bold
-              text-xs sm:text-sm
-              px-4 sm:px-5 py-1.5 sm:py-2
-              rounded-full
-              shadow-lg shadow-[#2db87a]/25
-              hover:shadow-[#2db87a]/40
-              transition-all duration-200
-              shrink-0
-              whitespace-nowrap
-            "
-          >
-            <span className="text-base leading-none" aria-hidden="true">💬</span>
-            <span className="hidden xs:inline">Get Personal Name Suggestions</span>
-            <span className="xs:hidden">WhatsApp Us</span>
-          </a>
+          {/* CTA Buttons */}
+          <div className="flex items-center gap-2 shrink-0">
+            {/* WhatsApp CTA Button */}
+            <a
+              id="announcement-whatsapp-cta"
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Get personal Islamic name suggestions via WhatsApp"
+              className="
+                inline-flex items-center justify-center gap-2
+                bg-[#2db87a] hover:bg-[#25a068]
+                active:bg-[#1e8a58]
+                text-[#0d1f1a] font-bold
+                text-xs sm:text-sm
+                px-4 sm:px-5 py-1.5 sm:py-2
+                rounded-full
+                shadow-lg shadow-[#2db87a]/25
+                hover:shadow-[#2db87a]/40
+                transition-all duration-200
+                whitespace-nowrap
+              "
+            >
+              <span className="text-base leading-none" aria-hidden="true">💬</span>
+              <span className="hidden xs:inline">WhatsApp Us</span>
+              <span className="xs:hidden">WhatsApp</span>
+            </a>
+
+            {/* Email CTA Button */}
+            <a
+              id="announcement-email-cta"
+              href={EMAIL_URL}
+              aria-label="Get personal Islamic name suggestions via Email"
+              className="
+                inline-flex items-center justify-center gap-2
+                bg-[#d4a843] hover:bg-[#c49a38]
+                active:bg-[#b08830]
+                text-[#0d1f1a] font-bold
+                text-xs sm:text-sm
+                px-4 sm:px-5 py-1.5 sm:py-2
+                rounded-full
+                shadow-lg shadow-[#d4a843]/25
+                hover:shadow-[#d4a843]/40
+                transition-all duration-200
+                whitespace-nowrap
+              "
+            >
+              <span className="text-base leading-none" aria-hidden="true">✉️</span>
+              <span className="hidden xs:inline">Email Us</span>
+              <span className="xs:hidden">Email</span>
+            </a>
+          </div>
         </div>
       </div>
 
