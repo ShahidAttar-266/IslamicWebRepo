@@ -85,7 +85,10 @@ const Search = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['names', debouncedTerm, genderFilter, letterFilter, quranicFilter],
     queryFn: async () => {
-      let url = `/names?limit=200&sort=-createdAt`;
+      // Only apply -createdAt sort when browsing with no filters (shows newest names first).
+      // For any search/filter, omit sort so the backend uses alphabetical nameEnglish order.
+      const hasAnyFilter = debouncedTerm || genderFilter || letterFilter || quranicFilter;
+      let url = `/names?limit=200${hasAnyFilter ? '' : '&sort=-createdAt'}`;
       if (debouncedTerm) url += `&q=${encodeURIComponent(debouncedTerm)}`;
       if (genderFilter) url += `&gender=${genderFilter}`;
       if (letterFilter) url += `&letter=${letterFilter}`;
