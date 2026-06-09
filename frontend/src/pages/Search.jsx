@@ -17,48 +17,59 @@ const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { isAuthenticated } = useAuthStore();
 
-  // Read initial values from URL once on mount only
-  const [searchTerm, setSearchTerm]       = useState(() => searchParams.get('q')      || '');
-  const [debouncedTerm, setDebouncedTerm] = useState(() => searchParams.get('q')      || '');
-  const [genderFilter, setGenderFilter]   = useState('');
-  const [letterFilter, setLetterFilter]   = useState(() => searchParams.get('letter') || '');
-  const [quranicFilter, setQuranicFilter] = useState(() => searchParams.get('quranic') === 'true');
+  // Read URL params ONCE on mount via a ref — never re-read them reactively
+  const initialised = useRef(false);
+  const initQ      = useRef(searchParams.get('q')      || '');
+  const initLetter = useRef(searchParams.get('letter') || '');
+  const initQuranic = useRef(searchParams.get('quranic') === 'true');
+
+  const [searchTerm,    setSearchTerm]    = useState(initQ.current);
+  const [debouncedTerm, setDebouncedTerm] = useState(initQ.current);
+  const [genderFilter,  setGenderFilter]  = useState('');
+  const [letterFilter,  setLetterFilter]  = useState(initLetter.current);
+  const [quranicFilter, setQuranicFilter] = useState(initQuranic.current);
 
   const debounceTimer = useRef(null);
 
   const hasActiveFilters = searchTerm || genderFilter || letterFilter || quranicFilter;
 
-  // ─── Debounce: only fires when the user types in the search box ───────────
+  // ── Debounce: only for keyboard input ──────────────────────────────────
   const handleSearchInput = (value) => {
     setSearchTerm(value);
 
-    // Typing clears the letter filter
-    if (value && letterFilter) setLetterFilter('');
+    // Typing always clears the letter filter
+    if (letterFilter) setLetterFilter('');
 
-    // Cancel any pending debounce
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
-
     debounceTimer.current = setTimeout(() => {
       setDebouncedTerm(value);
     }, 400);
   };
 
-  // Cleanup timer on unmount
-  useEffect(() => () => {
-    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    };
   }, []);
 
-  // ─── URL sync (runs after state settles, no loop risk) ───────────────────
+  // ── URL sync: one-way push only, never reads back ──────────────────────
   useEffect(() => {
+    // Skip the very first run so we don't overwrite a URL the user navigated to
+    if (!initialised.current) {
+      initialised.current = true;
+      return;
+    }
     const params = new URLSearchParams();
-    if (debouncedTerm) params.set('q', debouncedTerm);
+    if (debouncedTerm) params.set('q',      debouncedTerm);
     if (letterFilter)  params.set('letter', letterFilter);
     if (quranicFilter) params.set('quranic', 'true');
     setSearchParams(params, { replace: true });
+  // setSearchParams is stable, intentionally excluded from deps
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedTerm, letterFilter, quranicFilter]);
 
-  // ─── Letter / filter actions ─────────────────────────────────────────────
+  // ── Letter button click ────────────────────────────────────────────────
   const selectLetter = (letter) => {
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
     setSearchTerm('');
@@ -66,6 +77,7 @@ const Search = () => {
     setLetterFilter(prev => (prev === letter ? '' : letter));
   };
 
+  // ── Clear all ──────────────────────────────────────────────────────────
   const clearAllFilters = () => {
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
     setSearchTerm('');
@@ -75,7 +87,7 @@ const Search = () => {
     setQuranicFilter(false);
   };
 
-  // ─── Query ────────────────────────────────────────────────────────────────
+  // ── Query ─────────────────────────────────────────────────────────────
   const { data, isLoading, error } = useQuery({
     queryKey: ['names', debouncedTerm, genderFilter, letterFilter, quranicFilter],
     queryFn: async () => {
@@ -88,10 +100,10 @@ const Search = () => {
       const res = await api.get(url);
       return res.data;
     },
-    staleTime: 0, // always fetch fresh when queryKey changes
+    staleTime: 0,
   });
 
-  // ─── SEO helpers ─────────────────────────────────────────────────────────
+  // ── SEO ───────────────────────────────────────────────────────────────
   const getPageTitle = () => {
     if (debouncedTerm) return `Search Results for "${debouncedTerm}" | IslamicNames`;
     if (letterFilter)  return `Names Starting with "${letterFilter}" | IslamicNames`;
@@ -123,24 +135,22 @@ const Search = () => {
         <meta name="description" content={getPageDescription()} />
         <meta name="keywords" content="islamic names, islamic names for boys, islamic names for girls, muslim baby names, arabic names with meaning, quranic names, islamic names search, muslim names list, arabic muslim names, islamic names for newborn" />
         <link rel="canonical" href="https://www.islamicnames.in/search" />
-
-        {/* Open Graph / Facebook */}
-        <meta property="og:title" content={getPageTitle()} />
+        <meta property="og:title"       content={getPageTitle()} />
         <meta property="og:description" content={getPageDescription()} />
-        <meta property="og:url" content="https://www.islamicnames.in/search" />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
-
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={getPageTitle()} />
+        <meta property="og:url"         content="https://www.islamicnames.in/search" />
+        <meta property="og:type"        content="website" />
+        <meta property="og:image"       content="https://www.islamicnames.in/og-image.png" />
+        <meta name="twitter:card"        content="summary_large_image" />
+        <meta name="twitter:title"       content={getPageTitle()} />
         <meta name="twitter:description" content={getPageDescription()} />
-        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+        <meta name="twitter:image"       content="https://www.islamicnames.in/og-image.png" />
       </Helmet>
 
       {/* Search Header */}
       <div className="bg-card border border-border rounded-2xl p-4 md:p-6 shadow-sm flex flex-col gap-6">
         <div className="flex flex-col gap-4">
+
+          {/* Text input */}
           <div className="relative w-full">
             <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" size={20} />
             <input
@@ -153,6 +163,7 @@ const Search = () => {
             />
           </div>
 
+          {/* Gender + Quranic filters */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="grid grid-cols-3 gap-2 w-full sm:w-auto">
               {['boy', 'girl', 'unisex'].map(g => (
@@ -172,7 +183,7 @@ const Search = () => {
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
               <button
-                onClick={() => setQuranicFilter(!quranicFilter)}
+                onClick={() => setQuranicFilter(prev => !prev)}
                 className={`flex-1 sm:flex-none px-4 py-3 flex items-center justify-center gap-2 rounded-xl text-sm font-bold border transition-colors min-h-[44px] ${
                   quranicFilter
                     ? 'bg-primary border-primary text-bg'
@@ -243,7 +254,9 @@ const Search = () => {
           <div className="text-center py-20 bg-card border border-border rounded-2xl shadow-sm px-4">
             <SearchIcon size={64} className="mx-auto mb-6 text-border" />
             <p className="text-xl font-bold text-text">No names found</p>
-            <p className="text-text-muted mt-2 max-w-md mx-auto">We couldn't find any names matching your current filters. Try adjusting your search or clearing all filters.</p>
+            <p className="text-text-muted mt-2 max-w-md mx-auto">
+              We couldn't find any names matching your current filters. Try adjusting your search or clearing all filters.
+            </p>
             <button
               onClick={clearAllFilters}
               className="mt-6 bg-primary text-bg px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-primary/10"
