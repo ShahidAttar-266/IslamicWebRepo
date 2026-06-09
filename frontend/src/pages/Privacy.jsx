@@ -155,10 +155,10 @@ const Privacy = () => {
           <div className="pt-8 border-t border-border mt-12 text-center">
             <p className="font-bold text-text mb-2">Contact Us</p>
             <a 
-              href="mailto:support@islamicnames.in" 
+              href="mailto:islamicnameshelp@gmail.com" 
               className="text-primary hover:underline font-medium text-lg"
             >
-              support@islamicnames.in
+              islamicnameshelp@gmail.com
             </a>
           </div>
         </div>

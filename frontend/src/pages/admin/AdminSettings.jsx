@@ -42,7 +42,7 @@ const AdminSettings = () => {
             </div>
             <div>
               <label className="block text-sm font-medium text-text-muted mb-1 text-xs uppercase tracking-wider">Contact Email</label>
-              <input type="email" defaultValue="support@islamicnames.in" className="w-full bg-bg border border-border focus:border-primary rounded-lg px-4 py-2 text-text outline-none text-sm" />
+              <input type="email" defaultValue="islamicnameshelp@gmail.com" className="w-full bg-bg border border-border focus:border-primary rounded-lg px-4 py-2 text-text outline-none text-sm" />
             </div>
             <div>
               <label className="block text-sm font-medium text-text-muted mb-1 text-xs uppercase tracking-wider">Site Description (SEO)</label>

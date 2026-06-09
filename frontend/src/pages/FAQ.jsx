@@ -197,7 +197,7 @@ const FAQ = () => {
           <p className="text-text-muted text-base max-w-md mx-auto leading-relaxed">
             Everything you need to know about IslamicNames — names, plans, and features.
             Can't find an answer?{' '}
-            <a href="mailto:support@islamicnames.in" className="text-primary hover:underline">
+            <a href="mailto:islamicnameshelp@gmail.com" className="text-primary hover:underline">
               Contact us
             </a>.
           </p>
@@ -244,7 +244,7 @@ const FAQ = () => {
             Our team is happy to help. Reach out and we'll respond within 24 hours, in sha Allah.
           </p>
           <a
-            href="mailto:support@islamicnames.in"
+            href="mailto:islamicnameshelp@gmail.com"
             className="inline-block bg-primary text-bg font-black text-sm uppercase tracking-widest px-8 py-3.5 rounded-full hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
           >
             Email Support
