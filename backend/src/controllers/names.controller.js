@@ -37,14 +37,17 @@ exports.getNames = async (req, res, next) => {
                 parsedQuery.origin = String(req.query.origin);
             }
 
-            // Partial-match search across nameEnglish and meaning
+            // Prefix search on nameEnglish + partial match on meaning/tags
             if (req.query.q) {
                 const escapedQ = String(req.query.q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                const regex = new RegExp(escapedQ, 'i');
+                // nameEnglish: starts-with prefix (^Ahmad matches Ahmad, Ahmadali…)
+                const prefixRegex  = new RegExp(`^${escapedQ}`, 'i');
+                // meaning/tags: anywhere partial match
+                const partialRegex = new RegExp(escapedQ, 'i');
                 parsedQuery.$or = [
-                    { nameEnglish: { $regex: regex } },
-                    { meaning: { $regex: regex } },
-                    { tags: { $regex: regex } }
+                    { nameEnglish: { $regex: prefixRegex } },
+                    { meaning:     { $regex: partialRegex } },
+                    { tags:        { $regex: partialRegex } }
                 ];
             }
 
