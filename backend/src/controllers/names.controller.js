@@ -37,9 +37,15 @@ exports.getNames = async (req, res, next) => {
                 parsedQuery.origin = String(req.query.origin);
             }
 
-            // Full-text search
+            // Partial-match search across nameEnglish and meaning
             if (req.query.q) {
-                parsedQuery.$text = { $search: String(req.query.q) };
+                const escapedQ = String(req.query.q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(escapedQ, 'i');
+                parsedQuery.$or = [
+                    { nameEnglish: { $regex: regex } },
+                    { meaning: { $regex: regex } },
+                    { tags: { $regex: regex } }
+                ];
             }
 
             // Alphabet filter
@@ -50,10 +56,20 @@ exports.getNames = async (req, res, next) => {
 
             // Quranic filter
             if (req.query.quranic === 'true') {
-                parsedQuery.$or = [
+                const quranicCondition = [
                     { isQuranic: true },
                     { 'quranReference.surah': { $exists: true, $ne: '' } }
                 ];
+                if (parsedQuery.$or) {
+                    // Combine existing $or (search) with quranic $or via $and
+                    parsedQuery.$and = [
+                        { $or: parsedQuery.$or },
+                        { $or: quranicCondition }
+                    ];
+                    delete parsedQuery.$or;
+                } else {
+                    parsedQuery.$or = quranicCondition;
+                }
             }
 
             let query = Name.find(parsedQuery);
@@ -64,11 +80,8 @@ exports.getNames = async (req, res, next) => {
                 query = query.select(fields);
             }
 
-            // Sort & Text Search Score
-            if (req.query.q) {
-                query = query.select('score')
-                             .sort({ score: { $meta: 'textScore' } });
-            } else if (req.query.sort) {
+            // Sort
+            if (req.query.sort) {
                 const sortBy = req.query.sort.split(',').join(' ');
                 query = query.sort(sortBy);
             } else {
