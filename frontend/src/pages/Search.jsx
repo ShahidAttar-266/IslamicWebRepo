@@ -45,6 +45,7 @@ const Search = () => {
 
   const clearAllFilters = () => {
     setSearchTerm('');
+    setDebouncedTerm('');
     setGenderFilter('');
     setLetterFilter('');
     setQuranicFilter(false);
@@ -197,7 +198,11 @@ const Search = () => {
           <p className="text-xs text-text-muted mb-4 uppercase tracking-wider font-bold">Filter by Alphabet</p>
           <div className="flex items-center gap-2 overflow-x-auto pb-3 md:pb-0 md:flex-wrap custom-scrollbar scroll-smooth">
             <button
-              onClick={() => setLetterFilter('')}
+              onClick={() => {
+                setLetterFilter('');
+                setSearchTerm('');
+                setDebouncedTerm('');
+              }}
               aria-label="Show all names"
               className={`min-w-[42px] min-h-[42px] shrink-0 flex items-center justify-center rounded-lg text-sm font-black transition-all border ${
                 !letterFilter ? 'bg-primary border-primary text-bg' : 'bg-bg border-border text-text-muted hover:border-primary/50'
@@ -211,7 +216,8 @@ const Search = () => {
                 aria-label={`Filter names by letter ${letter}`}
                 onClick={() => {
                   setLetterFilter(letter === letterFilter ? '' : letter);
-                  setSearchTerm(''); 
+                  setSearchTerm('');
+                  setDebouncedTerm('');
                 }}
                 className={`min-w-[42px] min-h-[42px] shrink-0 flex items-center justify-center rounded-lg text-sm font-black transition-all border ${
                   letterFilter === letter ? 'bg-primary border-primary text-bg' : 'bg-bg border-border text-text-muted hover:border-primary/50'
