@@ -32,33 +32,40 @@ const AnnouncementBar = () => {
       <div className="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-1.5 sm:py-3">
 
         {/* ── MOBILE layout (hidden on sm+) ── */}
-        <div className="flex sm:hidden items-center justify-between gap-2">
-          <p className="text-[#e8f5ef] text-[11px] font-medium leading-tight truncate">
-            <span className="font-semibold text-[#2db87a]">Personal Name Suggestions</span>
-            <span className="text-[#a1c2b3]"> – Expert Islamic name help</span>
+        <div className="flex sm:hidden flex-col items-center gap-2 text-center py-0.5">
+
+          {/* Row 1 – message */}
+          <p className="text-[#e8f5ef] text-xs font-medium leading-snug">
+            <span className="mr-0.5" aria-hidden="true">📱</span>
+            <span className="font-semibold text-[#2db87a]">Personal Paid Name Suggestions Available</span>
+            {' – '}
+            <span className="text-[#a1c2b3]">Expert help choosing the perfect Islamic name for your baby.</span>
           </p>
-          <div className="flex items-center gap-1.5 shrink-0">
+
+          {/* Row 2 – contact buttons */}
+          <div className="flex items-center gap-2">
             <a
               id="announcement-whatsapp-cta-mobile"
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="WhatsApp us"
-              className="inline-flex items-center justify-center gap-1 bg-[#2db87a] hover:bg-[#25a068] active:bg-[#1e8a58] text-[#0d1f1a] font-bold text-[10px] px-2.5 py-1 rounded-full shadow shadow-[#2db87a]/30 transition-all duration-200 whitespace-nowrap"
+              aria-label="Contact us on WhatsApp"
+              className="inline-flex items-center justify-center gap-1.5 bg-[#2db87a] hover:bg-[#25a068] active:bg-[#1e8a58] text-[#0d1f1a] font-bold text-[11px] px-3 py-1.5 rounded-full shadow shadow-[#2db87a]/30 transition-all duration-200 whitespace-nowrap"
             >
               <span aria-hidden="true">💬</span>
-              <span>WA</span>
+              <span>WhatsApp Us</span>
             </a>
             <a
               id="announcement-email-cta-mobile"
               href={EMAIL_URL}
-              aria-label="Email us"
-              className="inline-flex items-center justify-center gap-1 bg-[#d4a843] hover:bg-[#c49a38] active:bg-[#b08830] text-[#0d1f1a] font-bold text-[10px] px-2.5 py-1 rounded-full shadow shadow-[#d4a843]/30 transition-all duration-200 whitespace-nowrap"
+              aria-label="Email us at islamicnameshelp@gmail.com"
+              className="inline-flex items-center justify-center gap-1.5 bg-[#d4a843] hover:bg-[#c49a38] active:bg-[#b08830] text-[#0d1f1a] font-bold text-[11px] px-3 py-1.5 rounded-full shadow shadow-[#d4a843]/30 transition-all duration-200 whitespace-nowrap"
             >
               <span aria-hidden="true">✉️</span>
-              <span>Mail</span>
+              <span>Email Us</span>
             </a>
           </div>
+
         </div>
 
         {/* ── DESKTOP layout (hidden on mobile) ── */}
