@@ -6,7 +6,11 @@ const WHATSAPP_MESSAGE = encodeURIComponent(
 );
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
 const EMAIL_ADDRESS = 'islamicnameshelp@gmail.com';
-const EMAIL_URL = `mailto:${EMAIL_ADDRESS}`;
+const EMAIL_SUBJECT = encodeURIComponent('Islamic Baby Name Suggestion Request');
+const EMAIL_BODY = encodeURIComponent(
+  'Assalamu Alaikum! I am interested in getting personal Islamic name suggestions for my baby. Please help me.'
+);
+const EMAIL_URL = `mailto:${EMAIL_ADDRESS}?subject=${EMAIL_SUBJECT}&body=${EMAIL_BODY}`;
 
 /**
  * A premium sticky announcement bar displayed above the site header.
