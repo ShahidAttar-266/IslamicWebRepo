@@ -3,22 +3,11 @@ import api from '../../api/axios';
 import { 
   Users, 
   Database, 
-  TrendingUp, 
   Upload, 
-  Shield, 
   Loader2, 
   ArrowRight 
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer, 
-  AreaChart, 
-  Area 
-} from 'recharts';
 
 const AdminDashboard = () => {
   const { data: analytics, isLoading } = useQuery({

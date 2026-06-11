@@ -17,17 +17,17 @@ const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { isAuthenticated } = useAuthStore();
 
-  // Read URL params ONCE on mount via a ref — never re-read them reactively
+  // Read URL params ONCE on mount — never re-read them reactively
   const initialised = useRef(false);
-  const initQ      = useRef(searchParams.get('q')      || '');
-  const initLetter = useRef(searchParams.get('letter') || '');
-  const initQuranic = useRef(searchParams.get('quranic') === 'true');
+  const initQ = searchParams.get('q') || '';
+  const initLetter = searchParams.get('letter') || '';
+  const initQuranic = searchParams.get('quranic') === 'true';
 
-  const [searchTerm,    setSearchTerm]    = useState(initQ.current);
-  const [debouncedTerm, setDebouncedTerm] = useState(initQ.current);
+  const [searchTerm,    setSearchTerm]    = useState(initQ);
+  const [debouncedTerm, setDebouncedTerm] = useState(initQ);
   const [genderFilter,  setGenderFilter]  = useState('');
-  const [letterFilter,  setLetterFilter]  = useState(initLetter.current);
-  const [quranicFilter, setQuranicFilter] = useState(initQuranic.current);
+  const [letterFilter,  setLetterFilter]  = useState(initLetter);
+  const [quranicFilter, setQuranicFilter] = useState(initQuranic);
 
   const debounceTimer = useRef(null);
   const inputRef = useRef(null);

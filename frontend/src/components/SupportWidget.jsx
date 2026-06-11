@@ -23,7 +23,10 @@ const SupportWidget = () => {
 
   // Auto-close on route change
   useEffect(() => {
-    closeWidget();
+    const timer = setTimeout(() => {
+      setIsOpen(false);
+    }, 0);
+    return () => clearTimeout(timer);
   }, [location.pathname]);
 
   const handleEsc = useCallback((event) => {

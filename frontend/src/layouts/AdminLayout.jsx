@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Navigate, Link, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
-import { Home, Users, Database, Upload, Settings, LogOut, ArrowLeft, Menu, X, User } from 'lucide-react';
+import { Home, Users, Database, Upload, Settings, LogOut, ArrowLeft, Menu, X } from 'lucide-react';
 
 const AdminLayout = () => {
   const { user, isAuthenticated, logout } = useAuthStore();
@@ -9,7 +9,10 @@ const AdminLayout = () => {
   const location = useLocation();
 
   useEffect(() => {
-    setIsMobileMenuOpen(false);
+    const timer = setTimeout(() => {
+      setIsMobileMenuOpen(false);
+    }, 0);
+    return () => clearTimeout(timer);
   }, [location.pathname]);
 
   if (!isAuthenticated || user?.role !== 'admin') {
@@ -24,7 +27,7 @@ const AdminLayout = () => {
     { name: 'Settings', path: '/admin/settings', icon: <Settings size={20} /> },
   ];
 
-  const SidebarContent = () => (
+  const sidebarContent = (
     <div className="flex flex-col h-full bg-card">
       <div className="p-6 border-b border-border flex items-center justify-between">
         <Link to="/admin" className="font-bold text-lg text-primary tracking-tight">IslamicNames Admin</Link>
@@ -93,12 +96,12 @@ const AdminLayout = () => {
       <aside className={`fixed inset-y-0 left-0 w-64 z-[60] md:hidden transform transition-transform duration-300 ease-in-out ${
         isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
-        <SidebarContent />
+        {sidebarContent}
       </aside>
 
       {/* Desktop Sidebar */}
       <aside className="w-56 bg-card border-r border-border hidden md:flex flex-col sticky top-0 h-screen shrink-0">
-        <SidebarContent />
+        {sidebarContent}
       </aside>
 
       {/* Main Content */}

@@ -1,13 +1,9 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, BookOpen, ArrowRight } from 'lucide-react';
+import { BookOpen, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ARTICLES } from '../utils/articles-data';
 
-const AUTO_SCROLL_INTERVAL_MS = 4000;
-const SCROLL_STEP_PX = 320;
-
 /**
- * Renders a single article card within the slider.
+ * Renders a single article card within the grid.
  * @param {{ article: typeof ARTICLES[number] }} props
  */
 const ArticleCard = ({ article }) => {
@@ -28,7 +24,7 @@ const ArticleCard = ({ article }) => {
 
   const isHash = href === '#';
 
-  const CardContent = () => (
+  const cardContent = (
     <>
       {/* Arabic letter hero area */}
       <div
@@ -91,9 +87,9 @@ const ArticleCard = ({ article }) => {
   if (isHash) {
     return (
       <div
-        className="group snap-start shrink-0 min-w-[280px] max-w-[300px] bg-card border border-border rounded-xl overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 flex flex-col cursor-not-allowed"
+        className="group bg-card border border-border rounded-xl overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 flex flex-col cursor-not-allowed"
       >
-        <CardContent />
+        {cardContent}
       </div>
     );
   }
@@ -101,66 +97,16 @@ const ArticleCard = ({ article }) => {
   return (
     <Link
       to={href}
-      className="group snap-start shrink-0 min-w-[280px] max-w-[300px] bg-card border border-border rounded-xl overflow-hidden transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 flex flex-col"
+      className="group bg-card border border-border rounded-xl overflow-hidden transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 flex flex-col"
     >
-      <CardContent />
+      {cardContent}
     </Link>
   );
 };
 
 const ArticlesSlider = () => {
-  const scrollRef = useRef(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
-
-  /** Evaluate whether the left/right arrows should be visible. */
-  const updateScrollButtons = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const tolerance = 2;
-    setCanScrollLeft(el.scrollLeft > tolerance);
-    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - tolerance);
-  }, []);
-
-  /** Scroll the container by a given signed pixel offset. */
-  const scroll = useCallback((direction) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    el.scrollBy({ left: direction * SCROLL_STEP_PX, behavior: 'smooth' });
-  }, []);
-
-  /* Listen for manual scrolls to keep arrow visibility in sync. */
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    updateScrollButtons();
-    el.addEventListener('scroll', updateScrollButtons, { passive: true });
-    window.addEventListener('resize', updateScrollButtons);
-    return () => {
-      el.removeEventListener('scroll', updateScrollButtons);
-      window.removeEventListener('resize', updateScrollButtons);
-    };
-  }, [updateScrollButtons]);
-
-  /* Auto-scroll interval, paused on hover. */
-  useEffect(() => {
-    if (isHovered) return;
-
-    const timer = setInterval(() => {
-      const el = scrollRef.current;
-      if (!el) return;
-
-      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2;
-      if (atEnd) {
-        el.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        el.scrollBy({ left: SCROLL_STEP_PX, behavior: 'smooth' });
-      }
-    }, AUTO_SCROLL_INTERVAL_MS);
-
-    return () => clearInterval(timer);
-  }, [isHovered]);
+  // Slice to exactly 8 articles for a 2x4 grid
+  const displayedArticles = ARTICLES.slice(0, 8);
 
   return (
     <section className="py-12 md:py-20">
@@ -195,43 +141,11 @@ const ArticlesSlider = () => {
           </Link>
         </div>
 
-        {/* ── Slider controls + track ──────────────────── */}
-        <div className="relative">
-          {/* Left arrow */}
-          {canScrollLeft && (
-            <button
-              onClick={() => scroll(-1)}
-              aria-label="Scroll articles left"
-              className="absolute -left-3 md:-left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-card border border-border text-text-muted hover:text-primary hover:border-primary/50 flex items-center justify-center shadow-lg shadow-black/30 transition-all duration-300"
-            >
-              <ChevronLeft size={20} />
-            </button>
-          )}
-
-          {/* Right arrow */}
-          {canScrollRight && (
-            <button
-              onClick={() => scroll(1)}
-              aria-label="Scroll articles right"
-              className="absolute -right-3 md:-right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-card border border-border text-text-muted hover:text-primary hover:border-primary/50 flex items-center justify-center shadow-lg shadow-black/30 transition-all duration-300"
-            >
-              <ChevronRight size={20} />
-            </button>
-          )}
-
-          {/* Scroll track */}
-          <div
-            ref={scrollRef}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 scrollbar-hide"
-            role="region"
-            aria-label="Articles carousel"
-          >
-            {ARTICLES.map((article) => (
-              <ArticleCard key={article.title} article={article} />
-            ))}
-          </div>
+        {/* ── Grid Layout ──────────────────────────────── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {displayedArticles.map((article) => (
+            <ArticleCard key={article.title} article={article} />
+          ))}
         </div>
       </div>
     </section>

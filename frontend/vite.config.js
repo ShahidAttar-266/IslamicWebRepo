@@ -16,10 +16,11 @@ try {
     delete cjsOptions.schema.properties.navigationOptions.properties.waitUntil.type
     delete cjsOptions.schema.properties.navigationOptions.properties.waitUntil.nullable
   }
-} catch (e) {
+} catch {
   // Silent fallback if module is missing or unable to patch
 }
 
+// eslint-disable-next-line no-undef
 const isVercel = process.env.VERCEL === '1'
 
 export default defineConfig({

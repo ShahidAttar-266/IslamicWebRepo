@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import api from '../../api/axios';
@@ -23,11 +23,7 @@ const AdminNames = () => {
 
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm();
 
-  useEffect(() => {
-    setPage(1);
-  }, [searchTerm]);
-
-  const { data, isLoading, isFetching } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['admin-names', searchTerm, page],
     queryFn: async () => {
       const url = `/names?q=${searchTerm}&limit=50&page=${page}&sort=nameEnglish`;
@@ -120,7 +116,10 @@ const AdminNames = () => {
               placeholder="Search by name or meaning..."
               className="w-full bg-card border border-border focus:border-primary rounded-xl py-2.5 pl-10 pr-4 text-sm text-text outline-none transition-all shadow-sm"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setPage(1);
+              }}
             />
           </div>
           <button 

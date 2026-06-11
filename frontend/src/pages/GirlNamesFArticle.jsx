@@ -60,6 +60,44 @@ const NAMES_26_50 = [
   { num: 50, name: 'Fauzeen', badge: null, arabic: 'فوزین', meaning: 'Two victories; a name symbolising double triumph', origin: 'Arabic' }
 ];
 
+const TableOfNames = ({ data }) => (
+  <div className="overflow-x-auto border border-border rounded-xl bg-card/50 my-6">
+    <table className="w-full text-left text-sm border-collapse">
+      <thead>
+        <tr className="bg-card border-b border-border/80">
+          <th className="py-3.5 px-4 font-bold text-accent text-xs uppercase w-12 text-center">#</th>
+          <th className="py-3.5 px-4 font-bold text-text text-sm">Name</th>
+          <th className="py-3.5 px-4 font-bold text-text text-sm text-right font-arabic">Arabic</th>
+          <th className="py-3.5 px-4 font-bold text-text-muted text-sm">Meaning</th>
+          <th className="py-3.5 px-4 font-bold text-text-muted text-sm w-32">Origin</th>
+        </tr>
+      </thead>
+      <tbody className="divide-y divide-border/30">
+        {data.map((row) => (
+          <tr key={row.num} className="hover:bg-primary/5 transition-colors">
+            <td className="py-4 px-4 text-center text-text-muted font-bold text-xs">{row.num}</td>
+            <td className="py-4 px-4 font-bold text-text">
+              <span className="flex items-center gap-1.5 flex-wrap">
+                {row.name}
+                {row.badge && (
+                  <span className={`text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded ${
+                    row.badge === 'Quranic' ? 'bg-primary/10 text-primary border border-primary/20' : 'bg-accent/10 text-accent border border-accent/20'
+                  }`}>
+                    {row.badge}
+                  </span>
+                )}
+              </span>
+            </td>
+            <td className="py-4 px-4 font-arabic text-lg text-right text-text/90 font-medium">{row.arabic}</td>
+            <td className="py-4 px-4 text-text-muted text-xs md:text-sm leading-relaxed">{row.meaning}</td>
+            <td className="py-4 px-4 text-text-muted text-xs">{row.origin}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
+
 const GirlNamesFArticle = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeTOC, setActiveTOC] = useState('');
@@ -94,7 +132,6 @@ const GirlNamesFArticle = () => {
 
   const handleShare = (platform) => {
     const url = window.location.href;
-    const title = '50 Beautiful Islamic Girl Names Starting with F';
     const text = 'Discover 50 beautiful Islamic girl names starting with the letter F — from Fatima to Firdaus.';
     
     const shareUrls = {
@@ -124,44 +161,6 @@ const GirlNamesFArticle = () => {
     { id: 'naming-tips', label: 'Naming Tips from the Sunnah' },
     { id: 'conclusion', label: 'Conclusion' },
   ];
-
-  const TableOfNames = ({ data }) => (
-    <div className="overflow-x-auto border border-border rounded-xl bg-card/50 my-6">
-      <table className="w-full text-left text-sm border-collapse">
-        <thead>
-          <tr className="bg-card border-b border-border/80">
-            <th className="py-3.5 px-4 font-bold text-accent text-xs uppercase w-12 text-center">#</th>
-            <th className="py-3.5 px-4 font-bold text-text text-sm">Name</th>
-            <th className="py-3.5 px-4 font-bold text-text text-sm text-right font-arabic">Arabic</th>
-            <th className="py-3.5 px-4 font-bold text-text-muted text-sm">Meaning</th>
-            <th className="py-3.5 px-4 font-bold text-text-muted text-sm w-32">Origin</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-border/30">
-          {data.map((row) => (
-            <tr key={row.num} className="hover:bg-primary/5 transition-colors">
-              <td className="py-4 px-4 text-center text-text-muted font-bold text-xs">{row.num}</td>
-              <td className="py-4 px-4 font-bold text-text">
-                <span className="flex items-center gap-1.5 flex-wrap">
-                  {row.name}
-                  {row.badge && (
-                    <span className={`text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded ${
-                      row.badge === 'Quranic' ? 'bg-primary/10 text-primary border border-primary/20' : 'bg-accent/10 text-accent border border-accent/20'
-                    }`}>
-                      {row.badge}
-                    </span>
-                  )}
-                </span>
-              </td>
-              <td className="py-4 px-4 font-arabic text-lg text-right text-text/90 font-medium">{row.arabic}</td>
-              <td className="py-4 px-4 text-text-muted text-xs md:text-sm leading-relaxed">{row.meaning}</td>
-              <td className="py-4 px-4 text-text-muted text-xs">{row.origin}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
 
   return (
     <>
