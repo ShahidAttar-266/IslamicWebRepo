@@ -11,6 +11,7 @@ const Footer = () => {
         { name: 'Home', path: '/' },
         { name: 'Browse Names', path: '/search' },
         { name: 'Popular Names', path: '/search?sort=-views' },
+        { name: 'Articles', path: '/blog.html', external: true },
         { name: 'Help & FAQ', path: '/faq' },
       ]
     },
@@ -91,13 +92,23 @@ const Footer = () => {
               <ul className="space-y-4">
                 {section.links.map((link) => (
                   <li key={link.name}>
-                    <Link 
-                      to={link.path} 
-                      className="text-sm text-text-muted hover:text-text transition-colors flex items-center group gap-2 py-1"
-                    >
-                      <span className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-primary font-black">•</span>
-                      {link.name}
-                    </Link>
+                    {link.external ? (
+                      <a 
+                        href={link.path} 
+                        className="text-sm text-text-muted hover:text-text transition-colors flex items-center group gap-2 py-1"
+                      >
+                        <span className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-primary font-black">•</span>
+                        {link.name}
+                      </a>
+                    ) : (
+                      <Link 
+                        to={link.path} 
+                        className="text-sm text-text-muted hover:text-text transition-colors flex items-center group gap-2 py-1"
+                      >
+                        <span className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-primary font-black">•</span>
+                        {link.name}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>

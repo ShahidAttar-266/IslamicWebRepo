@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
-import { Search, LogOut, Heart, Menu, X, ChevronRight, User } from 'lucide-react';
+import { Search, LogOut, Heart, Menu, X, ChevronRight, User, BookOpen } from 'lucide-react';
 import Footer from '../components/Footer';
 import { AnnouncementBar } from '../components/AnnouncementBar';
 
@@ -109,6 +109,13 @@ const MainLayout = () => {
                   {link.name}
                 </Link>
               ))}
+              <a
+                href="/blog.html"
+                className="px-3 py-2 rounded-md transition-colors hover:text-primary flex items-center gap-1.5"
+              >
+                <BookOpen size={15} />
+                Articles
+              </a>
             </nav>
           </div>
 
@@ -247,6 +254,12 @@ const MainLayout = () => {
                 {isActive(link.path) && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
               </Link>
             ))}
+              <a
+                href="/blog.html"
+                className="flex items-center justify-between px-4 py-3 rounded-xl transition-all text-text-muted hover:bg-bg hover:text-text"
+              >
+                <span className="flex items-center gap-2"><BookOpen size={18} /> Articles</span>
+              </a>
           </nav>
 
           <div className="mt-8 px-4">

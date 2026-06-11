@@ -5,6 +5,7 @@ import { Search as SearchIcon, ArrowRight } from 'lucide-react';
 import api from '../api/axios';
 import NameCard from '../components/NameCard';
 import HomeFAQ from '../components/HomeFAQ';
+import ArticlesSlider from '../components/ArticlesSlider';
 
 import { Helmet } from 'react-helmet-async';
 
@@ -154,6 +155,9 @@ const Home = () => {
         <h3 className="text-xl md:text-2xl font-bold text-text mt-8 mb-4">Why Choose IslamicNames?</h3>
         <p>Our ultimate goal is to make your naming journey as joyful, seamless, and informed as possible. By providing accurate phonetic pronunciations, stunning Arabic script, detailed historical background, and scholar-verified meanings, we completely remove the guesswork from finding the perfect name. We believe that every child deserves a beautiful legacy, and that legacy begins the moment they are named. Explore our rich, user-friendly library today to find the perfect name that honors your deeply held faith, reflects your highest hopes, and brings lasting, abundant blessings to your family for generations to come.</p>
       </section>
+
+      {/* Articles Slider Section */}
+      <ArticlesSlider />
 
       {/* SEO FAQ Section */}
       <HomeFAQ />

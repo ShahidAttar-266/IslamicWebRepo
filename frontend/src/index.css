@@ -64,6 +64,14 @@
     contain-intrinsic-size: auto 500px;
   }
 
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
   .blurred-content {
     filter: blur(4px);
     user-select: none;
