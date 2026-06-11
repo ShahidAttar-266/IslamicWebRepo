@@ -1,90 +1,10 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, BookOpen, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ARTICLES } from '../utils/articles-data';
 
 const AUTO_SCROLL_INTERVAL_MS = 4000;
 const SCROLL_STEP_PX = 320;
-
-const ARTICLES = [
-  {
-    title: '50 Beautiful Islamic Girl Names Starting with F',
-    href: '/islamicnames-sample-article.html',
-    tag: 'Girl Names',
-    tagBg: '#FCE8F0',
-    tagText: '#A0305A',
-    date: 'June 10, 2025',
-    readTime: '6 min',
-    arabicLetter: 'فـ',
-    gradientFrom: '#A0305A',
-    gradientTo: '#D4607A',
-    excerpt: 'Discover beautiful and meaningful Islamic girl names starting with the letter F, each with rich Arabic heritage.',
-    featured: true,
-  },
-  {
-    title: 'Top 30 Quranic Names for Baby Boys in 2025',
-    href: '/blog.html',
-    tag: 'Quranic Names',
-    tagBg: '#D1FAE5',
-    tagText: '#065F46',
-    date: 'June 7, 2025',
-    readTime: '7 min',
-    arabicLetter: 'قـ',
-    gradientFrom: '#1A4F8A',
-    gradientTo: '#2E6DB4',
-    excerpt: 'Explore the most popular Quranic names for baby boys, each rooted in the Holy Quran with profound meanings.',
-  },
-  {
-    title: 'How to Choose an Islamic Name — Complete Guide',
-    href: '/blog.html',
-    tag: 'Naming Guide',
-    tagBg: '#F0DEB0',
-    tagText: '#7A5A10',
-    date: 'June 3, 2025',
-    readTime: '5 min',
-    arabicLetter: 'نـ',
-    gradientFrom: '#7A5A10',
-    gradientTo: '#C4922A',
-    excerpt: 'A comprehensive guide covering Islamic naming traditions, Sunnah recommendations, and practical tips for parents.',
-  },
-  {
-    title: 'Modern Arabic Girl Names That Sound Beautiful',
-    href: '/blog.html',
-    tag: 'Girl Names',
-    tagBg: '#FCE8F0',
-    tagText: '#A0305A',
-    date: 'May 28, 2025',
-    readTime: '5 min',
-    arabicLetter: 'مـ',
-    gradientFrom: '#A0305A',
-    gradientTo: '#D4607A',
-    excerpt: 'Find modern Arabic names for girls that are elegant, meaningful, and perfect for today\'s world.',
-  },
-  {
-    title: 'Rare Islamic Boy Names with Deep Meanings',
-    href: '/blog.html',
-    tag: 'Boy Names',
-    tagBg: '#E3EEF9',
-    tagText: '#1A4F8A',
-    date: 'May 22, 2025',
-    readTime: '6 min',
-    arabicLetter: 'زـ',
-    gradientFrom: '#2D4A6A',
-    gradientTo: '#4A7FA5',
-    excerpt: 'Uncover rare and unique Islamic boy names with deep historical and spiritual significance.',
-  },
-  {
-    title: 'Names Meaning Light in the Quran',
-    href: '/blog.html',
-    tag: 'Quranic Names',
-    tagBg: '#D1FAE5',
-    tagText: '#065F46',
-    date: 'May 15, 2025',
-    readTime: '4 min',
-    arabicLetter: 'عـ',
-    gradientFrom: '#3D3D1E',
-    gradientTo: '#6B6B2E',
-    excerpt: 'Explore names derived from the concept of light (Noor) in the Quran and their beautiful meanings.',
-  },
-];
 
 /**
  * Renders a single article card within the slider.
@@ -106,12 +26,10 @@ const ArticleCard = ({ article }) => {
     featured,
   } = article;
 
-  return (
-    <a
-      href={href}
-      className="group snap-start shrink-0 min-w-[280px] max-w-[300px] bg-card border border-border rounded-xl overflow-hidden transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 flex flex-col"
-      rel="noopener noreferrer"
-    >
+  const isHash = href === '#';
+
+  const CardContent = () => (
+    <>
       {/* Arabic letter hero area */}
       <div
         className="relative h-28 flex items-center justify-center rounded-t-xl overflow-hidden"
@@ -167,7 +85,26 @@ const ArticleCard = ({ article }) => {
           </span>
         </div>
       </div>
-    </a>
+    </>
+  );
+
+  if (isHash) {
+    return (
+      <div
+        className="group snap-start shrink-0 min-w-[280px] max-w-[300px] bg-card border border-border rounded-xl overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 flex flex-col cursor-not-allowed"
+      >
+        <CardContent />
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      to={href}
+      className="group snap-start shrink-0 min-w-[280px] max-w-[300px] bg-card border border-border rounded-xl overflow-hidden transition-all duration-300 hover:border-primary hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 flex flex-col"
+    >
+      <CardContent />
+    </Link>
   );
 };
 
@@ -246,8 +183,8 @@ const ArticlesSlider = () => {
             </p>
           </div>
 
-          <a
-            href="/blog.html"
+          <Link
+            to="/blog"
             className="group/link flex items-center gap-2 text-primary text-sm font-semibold shrink-0 hover:underline underline-offset-4"
           >
             View All Articles
@@ -255,7 +192,7 @@ const ArticlesSlider = () => {
               size={16}
               className="translate-x-0 group-hover/link:translate-x-1 transition-transform duration-300"
             />
-          </a>
+          </Link>
         </div>
 
         {/* ── Slider controls + track ──────────────────── */}

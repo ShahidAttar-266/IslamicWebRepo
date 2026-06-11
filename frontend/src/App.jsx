@@ -31,6 +31,8 @@ const Terms = lazy(() => import('./pages/Terms'));
 const Disclaimer = lazy(() => import('./pages/Disclaimer'));
 const FAQ = lazy(() => import('./pages/FAQ'));
 const ReportBug = lazy(() => import('./pages/ReportBug'));
+const Blog = lazy(() => import('./pages/Blog'));
+const GirlNamesFArticle = lazy(() => import('./pages/GirlNamesFArticle'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Lazy Admin Pages
@@ -103,6 +105,8 @@ function App() {
                     <Route path="/disclaimer" element={<Disclaimer />} />
                     <Route path="/faq" element={<FAQ />} />
                     <Route path="/report-bug" element={<ReportBug />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/blog/50-beautiful-islamic-girl-names-starting-with-f" element={<GirlNamesFArticle />} />
                     <Route path="*" element={<NotFound />} />
                   </Route>
 

@@ -11,7 +11,7 @@ const Footer = () => {
         { name: 'Home', path: '/' },
         { name: 'Browse Names', path: '/search' },
         { name: 'Popular Names', path: '/search?sort=-views' },
-        { name: 'Articles', path: '/blog.html', external: true },
+        { name: 'Articles', path: '/blog', external: false },
         { name: 'Help & FAQ', path: '/faq' },
       ]
     },

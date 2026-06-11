@@ -1,4 +1,16 @@
 {
+  "redirects": [
+    {
+      "source": "/blog.html",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/islamicnames-sample-article.html",
+      "destination": "/blog/50-beautiful-islamic-girl-names-starting-with-f",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/sitemap.xml",

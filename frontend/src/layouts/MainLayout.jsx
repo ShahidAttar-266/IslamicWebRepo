@@ -109,13 +109,15 @@ const MainLayout = () => {
                   {link.name}
                 </Link>
               ))}
-              <a
-                href="/blog.html"
-                className="px-3 py-2 rounded-md transition-colors hover:text-primary flex items-center gap-1.5"
+              <Link
+                to="/blog"
+                className={`px-3 py-2 rounded-md transition-colors flex items-center gap-1.5 ${
+                  isActive('/blog') ? 'bg-primary/10 text-primary' : 'hover:text-primary'
+                }`}
               >
                 <BookOpen size={15} />
                 Articles
-              </a>
+              </Link>
             </nav>
           </div>
 
@@ -254,12 +256,17 @@ const MainLayout = () => {
                 {isActive(link.path) && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
               </Link>
             ))}
-              <a
-                href="/blog.html"
-                className="flex items-center justify-between px-4 py-3 rounded-xl transition-all text-text-muted hover:bg-bg hover:text-text"
+              <Link
+                to="/blog"
+                className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all ${
+                  isActive('/blog') 
+                    ? 'bg-primary/10 text-primary font-semibold' 
+                    : 'text-text-muted hover:bg-bg hover:text-text'
+                }`}
               >
                 <span className="flex items-center gap-2"><BookOpen size={18} /> Articles</span>
-              </a>
+                {isActive('/blog') && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
+              </Link>
           </nav>
 
           <div className="mt-8 px-4">
