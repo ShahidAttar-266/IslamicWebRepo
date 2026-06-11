@@ -31,6 +31,7 @@ const FAQ = lazy(() => import('./pages/FAQ'));
 const ReportBug = lazy(() => import('./pages/ReportBug'));
 const Blog = lazy(() => import('./pages/Blog'));
 const GirlNamesFArticle = lazy(() => import('./pages/GirlNamesFArticle'));
+const BoyQuranicNamesArticle = lazy(() => import('./pages/BoyQuranicNamesArticle'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Lazy Admin Pages
@@ -105,6 +106,7 @@ function App() {
                     <Route path="/report-bug" element={<ReportBug />} />
                     <Route path="/blog" element={<Blog />} />
                     <Route path="/blog/50-beautiful-islamic-girl-names-starting-with-f" element={<GirlNamesFArticle />} />
+                    <Route path="/blog/top-30-quranic-names-for-baby-boys-in-2026" element={<BoyQuranicNamesArticle />} />
                     <Route path="*" element={<NotFound />} />
                   </Route>
 

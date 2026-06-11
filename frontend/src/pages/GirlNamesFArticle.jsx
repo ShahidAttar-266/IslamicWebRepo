@@ -207,7 +207,7 @@ const GirlNamesFArticle = () => {
             </p>
 
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-text-muted border-t border-b border-border/40 py-4 mt-6">
-              <span className="flex items-center gap-1.5"><Calendar size={14} /> June 10, 2025</span>
+              <span className="flex items-center gap-1.5"><Calendar size={14} /> June 10, 2026</span>
               <span className="flex items-center gap-1.5"><Clock size={14} /> 6 min read</span>
               <span className="flex items-center gap-1.5"><Eye size={14} /> 12,400 views</span>
               <span className="flex items-center gap-1.5"><User size={14} /> IslamicNames Team</span>
