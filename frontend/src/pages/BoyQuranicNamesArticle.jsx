@@ -350,10 +350,36 @@ const BoyQuranicNamesArticle = () => {
           </article>
 
           {/* Right Column: Sidebar */}
-          <aside className="space-y-6">
+          <aside className="flex flex-col gap-6">
+
+            {/* Quick Facts Widget */}
+            <div className="order-2 lg:order-1 bg-card border border-border rounded-2xl p-6">
+              <h3 className="text-sm font-black uppercase tracking-wider text-accent border-b border-border pb-3 mb-4">
+                📊 Quick Facts
+              </h3>
+              <ul className="divide-y divide-border/40 text-xs">
+                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Total Names</span><span className="text-text font-bold">30</span></li>
+                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Category</span><span className="text-text font-bold">Boy Names</span></li>
+                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Thematic focus</span><span className="text-text font-bold">Direct Quranic</span></li>
+                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Quranic Prophets</span><span className="text-text font-bold">25 Prophets</span></li>
+                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium font-arabic">Arabic Script</span><span className="text-text font-bold">Included</span></li>
+                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Most Popular</span><span className="text-text font-bold">Muhammad</span></li>
+              </ul>
+            </div>
+
+            {/* Prophet Naming Hadith Box */}
+            <div className="order-3 lg:order-2 bg-gradient-to-br from-card to-primary/10 border border-primary/20 rounded-2xl p-6 space-y-3">
+              <div className="h-8 w-8 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center">
+                <BookOpen size={16} className="text-primary" />
+              </div>
+              <h3 className="text-base font-black text-text">🌙 Naming Hadith</h3>
+              <p className="text-xs text-text-muted leading-relaxed">
+                The Prophet Muhammad ﷺ said: <em className="text-text">"Name yourselves with the names of the Prophets."</em> (Abu Dawud). Direct Quranic names tie your child's destiny to the teachings and blessings of these holy figures.
+              </p>
+            </div>
             
             {/* Table of Contents Widget */}
-            <div className="bg-card border border-border rounded-2xl p-6 lg:sticky lg:top-36 shadow-md">
+            <div className="order-1 lg:order-3 bg-card border border-border rounded-2xl p-6 lg:sticky lg:top-36 shadow-md">
               <h3 className="text-sm font-black uppercase tracking-wider text-accent border-b border-border pb-3 mb-4 flex items-center gap-1.5">
                 📑 Table of Contents
               </h3>
@@ -384,33 +410,6 @@ const BoyQuranicNamesArticle = () => {
                   </li>
                 ))}
               </ul>
-            </div>
-
-            {/* Quick Facts Widget */}
-            <div className="bg-card border border-border rounded-2xl p-6">
-              <h3 className="text-sm font-black uppercase tracking-wider text-accent border-b border-border pb-3 mb-4">
-                📊 Quick Facts
-              </h3>
-              <ul className="divide-y divide-border/40 text-xs">
-                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Total Names</span><span className="text-text font-bold">30</span></li>
-                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Category</span><span className="text-text font-bold">Boy Names</span></li>
-                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Thematic focus</span><span className="text-text font-bold">Direct Quranic</span></li>
-                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Quranic Prophets</span><span className="text-text font-bold">25 Prophets</span></li>
-                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium font-arabic">Arabic Script</span><span className="text-text font-bold">Included</span></li>
-                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Most Popular</span><span className="text-text font-bold">Muhammad</span></li>
-              </ul>
-            </div>
-
-
-            {/* Prophet Naming Hadith Box */}
-            <div className="bg-gradient-to-br from-card to-primary/10 border border-primary/20 rounded-2xl p-6 space-y-3">
-              <div className="h-8 w-8 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center">
-                <BookOpen size={16} className="text-primary" />
-              </div>
-              <h3 className="text-base font-black text-text">🌙 Naming Hadith</h3>
-              <p className="text-xs text-text-muted leading-relaxed">
-                The Prophet Muhammad ﷺ said: <em className="text-text">"Name yourselves with the names of the Prophets."</em> (Abu Dawud). Direct Quranic names tie your child\'s destiny to the teachings and blessings of these holy figures.
-              </p>
             </div>
 
           </aside>
