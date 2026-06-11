@@ -49,36 +49,36 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --gold:    #C4922A;
-      --gold-lt: #F0DEB0;
-      --cream:   #FAF7F2;
-      --ink:     #1C1812;
-      --muted:   #6B6355;
-      --border:  #E8DFC8;
-      --green:   #2D6A4F;
-      --green-dk:#1C3A2E;
-      --green-lt:#D4EAE0;
+      --gold:    #d4a843;
+      --gold-lt: rgba(212, 168, 67, 0.15);
+      --cream:   #0d1f1a;
+      --ink:     #e8f5ef;
+      --muted:   #a1c2b3;
+      --border:  #2d4a3e;
+      --green:   #2db87a;
+      --green-dk:#162a22;
+      --green-lt:rgba(45, 184, 122, 0.15);
       --rose:    #A0305A;
-      --rose-lt: #FCE8F0;
+      --rose-lt: rgba(160, 48, 90, 0.15);
     }
     html { scroll-behavior: smooth; }
     body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--ink); line-height:1.8; }
 
     /* ── NAV ── */
     nav {
-      background:#fff; border-bottom:1px solid var(--border);
+      background:#1a3328; border-bottom:1px solid var(--border);
       padding:0 5vw; display:flex; align-items:center;
       justify-content:space-between; height:64px;
       position:sticky; top:0; z-index:100;
-      box-shadow:0 1px 8px rgba(0,0,0,0.04);
+      box-shadow:0 1px 8px rgba(0,0,0,0.15);
     }
-    .logo { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--gold); text-decoration:none; font-weight:700; }
-    .logo span { color:var(--green); }
+    .logo { font-family:'Inter',sans-serif; font-size:1.2rem; color:var(--green); text-decoration:none; font-weight:700; letter-spacing:-0.025em; }
+    .logo span { color:var(--ink); font-weight:700; }
     .nav-links { display:flex; gap:1.75rem; list-style:none; }
     .nav-links a { text-decoration:none; color:var(--muted); font-size:.875rem; font-weight:500; transition:color .2s; }
     .nav-links a:hover { color:var(--gold); }
     .nav-links a.active { color:var(--green); font-weight:700; border-bottom:2px solid var(--green); padding-bottom:2px; }
-    .nav-cta { background:var(--green); color:#fff !important; padding:.4rem 1rem; border-radius:7px; font-weight:600 !important; }
+    .nav-cta { background:var(--green); color:#0d1f1a !important; padding:.4rem 1rem; border-radius:7px; font-weight:600 !important; }
     .hamburger { display:none; background:none; border:none; cursor:pointer; font-size:1.4rem; color:var(--ink); }
 
     /* ── ARTICLE HERO ── */
@@ -175,7 +175,7 @@
 
     /* ── ARTICLE CONTENT ── */
     .article-content {
-      background: #fff;
+      background: #1a3328;
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 2.5rem 2.5rem 3rem;
@@ -183,7 +183,7 @@
     .article-content h2 {
       font-family: 'Playfair Display', serif;
       font-size: 1.5rem;
-      color: var(--green-dk);
+      color: var(--green);
       margin: 2.5rem 0 1rem;
       padding-bottom: .5rem;
       border-bottom: 2px solid var(--gold-lt);
@@ -198,7 +198,7 @@
     }
     .article-content p {
       font-size: .92rem;
-      color: #3D3528;
+      color: var(--ink);
       margin-bottom: 1.25rem;
       line-height: 1.85;
     }
@@ -207,7 +207,7 @@
 
     /* Quran verse callout */
     .quran-callout {
-      background: linear-gradient(135deg, var(--green-lt) 0%, #eaf5ee 100%);
+      background: linear-gradient(135deg, var(--green-lt) 0%, rgba(45, 184, 122, 0.05) 100%);
       border-left: 4px solid var(--green);
       border-radius: 0 12px 12px 0;
       padding: 1.25rem 1.5rem;
@@ -218,7 +218,7 @@
       font-size: 1.4rem;
       direction: rtl;
       text-align: right;
-      color: var(--green-dk);
+      color: var(--green);
       line-height: 2;
       margin-bottom: .5rem;
     }
@@ -236,7 +236,7 @@
 
     /* Hadith callout */
     .hadith-callout {
-      background: linear-gradient(135deg, var(--gold-lt) 0%, #faf3e0 100%);
+      background: linear-gradient(135deg, var(--gold-lt) 0%, rgba(212, 168, 67, 0.05) 100%);
       border-left: 4px solid var(--gold);
       border-radius: 0 12px 12px 0;
       padding: 1.25rem 1.5rem;
@@ -244,7 +244,7 @@
     }
     .hadith-callout p {
       font-size: .88rem;
-      color: #5A4A20;
+      color: var(--ink);
       font-style: italic;
       margin-bottom: .35rem;
     }
@@ -258,7 +258,7 @@
     /* Tip box */
     .tip-box {
       background: var(--rose-lt);
-      border: 1px solid #F0C8D8;
+      border: 1px solid rgba(160, 48, 90, 0.3);
       border-radius: 12px;
       padding: 1.1rem 1.3rem;
       margin: 1.5rem 0;
@@ -297,9 +297,9 @@
       transition: background .15s;
     }
     .names-table tbody tr:last-child { border-bottom: none; }
-    .names-table tbody tr:hover { background: #faf7f0; }
-    .names-table tbody tr:nth-child(even) { background: #FDFBF7; }
-    .names-table tbody tr:nth-child(even):hover { background: #f5f0e5; }
+    .names-table tbody tr:hover { background: rgba(255, 255, 255, 0.04); }
+    .names-table tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+    .names-table tbody tr:nth-child(even):hover { background: rgba(255, 255, 255, 0.04); }
     .names-table td {
       padding: .75rem 1rem;
       vertical-align: top;
@@ -312,7 +312,7 @@
     }
     .names-table .name-english {
       font-weight: 600;
-      color: var(--green-dk);
+      color: var(--green);
     }
     .names-table .name-arabic {
       font-family: 'Amiri', serif;
@@ -365,7 +365,7 @@
       transition: all .2s;
       border: 1.5px solid var(--border);
       color: var(--muted);
-      background: #fff;
+      background: #1a3328;
       cursor: pointer;
       font-family: 'Inter', sans-serif;
     }
@@ -423,7 +423,7 @@
       gap: 1rem;
     }
     .related-card {
-      background: #fff;
+      background: #1a3328;
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 1rem;
@@ -431,7 +431,7 @@
       color: var(--ink);
       transition: box-shadow .2s, transform .15s;
     }
-    .related-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); transform: translateY(-2px); }
+    .related-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.3); transform: translateY(-2px); border-color: var(--green); }
     .related-card .rc-tag {
       display: inline-block;
       font-size: .6rem;
@@ -452,7 +452,7 @@
 
     /* ── SIDEBAR ── */
     .sidebar-card {
-      background: #fff;
+      background: #1a3328;
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1.25rem;
@@ -464,6 +464,7 @@
       margin-bottom: .9rem;
       padding-bottom: .5rem;
       border-bottom: 2px solid var(--gold-lt);
+      color: var(--ink);
     }
 
     /* TOC */
@@ -521,7 +522,7 @@
 
     /* Ad blocks */
     .ad-block {
-      background: #fff;
+      background: #1a3328;
       border: 1.5px dashed var(--border);
       border-radius: 10px;
       display: flex;
@@ -557,17 +558,22 @@
     .newsletter-cta input {
       width: 100%;
       padding: .6rem .8rem;
-      border: none;
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 7px;
       font-size: .82rem;
       font-family: 'Inter', sans-serif;
       margin-bottom: .5rem;
       outline: none;
+      background: rgba(0, 0, 0, 0.2);
+      color: #fff;
+    }
+    .newsletter-cta input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
     }
     .newsletter-cta button {
       width: 100%;
       background: var(--gold);
-      color: #fff;
+      color: #0d1f1a;
       border: none;
       padding: .6rem;
       border-radius: 7px;
@@ -581,11 +587,12 @@
 
     /* ── FOOTER ── */
     footer {
-      background: var(--ink);
-      color: rgba(255,255,255,.5);
-      padding: 2rem 5vw;
+      background: #1a3328;
+      color: var(--muted);
+      padding: 2.5rem 5vw;
       text-align: center;
       font-size: .8rem;
+      border-top: 1px solid var(--border);
     }
     footer .footer-links {
       display: flex;
@@ -604,7 +611,7 @@
       width: 44px;
       height: 44px;
       background: var(--green);
-      color: #fff;
+      color: #0d1f1a;
       border: none;
       border-radius: 50%;
       font-size: 1.2rem;
@@ -615,6 +622,7 @@
       box-shadow: 0 4px 16px rgba(0,0,0,.2);
       transition: opacity .3s, transform .3s;
       z-index: 90;
+      font-weight: bold;
     }
     .back-to-top:hover { transform: translateY(-2px); }
     .back-to-top.visible { display: flex; }
@@ -685,7 +693,7 @@
     <h2 id="why-f">Why Choose a Name Starting with F?</h2>
     <p>Names starting with the letter F in Arabic are derived from roots that often convey concepts of <strong>opening, dawn, victory, paradise, and virtue</strong>. The Arabic root <em>f-t-ḥ</em> (فتح) means "to open" or "to grant victory," while <em>f-r-d-w-s</em> (فردوس) refers to the highest level of Paradise. The letter Fa is phonetically soft, making names that start with it easy to pronounce across languages — a practical consideration for families in multilingual communities.</p>
     <p>Many Fa-names are also <strong>Quranic</strong>, appearing directly in the Holy Quran. Others are rooted in classical Arabic poetry, historical figures, or the beautiful attributes described in the Sunnah. Below are some key reasons parents choose F-names:</p>
-    <ul style="padding-left:1.5rem; margin-bottom:1.25rem; font-size:.9rem; color:#3D3528;">
+    <ul style="padding-left:1.5rem; margin-bottom:1.25rem; font-size:.9rem;">
       <li><strong>Prophetic Connection</strong> — Fatimah (رضي الله عنها) is the most prominent female name in Islamic history</li>
       <li><strong>Quranic Presence</strong> — Names like Firdaus, Falaq, and Furqan appear directly in the Quran</li>
       <li><strong>Phonetic Beauty</strong> — The soft "F" sound is universally easy to pronounce</li>
@@ -809,7 +817,7 @@
 
     <h2 id="top-picks">Our Top 5 Picks</h2>
     <p>If you're looking for our personal recommendations, here are the five names we believe combine the best of beauty, meaning, and spiritual significance:</p>
-    <ol style="padding-left:1.5rem; margin-bottom:1.25rem; font-size:.9rem; color:#3D3528;">
+    <ol style="padding-left:1.5rem; margin-bottom:1.25rem; font-size:.9rem;">
       <li><strong>Fatimah (فاطمة)</strong> — The most historically significant Islamic girl name. The daughter of the Prophet ﷺ, she is a role model of piety, strength, and grace. This name has been the most popular Muslim girl name for 14 centuries.</li>
       <li><strong>Firdaus (فردوس)</strong> — The highest level of Jannah. Giving your daughter this name is like giving her a prayer — may she attain the highest Paradise. It is one of the most spiritually powerful names in Islam.</li>
       <li><strong>Fajr (فجر)</strong> — Dawn. There is something profoundly beautiful about naming a child after the first light of day. It symbolises hope, new beginnings, and the mercy of Allah that arrives each morning.</li>
