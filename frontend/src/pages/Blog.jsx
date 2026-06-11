@@ -155,9 +155,12 @@ const Blog = () => {
             {displayArticles.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {displayArticles.map((article) => {
-                  const isHash = article.href === '#';
-                  const CardContent = () => (
-                    <>
+                  return (
+                    <Link
+                      key={article.slug}
+                      to={article.href}
+                      className="group bg-card border border-border hover:border-primary rounded-2xl overflow-hidden shadow-sm flex flex-col transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1"
+                    >
                       {/* Thumbnail Area */}
                       <div
                         className="h-32 flex items-center justify-center relative overflow-hidden"
@@ -169,6 +172,11 @@ const Blog = () => {
                         <span className="font-arabic text-5xl text-white/90 drop-shadow-lg select-none group-hover:scale-110 transition-transform duration-500">
                           {article.arabicLetter}
                         </span>
+                        {article.comingSoon && (
+                          <span className="absolute top-3 right-3 bg-accent/90 text-bg text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded shadow-sm">
+                            Coming Soon
+                          </span>
+                        )}
                       </div>
                       
                       {/* Body */}
@@ -190,34 +198,11 @@ const Blog = () => {
                         
                         <div className="flex items-center justify-between pt-3 border-t border-border/40 text-[10px] text-text-muted">
                           <span>{article.date} · {article.readTime} read</span>
-                          {!isHash && (
-                            <span className="flex items-center gap-1 font-bold text-primary uppercase tracking-wider">
-                              Read <ArrowRight size={12} />
-                            </span>
-                          )}
+                          <span className="flex items-center gap-1 font-bold text-primary uppercase tracking-wider">
+                            {article.comingSoon ? 'Coming Soon' : 'Read'} <ArrowRight size={12} />
+                          </span>
                         </div>
                       </div>
-                    </>
-                  );
-
-                  if (isHash) {
-                    return (
-                      <div
-                        key={article.slug}
-                        className="group bg-card border border-border rounded-2xl overflow-hidden shadow-sm flex flex-col cursor-not-allowed opacity-85 hover:border-border/60 transition-all duration-300"
-                      >
-                        <CardContent />
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <Link
-                      key={article.slug}
-                      to={article.href}
-                      className="group bg-card border border-border hover:border-primary rounded-2xl overflow-hidden shadow-sm flex flex-col transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1"
-                    >
-                      <CardContent />
                     </Link>
                   );
                 })}
@@ -269,20 +254,19 @@ const Blog = () => {
               </h3>
               <ul className="space-y-3">
                 {popularArticles.map((article, idx) => {
-                  const isHash = article.href === '#';
-                  const PopularLink = () => (
-                    <span className="text-xs font-semibold text-text hover:text-primary transition-colors cursor-pointer flex items-start gap-2 py-0.5">
-                      <span className="text-accent font-bold text-xs">{idx + 1}.</span>
-                      <span className="flex-1 line-clamp-2 leading-relaxed">{article.title}</span>
-                    </span>
-                  );
                   return (
                     <li key={article.slug} className="border-b border-border/20 last:border-0 pb-3 last:pb-0">
-                      {isHash ? (
-                        <div className="opacity-80 cursor-not-allowed"><PopularLink /></div>
-                      ) : (
-                        <Link to={article.href}><PopularLink /></Link>
-                      )}
+                      <Link to={article.href} className="text-xs font-semibold text-text hover:text-primary transition-colors cursor-pointer flex items-start gap-2 py-0.5">
+                        <span className="text-accent font-bold text-xs">{idx + 1}.</span>
+                        <span className="flex-1 line-clamp-2 leading-relaxed">
+                          {article.title}
+                          {article.comingSoon && (
+                            <span className="ml-1.5 text-[8px] font-black uppercase tracking-wider bg-accent/10 text-accent px-1.5 py-0.5 rounded">
+                              Soon
+                            </span>
+                          )}
+                        </span>
+                      </Link>
                     </li>
                   );
                 })}

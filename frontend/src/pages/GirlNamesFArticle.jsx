@@ -62,7 +62,7 @@ const NAMES_26_50 = [
 
 const TableOfNames = ({ data }) => (
   <div className="overflow-x-auto border border-border rounded-xl bg-card/50 my-6">
-    <table className="w-full text-left text-sm border-collapse">
+    <table className="w-full min-w-[650px] text-left text-sm border-collapse">
       <thead>
         <tr className="bg-card border-b border-border/80">
           <th className="py-3.5 px-4 font-bold text-accent text-xs uppercase w-12 text-center">#</th>
@@ -136,7 +136,6 @@ const GirlNamesFArticle = () => {
     
     const shareUrls = {
       whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(text + ' ' + url)}`,
-      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
       facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
     };
 
@@ -415,12 +414,6 @@ const GirlNamesFArticle = () => {
                   WhatsApp
                 </button>
                 <button 
-                  onClick={() => handleShare('twitter')}
-                  className="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg text-xs font-bold transition-all shadow-md flex items-center gap-1.5"
-                >
-                  Twitter
-                </button>
-                <button 
                   onClick={() => handleShare('facebook')}
                   className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition-all shadow-md flex items-center gap-1.5"
                 >
@@ -479,7 +472,7 @@ const GirlNamesFArticle = () => {
           <aside className="space-y-6">
             
             {/* Table of Contents Widget */}
-            <div className="bg-card border border-border rounded-2xl p-6 sticky top-20 shadow-md">
+            <div className="bg-card border border-border rounded-2xl p-6 lg:sticky lg:top-36 shadow-md">
               <h3 className="text-sm font-black uppercase tracking-wider text-accent border-b border-border pb-3 mb-4 flex items-center gap-1.5">
                 📑 Table of Contents
               </h3>
@@ -493,7 +486,7 @@ const GirlNamesFArticle = () => {
                         const el = document.getElementById(item.id);
                         if (el) {
                           window.scrollTo({
-                            top: el.offsetTop - 100,
+                            top: el.offsetTop - 140,
                             behavior: 'smooth'
                           });
                         }
@@ -527,29 +520,6 @@ const GirlNamesFArticle = () => {
               </ul>
             </div>
 
-            {/* Newsletter Subscription Widget */}
-            <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
-              <h3 className="text-sm font-black uppercase tracking-wider text-accent border-b border-border pb-3 mb-1">
-                📬 Get Name Ideas Weekly
-              </h3>
-              <p className="text-xs text-text-muted leading-relaxed">
-                Subscribe to receive curated Islamic name lists, guides, and naming tips delivered to your inbox every Friday.
-              </p>
-              <form onSubmit={(e) => { e.preventDefault(); toast.success('Subscribed successfully!'); e.target.reset(); }} className="space-y-2">
-                <input
-                  required
-                  type="email"
-                  placeholder="Your email address"
-                  className="w-full px-3 py-2 bg-bg border border-border rounded-lg text-text placeholder-text-muted/50 focus:outline-none focus:border-primary text-xs shadow-inner"
-                />
-                <button
-                  type="submit"
-                  className="w-full bg-accent hover:bg-opacity-95 text-bg font-bold py-2 rounded-lg text-xs transition-opacity shadow-md"
-                >
-                  Subscribe — It's Free
-                </button>
-              </form>
-            </div>
 
             {/* Prophet Naming Hadith Box */}
             <div className="bg-gradient-to-br from-card to-primary/10 border border-primary/20 rounded-2xl p-6 space-y-3">

@@ -929,13 +929,6 @@
       </ul>
     </div>
 
-    <!-- Newsletter -->
-    <div class="sidebar-card newsletter-cta">
-      <h3>📬 Get Name Ideas Weekly</h3>
-      <p>Subscribe to receive curated Islamic name lists, guides, and naming tips delivered to your inbox every Friday.</p>
-      <input type="email" placeholder="Your email address" aria-label="Email for newsletter"/>
-      <button>Subscribe — It's Free</button>
-    </div>
 
     <!-- Popular Articles -->
     <div class="sidebar-card">
