@@ -36,6 +36,10 @@ const HowToChooseNameArticle = lazy(() => import('./pages/HowToChooseNameArticle
 const RareBoyNamesArticle = lazy(() => import('./pages/RareBoyNamesArticle'));
 const ModernArabicGirlNamesArticle = lazy(() => import('./pages/ModernArabicGirlNamesArticle'));
 const NamesMeaningLightArticle = lazy(() => import('./pages/NamesMeaningLightArticle'));
+const GirlNamesSArticle = lazy(() => import('./pages/GirlNamesSArticle'));
+const CanMuslimsUseNonArabicNamesArticle = lazy(() => import('./pages/CanMuslimsUseNonArabicNamesArticle'));
+const NamesOfTheProphetsArticle = lazy(() => import('./pages/NamesOfTheProphetsArticle'));
+const TheNameFatimaArticle = lazy(() => import('./pages/TheNameFatimaArticle'));
 const ArticleComingSoon = lazy(() => import('./pages/ArticleComingSoon'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
@@ -116,6 +120,10 @@ function App() {
                     <Route path="/blog/rare-islamic-boy-names-with-deep-meanings" element={<RareBoyNamesArticle />} />
                     <Route path="/blog/modern-arabic-girl-names-that-sound-beautiful" element={<ModernArabicGirlNamesArticle />} />
                     <Route path="/blog/names-meaning-light-in-the-quran" element={<NamesMeaningLightArticle />} />
+                    <Route path="/blog/50-islamic-girl-names-starting-with-s" element={<GirlNamesSArticle />} />
+                    <Route path="/blog/can-muslims-use-non-arabic-names" element={<CanMuslimsUseNonArabicNamesArticle />} />
+                    <Route path="/blog/names-of-the-prophets-in-islam" element={<NamesOfTheProphetsArticle />} />
+                    <Route path="/blog/the-name-fatima-meaning-history" element={<TheNameFatimaArticle />} />
                     <Route path="/blog/:slug" element={<ArticleComingSoon />} />
                     <Route path="*" element={<NotFound />} />
                   </Route>

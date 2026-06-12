@@ -359,6 +359,7 @@ const NamesMeaningLightArticle = () => {
               <p>
                 <strong>Anwara (أنوارة)</strong> is the feminine counterpart, representing light, radiance, and a beautiful glow.
               </p>
+              <TableOfNames data={RADIANCE_LIGHT_NAMES} />
             </section>
 
             <section id="radiant-names" className="space-y-4">

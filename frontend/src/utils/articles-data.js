@@ -111,7 +111,7 @@ export const ARTICLES = [
     gradientTo: '#7A4FA5',
     excerpt: "The letter Seen gives us some of Islam's most beloved names — explore them all here.",
     category: 'girl',
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     slug: 'can-muslims-use-non-arabic-names',
@@ -127,7 +127,7 @@ export const ARTICLES = [
     gradientTo: '#3D7A5E',
     excerpt: 'Persian, Turkish, Urdu names — are they permissible? Islamic scholars weigh in on the matter.',
     category: 'tips',
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     slug: 'names-of-the-prophets-in-islam',
@@ -143,7 +143,7 @@ export const ARTICLES = [
     gradientTo: '#2D6A2D',
     excerpt: 'From Adam to Muhammad ﷺ — the names of all 25 Prophets mentioned in the Quran, explained.',
     category: 'boy',
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     slug: 'the-name-fatima-meaning-history',
@@ -154,11 +154,11 @@ export const ARTICLES = [
     tagText: '#A0305A',
     date: 'April 20, 2026',
     readTime: '5 min',
-    arabicLetter: 'هـ',
+    arabicLetter: 'فـ',
     gradientFrom: '#5A1A2A',
     gradientTo: '#A0304A',
     excerpt: 'The most beloved name in Islam. Learn the full story, meaning, and legacy of Fatimah bint Muhammad.',
     category: 'girl',
-    comingSoon: true,
+    comingSoon: false,
   }
 ];

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Clock, Calendar, Eye, User, Sparkles, BookOpen, ChevronRight, ArrowLeft } from 'lucide-react';
@@ -19,17 +19,14 @@ const EMAIL_URL = `mailto:${EMAIL_ADDRESS}?subject=${EMAIL_SUBJECT}&body=${EMAIL
 const ArticleComingSoon = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const [article, setArticle] = useState(null);
+  const article = useMemo(() => ARTICLES.find((a) => a.slug === slug), [slug]);
 
   useEffect(() => {
-    const foundArticle = ARTICLES.find((a) => a.slug === slug);
-    if (foundArticle) {
-      setArticle(foundArticle);
-    } else {
+    if (!article) {
       // Fallback/Redirect to blog if slug is invalid
       navigate('/blog', { replace: true });
     }
-  }, [slug, navigate]);
+  }, [article, navigate]);
 
   if (!article) {
     return (

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { Clock, Calendar, Eye, User, Share2, Sparkles, BookOpen, ChevronRight, Copy, Check, Shield } from 'lucide-react';
+import { Clock, Calendar, Eye, User, Share2, Sparkles, ChevronRight, Copy, Check, Shield } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const HADITH_NAMES = [
