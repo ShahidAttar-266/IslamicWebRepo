@@ -47,7 +47,7 @@ export const ARTICLES = [
     gradientTo: '#C4922A',
     excerpt: 'What Islam says about naming: Sunnah, what to avoid, and how to pick a name that lasts.',
     category: 'tips',
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     slug: 'modern-arabic-girl-names-that-sound-beautiful',

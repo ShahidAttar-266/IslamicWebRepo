@@ -458,7 +458,7 @@ const GirlNamesFArticle = () => {
                   <h4 className="text-xs font-bold text-text leading-snug line-clamp-2">Names Meaning Light in the Quran — Noor, Zia, and More</h4>
                   <span className="text-[9px] text-text-muted block">📅 May 15, 2025</span>
                 </Link>
-                <Link to="/blog" className="block bg-card border border-border hover:border-primary p-4 rounded-xl space-y-2 transition-all">
+                <Link to="/blog/how-to-choose-an-islamic-name" className="block bg-card border border-border hover:border-primary p-4 rounded-xl space-y-2 transition-all">
                   <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-accent/10 text-accent inline-block">Guide</span>
                   <h4 className="text-xs font-bold text-text leading-snug line-clamp-2">How to Choose an Islamic Name — Complete Guide for Parents</h4>
                   <span className="text-[9px] text-text-muted block">📅 June 3, 2025</span>

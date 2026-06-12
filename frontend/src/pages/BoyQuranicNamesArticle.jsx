@@ -329,7 +329,7 @@ const BoyQuranicNamesArticle = () => {
                 You May Also Like
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <Link to="/blog" className="block bg-card border border-border hover:border-primary p-4 rounded-xl space-y-2 transition-all">
+                <Link to="/blog/how-to-choose-an-islamic-name" className="block bg-card border border-border hover:border-primary p-4 rounded-xl space-y-2 transition-all">
                   <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-primary/10 text-primary inline-block">Tips</span>
                   <h4 className="text-xs font-bold text-text leading-snug line-clamp-2">How to Choose an Islamic Name — Complete Guide for Parents</h4>
                   <span className="text-[9px] text-text-muted block">📅 June 3, 2026</span>
