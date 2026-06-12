@@ -1,13 +1,25 @@
 import { useState, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Search as SearchIcon, ArrowRight } from 'lucide-react';
+import { Search as SearchIcon, ArrowRight, BookOpen, Sparkles, Users } from 'lucide-react';
 import api from '../api/axios';
 import NameCard from '../components/NameCard';
 import HomeFAQ from '../components/HomeFAQ';
 import ArticlesSlider from '../components/ArticlesSlider';
 
 import { Helmet } from 'react-helmet-async';
+
+/**
+ * Category chip definitions for quick-access navigation below the hero search.
+ * Each chip routes to the search page with specific filters, or to the blog.
+ */
+const CATEGORY_CHIPS = [
+  { label: 'Boy Names',    icon: '👦', route: '/search?gender=male',   ariaLabel: 'Browse Islamic boy names' },
+  { label: 'Girl Names',   icon: '👧', route: '/search?gender=female', ariaLabel: 'Browse Islamic girl names' },
+  { label: 'Quranic Names', icon: '📖', route: '/search?quranic=true', ariaLabel: 'Browse Quranic names' },
+  { label: 'Articles',     lucideIcon: 'BookOpen', route: '/blog',     ariaLabel: 'Read Islamic naming articles' },
+  { label: 'Browse All',   lucideIcon: 'Sparkles', route: '/search',   ariaLabel: 'Browse all Islamic names' },
+];
 
 const NamesSkeleton = () => (
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -48,7 +60,17 @@ const Home = () => {
     }
   };
 
-
+  /** Renders the correct icon for a category chip (emoji or Lucide). */
+  const renderChipIcon = (chip) => {
+    if (chip.icon) {
+      return <span className="text-base" aria-hidden="true">{chip.icon}</span>;
+    }
+    const iconMap = { BookOpen, Sparkles, Users };
+    const IconComponent = iconMap[chip.lucideIcon];
+    return IconComponent
+      ? <IconComponent size={16} className="text-primary" aria-hidden="true" />
+      : null;
+  };
 
   return (
     <div className="space-y-12 md:space-y-20 lg:space-y-24">
@@ -101,6 +123,25 @@ const Home = () => {
             Search
           </button>
         </form>
+
+        {/* Category Chips */}
+        <nav aria-label="Browse categories" className="mt-6 md:mt-8">
+          <ul className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+            {CATEGORY_CHIPS.map((chip) => (
+              <li key={chip.label}>
+                <button
+                  type="button"
+                  aria-label={chip.ariaLabel}
+                  onClick={() => navigate(chip.route)}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-card/60 text-text-muted text-sm font-medium hover:bg-primary/15 hover:border-primary/50 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 transition-all duration-200 min-h-[40px] min-w-[40px] cursor-pointer backdrop-blur-sm"
+                >
+                  {renderChipIcon(chip)}
+                  {chip.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </section>
 
       {/* Featured Names */}

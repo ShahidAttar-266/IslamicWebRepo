@@ -23,9 +23,11 @@ const Search = () => {
   const initLetter = searchParams.get('letter') || '';
   const initQuranic = searchParams.get('quranic') === 'true';
 
+  const initGender = searchParams.get('gender') || '';
+
   const [searchTerm,    setSearchTerm]    = useState(initQ);
   const [debouncedTerm, setDebouncedTerm] = useState(initQ);
-  const [genderFilter,  setGenderFilter]  = useState('');
+  const [genderFilter,  setGenderFilter]  = useState(initGender);
   const [letterFilter,  setLetterFilter]  = useState(initLetter);
   const [quranicFilter, setQuranicFilter] = useState(initQuranic);
 
