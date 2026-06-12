@@ -33,6 +33,9 @@ const Blog = lazy(() => import('./pages/Blog'));
 const GirlNamesFArticle = lazy(() => import('./pages/GirlNamesFArticle'));
 const BoyQuranicNamesArticle = lazy(() => import('./pages/BoyQuranicNamesArticle'));
 const HowToChooseNameArticle = lazy(() => import('./pages/HowToChooseNameArticle'));
+const RareBoyNamesArticle = lazy(() => import('./pages/RareBoyNamesArticle'));
+const ModernArabicGirlNamesArticle = lazy(() => import('./pages/ModernArabicGirlNamesArticle'));
+const NamesMeaningLightArticle = lazy(() => import('./pages/NamesMeaningLightArticle'));
 const ArticleComingSoon = lazy(() => import('./pages/ArticleComingSoon'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
@@ -110,6 +113,9 @@ function App() {
                     <Route path="/blog/50-beautiful-islamic-girl-names-starting-with-f" element={<GirlNamesFArticle />} />
                     <Route path="/blog/top-30-quranic-names-for-baby-boys-in-2026" element={<BoyQuranicNamesArticle />} />
                     <Route path="/blog/how-to-choose-an-islamic-name" element={<HowToChooseNameArticle />} />
+                    <Route path="/blog/rare-islamic-boy-names-with-deep-meanings" element={<RareBoyNamesArticle />} />
+                    <Route path="/blog/modern-arabic-girl-names-that-sound-beautiful" element={<ModernArabicGirlNamesArticle />} />
+                    <Route path="/blog/names-meaning-light-in-the-quran" element={<NamesMeaningLightArticle />} />
                     <Route path="/blog/:slug" element={<ArticleComingSoon />} />
                     <Route path="*" element={<NotFound />} />
                   </Route>

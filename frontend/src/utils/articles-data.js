@@ -63,7 +63,7 @@ export const ARTICLES = [
     gradientTo: '#D4607A',
     excerpt: 'Elegant, meaningful names that work perfectly in Karachi, London, or Toronto.',
     category: 'girl',
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     slug: 'rare-islamic-boy-names-with-deep-meanings',
@@ -79,7 +79,7 @@ export const ARTICLES = [
     gradientTo: '#4A7FA5',
     excerpt: 'Distinctive, strong Arabic boy names rarely seen in standard lists — with full meanings.',
     category: 'boy',
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     slug: 'names-meaning-light-in-the-quran',
@@ -89,13 +89,13 @@ export const ARTICLES = [
     tagBg: '#D1FAE5',
     tagText: '#065F46',
     date: 'May 15, 2026',
-    readTime: '4 min',
+    readTime: '6 min',
     arabicLetter: 'عـ',
     gradientFrom: '#3D3D1E',
     gradientTo: '#6B6B2E',
     excerpt: 'Light is one of the most sacred themes in the Quran. Names rooted in Noor and radiance.',
     category: 'quran',
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     slug: '50-islamic-girl-names-starting-with-s',
