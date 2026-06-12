@@ -202,10 +202,37 @@ exports.getSitemap = async (req, res, next) => {
         let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
         xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
         
-        // Static routes
-        const staticRoutes = ['', '/search', '/faq', '/compare'];
-        staticRoutes.forEach(route => {
-            xml += `  <url>\n    <loc>${baseUrl}${route}</loc>\n    <changefreq>daily</changefreq>\n    <priority>${route === '' ? '1.0' : '0.8'}</priority>\n  </url>\n`;
+        // Static routes — core pages
+        const staticRoutes = [
+            { path: '', changefreq: 'daily', priority: '1.0' },
+            { path: '/search', changefreq: 'daily', priority: '0.8' },
+            { path: '/faq', changefreq: 'monthly', priority: '0.5' },
+            { path: '/compare', changefreq: 'daily', priority: '0.7' },
+            { path: '/blog', changefreq: 'weekly', priority: '0.9' },
+            { path: '/privacy', changefreq: 'yearly', priority: '0.3' },
+            { path: '/terms', changefreq: 'yearly', priority: '0.3' },
+            { path: '/disclaimer', changefreq: 'yearly', priority: '0.3' },
+            { path: '/report-bug', changefreq: 'monthly', priority: '0.3' },
+        ];
+        staticRoutes.forEach(({ path, changefreq, priority }) => {
+            xml += `  <url>\n    <loc>${baseUrl}${path}</loc>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
+        });
+
+        // Blog article routes
+        const blogArticles = [
+            '/blog/50-beautiful-islamic-girl-names-starting-with-f',
+            '/blog/top-30-quranic-names-for-baby-boys-in-2026',
+            '/blog/how-to-choose-an-islamic-name',
+            '/blog/rare-islamic-boy-names-with-deep-meanings',
+            '/blog/modern-arabic-girl-names-that-sound-beautiful',
+            '/blog/names-meaning-light-in-the-quran',
+            '/blog/50-islamic-girl-names-starting-with-s',
+            '/blog/can-muslims-use-non-arabic-names',
+            '/blog/names-of-the-prophets-in-islam',
+            '/blog/the-name-fatima-meaning-history',
+        ];
+        blogArticles.forEach(article => {
+            xml += `  <url>\n    <loc>${baseUrl}${article}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
         });
         
         // Dynamic name routes
