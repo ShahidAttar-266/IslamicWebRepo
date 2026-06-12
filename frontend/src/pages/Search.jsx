@@ -269,10 +269,7 @@ const Search = () => {
 
       {/* Results */}
       <div className="content-visibility-auto min-h-[400px]">
-        <div className="flex items-center justify-between mb-6 px-1">
-          <h2 className="text-base md:text-xl font-bold text-text">
-            {data?.count || 0} <span className="text-text-muted font-medium">Names Found</span>
-          </h2>
+        <div className="flex items-center justify-end mb-6 px-1">
           {isLoading && <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary" />}
         </div>
 

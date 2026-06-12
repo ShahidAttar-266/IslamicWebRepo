@@ -225,10 +225,8 @@ const Blog = () => {
                 Categories
               </h3>
               <ul className="divide-y divide-border/40">
-                {categories.map((cat) => {
-                  const count = cat.id === 'girl' ? 48 : cat.id === 'boy' ? 42 : cat.id === 'quran' ? 31 : cat.id === 'tips' ? 18 : cat.id === 'all' ? 150 : 0;
-                  return (
-                    <li key={cat.id} className="py-2.5 flex justify-between items-center text-sm">
+                {categories.map((cat) => (
+                    <li key={cat.id} className="py-2.5 flex items-center text-sm">
                       <button
                         onClick={() => setActiveCategory(cat.id)}
                         className={`hover:text-primary transition-colors font-medium flex items-center gap-2 ${
@@ -238,12 +236,8 @@ const Blog = () => {
                         <span>{cat.emoji}</span>
                         {cat.label}
                       </button>
-                      <span className="text-[10px] font-bold bg-bg border border-border text-text-muted px-2 py-0.5 rounded-full">
-                        {count} {cat.id === 'all' ? 'total' : 'articles'}
-                      </span>
                     </li>
-                  );
-                })}
+                  ))}
               </ul>
             </div>
 
