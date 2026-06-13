@@ -204,3 +204,87 @@ exports.getUsers = async (req, res, next) => {
         next(err);
     }
 };
+
+// @desc    Get duplicate name groups
+// @route   GET /api/v1/admin/names/duplicates
+// @access  Private/Admin
+exports.getDuplicates = async (req, res, next) => {
+    try {
+        const duplicateGroups = await Name.aggregate([
+            {
+                $group: {
+                    _id: {
+                        name: { $toLower: { $trim: { input: '$nameEnglish' } } },
+                        gender: '$gender',
+                    },
+                    count: { $sum: 1 },
+                    docs: {
+                        $push: {
+                            _id: '$_id',
+                            nameEnglish: '$nameEnglish',
+                            nameArabic: '$nameArabic',
+                            gender: '$gender',
+                            meaning: '$meaning',
+                            slug: '$slug',
+                            isActive: '$isActive',
+                            origin: '$origin',
+                            pronunciation: '$pronunciation',
+                            history: '$history',
+                            createdAt: '$createdAt',
+                            updatedAt: '$updatedAt',
+                        },
+                    },
+                },
+            },
+            { $match: { count: { $gt: 1 } } },
+            { $sort: { count: -1 } },
+        ]);
+
+        const totalDuplicateRecords = duplicateGroups.reduce(
+            (sum, group) => sum + (group.count - 1),
+            0
+        );
+
+        res.status(200).json({
+            success: true,
+            groupCount: duplicateGroups.length,
+            extraRecords: totalDuplicateRecords,
+            data: duplicateGroups,
+        });
+    } catch (err) {
+        console.error('getDuplicates Error:', err);
+        next(new ErrorResponse('Failed to fetch duplicate names', 500));
+    }
+};
+
+// @desc    Remove specific duplicate names by IDs
+// @route   DELETE /api/v1/admin/names/duplicates
+// @access  Private/Admin
+exports.removeDuplicates = async (req, res, next) => {
+    try {
+        const { idsToRemove } = req.body;
+
+        if (!idsToRemove || !Array.isArray(idsToRemove) || idsToRemove.length === 0) {
+            return next(new ErrorResponse('Please provide an array of IDs to remove', 400));
+        }
+
+        const existingCount = await Name.countDocuments({ _id: { $in: idsToRemove } });
+        if (existingCount === 0) {
+            return next(new ErrorResponse('None of the provided IDs were found', 404));
+        }
+
+        const result = await Name.deleteMany({ _id: { $in: idsToRemove } });
+
+        // Invalidate cache after deletion
+        await cache.invalidatePattern('names:list:*');
+
+        res.status(200).json({
+            success: true,
+            deletedCount: result.deletedCount,
+            message: `Successfully removed ${result.deletedCount} duplicate name(s)`,
+        });
+    } catch (err) {
+        console.error('removeDuplicates Error:', err);
+        next(new ErrorResponse('Failed to remove duplicate names', 500));
+    }
+};

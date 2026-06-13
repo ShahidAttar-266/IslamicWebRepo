@@ -5,7 +5,8 @@ import {
   Database, 
   Upload, 
   Loader2, 
-  ArrowRight 
+  ArrowRight,
+  Copy 
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -19,9 +20,19 @@ const AdminDashboard = () => {
     staleTime: 3 * 60 * 1000, // 3 min
   });
 
+  const { data: duplicates } = useQuery({
+    queryKey: ['admin-duplicates-count'],
+    queryFn: async () => {
+      const res = await api.get('/admin/names/duplicates');
+      return res.data;
+    },
+    staleTime: 3 * 60 * 1000,
+  });
+
   const stats = [
     { name: 'Total Users', value: analytics?.totalUsers || 0, icon: <Users size={20} />, color: 'text-blue-500', bg: 'bg-blue-500/10' },
     { name: 'Total Names', value: analytics?.totalNames || 0, icon: <Database size={20} />, color: 'text-purple-500', bg: 'bg-purple-500/10' },
+    { name: 'Duplicates', value: duplicates?.extraRecords || 0, icon: <Copy size={20} />, color: duplicates?.extraRecords > 0 ? 'text-orange-500' : 'text-green-500', bg: duplicates?.extraRecords > 0 ? 'bg-orange-500/10' : 'bg-green-500/10' },
   ];
 
   if (isLoading) return (
@@ -39,7 +50,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         {stats.map((stat) => (
           <div key={stat.name} className="bg-card border border-border p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-4">
@@ -59,7 +70,7 @@ const AdminDashboard = () => {
         <div className="lg:col-span-3 space-y-6">
           <div className="bg-card border border-border rounded-[2rem] p-8 shadow-sm">
             <h2 className="text-xl font-bold text-text mb-6">Quick Actions</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <Link to="/admin/upload" className="flex items-center justify-between p-4 bg-bg rounded-2xl border border-border hover:border-primary transition-all group">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-primary/10 text-primary rounded-lg">
@@ -84,6 +95,15 @@ const AdminDashboard = () => {
                     <Database size={18} />
                   </div>
                   <span className="text-sm font-bold text-text">Review Names</span>
+                </div>
+                <ArrowRight size={16} className="text-text-muted group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link to="/admin/duplicates" className="flex items-center justify-between p-4 bg-bg rounded-2xl border border-border hover:border-orange-500 transition-all group">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-orange-500/10 text-orange-500 rounded-lg">
+                    <Copy size={18} />
+                  </div>
+                  <span className="text-sm font-bold text-text">Scan Duplicates</span>
                 </div>
                 <ArrowRight size={16} className="text-text-muted group-hover:translate-x-1 transition-transform" />
               </Link>

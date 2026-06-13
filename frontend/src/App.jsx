@@ -49,6 +49,7 @@ const AdminNames = lazy(() => import('./pages/admin/AdminNames'));
 const AdminUpload = lazy(() => import('./pages/admin/AdminUpload'));
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
 const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
+const AdminDuplicates = lazy(() => import('./pages/admin/AdminDuplicates').then(m => ({ default: m.AdminDuplicates })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -135,6 +136,7 @@ function App() {
                     <Route path="upload" element={<AdminUpload />} />
                     <Route path="users" element={<AdminUsers />} />
                     <Route path="settings" element={<AdminSettings />} />
+                    <Route path="duplicates" element={<AdminDuplicates />} />
                   </Route>
                 </Routes>
               </Suspense>

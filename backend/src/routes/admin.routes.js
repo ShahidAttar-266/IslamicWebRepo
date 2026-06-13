@@ -5,7 +5,9 @@ const {
     uploadExcel,
     getUploadLogs,
     getAnalytics,
-    getUsers
+    getUsers,
+    getDuplicates,
+    removeDuplicates
 } = require('../controllers/admin.controller');
 
 const { protect, authorize } = require('../middlewares/auth');
@@ -35,6 +37,8 @@ const upload = multer({
 router.use(protect);
 router.use(authorize('admin'));
 
+router.get('/names/duplicates', getDuplicates);
+router.delete('/names/duplicates', removeDuplicates);
 router.post('/names/upload-excel', upload.single('file'), uploadExcel);
 router.get('/names/upload-logs', getUploadLogs);
 router.get('/analytics', getAnalytics);

@@ -113,5 +113,9 @@ nameSchema.index({ gender: 1, isActive: 1 });
 nameSchema.index({ origin: 1, isActive: 1 });
 nameSchema.index({ isQuranic: 1, isActive: 1 });
 nameSchema.index({ createdAt: -1 }); // For 'Recently Added' sorting
+nameSchema.index(
+    { nameEnglish: 1, gender: 1 },
+    { unique: true, collation: { locale: 'en', strength: 2 } }
+); // Prevent duplicate name+gender (case-insensitive)
 
 module.exports = mongoose.model('Name', nameSchema);
