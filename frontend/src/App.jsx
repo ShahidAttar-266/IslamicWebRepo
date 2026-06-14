@@ -27,6 +27,8 @@ const Account = lazy(() => import('./pages/Account'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const Disclaimer = lazy(() => import('./pages/Disclaimer'));
+const RefundPolicy = lazy(() => import('./pages/RefundPolicy').then(m => ({ default: m.RefundPolicy })));
+const CancellationPolicy = lazy(() => import('./pages/CancellationPolicy').then(m => ({ default: m.CancellationPolicy })));
 const FAQ = lazy(() => import('./pages/FAQ'));
 const ReportBug = lazy(() => import('./pages/ReportBug'));
 const Blog = lazy(() => import('./pages/Blog'));
@@ -112,6 +114,8 @@ function App() {
                     <Route path="/privacy" element={<Privacy />} />
                     <Route path="/terms" element={<Terms />} />
                     <Route path="/disclaimer" element={<Disclaimer />} />
+                    <Route path="/refund-policy" element={<RefundPolicy />} />
+                    <Route path="/cancellation-policy" element={<CancellationPolicy />} />
                     <Route path="/faq" element={<FAQ />} />
                     <Route path="/report-bug" element={<ReportBug />} />
                     <Route path="/blog" element={<Blog />} />

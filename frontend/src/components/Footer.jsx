@@ -30,6 +30,8 @@ const Footer = () => {
         { name: 'Privacy Policy', path: '/privacy' },
         { name: 'Terms & Conditions', path: '/terms' },
         { name: 'Disclaimer', path: '/disclaimer' },
+        { name: 'Refund Policy', path: '/refund-policy' },
+        { name: 'Cancellation Policy', path: '/cancellation-policy' },
       ]
     }
   ];
