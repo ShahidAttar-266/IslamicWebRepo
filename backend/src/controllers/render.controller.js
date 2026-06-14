@@ -168,6 +168,7 @@ exports.renderNamePage = async (req, res, next) => {
         html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:description" content="${description}" />`);
         html = html.replace('<div id="root"></div>', `<div id="root">${generateFallbackBodyHTML(name)}</div>`);
 
+        injectPreloadHeaders(res, html);
         res.header('Content-Type', 'text/html');
         return res.status(200).send(html);
     } catch (err) {
@@ -224,9 +225,33 @@ exports.renderHomePage = async (req, res, next) => {
         html = html.replace('<head>', `<head>${initialDataScript}`);
         html = html.replace('<div id="root"></div>', `<div id="root">${generateHomeFallbackBodyHTML(recentNames)}</div>`);
 
+        injectPreloadHeaders(res, html);
         res.header('Content-Type', 'text/html');
         return res.status(200).send(html);
     } catch (err) {
         next(err);
     }
 };
+
+/**
+ * Inject HTTP Link preload headers into the response based on template HTML content
+ * @param {object} res - Express response object
+ * @param {string} html - The rendered HTML string
+ * @returns {void}
+ */
+function injectPreloadHeaders(res, html) {
+    const links = [];
+    const cssMatch = html.match(/href="(\/assets\/[^"]+\.css)"/i);
+    const jsMatch = html.match(/src="(\/assets\/[^"]+\.js)"/i);
+
+    if (cssMatch) {
+        links.push(`<${cssMatch[1]}>; rel=preload; as=style`);
+    }
+    if (jsMatch) {
+        links.push(`<${jsMatch[1]}>; rel=modulepreload`);
+    }
+
+    if (links.length > 0) {
+        res.setHeader('Link', links.join(', '));
+    }
+}

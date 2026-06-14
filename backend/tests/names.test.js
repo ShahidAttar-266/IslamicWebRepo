@@ -5,9 +5,22 @@ jest.mock('uuid', () => ({
 }));
 const app = require('../src/app');
 const Name = require('../src/models/Name');
+const fs = require('fs');
 
 // Mock Name model
 jest.mock('../src/models/Name');
+
+// Mock index.html template loading for renderer tests
+jest.spyOn(fs, 'existsSync').mockImplementation((p) => {
+    if (p && p.includes('index.html')) return true;
+    return false;
+});
+jest.spyOn(fs, 'readFileSync').mockImplementation((p, opt) => {
+    if (p && p.includes('index.html')) {
+        return '<!DOCTYPE html><html><head><link rel="stylesheet" href="/assets/index-123.css"><script src="/assets/index-456.js"></script></head><body><div id="root"></div></body></html>';
+    }
+    throw new Error(`Unexpected readFileSync call on path: ${p}`);
+});
 
 // Mock process.env
 process.env.JWT_SECRET = 'test_secret';
@@ -155,6 +168,7 @@ describe('Names API', () => {
 
             expect(res.statusCode).toEqual(200);
             expect(res.headers['content-type']).toContain('text/html');
+            expect(res.headers['link']).toBe('</assets/index-123.css>; rel=preload; as=style, </assets/index-456.js>; rel=modulepreload');
             expect(res.text).toContain('Ahmed');
             expect(res.text).toContain('Praiseworthy');
             expect(res.text).toContain('Arabic');
@@ -179,6 +193,7 @@ describe('Names API', () => {
 
             expect(res.statusCode).toEqual(200);
             expect(res.headers['content-type']).toContain('text/html');
+            expect(res.headers['link']).toBe('</assets/index-123.css>; rel=preload; as=style, </assets/index-456.js>; rel=modulepreload');
             expect(res.text).toContain('IslamicNames');
             expect(res.text).toContain('Ahmed');
             expect(res.text).toContain('Praiseworthy');

@@ -6,7 +6,6 @@ import useAuthStore from '../store/useAuthStore';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NameCard from '../components/NameCard';
-import { exportFavoritesToPDF } from '../api/pdfExport';
 import { Helmet } from 'react-helmet-async';
 
 const Favorites = () => {
@@ -46,6 +45,7 @@ const Favorites = () => {
 
     try {
       setIsExporting(true);
+      const { exportFavoritesToPDF } = await import('../api/pdfExport');
       await exportFavoritesToPDF(favorites);
       toast.success('PDF exported successfully!');
     } catch (err) {

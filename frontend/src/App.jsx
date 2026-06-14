@@ -16,8 +16,8 @@ import MainLayout from './layouts/MainLayout';
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
 
 // Lazy Pages
-import Home from './pages/Home';
-import NameDetail from './pages/NameDetail';
+const Home = lazy(() => import('./pages/Home'));
+const NameDetail = lazy(() => import('./pages/NameDetail'));
 const Search = lazy(() => import('./pages/Search'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
@@ -93,7 +93,6 @@ function App() {
         <meta name="twitter:image" content="https://www.islamicnames.in/logo-120.webp" />
       </Helmet>
 
-      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
         <QueryClientProvider client={queryClient}>
           <LazyMotion features={loadFeatures} strict>
             <Router>
@@ -106,8 +105,16 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/name/:id" element={<NameDetail />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
+                    <Route path="/login" element={
+                      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
+                        <Login />
+                      </GoogleOAuthProvider>
+                    } />
+                    <Route path="/register" element={
+                      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
+                        <Register />
+                      </GoogleOAuthProvider>
+                    } />
                     <Route path="/favorites" element={<Favorites />} />
                     <Route path="/compare" element={<Compare />} />
                     <Route path="/account" element={<Account />} />
@@ -147,7 +154,6 @@ function App() {
             </Router>
           </LazyMotion>
         </QueryClientProvider>
-      </GoogleOAuthProvider>
     </HelmetProvider>
   );
 }

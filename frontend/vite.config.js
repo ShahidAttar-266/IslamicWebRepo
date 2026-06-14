@@ -104,10 +104,6 @@ export default defineConfig({
             ) {
               return 'vendor-jspdf';
             }
-            // Separate Recharts visualization
-            if (id.includes('recharts') || id.includes('d3')) {
-              return 'vendor-charts';
-            }
             // Separate Google OAuth
             if (id.includes('@react-oauth')) {
               return 'vendor-oauth';
@@ -116,7 +112,6 @@ export default defineConfig({
             if (id.includes('react-hot-toast') || id.includes('zod') || id.includes('react-hook-form')) {
               return 'utils';
             }
-            return 'modules';
           }
         }
       }
