@@ -1,5 +1,63 @@
 const { getRedisClient } = require('../lib/redis');
 
+// In-memory cache fallback for serverless warm execution instances
+const localCache = new Map();
+
+/**
+ * Get item from local in-memory cache, respecting TTL
+ */
+function getLocal(key) {
+    const entry = localCache.get(key);
+    if (!entry) return null;
+    if (Date.now() > entry.expiresAt) {
+        localCache.delete(key);
+        return null;
+    }
+    // Deep clone to prevent accidental reference mutations
+    return JSON.parse(JSON.stringify(entry.value));
+}
+
+/**
+ * Set item in local in-memory cache
+ */
+function setLocal(key, value, ttlSeconds) {
+    localCache.set(key, {
+        value,
+        expiresAt: Date.now() + (ttlSeconds * 1000)
+    });
+}
+
+/**
+ * Invalidate a key locally
+ */
+function invalidateLocal(key) {
+    localCache.delete(key);
+}
+
+/**
+ * Invalidate multiple keys locally
+ */
+function invalidateManyLocal(keys) {
+    if (Array.isArray(keys)) {
+        for (const key of keys) {
+            localCache.delete(key);
+        }
+    }
+}
+
+/**
+ * Invalidate keys by pattern locally
+ */
+function invalidatePatternLocal(pattern) {
+    // Convert glob-like * to regex wildcard
+    const regexPattern = new RegExp('^' + pattern.replace(/\*/g, '.*') + '$');
+    for (const key of localCache.keys()) {
+        if (regexPattern.test(key)) {
+            localCache.delete(key);
+        }
+    }
+}
+
 /**
  * Cache-first wrapper for fetching data.
  * @param {string} key - Cache key.
@@ -11,14 +69,26 @@ async function getOrSet(key, fetchFn, ttlSeconds = 300) {
     const redis = getRedisClient();
     
     if (!redis) {
-        return await fetchFn();
+        // Bypass local cache in test environment to prevent state leak/pollution between tests
+        if (process.env.NODE_ENV === 'test') {
+            return await fetchFn();
+        }
+
+        const cached = getLocal(key);
+        if (cached !== null) {
+            return cached;
+        }
+        
+        const freshData = await fetchFn();
+        if (freshData !== null && freshData !== undefined) {
+            setLocal(key, freshData, ttlSeconds);
+        }
+        return freshData;
     }
 
     try {
         const cachedValue = await redis.get(key);
         if (cachedValue !== null) {
-            // Upstash client handles JSON parsing automatically if stored as object
-            // but we'll be safe
             return typeof cachedValue === 'string' ? JSON.parse(cachedValue) : cachedValue;
         }
     } catch (error) {
@@ -40,11 +110,12 @@ async function getOrSet(key, fetchFn, ttlSeconds = 300) {
 }
 
 /**
- * Invalidate a single key or a pattern (if client supports scan/delete).
- * For @upstash/redis, we usually delete specific keys or use a naming convention.
+ * Invalidate a single key.
  * @param {string} key - Key to delete.
  */
 async function invalidate(key) {
+    invalidateLocal(key);
+    
     const redis = getRedisClient();
     if (!redis) return;
 
@@ -60,6 +131,8 @@ async function invalidate(key) {
  * @param {string[]} keys - Keys to delete.
  */
 async function invalidateMany(keys) {
+    invalidateManyLocal(keys);
+    
     const redis = getRedisClient();
     if (!redis || !keys || keys.length === 0) return;
 
@@ -71,11 +144,12 @@ async function invalidateMany(keys) {
 }
 
 /**
- * Invalidate keys by pattern (Simulated for @upstash/redis using KEYS or SCAN)
- * Note: Upstash Redis supports 'keys' command.
+ * Invalidate keys by pattern.
  * @param {string} pattern - Pattern to match (e.g., 'names:list:*')
  */
 async function invalidatePattern(pattern) {
+    invalidatePatternLocal(pattern);
+    
     const redis = getRedisClient();
     if (!redis) return;
 

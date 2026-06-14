@@ -89,6 +89,18 @@ export default defineConfig({
             if (id.includes('lucide-react')) {
               return 'icons';
             }
+            // Separate PDF generation
+            if (id.includes('jspdf')) {
+              return 'vendor-jspdf';
+            }
+            // Separate Recharts visualization
+            if (id.includes('recharts') || id.includes('d3')) {
+              return 'vendor-charts';
+            }
+            // Separate Google OAuth
+            if (id.includes('@react-oauth')) {
+              return 'vendor-oauth';
+            }
             // Utilities
             if (id.includes('react-hot-toast') || id.includes('zod') || id.includes('react-hook-form')) {
               return 'utils';

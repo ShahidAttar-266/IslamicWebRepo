@@ -96,12 +96,14 @@ exports.getNames = async (req, res, next) => {
             const page = parseInt(req.query.page, 10) || 1;
             const limit = parseInt(req.query.limit, 10) || 200;
             const startIndex = (page - 1) * limit;
-            const total = await Name.countDocuments(parsedQuery);
 
             query = query.skip(startIndex).limit(limit);
 
-            // Executing query
-            const names = await query;
+            // Executing count and find queries in parallel to save database roundtrips
+            const [total, names] = await Promise.all([
+                Name.countDocuments(parsedQuery),
+                query
+            ]);
 
             // Pagination result
             const pagination = {};

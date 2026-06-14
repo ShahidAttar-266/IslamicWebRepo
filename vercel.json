@@ -64,6 +64,10 @@
       "destination": "/robots.txt"
     },
     {
+      "source": "/api/v1/:path*",
+      "destination": "https://islamic-web-repo.vercel.app/api/v1/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
