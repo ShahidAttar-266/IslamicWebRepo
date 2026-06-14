@@ -43,7 +43,7 @@ const AdminUpload = () => {
       queryClient.invalidateQueries({ queryKey: ['admin-names'] });
       queryClient.invalidateQueries({ queryKey: ['admin-analytics'] });
       queryClient.invalidateQueries({ queryKey: ['names'] });
-      queryClient.invalidateQueries({ queryKey: ['recentNames'] });
+      queryClient.invalidateQueries({ queryKey: ['names', 'recent'] });
       setFile(null); // reset file input
     } catch (err) {
       toast.error(err.response?.data?.error || 'Failed to upload file');

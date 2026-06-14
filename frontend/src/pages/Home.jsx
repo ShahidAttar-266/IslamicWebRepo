@@ -34,17 +34,20 @@ const Home = () => {
   const navigate = useNavigate();
 
   const { data: recentNames, isLoading } = useQuery({
-    queryKey: ['recentNames'],
+    queryKey: ['names', 'recent'],
     queryFn: async () => {
       try {
-        const res = await api.get('/names?sort=-createdAt&limit=8');
-        return res.data?.data || [];
+        const promise = window.__recentNamesPromise;
+        window.__recentNamesPromise = null;
+        const res = await (promise ?? api.get('/names?sort=-createdAt&limit=8').then(r => r.data));
+        return res?.data || res || [];
       } catch (err) {
         console.error('Home query error:', err);
         return [];
       }
     },
     staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     initialData: () => {
       if (typeof window !== 'undefined' && window.__INITIAL_DATA__?.recentNames) {
         return window.__INITIAL_DATA__.recentNames;

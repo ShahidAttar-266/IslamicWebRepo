@@ -40,4 +40,14 @@ describe('API Root Routes', () => {
             });
         });
     });
+
+    describe('GET /api/health', () => {
+        it('should return ok and timestamp', async () => {
+            const res = await request(app).get('/api/health');
+
+            expect(res.statusCode).toEqual(200);
+            expect(res.body.ok).toBe(true);
+            expect(res.body.ts).toBeDefined();
+        });
+    });
 });

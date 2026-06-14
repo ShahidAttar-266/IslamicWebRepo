@@ -64,6 +64,19 @@ const queryClient = new QueryClient({
   },
 });
 
+// Prefetch critical recent names API call to resolve the critical request chain latency
+const apiBase = import.meta.env.VITE_API_URL || 'https://islamic-web-repo.vercel.app/api/v1';
+queryClient.prefetchQuery({
+  queryKey: ['names', 'recent'],
+  queryFn: () => {
+    const promise = window.__recentNamesPromise;
+    window.__recentNamesPromise = null;
+    return (promise ?? fetch(`${apiBase}/names?sort=-createdAt&limit=8`).then(r => r.json()))
+      .then(res => res?.data || res || []);
+  },
+  staleTime: 5 * 60 * 1000
+});
+
 const FallbackLoader = () => (
   <div className="min-h-[60vh] flex flex-col items-center justify-center p-12 space-y-4">
     <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />

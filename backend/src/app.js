@@ -109,6 +109,11 @@ app.get('/api/v1/health', (req, res) => {
     res.status(200).json({ status: 'success', message: 'API is running' });
 });
 
+app.get('/api/health', (req, res) => {
+    res.json({ ok: true, ts: Date.now() });
+});
+
+
 // Error handling middleware
 app.use(errorHandler);
 

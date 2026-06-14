@@ -125,8 +125,10 @@ exports.getNames = async (req, res, next) => {
         // Only cache for non-admin users to avoid leaking inactive names
         let result;
         if (!isAdmin) {
+            res.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600');
             result = await cache.getOrSet(cacheKey, fetchNames, 300); // 5 min TTL
         } else {
+            res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
             result = await fetchNames();
         }
 

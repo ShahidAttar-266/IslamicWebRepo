@@ -75,6 +75,7 @@ describe('Names API', () => {
             expect(res.body.success).toBe(true);
             expect(res.body.data).toHaveLength(1);
             expect(res.body.data[0].nameEnglish).toBe('Ahmed');
+            expect(res.headers['cache-control']).toBe('public, s-maxage=300, stale-while-revalidate=600');
             
             // Verify Mongoose calls
             expect(Name.find).toHaveBeenCalled();
