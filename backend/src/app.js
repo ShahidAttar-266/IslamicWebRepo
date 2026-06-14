@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const hpp = require('hpp');
 const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 // Route files
 const authRoutes = require('./routes/auth.routes');
@@ -16,6 +17,10 @@ const bugRoutes = require('./routes/bugs.routes');
 const errorHandler = require('./middlewares/error');
 
 const app = express();
+
+// Enable Gzip/Brotli text compression
+app.use(compression());
+
 // Set security headers
 app.use(helmet());
 

@@ -258,6 +258,7 @@ exports.createName = async (req, res, next) => {
     try {
         const name = await Name.create(req.body);
         await cache.invalidatePattern('names:list:*');
+        await cache.invalidate('render:home');
         res.status(201).json({ success: true, data: name });
     } catch (err) {
         next(err);
@@ -279,8 +280,11 @@ exports.updateName = async (req, res, next) => {
 
         await cache.invalidatePattern('names:list:*');
         await cache.invalidateMany([
-            `names:detail:${req.params.id}:public`
-        ]);
+            `names:detail:${req.params.id}:public`,
+            'render:home',
+            `render:name:${req.params.id.toLowerCase()}`,
+            name.slug ? `render:name:${name.slug.toLowerCase()}` : null
+        ].filter(Boolean));
 
         res.status(200).json({ success: true, data: name });
     } catch (err) {
@@ -299,8 +303,11 @@ exports.deleteName = async (req, res, next) => {
         await name.deleteOne();
         await cache.invalidatePattern('names:list:*');
         await cache.invalidateMany([
-            `names:detail:${req.params.id}:public`
-        ]);
+            `names:detail:${req.params.id}:public`,
+            'render:home',
+            `render:name:${req.params.id.toLowerCase()}`,
+            name.slug ? `render:name:${name.slug.toLowerCase()}` : null
+        ].filter(Boolean));
 
         res.status(200).json({ success: true, data: {} });
     } catch (err) {

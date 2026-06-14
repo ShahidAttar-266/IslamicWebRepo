@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const Name = require('../models/Name');
+const cache = require('../utils/cache');
 
 let cachedHtml = null;
 let lastFetched = 0;
@@ -27,23 +28,29 @@ async function getTemplate() {
         // Silent fallback to remote fetch
     }
 
-    // Fetch via HTTP (production mode/serverless)
-    try {
-        const frontendUrl = process.env.FRONTEND_URL || 'https://www.islamicnames.in';
-        const response = await fetch(`${frontendUrl}/index.html`, {
-            headers: { 'User-Agent': 'IslamicNames-SEO-Renderer' }
-        });
-        if (response.ok) {
-            cachedHtml = await response.text();
-            lastFetched = now;
-            return cachedHtml;
+    // Fetch via HTTP (production mode/serverless) with Redis caching
+    const fetchTemplateFromRemote = async () => {
+        try {
+            const frontendUrl = process.env.FRONTEND_URL || 'https://www.islamicnames.in';
+            const response = await fetch(`${frontendUrl}/index.html`, {
+                headers: { 'User-Agent': 'IslamicNames-SEO-Renderer' }
+            });
+            if (response.ok) {
+                return await response.text();
+            }
+        } catch (err) {
+            console.error('Failed to fetch HTML template:', err.message);
         }
-    } catch (err) {
-        console.error('Failed to fetch HTML template:', err.message);
-    }
+        return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><title>IslamicNames</title></head><body><div id="root"></div></body></html>`;
+    };
 
-    // Ultimate fallback if everything fails
-    return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><title>IslamicNames</title></head><body><div id="root"></div></body></html>`;
+    try {
+        cachedHtml = await cache.getOrSet('template:index_html', fetchTemplateFromRemote, 1800); // Cache template for 30 minutes in Redis
+        lastFetched = now;
+        return cachedHtml;
+    } catch (e) {
+        return await fetchTemplateFromRemote();
+    }
 }
 
 /**
@@ -141,36 +148,49 @@ function generateFallbackBodyHTML(name) {
 exports.renderNamePage = async (req, res, next) => {
     try {
         const idOrSlug = req.params.idOrSlug;
-        const isObjectId = idOrSlug.match(/^[0-9a-fA-F]{24}$/);
-        
-        let name = isObjectId ? await Name.findById(idOrSlug) : null;
-        if (!name) {
-            name = await Name.findOne({ slug: idOrSlug.toLowerCase() });
-        }
+        const cacheKey = `render:name:${idOrSlug.toLowerCase()}`;
 
-        let html = await getTemplate();
+        const fetchNameHtml = async () => {
+            const isObjectId = idOrSlug.match(/^[0-9a-fA-F]{24}$/);
+            
+            let name = isObjectId ? await Name.findById(idOrSlug) : null;
+            if (!name) {
+                name = await Name.findOne({ slug: idOrSlug.toLowerCase() });
+            }
 
-        if (!name || !name.isActive) {
+            if (!name || !name.isActive) {
+                return { status: 404, html: null };
+            }
+
+            let html = await getTemplate();
+
+            const title = `${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`;
+            const description = `Find the meaning, origin, pronunciation, and Quranic reference for the name ${name.nameEnglish}. Meaning: "${name.meaning}".`;
+
+            // Inject initial data script safely
+            const initialDataScript = `<script>window.__INITIAL_DATA__ = ${JSON.stringify({ name }).replace(/</g, '\\u003c')};</script>`;
+
+            // Inject dynamic tags and HTML body structure
+            html = html.replace('<head>', `<head>${initialDataScript}${generateSEOInjectHTML(name)}`);
+            html = html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i, `<meta name="description" content="${description}" />`);
+            html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:title" content="${title}" />`);
+            html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:description" content="${description}" />`);
+            html = html.replace('<div id="root"></div>', `<div id="root">${generateFallbackBodyHTML(name)}</div>`);
+
+            return { status: 200, html };
+        };
+
+        const result = await cache.getOrSet(cacheKey, fetchNameHtml, 600); // 10 min TTL
+
+        if (result.status === 404) {
+            let html = await getTemplate();
             html = html.replace('<head>', '<head><title>Name Not Found | IslamicNames</title>');
             return res.status(404).send(html);
         }
 
-        const title = `${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`;
-        const description = `Find the meaning, origin, pronunciation, and Quranic reference for the name ${name.nameEnglish}. Meaning: "${name.meaning}".`;
-
-        // Inject initial data script safely
-        const initialDataScript = `<script>window.__INITIAL_DATA__ = ${JSON.stringify({ name }).replace(/</g, '\\u003c')};</script>`;
-
-        // Inject dynamic tags and HTML body structure
-        html = html.replace('<head>', `<head>${initialDataScript}${generateSEOInjectHTML(name)}`);
-        html = html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i, `<meta name="description" content="${description}" />`);
-        html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:title" content="${title}" />`);
-        html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:description" content="${description}" />`);
-        html = html.replace('<div id="root"></div>', `<div id="root">${generateFallbackBodyHTML(name)}</div>`);
-
-        injectPreloadHeaders(res, html);
+        injectPreloadHeaders(res, result.html);
         res.header('Content-Type', 'text/html');
-        return res.status(200).send(html);
+        return res.status(200).send(result.html);
     } catch (err) {
         next(err);
     }
@@ -211,19 +231,27 @@ function generateHomeFallbackBodyHTML(recentNames) {
  */
 exports.renderHomePage = async (req, res, next) => {
     try {
-        const recentNames = await Name.find({ isActive: true })
-            .sort('-createdAt')
-            .limit(8)
-            .lean();
+        const cacheKey = 'render:home';
 
-        let html = await getTemplate();
+        const fetchHomeHtml = async () => {
+            const recentNames = await Name.find({ isActive: true })
+                .sort('-createdAt')
+                .limit(8)
+                .lean();
 
-        // Inject initial data script safely
-        const initialDataScript = `<script>window.__INITIAL_DATA__ = ${JSON.stringify({ recentNames }).replace(/</g, '\\u003c')};</script>`;
+            let html = await getTemplate();
 
-        // Inject dynamic tags and HTML body structure
-        html = html.replace('<head>', `<head>${initialDataScript}`);
-        html = html.replace('<div id="root"></div>', `<div id="root">${generateHomeFallbackBodyHTML(recentNames)}</div>`);
+            // Inject initial data script safely
+            const initialDataScript = `<script>window.__INITIAL_DATA__ = ${JSON.stringify({ recentNames }).replace(/</g, '\\u003c')};</script>`;
+
+            // Inject dynamic tags and HTML body structure
+            html = html.replace('<head>', `<head>${initialDataScript}`);
+            html = html.replace('<div id="root"></div>', `<div id="root">${generateHomeFallbackBodyHTML(recentNames)}</div>`);
+
+            return html;
+        };
+
+        const html = await cache.getOrSet(cacheKey, fetchHomeHtml, 600); // 10 min TTL
 
         injectPreloadHeaders(res, html);
         res.header('Content-Type', 'text/html');
