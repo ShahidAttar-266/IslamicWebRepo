@@ -53,7 +53,7 @@ const Footer = () => {
                 <img 
                   src="/logo-40.png" 
                   srcSet="/logo-40.png 40w, /logo-80.png 80w"
-                  alt="IslamicNames" 
+                  alt="" 
                   width={40} 
                   height={40} 
                   loading="lazy" 

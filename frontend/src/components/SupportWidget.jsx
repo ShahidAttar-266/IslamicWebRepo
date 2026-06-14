@@ -120,6 +120,7 @@ const SupportWidget = () => {
           onMouseLeave={() => setShowTooltip(false)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          aria-label="Help and Support"
           className="relative group flex items-center justify-center gap-3 w-14 h-14 sm:w-auto sm:h-auto sm:px-6 sm:py-4 bg-gradient-to-r from-primary to-emerald-700 text-bg rounded-full shadow-[0_20px_50px_rgba(45,184,122,0.3)] overflow-hidden"
         >
           {/* Subtle Glow Animation */}
