@@ -5,7 +5,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com https://checkout.razorpay.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://www.islamicnames.in; font-src 'self' https://fonts.gstatic.com; frame-src https://accounts.google.com https://api.razorpay.com; connect-src 'self' https://www.islamicnames.in https://api.razorpay.com; upgrade-insecure-requests;"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com https://checkout.razorpay.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://connect.facebook.net https://googleads.g.doubleclick.net https://www.google-analytics.com https://adservice.google.com https://partner.googleadservices.com https://tpc.googlesyndication.com https://www.facebook.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://www.islamicnames.in https://www.facebook.com https://googleads.g.doubleclick.net https://www.google-analytics.com https://www.google.com; font-src 'self' https://fonts.gstatic.com; frame-src https://accounts.google.com https://api.razorpay.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.facebook.com https://www.googletagmanager.com; connect-src 'self' https://www.islamicnames.in https://api.razorpay.com https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://www.facebook.com https://connect.facebook.net https://pagead2.googlesyndication.com; upgrade-insecure-requests;"
         },
         {
           "key": "Strict-Transport-Security",
@@ -25,7 +25,7 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=()"
+          "value": "camera=(), microphone=(), geolocation=(), unload=()"
         }
       ]
     }

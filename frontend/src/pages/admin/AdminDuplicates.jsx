@@ -14,9 +14,9 @@ import {
 import { toast } from 'react-hot-toast';
 
 const GENDER_COLORS = {
-  boy: 'text-blue-500 bg-blue-500/10 border-blue-500/20',
-  girl: 'text-pink-500 bg-pink-500/10 border-pink-500/20',
-  unisex: 'text-purple-500 bg-purple-500/10 border-purple-500/20',
+  boy: 'text-blue-400 bg-blue-500/10 border-blue-500/20',
+  girl: 'text-pink-400 bg-pink-500/10 border-pink-500/20',
+  unisex: 'text-purple-400 bg-purple-500/10 border-purple-500/20',
 };
 
 /**

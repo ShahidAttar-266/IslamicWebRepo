@@ -39,10 +39,10 @@ const NameCard = React.memo(({ name, onFavorite, delay = 0 }) => {
   const isGirl = name.gender === 'girl';
   
   const genderStyles = isBoy 
-    ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' 
+    ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' 
     : isGirl 
-    ? 'bg-pink-500/10 text-pink-500 border-pink-500/20' 
-    : 'bg-purple-500/10 text-purple-500 border-purple-500/20';
+    ? 'bg-pink-500/10 text-pink-400 border-pink-500/20' 
+    : 'bg-purple-500/10 text-purple-400 border-purple-500/20';
 
   const favoriteMutation = useMutation({
     mutationFn: (id) => api.post(`/users/favorites/${id}`),

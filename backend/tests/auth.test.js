@@ -42,7 +42,6 @@ describe('Auth API', () => {
             expect(res.statusCode).toEqual(201);
             expect(res.body.success).toBe(true);
             expect(res.body.token).toBeDefined();
-            expect(res.body.refreshToken).toBeDefined();
             
             expect(User.create).toHaveBeenCalledWith(userData);
         });

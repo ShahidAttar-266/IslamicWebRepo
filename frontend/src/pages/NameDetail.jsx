@@ -300,8 +300,8 @@ const NameDetail = () => {
           <div className="flex-1 text-center md:text-left w-full">
             <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-6">
               <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
-                name.gender === 'boy' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' : 
-                name.gender === 'girl' ? 'bg-pink-500/10 text-pink-500 border-pink-500/20' : 'bg-purple-500/10 text-purple-500 border-purple-500/20'
+                name.gender === 'boy' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 
+                name.gender === 'girl' ? 'bg-pink-500/10 text-pink-400 border-pink-500/20' : 'bg-purple-500/10 text-purple-400 border-purple-500/20'
               }`}>
                 {name.gender || 'Unknown'} Name
               </span>

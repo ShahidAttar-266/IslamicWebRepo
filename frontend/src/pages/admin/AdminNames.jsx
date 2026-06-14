@@ -186,9 +186,9 @@ const AdminNames = () => {
                     </td>
                     <td className="px-6 py-4">
                       <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ${
-                        name.gender === 'boy' ? 'text-blue-500 bg-blue-500/10 border-blue-500/20' : 
-                        name.gender === 'girl' ? 'text-pink-500 bg-pink-500/10 border-pink-500/20' : 
-                        'text-purple-500 bg-purple-500/10 border-purple-500/20'
+                        name.gender === 'boy' ? 'text-blue-400 bg-blue-500/10 border-blue-500/20' : 
+                        name.gender === 'girl' ? 'text-pink-400 bg-pink-500/10 border-pink-500/20' : 
+                        'text-purple-400 bg-purple-500/10 border-purple-500/20'
                       }`}>
                         {name.gender}
                       </span>
@@ -196,7 +196,7 @@ const AdminNames = () => {
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-2">
                         {name.isQuranic && (
-                          <span className="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+                          <span className="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                             Quranic
                           </span>
                         )}
