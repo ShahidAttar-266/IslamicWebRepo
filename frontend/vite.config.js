@@ -20,12 +20,49 @@ try {
   // Silent fallback if module is missing or unable to patch
 }
 
+// A simple plugin to inject preload links for the compiled CSS and JS assets
+const injectCriticalPreloadsPlugin = () => {
+  return {
+    name: 'inject-critical-preloads',
+    transformIndexHtml(html, ctx) {
+      if (!ctx.bundle) return html;
+
+      let cssFile = '';
+      let jsFile = '';
+
+      for (const [key, value] of Object.entries(ctx.bundle)) {
+        if (value.type === 'asset' && value.fileName.endsWith('.css')) {
+          cssFile = '/' + value.fileName;
+        }
+        if (value.type === 'chunk' && value.isEntry) {
+          jsFile = '/' + value.fileName;
+        }
+      }
+
+      let preloads = '';
+      if (cssFile) {
+        preloads += `  <link rel="preload" href="${cssFile}" as="style">\n`;
+      }
+      if (jsFile) {
+        preloads += `  <link rel="modulepreload" href="${jsFile}">\n`;
+      }
+
+      if (html.includes('<!-- CRITICAL_PRELOADS_PLACEHOLDER -->')) {
+        return html.replace('<!-- CRITICAL_PRELOADS_PLACEHOLDER -->', preloads.trim());
+      }
+
+      return html.replace(/<head>/, `<head>\n${preloads}`);
+    }
+  };
+};
+
 // eslint-disable-next-line no-undef
 const isVercel = process.env.VERCEL === '1'
 
 export default defineConfig({
   plugins: [
     react(),
+    injectCriticalPreloadsPlugin(),
     ...(!isVercel ? [
       prerender({
         staticDir: path.join(__dirname, 'dist'),
