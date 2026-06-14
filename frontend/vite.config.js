@@ -27,22 +27,15 @@ const injectCriticalPreloadsPlugin = () => {
     transformIndexHtml(html, ctx) {
       if (!ctx.bundle) return html;
 
-      let cssFile = '';
       let jsFile = '';
 
-      for (const [key, value] of Object.entries(ctx.bundle)) {
-        if (value.type === 'asset' && value.fileName.endsWith('.css')) {
-          cssFile = '/' + value.fileName;
-        }
+      for (const value of Object.values(ctx.bundle)) {
         if (value.type === 'chunk' && value.isEntry) {
           jsFile = '/' + value.fileName;
         }
       }
 
       let preloads = '';
-      if (cssFile) {
-        preloads += `  <link rel="preload" href="${cssFile}" as="style">\n`;
-      }
       if (jsFile) {
         preloads += `  <link rel="modulepreload" href="${jsFile}">\n`;
       }

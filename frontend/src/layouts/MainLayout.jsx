@@ -4,6 +4,7 @@ import useAuthStore from '../store/useAuthStore';
 import { Search, LogOut, Heart, Menu, X, ChevronRight, User, BookOpen } from 'lucide-react';
 import Footer from '../components/Footer';
 import { AnnouncementBar } from '../components/AnnouncementBar';
+import { FallbackLoader } from '../components/FallbackLoader';
 
 // Lazy Components
 const SupportWidget = lazy(() => import('../components/SupportWidget'));
@@ -327,7 +328,9 @@ const MainLayout = () => {
 
       {/* Main Content */}
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 lg:py-10">
-        <Outlet />
+        <Suspense fallback={<FallbackLoader />}>
+          <Outlet />
+        </Suspense>
       </main>
 
       {/* Footer */}
