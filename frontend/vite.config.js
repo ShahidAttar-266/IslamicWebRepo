@@ -71,12 +71,6 @@ export default defineConfig({
           }
         },
         postProcess(renderedRoute) {
-          // Defer render-blocking CSS files by loading them asynchronously
-          renderedRoute.html = renderedRoute.html.replace(
-            /<link rel="stylesheet"([^>]*)href="(\/assets\/[^"]+\.css)"([^>]*)>/g,
-            '<link rel="stylesheet"$1href="$2"$3 media="print" onload="this.media=\'all\'; this.onload=null;">\n            <noscript><link rel="stylesheet"$1href="$2"$3></noscript>'
-          );
-
           if (renderedRoute.route === '/') {
             const fs = require('fs')
             const fsPath = require('path')
