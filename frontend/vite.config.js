@@ -66,54 +66,11 @@ export default defineConfig({
     },
   },
   build: {
-    cssCodeSplit: true,
+    cssCodeSplit: false,
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            // Group core framework dependencies
-            if (
-              id.includes('react') || 
-              id.includes('react-dom') || 
-              id.includes('react-router-dom')
-            ) {
-              return 'framework';
-            }
-            // Group data fetching and state management
-            if (
-              id.includes('@tanstack/react-query') ||
-              id.includes('axios') ||
-              id.includes('zustand')
-            ) {
-              return 'data';
-            }
-            // Separate heavy UI libraries
-            if (id.includes('framer-motion')) {
-              return 'motion';
-            }
-            if (id.includes('lucide-react')) {
-              return 'icons';
-            }
-            // Separate PDF generation
-            if (
-              id.includes('jspdf') || 
-              id.includes('jspdf-autotable') || 
-              id.includes('arabic-reshaper') || 
-              id.includes('bidi-js')
-            ) {
-              return 'vendor-jspdf';
-            }
-            // Separate Google OAuth
-            if (id.includes('@react-oauth')) {
-              return 'vendor-oauth';
-            }
-            // Utilities
-            if (id.includes('react-hot-toast') || id.includes('zod') || id.includes('react-hook-form')) {
-              return 'utils';
-            }
-          }
-        }
+        manualChunks: undefined
       }
     }
   },
