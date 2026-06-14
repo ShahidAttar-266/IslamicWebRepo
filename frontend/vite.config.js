@@ -90,7 +90,12 @@ export default defineConfig({
               return 'icons';
             }
             // Separate PDF generation
-            if (id.includes('jspdf')) {
+            if (
+              id.includes('jspdf') || 
+              id.includes('jspdf-autotable') || 
+              id.includes('arabic-reshaper') || 
+              id.includes('bidi-js')
+            ) {
               return 'vendor-jspdf';
             }
             // Separate Recharts visualization
