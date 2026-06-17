@@ -39,6 +39,7 @@ const Account = () => {
     <div className="max-w-4xl mx-auto space-y-6 md:space-y-10 py-4 md:py-10 px-4">
       <Helmet>
         <title>My Account | IslamicNames</title>
+        <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="Manage your account and preferences on IslamicNames." />
         <link rel="canonical" href="https://www.islamicnames.in/account" />
         
@@ -54,6 +55,18 @@ const Account = () => {
         <meta name="twitter:title" content="My Account | IslamicNames" />
         <meta name="twitter:description" content="Manage your account and preferences on IslamicNames." />
         <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "My Account", "item": "https://www.islamicnames.in/account" }
+            ]
+          })}
+        </script>
       </Helmet>
       <div className="text-center md:text-left">
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-text mb-2">My Profile</h1>

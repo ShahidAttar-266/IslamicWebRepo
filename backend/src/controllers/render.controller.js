@@ -38,6 +38,7 @@ async function getTemplate() {
             if (response.ok) {
                 return await response.text();
             }
+            console.error(`Failed to fetch HTML template: Status ${response.status} ${response.statusText}`);
         } catch (err) {
             console.error('Failed to fetch HTML template:', err.message);
         }
@@ -63,19 +64,12 @@ function generateSEOInjectHTML(name) {
     const canonicalUrl = `https://www.islamicnames.in/name/${name.slug || name._id}`;
     const keywords = `${name.nameEnglish} meaning, ${name.nameEnglish} islamic name, ${name.nameArabic} meaning, muslim name ${name.nameEnglish}`;
     
-    const articleSchema = {
+    const webPageSchema = {
         "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": `${name.nameEnglish} - Meaning, Origin & Islamic Significance`,
+        "@type": "WebPage",
+        "name": `${name.nameEnglish} - Meaning, Origin & Islamic Significance`,
         "description": `Detailed information about the Islamic name ${name.nameEnglish}, including its meaning: "${name.meaning}", origin: ${name.origin || 'Arabic'}, and historical context.`,
-        "datePublished": name.createdAt || new Date().toISOString(),
-        "author": { "@type": "Organization", "name": "IslamicNames" },
-        "publisher": {
-            "@type": "Organization",
-            "name": "IslamicNames",
-            "logo": { "@type": "ImageObject", "url": "https://www.islamicnames.in/logo-120.webp" }
-        },
-        "mainEntity": {
+        "about": {
             "@type": "DefinedTerm",
             "name": name.nameEnglish,
             "alternateName": name.nameArabic,
@@ -98,7 +92,7 @@ function generateSEOInjectHTML(name) {
   <title>${title}</title>
   <link rel="canonical" href="${canonicalUrl}" />
   <meta name="keywords" content="${keywords}" />
-  <script type="application/ld+json">${JSON.stringify(articleSchema)}</script>
+  <script type="application/ld+json">${JSON.stringify(webPageSchema)}</script>
   <script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}</script>
     `;
 }
@@ -167,11 +161,8 @@ exports.renderNamePage = async (req, res, next) => {
             const title = `${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`;
             const description = `Find the meaning, origin, pronunciation, and Quranic reference for the name ${name.nameEnglish}. Meaning: "${name.meaning}".`;
 
-            // Inject initial data script safely
-            const initialDataScript = `<script>window.__INITIAL_DATA__ = ${JSON.stringify({ name }).replace(/</g, '\\u003c')};</script>`;
-
             // Inject dynamic tags and HTML body structure
-            html = html.replace('<head>', `<head>${initialDataScript}${generateSEOInjectHTML(name)}`);
+            html = html.replace('<head>', `<head>${generateSEOInjectHTML(name)}`);
             html = html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i, `<meta name="description" content="${description}" />`);
             html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:title" content="${title}" />`);
             html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:description" content="${description}" />`);
@@ -241,11 +232,31 @@ exports.renderHomePage = async (req, res, next) => {
 
             let html = await getTemplate();
 
-            // Inject initial data script safely
-            const initialDataScript = `<script>window.__INITIAL_DATA__ = ${JSON.stringify({ recentNames }).replace(/</g, '\\u003c')};</script>`;
+            const title = "Islamic Names - Discover Meaningful Muslim Names for Boys & Girls";
+            const description = "Explore thousands of Islamic names for boys and girls with authentic meanings. Find Quranic names, names of prophets, and unique Arabic Muslim baby names with rich historical backgrounds.";
+            const canonicalUrl = "https://www.islamicnames.in/";
+            const keywords = "islamicnames, islamic names, islamic names for boys, islamic names for girls, quran islamic names for girls, islamic names for men, islamic names for boys from quran, islamic names of prophets, islamic names Arabic, islamic names with meanings, islamic names for women";
 
-            // Inject dynamic tags and HTML body structure
-            html = html.replace('<head>', `<head>${initialDataScript}`);
+            const breadcrumbSchema = {
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "Home", "item": canonicalUrl }
+                ]
+            };
+
+            const seoInject = `
+  <title>${title}</title>
+  <link rel="canonical" href="${canonicalUrl}" />
+  <meta name="keywords" content="${keywords}" />
+  <script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}</script>
+            `;
+
+            // Inject HTML body structure and dynamic head tags
+            html = html.replace('<head>', `<head>${seoInject}`);
+            html = html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i, `<meta name="description" content="${description}" />`);
+            html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:title" content="${title}" />`);
+            html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:description" content="${description}" />`);
             html = html.replace('<div id="root"></div>', `<div id="root">${generateHomeFallbackBodyHTML(recentNames)}</div>`);
 
             return html;

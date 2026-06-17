@@ -11,10 +11,11 @@ const {
 const router = express.Router();
 
 const { protect } = require('../middlewares/auth');
+const { loginLimiter, registerLimiter, googleLimiter } = require('../middlewares/rateLimiter');
 
-router.post('/register', register);
-router.post('/login', login);
-router.post('/google', googleLogin);
+router.post('/register', registerLimiter, register);
+router.post('/login', loginLimiter, login);
+router.post('/google', googleLimiter, googleLogin);
 router.get('/logout', logout);
 router.get('/me', protect, getMe);
 router.put('/me', protect, updateDetails);

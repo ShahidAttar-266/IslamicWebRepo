@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../api/axios';
-import useAuthStore from '../store/useAuthStore';
 import NameCard from '../components/NameCard';
+import ErrorBoundary from '../components/ErrorBoundary';
 import {
   Search as SearchIcon,
   Book,
@@ -15,7 +15,6 @@ const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { isAuthenticated } = useAuthStore();
 
   // Read URL params ONCE on mount — never re-read them reactively
   const initialised = useRef(false);
@@ -174,6 +173,18 @@ const Search = () => {
         <meta name="twitter:title"       content={getPageTitle()} />
         <meta name="twitter:description" content={getPageDescription()} />
         <meta name="twitter:image"       content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Browse Names", "item": "https://www.islamicnames.in/search" }
+            ]
+          })}
+        </script>
       </Helmet>
 
       {/* Search Header */}
@@ -294,15 +305,18 @@ const Search = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-            {data?.data?.map((name, index) => (
-              <NameCard
-                key={name._id}
-                name={name}
-                isLocked={!isAuthenticated && index >= 4}
-              />
-            ))}
-          </div>
+          <ErrorBoundary title="Failed to load search results" message="There was a problem loading the search results.">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+              {data?.data?.map((name) => (
+                <ErrorBoundary key={name._id} fallback={null}>
+                  <NameCard
+                    key={name._id}
+                    name={name}
+                  />
+                </ErrorBoundary>
+              ))}
+            </div>
+          </ErrorBoundary>
         )}
       </div>
     </div>

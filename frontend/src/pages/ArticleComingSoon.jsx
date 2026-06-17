@@ -4,17 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Clock, Calendar, Eye, User, Sparkles, BookOpen, ChevronRight, ArrowLeft } from 'lucide-react';
 import { ARTICLES } from '../utils/articles-data';
 
-const WHATSAPP_NUMBER = '918275360063';
-const WHATSAPP_MESSAGE = encodeURIComponent(
-  'Assalamu Alaikum! I am interested in getting personal Islamic name suggestions for my baby. Please help me.'
-);
-const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
-const EMAIL_ADDRESS = 'islamicnameshelp@gmail.com';
-const EMAIL_SUBJECT = encodeURIComponent('Islamic Baby Name Suggestion Request');
-const EMAIL_BODY = encodeURIComponent(
-  'Assalamu Alaikum! I am interested in getting personal Islamic name suggestions for my baby. Please help me.'
-);
-const EMAIL_URL = `mailto:${EMAIL_ADDRESS}?subject=${EMAIL_SUBJECT}&body=${EMAIL_BODY}`;
+import { WHATSAPP_URL, EMAIL_URL, SUPPORT_EMAIL } from '../utils/contact';
 
 const ArticleComingSoon = () => {
   const { slug } = useParams();
@@ -42,6 +32,36 @@ const ArticleComingSoon = () => {
       <Helmet>
         <title>{article.title} — IslamicNames</title>
         <meta name="description" content={article.excerpt} />
+
+        {/* Canonical Tag */}
+        <link rel="canonical" href={`https://www.islamicnames.in/blog/${article.slug}`} />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://www.islamicnames.in/blog/${article.slug}`} />
+        <meta property="og:title" content={`${article.title} — IslamicNames`} />
+        <meta property="og:description" content={article.excerpt} />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={`https://www.islamicnames.in/blog/${article.slug}`} />
+        <meta name="twitter:title" content={`${article.title} — IslamicNames`} />
+        <meta name="twitter:description" content={article.excerpt} />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.islamicnames.in/blog" },
+              { "@type": "ListItem", "position": 3, "name": article.title, "item": `https://www.islamicnames.in/blog/${article.slug}` }
+            ]
+          })}
+        </script>
       </Helmet>
 
       <div className="space-y-8">
@@ -123,7 +143,7 @@ const ArticleComingSoon = () => {
                   Need Immediate Suggestion Help?
                 </p>
                 <p className="text-xs text-text-muted leading-relaxed">
-                  You can get direct premium personalized name suggestions for your baby today from our experts. Contact us directly:
+                  You can get direct personalized name suggestions for your baby today from our experts. Contact us directly:
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <a
@@ -136,6 +156,7 @@ const ArticleComingSoon = () => {
                   </a>
                   <a
                     href={EMAIL_URL}
+                    aria-label={`Email us at ${SUPPORT_EMAIL}`}
                     className="px-6 py-2.5 bg-accent hover:bg-opacity-95 text-bg font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
                   >
                     ✉️ Email Us

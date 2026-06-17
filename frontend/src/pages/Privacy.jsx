@@ -24,6 +24,18 @@ const Privacy = () => {
         <meta name="twitter:title" content="Privacy Policy | IslamicNames" />
         <meta name="twitter:description" content="Read the privacy policy for IslamicNames. Learn how we handle your personal data and respect your privacy." />
         <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Privacy Policy", "item": "https://www.islamicnames.in/privacy" }
+            ]
+          })}
+        </script>
       </Helmet>
       <button 
         onClick={() => navigate(-1)} 

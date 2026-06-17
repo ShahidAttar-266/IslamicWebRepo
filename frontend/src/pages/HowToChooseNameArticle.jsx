@@ -4,6 +4,38 @@ import { Link } from 'react-router-dom';
 import { Clock, Calendar, Eye, User, Share2, Sparkles, BookOpen, ChevronRight, Copy, Check, Info } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+const articleFaqs = [
+  {
+    q: 'Can I name my child after a non-Muslim relative as a sign of respect?',
+    a: 'As long as the name itself doesn\'t carry a religious meaning tied to another faith (such as referring to a deity) and has no negative connotation, this is generally permissible. The focus is on the meaning of the name, not its cultural origin.'
+  },
+  {
+    q: 'Is it true that a bad name can be changed later in life?',
+    a: 'Yes. Islamic history includes multiple examples of the Prophet ﷺ renaming adults whose names had poor meanings. While changing a name as an adult is more complex practically (legal documents, family recognition), there\'s no religious barrier to doing so if the original name carries a genuinely negative meaning.'
+  },
+  {
+    q: 'What if my child\'s name isn\'t found in any Islamic name dictionary?',
+    a: 'That\'s fine — the requirement isn\'t that a name appears in a specific book or database. The requirement is that the meaning is good, doesn\'t imply shirk, and isn\'t offensive. Many beautiful names simply aren\'t widely catalogued.'
+  },
+  {
+    q: 'Should I prioritize a name that\'s easy to pronounce in my country of residence?',
+    a: 'This isn\'t a religious requirement, but it\'s a practical one worth weighing. A name your child will need to spell out and correct constantly for their whole life is worth thinking through — though many families happily embrace this as part of their identity.'
+  }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": articleFaqs.map(q => ({
+    "@type": "Question",
+    "name": q.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": q.a
+    }
+  }))
+};
+
 const HowToChooseNameArticle = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeTOC, setActiveTOC] = useState('');
@@ -84,11 +116,70 @@ const HowToChooseNameArticle = () => {
     <>
       <Helmet>
         <title>How to Choose an Islamic Name — Complete Guide for Parents — IslamicNames</title>
-        <meta
-          name="description"
-          content="Learn how to choose a beautiful Islamic baby name: Sunnah timing, Aqiqah, parental rights, prohibited names, Arab vs. non-Arab names, and practical selection steps."
-        />
+        <meta name="description" content="Learn how to choose a beautiful Islamic baby name: Sunnah timing, Aqiqah, parental rights, prohibited names, Arab vs. non-Arab names, and practical selection steps." />
         <meta name="keywords" content="Islamic naming guide, how to choose Islamic name, Aqiqah timing, Sunnah names, Haram baby names in Islam, Arabic names meaning" />
+        
+        {/* Canonical Tag */}
+        <link rel="canonical" href="https://www.islamicnames.in/blog/how-to-choose-an-islamic-name" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://www.islamicnames.in/blog/how-to-choose-an-islamic-name" />
+        <meta property="og:title" content="How to Choose an Islamic Name — Complete Guide for Parents — IslamicNames" />
+        <meta property="og:description" content="Learn how to choose a beautiful Islamic baby name: Sunnah timing, Aqiqah, parental rights, prohibited names, Arab vs. non-Arab names, and practical selection steps." />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.islamicnames.in/blog/how-to-choose-an-islamic-name" />
+        <meta name="twitter:title" content="How to Choose an Islamic Name — Complete Guide for Parents — IslamicNames" />
+        <meta name="twitter:description" content="Learn how to choose a beautiful Islamic baby name: Sunnah timing, Aqiqah, parental rights, prohibited names, Arab vs. non-Arab names, and practical selection steps." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* JSON-LD Article Structured Data */}
+        <script type="application/ld+json">
+          {`{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Choose an Islamic Name — Complete Guide for Parents — IslamicNames",
+  "description": "Learn how to choose a beautiful Islamic baby name: Sunnah timing, Aqiqah, parental rights, prohibited names, Arab vs. non-Arab names, and practical selection steps.",
+  "image": "https://www.islamicnames.in/og-image.png",
+  "author": {
+    "@type": "Organization",
+    "name": "IslamicNames Team"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "IslamicNames",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.islamicnames.in/logo-120.webp"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.islamicnames.in/blog/how-to-choose-an-islamic-name"
+  }
+}`}
+        </script>
+
+        {/* JSON-LD Breadcrumb Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.islamicnames.in/blog" },
+              { "@type": "ListItem", "position": 3, "name": "How to Choose an Islamic Name", "item": "https://www.islamicnames.in/blog/how-to-choose-an-islamic-name" }
+            ]
+          })}
+        </script>
+
+        {/* JSON-LD FAQ Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
       </Helmet>
 
       {/* Reading Progress Bar */}
@@ -341,24 +432,7 @@ const HowToChooseNameArticle = () => {
                 Frequently Asked Questions
               </h2>
               <div className="space-y-4 divide-y divide-border/30">
-                {[
-                  {
-                    q: 'Can I name my child after a non-Muslim relative as a sign of respect?',
-                    a: 'As long as the name itself doesn\'t carry a religious meaning tied to another faith (such as referring to a deity) and has no negative connotation, this is generally permissible. The focus is on the meaning of the name, not its cultural origin.'
-                  },
-                  {
-                    q: 'Is it true that a bad name can be changed later in life?',
-                    a: 'Yes. Islamic history includes multiple examples of the Prophet ﷺ renaming adults whose names had poor meanings. While changing a name as an adult is more complex practically (legal documents, family recognition), there\'s no religious barrier to doing so if the original name carries a genuinely negative meaning.'
-                  },
-                  {
-                    q: 'What if my child\'s name isn\'t found in any Islamic name dictionary?',
-                    a: 'That\'s fine — the requirement isn\'t that a name appears in a specific book or database. The requirement is that the meaning is good, doesn\'t imply shirk, and isn\'t offensive. Many beautiful names simply aren\'t widely catalogued.'
-                  },
-                  {
-                    q: 'Should I prioritize a name that\'s easy to pronounce in my country of residence?',
-                    a: 'This isn\'t a religious requirement, but it\'s a practical one worth weighing. A name your child will need to spell out and correct constantly for their whole life is worth thinking through — though many families happily embrace this as part of their identity.'
-                  }
-                ].map((item, idx) => (
+                {articleFaqs.map((item, idx) => (
                   <div key={idx} className={`${idx > 0 ? 'pt-4' : ''} space-y-2`}>
                     <h4 className="text-sm font-bold text-text flex items-start gap-2">
                       <span className="text-accent">Q:</span> {item.q}

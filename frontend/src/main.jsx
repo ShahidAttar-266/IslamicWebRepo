@@ -1,7 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+const apiBase = import.meta.env.VITE_API_URL || 'https://islamic-web-repo.vercel.app/api/v1';
 const RECENT_NAMES_URL =
-  'https://islamic-web-repo.vercel.app/api/v1/names?sort=-createdAt&limit=8'
+  `${apiBase}/names?sort=-createdAt&limit=8`
 
 // Fire fetch instantly — browser starts TCP+TLS+request
 // while React bundle is still being parsed

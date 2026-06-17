@@ -84,11 +84,65 @@ const TheNameFatimaArticle = () => {
     <>
       <Helmet>
         <title>The Name Fatima — Meaning, History, and Why It Matters — IslamicNames</title>
-        <meta
-          name="description"
-          content="Explore the deep meaning, linguistic roots, historical significance, and legacy of the beloved name Fatima and Fatima al-Zahra (RA)."
-        />
+        <meta name="description" content="Explore the deep meaning, linguistic roots, historical significance, and legacy of the beloved name Fatima and Fatima al-Zahra (RA)." />
         <meta name="keywords" content="Fatima meaning, Fatima al-Zahra, Islamic names, Muslim girl names, Arabic name Fatima, Zahra meaning, Ahl al-Bayt" />
+        
+        {/* Canonical Tag */}
+        <link rel="canonical" href="https://www.islamicnames.in/blog/the-name-fatima-meaning-history" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://www.islamicnames.in/blog/the-name-fatima-meaning-history" />
+        <meta property="og:title" content="The Name Fatima — Meaning, History, and Why It Matters — IslamicNames" />
+        <meta property="og:description" content="Explore the deep meaning, linguistic roots, historical significance, and legacy of the beloved name Fatima and Fatima al-Zahra (RA)." />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.islamicnames.in/blog/the-name-fatima-meaning-history" />
+        <meta name="twitter:title" content="The Name Fatima — Meaning, History, and Why It Matters — IslamicNames" />
+        <meta name="twitter:description" content="Explore the deep meaning, linguistic roots, historical significance, and legacy of the beloved name Fatima and Fatima al-Zahra (RA)." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* JSON-LD Article Structured Data */}
+        <script type="application/ld+json">
+          {`{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The Name Fatima — Meaning, History, and Why It Matters — IslamicNames",
+  "description": "Explore the deep meaning, linguistic roots, historical significance, and legacy of the beloved name Fatima and Fatima al-Zahra (RA).",
+  "image": "https://www.islamicnames.in/og-image.png",
+  "author": {
+    "@type": "Organization",
+    "name": "IslamicNames Team"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "IslamicNames",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.islamicnames.in/logo-120.webp"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.islamicnames.in/blog/the-name-fatima-meaning-history"
+  }
+}`}
+        </script>
+
+        {/* JSON-LD Breadcrumb Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.islamicnames.in/blog" },
+              { "@type": "ListItem", "position": 3, "name": "The Name Fatima: Meaning & History", "item": "https://www.islamicnames.in/blog/the-name-fatima-meaning-history" }
+            ]
+          })}
+        </script>
       </Helmet>
 
       {/* Reading Progress Bar */}

@@ -26,7 +26,6 @@ app.use(helmet());
 
 // Enable CORS
 const allowedOrigins = new Set([
-    'https://islamicnames1.netlify.app',
     'https://islamic-web-repo.vercel.app',
     'https://islamic-web-repo-jcwb.vercel.app',
     'https://www.islamicnames.in'

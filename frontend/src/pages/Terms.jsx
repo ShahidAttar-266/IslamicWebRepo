@@ -24,6 +24,18 @@ const Terms = () => {
         <meta name="twitter:title" content="Terms & Conditions | IslamicNames" />
         <meta name="twitter:description" content="Read the terms of service and usage guidelines for IslamicNames." />
         <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Terms of Service", "item": "https://www.islamicnames.in/terms" }
+            ]
+          })}
+        </script>
       </Helmet>
       <button 
         onClick={() => navigate(-1)} 
@@ -98,7 +110,7 @@ const Terms = () => {
               <span className="text-primary text-sm font-black">06.</span> Limitation of Liability
             </h2>
             <p>
-              IslamicNames.in shall not be held liable for any direct, indirect, incidental, or consequential damages arising from the use of the website, its content, or premium services. Users access and use the platform at their own discretion and risk.
+              IslamicNames.in shall not be held liable for any direct, indirect, incidental, or consequential damages arising from the use of the website or its content. Users access and use the platform at their own discretion and risk.
             </p>
           </section>
 
@@ -107,7 +119,7 @@ const Terms = () => {
               <span className="text-primary text-sm font-black">07.</span> Third-Party Services
             </h2>
             <p>
-              The website may integrate third-party services including payment gateways, analytics tools, cloud hosting providers, and communication services. IslamicNames.in is not responsible for the policies, practices, or service interruptions of third-party providers.
+              The website may integrate third-party services including analytics tools, cloud hosting providers, and communication services. IslamicNames.in is not responsible for the policies, practices, or service interruptions of third-party providers.
             </p>
           </section>
 
@@ -116,7 +128,7 @@ const Terms = () => {
               <span className="text-primary text-sm font-black">08.</span> Termination of Access
             </h2>
             <p>
-              We reserve the right to suspend, restrict, or terminate access to the website or premium services without prior notice if any misuse, violation of terms, fraudulent transaction, or suspicious activity is detected.
+              We reserve the right to suspend, restrict, or terminate access to the website without prior notice if any misuse, violation of terms, or suspicious activity is detected.
             </p>
           </section>
 
@@ -134,7 +146,7 @@ const Terms = () => {
               <span className="text-primary text-sm font-black">10.</span> Contact Information
             </h2>
             <p>
-              For support, payment-related issues, or legal concerns, users may contact us through the official contact details provided on the website.
+              For support or legal concerns, users may contact us through the official contact details provided on the website.
             </p>
           </section>
 

@@ -200,4 +200,38 @@ describe('Names API', () => {
             expect(res.text).toContain('Praiseworthy');
         });
     });
+
+    describe('GET /api/v1/names/sitemap.xml', () => {
+        it('should generate sitemap.xml with lastmod for static routes and blog articles', async () => {
+            const mockNameQuery = {
+                select: jest.fn().mockResolvedValue([
+                    {
+                        _id: '507f1f77bcf86cd799439011',
+                        slug: 'ahmed',
+                        updatedAt: new Date('2026-06-15T12:00:00.000Z')
+                    }
+                ])
+            };
+            Name.find.mockReturnValue(mockNameQuery);
+
+            const res = await request(app).get('/api/v1/names/sitemap.xml');
+
+            expect(res.statusCode).toEqual(200);
+            expect(res.headers['content-type']).toContain('application/xml');
+            
+            const currentDate = new Date().toISOString().split('T')[0];
+            
+            // Verify static routes have lastmod
+            expect(res.text).toContain(`<loc>https://www.islamicnames.in</loc>\n    <lastmod>${currentDate}</lastmod>`);
+            expect(res.text).toContain(`<loc>https://www.islamicnames.in/search</loc>\n    <lastmod>${currentDate}</lastmod>`);
+            expect(res.text).toContain(`<loc>https://www.islamicnames.in/free-service</loc>\n    <lastmod>${currentDate}</lastmod>`);
+            expect(res.text).toContain(`<loc>https://www.islamicnames.in/blog</loc>\n    <lastmod>${currentDate}</lastmod>`);
+
+            // Verify blog articles have lastmod
+            expect(res.text).toContain(`<loc>https://www.islamicnames.in/blog/50-beautiful-islamic-girl-names-starting-with-f</loc>\n    <lastmod>${currentDate}</lastmod>`);
+
+            // Verify dynamic name routes have correct lastmod from DB
+            expect(res.text).toContain('<loc>https://www.islamicnames.in/name/ahmed</loc>\n    <lastmod>2026-06-15</lastmod>');
+        });
+    });
 });

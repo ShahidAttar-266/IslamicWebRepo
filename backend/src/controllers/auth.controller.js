@@ -13,18 +13,10 @@ const sendTokenResponse = (user, statusCode, res) => {
         expiresIn: process.env.JWT_EXPIRES_IN || '30d'
     });
 
-    const options = {
-        expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
-    };
-
     res.status(statusCode)
-        .cookie('token', token, options)
         .json({
             success: true,
-            token, // Keep sending token for now to avoid breaking frontend immediately
+            token,
             user: {
                 _id: user._id,
                 name: user.name,
@@ -93,13 +85,6 @@ exports.logout = async (req, res, next) => {
     if (req.user) {
         await cache.invalidate(`user:doc:${req.user.id}`);
     }
-
-    res.cookie('token', 'none', {
-        expires: new Date(Date.now() + 10 * 1000),
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
-    });
 
     res.status(200).json({
         success: true,

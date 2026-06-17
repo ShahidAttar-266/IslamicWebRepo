@@ -142,6 +142,18 @@ const ReportBug = () => {
         <meta name="twitter:title" content="Report a Bug | IslamicNames" />
         <meta name="twitter:description" content="Submit feedback or report issues to help us improve the IslamicNames platform." />
         <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Report Bug", "item": "https://www.islamicnames.in/report-bug" }
+            ]
+          })}
+        </script>
       </Helmet>
       <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-bold text-xs uppercase tracking-widest mb-8">
         <ArrowLeft size={16} /> Back

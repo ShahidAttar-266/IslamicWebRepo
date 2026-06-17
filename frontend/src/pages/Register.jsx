@@ -62,12 +62,13 @@ const Register = () => {
     <div className="max-w-md mx-auto mt-4 sm:mt-10 px-4 sm:px-0">
       <Helmet>
         <title>Register | IslamicNames</title>
-        <meta name="description" content="Create an account on IslamicNames to save names, receive recommendations, and unlock premium features." />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="description" content="Create an account on IslamicNames to save names, receive recommendations, and create custom lists." />
         <link rel="canonical" href="https://www.islamicnames.in/register" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:title" content="Register | IslamicNames" />
-        <meta property="og:description" content="Create an account on IslamicNames to save names, receive recommendations, and unlock premium features." />
+        <meta property="og:description" content="Create an account on IslamicNames to save names, receive recommendations, and create custom lists." />
         <meta property="og:url" content="https://www.islamicnames.in/register" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
@@ -75,8 +76,20 @@ const Register = () => {
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Register | IslamicNames" />
-        <meta name="twitter:description" content="Create an account on IslamicNames to save names, receive recommendations, and unlock premium features." />
+        <meta name="twitter:description" content="Create an account on IslamicNames to save names, receive recommendations, and create custom lists." />
         <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Register", "item": "https://www.islamicnames.in/register" }
+            ]
+          })}
+        </script>
       </Helmet>
       <div className="bg-card p-5 sm:p-8 rounded-3xl border border-border shadow-2xl">
         <div className="text-center mb-8">

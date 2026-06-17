@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
-import { Search, LogOut, Heart, Menu, X, ChevronRight, User, BookOpen } from 'lucide-react';
+import { Search, LogOut, Heart, Menu, X, ChevronRight, User, BookOpen, Shield } from 'lucide-react';
 import Footer from '../components/Footer';
 import { AnnouncementBar } from '../components/AnnouncementBar';
 import { FallbackLoader } from '../components/FallbackLoader';
@@ -295,7 +295,7 @@ const MainLayout = () => {
                 
                 {user?.role === 'admin' && (
                   <Link to="/admin" className="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-bg hover:text-text transition-all">
-                    <Search size={20} />
+                    <Shield size={20} />
                     <span>Admin Dashboard</span>
                   </Link>
                 )}

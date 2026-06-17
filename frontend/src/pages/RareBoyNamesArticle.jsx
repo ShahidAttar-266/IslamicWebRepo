@@ -67,6 +67,38 @@ const NameCategorySection = ({ title, id, names }) => (
   </section>
 );
 
+const articleFaqs = [
+  {
+    q: "Why are Harith and Hammam so rarely used if they're praised in hadith?",
+    a: "There is no explicit historical reason, likely just naming fashion shifts over centuries favoring Prophet names or 'Abd-' names. Many scholars highlight this gap, encouraging parents to revive these direct, beautiful names."
+  },
+  {
+    q: "Is it okay to name my son after a companion known for being a warrior, like Miqdad or Baraa?",
+    a: "Yes. Naming after companions known for courage, piety, or strong character is widely encouraged. The intention is that the name becomes a living reminder of virtue and resolution."
+  },
+  {
+    q: "Are names like Iskander/Alexander considered 'Islamic' despite the Greek connection?",
+    a: "Yes. The Arabic form Iskander has been used by Muslims for centuries. It carries its own meaning ('helper of mankind') and is historically associated with Dhul-Qarnayn, the righteous ruler mentioned in Surah Al-Kahf."
+  },
+  {
+    q: "Will a rare name cause problems with pronunciation for my child growing up outside the Arab world?",
+    a: "Some of these names (Sami, Rashid, Akram, Laith) are phonetically simple and present no issues. Others like Zameer or Qudamah can be written with simplified transliterations, which is completely acceptable."
+  }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": articleFaqs.map(q => ({
+    "@type": "Question",
+    "name": q.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": q.a
+    }
+  }))
+};
+
 const RareBoyNamesArticle = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeTOC, setActiveTOC] = useState('');
@@ -145,11 +177,70 @@ const RareBoyNamesArticle = () => {
     <>
       <Helmet>
         <title>Rare Islamic Boy Names with Deep, Powerful Meanings — IslamicNames</title>
-        <meta
-          name="description"
-          content="Explore authentic, rare Arabic boy names with deep meanings from Hadith, companion history, and early Islam. Find distinct names like Harith, Hammam, and Miqdad."
-        />
+        <meta name="description" content="Explore authentic, rare Arabic boy names with deep meanings from Hadith, companion history, and early Islam. Find distinct names like Harith, Hammam, and Miqdad." />
         <meta name="keywords" content="rare islamic boy names, unique muslim boy names, Harith meaning, Hammam meaning, Miqdad meaning, Layth meaning, Arabic baby boy names" />
+        
+        {/* Canonical Tag */}
+        <link rel="canonical" href="https://www.islamicnames.in/blog/rare-islamic-boy-names-with-deep-meanings" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://www.islamicnames.in/blog/rare-islamic-boy-names-with-deep-meanings" />
+        <meta property="og:title" content="Rare Islamic Boy Names with Deep, Powerful Meanings — IslamicNames" />
+        <meta property="og:description" content="Explore authentic, rare Arabic boy names with deep meanings from Hadith, companion history, and early Islam. Find distinct names like Harith, Hammam, and Miqdad." />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.islamicnames.in/blog/rare-islamic-boy-names-with-deep-meanings" />
+        <meta name="twitter:title" content="Rare Islamic Boy Names with Deep, Powerful Meanings — IslamicNames" />
+        <meta name="twitter:description" content="Explore authentic, rare Arabic boy names with deep meanings from Hadith, companion history, and early Islam. Find distinct names like Harith, Hammam, and Miqdad." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* JSON-LD Article Structured Data */}
+        <script type="application/ld+json">
+          {`{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Rare Islamic Boy Names with Deep, Powerful Meanings — IslamicNames",
+  "description": "Explore authentic, rare Arabic boy names with deep meanings from Hadith, companion history, and early Islam. Find distinct names like Harith, Hammam, and Miqdad.",
+  "image": "https://www.islamicnames.in/og-image.png",
+  "author": {
+    "@type": "Organization",
+    "name": "IslamicNames Team"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "IslamicNames",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.islamicnames.in/logo-120.webp"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.islamicnames.in/blog/rare-islamic-boy-names-with-deep-meanings"
+  }
+}`}
+        </script>
+
+        {/* JSON-LD Breadcrumb Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.islamicnames.in/blog" },
+              { "@type": "ListItem", "position": 3, "name": "Rare Islamic Boy Names with Deep Meanings", "item": "https://www.islamicnames.in/blog/rare-islamic-boy-names-with-deep-meanings" }
+            ]
+          })}
+        </script>
+
+        {/* JSON-LD FAQ Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
       </Helmet>
 
       {/* Reading Progress Bar */}
@@ -306,24 +397,7 @@ const RareBoyNamesArticle = () => {
                 Frequently Asked Questions
               </h2>
               <div className="space-y-4 divide-y divide-border/30">
-                {[
-                  {
-                    q: "Why are Harith and Hammam so rarely used if they're praised in hadith?",
-                    a: "There is no explicit historical reason, likely just naming fashion shifts over centuries favoring Prophet names or 'Abd-' names. Many scholars highlight this gap, encouraging parents to revive these direct, beautiful names."
-                  },
-                  {
-                    q: "Is it okay to name my son after a companion known for being a warrior, like Miqdad or Baraa?",
-                    a: "Yes. Naming after companions known for courage, piety, or strong character is widely encouraged. The intention is that the name becomes a living reminder of virtue and resolution."
-                  },
-                  {
-                    q: "Are names like Iskander/Alexander considered 'Islamic' despite the Greek connection?",
-                    a: "Yes. The Arabic form Iskander has been used by Muslims for centuries. It carries its own meaning ('helper of mankind') and is historically associated with Dhul-Qarnayn, the righteous ruler mentioned in Surah Al-Kahf."
-                  },
-                  {
-                    q: "Will a rare name cause problems with pronunciation for my child growing up outside the Arab world?",
-                    a: "Some of these names (Sami, Rashid, Akram, Laith) are phonetically simple and present no issues. Others like Zameer or Qudamah can be written with simplified transliterations, which is completely acceptable."
-                  }
-                ].map((item, idx) => (
+                {articleFaqs.map((item, idx) => (
                   <div key={idx} className={`${idx > 0 ? 'pt-4' : ''} space-y-2`}>
                     <h4 className="text-sm font-bold text-text flex items-start gap-2">
                       <span className="text-accent">Q:</span> {item.q}

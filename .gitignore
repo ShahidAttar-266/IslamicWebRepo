@@ -36,3 +36,8 @@ names_database_only.xlsx
 *.docx
 .puppeteer_user_data/
 **/.puppeteer_user_data/
+GEMINI.md
+GEMINI.MD
+*.json.report
+duplicates_report*.json
+backend/scripts/

@@ -82,11 +82,65 @@ export const CanMuslimsUseNonArabicNamesArticle = () => {
     <>
       <Helmet>
         <title>Can Muslims Use Non-Arabic Names? A Scholarly Perspective — IslamicNames</title>
-        <meta
-          name="description"
-          content="Does a Muslim name have to be Arabic? Explore classical and contemporary scholarly perspectives on Turkish, Persian, Urdu, and Western names in Islam."
-        />
+        <meta name="description" content="Does a Muslim name have to be Arabic? Explore classical and contemporary scholarly perspectives on Turkish, Persian, Urdu, and Western names in Islam." />
         <meta name="keywords" content="non-arabic islamic names, is arabic name compulsory in islam, Persian names in Islam, Turkish names in Islam, Western names for Muslims" />
+        
+        {/* Canonical Tag */}
+        <link rel="canonical" href="https://www.islamicnames.in/blog/can-muslims-use-non-arabic-names" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://www.islamicnames.in/blog/can-muslims-use-non-arabic-names" />
+        <meta property="og:title" content="Can Muslims Use Non-Arabic Names? A Scholarly Perspective — IslamicNames" />
+        <meta property="og:description" content="Does a Muslim name have to be Arabic? Explore classical and contemporary scholarly perspectives on Turkish, Persian, Urdu, and Western names in Islam." />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.islamicnames.in/blog/can-muslims-use-non-arabic-names" />
+        <meta name="twitter:title" content="Can Muslims Use Non-Arabic Names? A Scholarly Perspective — IslamicNames" />
+        <meta name="twitter:description" content="Does a Muslim name have to be Arabic? Explore classical and contemporary scholarly perspectives on Turkish, Persian, Urdu, and Western names in Islam." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* JSON-LD Article Structured Data */}
+        <script type="application/ld+json">
+          {`{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Can Muslims Use Non-Arabic Names? A Scholarly Perspective — IslamicNames",
+  "description": "Does a Muslim name have to be Arabic? Explore classical and contemporary scholarly perspectives on Turkish, Persian, Urdu, and Western names in Islam.",
+  "image": "https://www.islamicnames.in/og-image.png",
+  "author": {
+    "@type": "Organization",
+    "name": "IslamicNames Team"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "IslamicNames",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.islamicnames.in/logo-120.webp"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.islamicnames.in/blog/can-muslims-use-non-arabic-names"
+  }
+}`}
+        </script>
+
+        {/* JSON-LD Breadcrumb Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.islamicnames.in/blog" },
+              { "@type": "ListItem", "position": 3, "name": "Can Muslims Use Non-Arabic Names?", "item": "https://www.islamicnames.in/blog/can-muslims-use-non-arabic-names" }
+            ]
+          })}
+        </script>
       </Helmet>
 
       {/* Reading Progress Bar */}

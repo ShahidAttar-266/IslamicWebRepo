@@ -10,6 +10,7 @@ import {
   ChevronRight 
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { WHATSAPP_URL, SUPPORT_EMAIL } from '../utils/contact';
 
 const SupportWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,7 +55,7 @@ const SupportWidget = () => {
       description: 'Instant chat with our team',
       icon: <MessageCircle className="text-emerald-500" size={20} />,
       action: () => {
-        window.open('https://wa.me/919011531687?text=Hello%20I%20need%20help%20with%20IslamicNames', '_blank', 'noopener,noreferrer');
+        window.open(WHATSAPP_URL, '_blank', 'noopener,noreferrer');
         closeWidget();
       },
       color: 'hover:bg-emerald-500/10'
@@ -62,12 +63,11 @@ const SupportWidget = () => {
     {
       id: 'email',
       title: 'Email Us',
-      description: 'shahidattar266@gmail.com',
+      description: SUPPORT_EMAIL,
       icon: <Mail className="text-blue-500" size={20} />,
       action: () => {
-        const email = 'shahidattar266@gmail.com';
         const subject = encodeURIComponent('Support Request - IslamicNames');
-        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}`;
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${SUPPORT_EMAIL}&su=${subject}`;
         window.open(gmailUrl, '_blank', 'noopener,noreferrer');
         closeWidget();
       },

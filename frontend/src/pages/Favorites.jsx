@@ -1,15 +1,15 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import api from '../api/axios';
-import { HeartCrack, Download, Loader2, Heart } from 'lucide-react';
+import { HeartCrack, Download, Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import useAuthStore from '../store/useAuthStore';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NameCard from '../components/NameCard';
 import { Helmet } from 'react-helmet-async';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 const Favorites = () => {
-  const queryClient = useQueryClient();
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
   const [isExporting, setIsExporting] = useState(false);
@@ -29,13 +29,6 @@ const Favorites = () => {
     enabled: isAuthenticated
   });
 
-  const removeFavoriteMutation = useMutation({
-    mutationFn: (id) => api.delete(`/users/favorites/${id}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['favorites'] });
-      toast.success('Removed from favorites');
-    }
-  });
 
   const handleExport = async () => {
     if (!favorites || favorites.length === 0) {
@@ -67,6 +60,7 @@ const Favorites = () => {
     <div className="space-y-6 md:space-y-10 px-1">
       <Helmet>
         <title>My Favorite Names | IslamicNames</title>
+        <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="View and manage your saved favorite Islamic names." />
         <link rel="canonical" href="https://www.islamicnames.in/favorites" />
         
@@ -82,6 +76,18 @@ const Favorites = () => {
         <meta name="twitter:title" content="My Favorite Names | IslamicNames" />
         <meta name="twitter:description" content="View and manage your saved favorite Islamic names." />
         <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Favorites", "item": "https://www.islamicnames.in/favorites" }
+            ]
+          })}
+        </script>
       </Helmet>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
@@ -120,23 +126,15 @@ const Favorites = () => {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {favorites.map(name => (
-            <div key={name._id} className="relative group">
-              <NameCard name={name} />
-              <button 
-                onClick={(e) => {
-                  e.preventDefault();
-                  removeFavoriteMutation.mutate(name._id);
-                }}
-                className="absolute top-4 right-4 p-2.5 bg-card/80 backdrop-blur-md border border-border rounded-full text-danger opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-danger hover:text-white shadow-lg min-w-[36px] min-h-[36px] flex items-center justify-center z-20"
-                title="Remove from favorites"
-              >
-                <Heart size={16} fill="currentColor" />
-              </button>
-            </div>
-          ))}
-        </div>
+        <ErrorBoundary title="Failed to load favorites" message="There was a problem loading your favorite names.">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {favorites.map(name => (
+              <ErrorBoundary key={name._id} fallback={null}>
+                <NameCard name={name} />
+              </ErrorBoundary>
+            ))}
+          </div>
+        </ErrorBoundary>
       )}
     </div>
   );

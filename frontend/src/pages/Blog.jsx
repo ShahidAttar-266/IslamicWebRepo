@@ -47,6 +47,36 @@ const Blog = () => {
           name="description"
           content="Read in-depth articles and guides on Islamic baby names — meanings, origins, Quranic names, and naming tips for Muslim parents."
         />
+        <meta name="keywords" content="Islamic names blog, Muslim naming guides, baby names articles, Islamic names advice, Quranic name resources" />
+
+        {/* Canonical Tag */}
+        <link rel="canonical" href="https://www.islamicnames.in/blog" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.islamicnames.in/blog" />
+        <meta property="og:title" content="Articles & Naming Guides — IslamicNames" />
+        <meta property="og:description" content="Read in-depth articles and guides on Islamic baby names — meanings, origins, Quranic names, and naming tips for Muslim parents." />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.islamicnames.in/blog" />
+        <meta name="twitter:title" content="Articles & Naming Guides — IslamicNames" />
+        <meta name="twitter:description" content="Read in-depth articles and guides on Islamic baby names — meanings, origins, Quranic names, and naming tips for Muslim parents." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+        
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.islamicnames.in/blog" }
+            ]
+          })}
+        </script>
       </Helmet>
 
       <div className="space-y-10">

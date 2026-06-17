@@ -5,6 +5,7 @@ import { Search as SearchIcon, ArrowRight, BookOpen, Sparkles, Users } from 'luc
 import api from '../api/axios';
 import NameCard from '../components/NameCard';
 import HomeFAQ from '../components/HomeFAQ';
+import ErrorBoundary from '../components/ErrorBoundary';
 import ArticlesSlider from '../components/ArticlesSlider';
 
 import { Helmet } from 'react-helmet-async';
@@ -14,8 +15,8 @@ import { Helmet } from 'react-helmet-async';
  * Each chip routes to the search page with specific filters, or to the blog.
  */
 const CATEGORY_CHIPS = [
-  { label: 'Boy Names',    icon: '👦', route: '/search?gender=male',   ariaLabel: 'Browse Islamic boy names' },
-  { label: 'Girl Names',   icon: '👧', route: '/search?gender=female', ariaLabel: 'Browse Islamic girl names' },
+  { label: 'Boy Names',    icon: '👦', route: '/search?gender=boy',   ariaLabel: 'Browse Islamic boy names' },
+  { label: 'Girl Names',   icon: '👧', route: '/search?gender=girl', ariaLabel: 'Browse Islamic girl names' },
   { label: 'Quranic Names', icon: '📖', route: '/search?quranic=true', ariaLabel: 'Browse Quranic names' },
   { label: 'Articles',     lucideIcon: 'BookOpen', route: '/blog',     ariaLabel: 'Read Islamic naming articles' },
   { label: 'Browse All',   lucideIcon: 'Sparkles', route: '/search',   ariaLabel: 'Browse all Islamic names' },
@@ -48,12 +49,6 @@ const Home = () => {
     },
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
-    initialData: () => {
-      if (typeof window !== 'undefined' && window.__INITIAL_DATA__?.recentNames) {
-        return window.__INITIAL_DATA__.recentNames;
-      }
-      return undefined;
-    },
   });
 
   const handleSearch = (e) => {
@@ -96,6 +91,17 @@ const Home = () => {
         <meta name="twitter:title" content="Islamic Names - Discover Meaningful Muslim Names for Boys & Girls" />
         <meta name="twitter:description" content="Explore thousands of Islamic names for boys and girls with authentic meanings. Find Quranic names, names of prophets, and unique Arabic Muslim baby names with rich historical backgrounds." />
         <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" }
+            ]
+          })}
+        </script>
       </Helmet>
 
       {/* Hero Section */}
@@ -166,14 +172,17 @@ const Home = () => {
           <NamesSkeleton />
         ) : (
           <Suspense fallback={<NamesSkeleton />}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 min-h-[260px]">
-              {recentNames.map((name) => (
-                <NameCard 
-                  key={name._id} 
-                  name={name} 
-                />
-              ))}
-            </div>
+            <ErrorBoundary title="Failed to load recent names" message="There was a problem loading the recent names.">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 min-h-[260px]">
+                {recentNames.map((name) => (
+                  <ErrorBoundary key={name._id} fallback={null}>
+                    <NameCard 
+                      name={name} 
+                    />
+                  </ErrorBoundary>
+                ))}
+              </div>
+            </ErrorBoundary>
           </Suspense>
         )}
       </section>

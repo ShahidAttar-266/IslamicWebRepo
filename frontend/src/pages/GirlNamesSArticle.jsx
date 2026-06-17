@@ -163,11 +163,65 @@ const GirlNamesSArticle = () => {
     <>
       <Helmet>
         <title>50 Islamic Girl Names Starting with S — Sara, Safiya & More — IslamicNames</title>
-        <meta
-          name="description"
-          content="Explore 50 beautiful Islamic baby girl names starting with the letter S (Seen), featuring timeless classics like Sara and Safiya. Includes script, meanings, and origins."
-        />
+        <meta name="description" content="Explore 50 beautiful Islamic baby girl names starting with the letter S (Seen), featuring timeless classics like Sara and Safiya. Includes script, meanings, and origins." />
         <meta name="keywords" content="Islamic girl names starting with S, Muslim girl names S, Sara meaning, Safiya meaning, Arabic girl names, Quranic girl names, Seen names" />
+        
+        {/* Canonical Tag */}
+        <link rel="canonical" href="https://www.islamicnames.in/blog/50-islamic-girl-names-starting-with-s" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://www.islamicnames.in/blog/50-islamic-girl-names-starting-with-s" />
+        <meta property="og:title" content="50 Islamic Girl Names Starting with S — Sara, Safiya & More — IslamicNames" />
+        <meta property="og:description" content="Explore 50 beautiful Islamic baby girl names starting with the letter S (Seen), featuring timeless classics like Sara and Safiya. Includes script, meanings, and origins." />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.islamicnames.in/blog/50-islamic-girl-names-starting-with-s" />
+        <meta name="twitter:title" content="50 Islamic Girl Names Starting with S — Sara, Safiya & More — IslamicNames" />
+        <meta name="twitter:description" content="Explore 50 beautiful Islamic baby girl names starting with the letter S (Seen), featuring timeless classics like Sara and Safiya. Includes script, meanings, and origins." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* JSON-LD Article Structured Data */}
+        <script type="application/ld+json">
+          {`{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "50 Islamic Girl Names Starting with S — Sara, Safiya & More — IslamicNames",
+  "description": "Explore 50 beautiful Islamic baby girl names starting with the letter S (Seen), featuring timeless classics like Sara and Safiya. Includes script, meanings, and origins.",
+  "image": "https://www.islamicnames.in/og-image.png",
+  "author": {
+    "@type": "Organization",
+    "name": "IslamicNames Team"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "IslamicNames",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.islamicnames.in/logo-120.webp"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.islamicnames.in/blog/50-islamic-girl-names-starting-with-s"
+  }
+}`}
+        </script>
+
+        {/* JSON-LD Breadcrumb Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.islamicnames.in/blog" },
+              { "@type": "ListItem", "position": 3, "name": "50 Islamic Girl Names Starting with S", "item": "https://www.islamicnames.in/blog/50-islamic-girl-names-starting-with-s" }
+            ]
+          })}
+        </script>
       </Helmet>
 
       {/* Reading Progress Bar */}

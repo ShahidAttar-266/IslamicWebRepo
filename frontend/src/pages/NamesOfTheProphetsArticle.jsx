@@ -5,6 +5,34 @@ import { Clock, Calendar, Eye, User, Share2, Sparkles, ChevronRight, Copy, Check
 import toast from 'react-hot-toast';
 import { PROPHETS_DATA } from '../utils/prophets-data';
 
+const articleFaqs = [
+  {
+    q: "How many Prophets are mentioned in the Quran?",
+    a: "The Quran mentions exactly 25 Prophets by name. Every Muslim is required to believe in all of them, as well as in the numerous unnamed Prophets sent to other nations throughout human history."
+  },
+  {
+    q: "Is it recommended to name children after the Prophets?",
+    a: "Yes, the Prophet Muhammad ﷺ strongly recommended it, stating: 'Name yourselves with the names of the Prophets.' It helps connect the child's identity to these exemplary figures of faith, patience, and leadership."
+  },
+  {
+    q: "Who are the 'Ulul Azm' (Prophets of firm resolve)?",
+    a: "They are the five greatest Prophets in Islam who faced the most severe trials and showed unbreakable resilience: Nuh (Noah), Ibrahim (Abraham), Musa (Moses), Isa (Jesus), and Muhammad ﷺ."
+  }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": articleFaqs.map(q => ({
+    "@type": "Question",
+    "name": q.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": q.a
+    }
+  }))
+};
+
 const NamesOfTheProphetsArticle = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeTOC, setActiveTOC] = useState('');
@@ -77,11 +105,70 @@ const NamesOfTheProphetsArticle = () => {
     <>
       <Helmet>
         <title>Names of the Prophets in Islam — Meanings and Stories — IslamicNames</title>
-        <meta
-          name="description"
-          content="Explore the names of all 25 Prophets named in the Quran, including their Arabic spelling, etymology, origins, and their stories of faith and patience in Islam."
-        />
+        <meta name="description" content="Explore the names of all 25 Prophets named in the Quran, including their Arabic spelling, etymology, origins, and their stories of faith and patience in Islam." />
         <meta name="keywords" content="names of prophets in islam, islamic prophet names, 25 prophets in quran, prophet names meanings, Ulul Azm prophets, arabic boy names" />
+        
+        {/* Canonical Tag */}
+        <link rel="canonical" href="https://www.islamicnames.in/blog/names-of-the-prophets-in-islam" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://www.islamicnames.in/blog/names-of-the-prophets-in-islam" />
+        <meta property="og:title" content="Names of the Prophets in Islam — Meanings and Stories — IslamicNames" />
+        <meta property="og:description" content="Explore the names of all 25 Prophets named in the Quran, including their Arabic spelling, etymology, origins, and their stories of faith and patience in Islam." />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.islamicnames.in/blog/names-of-the-prophets-in-islam" />
+        <meta name="twitter:title" content="Names of the Prophets in Islam — Meanings and Stories — IslamicNames" />
+        <meta name="twitter:description" content="Explore the names of all 25 Prophets named in the Quran, including their Arabic spelling, etymology, origins, and their stories of faith and patience in Islam." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* JSON-LD Article Structured Data */}
+        <script type="application/ld+json">
+          {`{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Names of the Prophets in Islam — Meanings and Stories — IslamicNames",
+  "description": "Explore the names of all 25 Prophets named in the Quran, including their Arabic spelling, etymology, origins, and their stories of faith and patience in Islam.",
+  "image": "https://www.islamicnames.in/og-image.png",
+  "author": {
+    "@type": "Organization",
+    "name": "IslamicNames Team"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "IslamicNames",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.islamicnames.in/logo-120.webp"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.islamicnames.in/blog/names-of-the-prophets-in-islam"
+  }
+}`}
+        </script>
+
+        {/* JSON-LD Breadcrumb Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.islamicnames.in/blog" },
+              { "@type": "ListItem", "position": 3, "name": "Names of the Prophets in Islam", "item": "https://www.islamicnames.in/blog/names-of-the-prophets-in-islam" }
+            ]
+          })}
+        </script>
+
+        {/* JSON-LD FAQ Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
       </Helmet>
 
       {/* Reading Progress Bar */}
@@ -249,20 +336,7 @@ const NamesOfTheProphetsArticle = () => {
                 Frequently Asked Questions
               </h2>
               <div className="space-y-4 divide-y divide-border/30">
-                {[
-                  {
-                    q: "How many Prophets are mentioned in the Quran?",
-                    a: "The Quran mentions exactly 25 Prophets by name. Every Muslim is required to believe in all of them, as well as in the numerous unnamed Prophets sent to other nations throughout human history."
-                  },
-                  {
-                    q: "Is it recommended to name children after the Prophets?",
-                    a: "Yes, the Prophet Muhammad ﷺ strongly recommended it, stating: 'Name yourselves with the names of the Prophets.' It helps connect the child's identity to these exemplary figures of faith, patience, and leadership."
-                  },
-                  {
-                    q: "Who are the 'Ulul Azm' (Prophets of firm resolve)?",
-                    a: "They are the five greatest Prophets in Islam who faced the most severe trials and showed unbreakable resilience: Nuh (Noah), Ibrahim (Abraham), Musa (Moses), Isa (Jesus), and Muhammad ﷺ."
-                  }
-                ].map((item, idx) => (
+                {articleFaqs.map((item, idx) => (
                   <div key={idx} className={`${idx > 0 ? 'pt-4' : ''} space-y-2`}>
                     <h4 className="text-sm font-bold text-text flex items-start gap-2">
                       <span className="text-accent">Q:</span> {item.q}

@@ -1,13 +1,9 @@
 import React from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Heart, Book, ArrowRight, ArrowLeftRight } from 'lucide-react';
-import useAuthStore from '../store/useAuthStore';
-import { useMutation } from '@tanstack/react-query';
-import api from '../api/axios';
-import { toast } from 'react-hot-toast';
+import useFavorite from '../hooks/useFavorite';
 
 const NameCard = React.memo(({ name, onFavorite, delay = 0 }) => {
-  const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   
@@ -44,24 +40,15 @@ const NameCard = React.memo(({ name, onFavorite, delay = 0 }) => {
     ? 'bg-pink-500/10 text-pink-400 border-pink-500/20' 
     : 'bg-purple-500/10 text-purple-400 border-purple-500/20';
 
-  const favoriteMutation = useMutation({
-    mutationFn: (id) => api.post(`/users/favorites/${id}`),
-    onSuccess: () => toast.success('Added to favorites!'),
-    onError: () => toast.error('Could not save favorite')
-  });
+  const { isFavorited, toggleFavorite, isPending } = useFavorite(name);
 
   const handleFavoriteClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
     if (onFavorite) {
+      e.preventDefault();
+      e.stopPropagation();
       onFavorite(name._id);
     } else {
-      if (!isAuthenticated) {
-        toast.error('Please login to save favorites');
-        navigate('/login');
-        return;
-      }
-      favoriteMutation.mutate(name._id);
+      toggleFavorite(e);
     }
   };
 
@@ -74,10 +61,14 @@ const NameCard = React.memo(({ name, onFavorite, delay = 0 }) => {
         </div>
         <button 
           onClick={handleFavoriteClick}
-          aria-label={favoriteMutation.isPending ? "Adding to favorites" : "Add to favorites"}
-          className="p-2 rounded-full bg-bg/50 border border-border text-text-muted hover:text-danger hover:border-danger/30 transition-all duration-300 min-w-[36px] min-h-[36px] flex items-center justify-center"
+          aria-label={isPending ? (isFavorited ? "Removing from favorites" : "Adding to favorites") : (isFavorited ? "Remove from favorites" : "Add to favorites")}
+          className={`p-2 rounded-full bg-bg/50 border transition-all duration-300 min-w-[36px] min-h-[36px] flex items-center justify-center ${
+            isFavorited 
+              ? 'text-danger border-danger/30' 
+              : 'text-text-muted border-border hover:text-danger hover:border-danger/30'
+          }`}
         >
-          <Heart size={18} aria-hidden="true" fill={favoriteMutation.isPending ? 'currentColor' : 'none'} />
+          <Heart size={18} aria-hidden="true" fill={isFavorited ? 'currentColor' : 'none'} />
         </button>
       </div>
 

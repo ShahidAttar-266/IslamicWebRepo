@@ -9,6 +9,16 @@
       "source": "/islamicnames-sample-article.html",
       "destination": "/blog/50-beautiful-islamic-girl-names-starting-with-f",
       "permanent": true
+    },
+    {
+      "source": "/refund-policy",
+      "destination": "/free-service",
+      "permanent": true
+    },
+    {
+      "source": "/cancellation-policy",
+      "destination": "/free-service",
+      "permanent": true
     }
   ],
   "rewrites": [
@@ -18,7 +28,7 @@
     },
     {
       "source": "/name/:slug",
-      "destination": "/api/v1/names/render/:slug"
+      "destination": "https://islamic-web-repo.vercel.app/api/v1/names/render/:slug"
     },
     {
       "source": "/ads.txt",

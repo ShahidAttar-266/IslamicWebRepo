@@ -28,19 +28,19 @@ const faqs = [
     a: 'Yes, it is highly recommended and considered a Sunnah to give a child a beautiful and meaningful name. The Prophet (PBUH) often changed names of people and places if they had negative or unpleasant meanings.'
   },
   {
-    q: 'what is the best islamic name for a girl names?',
+    q: 'What is the best Islamic name for a girl?',
     a: 'The "best" name is subjective, but some of the most highly regarded Islamic names for girls include Maryam, Fatima, Aisha, and Khadija, who were significant women in Islamic history. Other beautiful names include Aayat (Sign/Miracle), Noor (Light), and Inaya (Care/Concern).'
   },
   {
-    q: 'what is the best islamic name for a boy names?',
+    q: 'What is the best Islamic name for a boy?',
     a: 'The Prophet Muhammad (PBUH) mentioned that the most beloved names to Allah are Abdullah (Servant of Allah) and Abdur-Rahman (Servant of the Most Merciful). Other excellent choices include Muhammad, Ibrahim, Umar, and Ali.'
   },
   {
-    q: 'what are the names of islamic months',
+    q: 'What are the names of the Islamic months?',
     a: 'The 12 Islamic (Hijri) months are: Muharram, Safar, Rabi\' al-Awwal, Rabi\' al-Thani, Jumada al-Awwal, Jumada al-Thani, Rajab, Sha\'ban, Ramadan, Shawwal, Dhu al-Qi\'dah, and Dhu al-Hijjah.'
   },
   {
-    q: 'what is the best islamic names for a boy in urdu',
+    q: 'What is the best Islamic name for a boy in Urdu?',
     a: 'Some of the best Islamic names for boys popular in Urdu-speaking cultures include Arham (Merciful), Zeeshan (Dignified), Faizan (Grace/Beneficence), and Shahzaib (Crown of a King).'
   }
 ];
@@ -53,7 +53,7 @@ const faqSchema = {
     "name": q.q,
     "acceptedAnswer": {
       "@type": "Answer",
-      "text": `<p>${q.a}</p>`
+      "text": q.a
     }
   }))
 };

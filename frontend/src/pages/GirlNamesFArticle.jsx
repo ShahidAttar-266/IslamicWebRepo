@@ -165,11 +165,65 @@ const GirlNamesFArticle = () => {
     <>
       <Helmet>
         <title>50 Beautiful Islamic Girl Names Starting with F — IslamicNames</title>
-        <meta
-          name="description"
-          content="Discover 50 beautiful Islamic girl names starting with the letter F — from Fatima to Firdaus. Full Arabic script, meanings, origins, and Quranic references."
-        />
+        <meta name="description" content="Discover 50 beautiful Islamic girl names starting with the letter F — from Fatima to Firdaus. Full Arabic script, meanings, origins, and Quranic references." />
         <meta name="keywords" content="Islamic girl names starting with F, Muslim baby girl names F, Fatima meaning, Firdaus meaning, Arabic girl names, Quranic girl names" />
+        
+        {/* Canonical Tag */}
+        <link rel="canonical" href="https://www.islamicnames.in/blog/50-beautiful-islamic-girl-names-starting-with-f" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://www.islamicnames.in/blog/50-beautiful-islamic-girl-names-starting-with-f" />
+        <meta property="og:title" content="50 Beautiful Islamic Girl Names Starting with F — IslamicNames" />
+        <meta property="og:description" content="Discover 50 beautiful Islamic girl names starting with the letter F — from Fatima to Firdaus. Full Arabic script, meanings, origins, and Quranic references." />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.islamicnames.in/blog/50-beautiful-islamic-girl-names-starting-with-f" />
+        <meta name="twitter:title" content="50 Beautiful Islamic Girl Names Starting with F — IslamicNames" />
+        <meta name="twitter:description" content="Discover 50 beautiful Islamic girl names starting with the letter F — from Fatima to Firdaus. Full Arabic script, meanings, origins, and Quranic references." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* JSON-LD Article Structured Data */}
+        <script type="application/ld+json">
+          {`{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "50 Beautiful Islamic Girl Names Starting with F — IslamicNames",
+  "description": "Discover 50 beautiful Islamic girl names starting with the letter F — from Fatima to Firdaus. Full Arabic script, meanings, origins, and Quranic references.",
+  "image": "https://www.islamicnames.in/og-image.png",
+  "author": {
+    "@type": "Organization",
+    "name": "IslamicNames Team"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "IslamicNames",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.islamicnames.in/logo-120.webp"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.islamicnames.in/blog/50-beautiful-islamic-girl-names-starting-with-f"
+  }
+}`}
+        </script>
+
+        {/* JSON-LD Breadcrumb Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.islamicnames.in/blog" },
+              { "@type": "ListItem", "position": 3, "name": "50 Beautiful Islamic Girl Names Starting with F", "item": "https://www.islamicnames.in/blog/50-beautiful-islamic-girl-names-starting-with-f" }
+            ]
+          })}
+        </script>
       </Helmet>
 
       {/* Reading Progress Bar */}

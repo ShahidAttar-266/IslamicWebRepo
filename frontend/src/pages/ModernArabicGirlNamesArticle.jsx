@@ -76,6 +76,38 @@ const TableOfNames = ({ data }) => (
   </div>
 );
 
+const articleFaqs = [
+  {
+    q: "Is it okay to choose a name just because it's popular in the West, even if it has Arabic roots?",
+    a: "Yes — as long as the meaning is good and doesn't conflict with Islamic principles (no shirk, no negative connotations), there's no issue with a name being popular in multiple cultures simultaneously. In fact, many of the most beloved names in Islamic history have always been 'international' in this sense."
+  },
+  {
+    q: "Are spelling variations like Laila vs. Layla religiously significant?",
+    a: "No — these are simply transliteration choices from Arabic script into Latin letters. Choose whichever spelling feels right for your family and is easiest for your child to write and pronounce in your country of residence."
+  },
+  {
+    q: "What's the difference between 'Sara' and 'Sarah'?",
+    a: "Both refer to the same name. 'Sarah' is more common in English/Hebrew-influenced spelling, while 'Sara' is more common in Arabic/Turkish/South Asian usage. Both are correct and carry the same meaning."
+  },
+  {
+    q: "Do these names work well as middle names too?",
+    a: "Many of them do — shorter names like Noor, Dua, Lina, and Zara pair nicely as middle names alongside a more traditional or family first name, giving you the best of both worlds."
+  }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": articleFaqs.map(q => ({
+    "@type": "Question",
+    "name": q.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": q.a
+    }
+  }))
+};
+
 const ModernArabicGirlNamesArticle = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeTOC, setActiveTOC] = useState('');
@@ -152,11 +184,70 @@ const ModernArabicGirlNamesArticle = () => {
     <>
       <Helmet>
         <title>Modern Arabic Girl Names That Sound Beautiful in English Too — IslamicNames</title>
-        <meta
-          name="description"
-          content="Find beautiful Arabic girl names that are easy to pronounce and spell in English. Explore crossover names like Layla, Sara, Zara, Inaya, and Noor with full meanings."
-        />
+        <meta name="description" content="Find beautiful Arabic girl names that are easy to pronounce and spell in English. Explore crossover names like Layla, Sara, Zara, Inaya, and Noor with full meanings." />
         <meta name="keywords" content="modern Arabic girl names, English friendly Muslim names, crossover girl names, trending Islamic girl names 2026, Layla meaning, Inaya meaning" />
+        
+        {/* Canonical Tag */}
+        <link rel="canonical" href="https://www.islamicnames.in/blog/modern-arabic-girl-names-that-sound-beautiful" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://www.islamicnames.in/blog/modern-arabic-girl-names-that-sound-beautiful" />
+        <meta property="og:title" content="Modern Arabic Girl Names That Sound Beautiful in English Too — IslamicNames" />
+        <meta property="og:description" content="Find beautiful Arabic girl names that are easy to pronounce and spell in English. Explore crossover names like Layla, Sara, Zara, Inaya, and Noor with full meanings." />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.islamicnames.in/blog/modern-arabic-girl-names-that-sound-beautiful" />
+        <meta name="twitter:title" content="Modern Arabic Girl Names That Sound Beautiful in English Too — IslamicNames" />
+        <meta name="twitter:description" content="Find beautiful Arabic girl names that are easy to pronounce and spell in English. Explore crossover names like Layla, Sara, Zara, Inaya, and Noor with full meanings." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* JSON-LD Article Structured Data */}
+        <script type="application/ld+json">
+          {`{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Modern Arabic Girl Names That Sound Beautiful in English Too — IslamicNames",
+  "description": "Find beautiful Arabic girl names that are easy to pronounce and spell in English. Explore crossover names like Layla, Sara, Zara, Inaya, and Noor with full meanings.",
+  "image": "https://www.islamicnames.in/og-image.png",
+  "author": {
+    "@type": "Organization",
+    "name": "IslamicNames Team"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "IslamicNames",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.islamicnames.in/logo-120.webp"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.islamicnames.in/blog/modern-arabic-girl-names-that-sound-beautiful"
+  }
+}`}
+        </script>
+
+        {/* JSON-LD Breadcrumb Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.islamicnames.in/blog" },
+              { "@type": "ListItem", "position": 3, "name": "Modern Arabic Girl Names That Sound Beautiful", "item": "https://www.islamicnames.in/blog/modern-arabic-girl-names-that-sound-beautiful" }
+            ]
+          })}
+        </script>
+
+        {/* JSON-LD FAQ Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
       </Helmet>
 
       {/* Reading Progress Bar */}
@@ -407,24 +498,7 @@ const ModernArabicGirlNamesArticle = () => {
                 Frequently Asked Questions
               </h2>
               <div className="space-y-4 divide-y divide-border/30">
-                {[
-                  {
-                    q: "Is it okay to choose a name just because it's popular in the West, even if it has Arabic roots?",
-                    a: "Yes — as long as the meaning is good and doesn't conflict with Islamic principles (no shirk, no negative connotations), there's no issue with a name being popular in multiple cultures simultaneously. In fact, many of the most beloved names in Islamic history have always been 'international' in this sense."
-                  },
-                  {
-                    q: "Are spelling variations like Laila vs. Layla religiously significant?",
-                    a: "No — these are simply transliteration choices from Arabic script into Latin letters. Choose whichever spelling feels right for your family and is easiest for your child to write and pronounce in your country of residence."
-                  },
-                  {
-                    q: "What's the difference between 'Sara' and 'Sarah'?",
-                    a: "Both refer to the same name. 'Sarah' is more common in English/Hebrew-influenced spelling, while 'Sara' is more common in Arabic/Turkish/South Asian usage. Both are correct and carry the same meaning."
-                  },
-                  {
-                    q: "Do these names work well as middle names too?",
-                    a: "Many of them do — shorter names like Noor, Dua, Lina, and Zara pair nicely as middle names alongside a more traditional or family first name, giving you the best of both worlds."
-                  }
-                ].map((item, idx) => (
+                {articleFaqs.map((item, idx) => (
                   <div key={idx} className={`${idx > 0 ? 'pt-4' : ''} space-y-2`}>
                     <h4 className="text-sm font-bold text-text flex items-start gap-2">
                       <span className="text-accent">Q:</span> {item.q}

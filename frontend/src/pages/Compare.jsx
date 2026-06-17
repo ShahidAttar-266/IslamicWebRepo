@@ -79,6 +79,7 @@ const Compare = () => {
     <div className="max-w-5xl mx-auto space-y-8 md:space-y-12 py-4 md:py-8 px-4">
       <Helmet>
         <title>Compare Islamic Names | IslamicNames</title>
+        <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="Compare meanings, origins, and Quranic contexts of multiple Islamic names side-by-side to find the perfect choice." />
         <link rel="canonical" href="https://www.islamicnames.in/compare" />
         
@@ -94,6 +95,18 @@ const Compare = () => {
         <meta name="twitter:title" content="Compare Islamic Names | IslamicNames" />
         <meta name="twitter:description" content="Compare meanings, origins, and Quranic contexts of multiple Islamic names side-by-side to find the perfect choice." />
         <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Compare Names", "item": "https://www.islamicnames.in/compare" }
+            ]
+          })}
+        </script>
       </Helmet>
       <div className="text-center space-y-4">
         <h1 className="text-3xl md:text-5xl font-black text-text tracking-tight">Compare Names</h1>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Navigate, Link, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import useAuthStore from '../store/useAuthStore';
 import { Home, Users, Database, Upload, Settings, LogOut, ArrowLeft, Menu, X, Copy } from 'lucide-react';
 
@@ -85,6 +86,9 @@ const AdminLayout = () => {
 
   return (
     <div className="min-h-screen flex bg-bg text-text">
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       {/* Mobile Drawer Overlay */}
       {isMobileMenuOpen && (
         <div 

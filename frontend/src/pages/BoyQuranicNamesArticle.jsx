@@ -145,11 +145,65 @@ const BoyQuranicNamesArticle = () => {
     <>
       <Helmet>
         <title>Top 30 Quranic Names for Baby Boys in 2026 — IslamicNames</title>
-        <meta
-          name="description"
-          content="Discover the top 30 direct Quranic names for baby boys in 2026. Explore names of Prophets, companions, and angels with meanings, Arabic script, and verse references."
-        />
+        <meta name="description" content="Discover the top 30 direct Quranic names for baby boys in 2026. Explore names of Prophets, companions, and angels with meanings, Arabic script, and verse references." />
         <meta name="keywords" content="Quranic boy names 2026, Islamic baby boy names, names of prophets in Quran, Muhammad meaning, Yusuf meaning, Arabic boy names" />
+        
+        {/* Canonical Tag */}
+        <link rel="canonical" href="https://www.islamicnames.in/blog/top-30-quranic-names-for-baby-boys-in-2026" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://www.islamicnames.in/blog/top-30-quranic-names-for-baby-boys-in-2026" />
+        <meta property="og:title" content="Top 30 Quranic Names for Baby Boys in 2026 — IslamicNames" />
+        <meta property="og:description" content="Discover the top 30 direct Quranic names for baby boys in 2026. Explore names of Prophets, companions, and angels with meanings, Arabic script, and verse references." />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.islamicnames.in/blog/top-30-quranic-names-for-baby-boys-in-2026" />
+        <meta name="twitter:title" content="Top 30 Quranic Names for Baby Boys in 2026 — IslamicNames" />
+        <meta name="twitter:description" content="Discover the top 30 direct Quranic names for baby boys in 2026. Explore names of Prophets, companions, and angels with meanings, Arabic script, and verse references." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* JSON-LD Article Structured Data */}
+        <script type="application/ld+json">
+          {`{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Top 30 Quranic Names for Baby Boys in 2026 — IslamicNames",
+  "description": "Discover the top 30 direct Quranic names for baby boys in 2026. Explore names of Prophets, companions, and angels with meanings, Arabic script, and verse references.",
+  "image": "https://www.islamicnames.in/og-image.png",
+  "author": {
+    "@type": "Organization",
+    "name": "IslamicNames Team"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "IslamicNames",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.islamicnames.in/logo-120.webp"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.islamicnames.in/blog/top-30-quranic-names-for-baby-boys-in-2026"
+  }
+}`}
+        </script>
+
+        {/* JSON-LD Breadcrumb Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.islamicnames.in/blog" },
+              { "@type": "ListItem", "position": 3, "name": "Top 30 Quranic Names for Baby Boys in 2026", "item": "https://www.islamicnames.in/blog/top-30-quranic-names-for-baby-boys-in-2026" }
+            ]
+          })}
+        </script>
       </Helmet>
 
       {/* Reading Progress Bar */}

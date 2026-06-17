@@ -1,16 +1,4 @@
-
-
-const WHATSAPP_NUMBER = '918275360063';
-const WHATSAPP_MESSAGE = encodeURIComponent(
-  'Assalamu Alaikum! I am interested in getting personal Islamic name suggestions for my baby. Please help me.'
-);
-const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
-const EMAIL_ADDRESS = 'islamicnameshelp@gmail.com';
-const EMAIL_SUBJECT = encodeURIComponent('Islamic Baby Name Suggestion Request');
-const EMAIL_BODY = encodeURIComponent(
-  'Assalamu Alaikum! I am interested in getting personal Islamic name suggestions for my baby. Please help me.'
-);
-const EMAIL_URL = `mailto:${EMAIL_ADDRESS}?subject=${EMAIL_SUBJECT}&body=${EMAIL_BODY}`;
+import { WHATSAPP_URL, WHATSAPP_DISPLAY_NUMBER, SUPPORT_EMAIL, EMAIL_URL } from '../utils/contact';
 
 /**
  * A premium sticky announcement bar displayed above the site header.
@@ -62,7 +50,7 @@ const AnnouncementBar = () => {
             <a
               id="announcement-email-cta-mobile"
               href={EMAIL_URL}
-              aria-label="Email us at islamicnameshelp@gmail.com"
+              aria-label={`Email us at ${SUPPORT_EMAIL}`}
               className="inline-flex items-center justify-center gap-1.5 bg-[#d4a843] hover:bg-[#c49a38] active:bg-[#b08830] text-[#0d1f1a] font-bold text-[11px] px-3 py-1.5 rounded-full shadow shadow-[#d4a843]/30 transition-all duration-200 whitespace-nowrap"
             >
               <span aria-hidden="true">✉️</span>
@@ -92,9 +80,9 @@ const AnnouncementBar = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[#2db87a] font-semibold hover:text-[#d4a843] transition-colors duration-200 underline underline-offset-2 decoration-dotted"
-                aria-label="WhatsApp us at +91 82753 60063"
+                aria-label={`WhatsApp us at ${WHATSAPP_DISPLAY_NUMBER}`}
               >
-                +91 82753 60063
+                {WHATSAPP_DISPLAY_NUMBER}
               </a>
             </span>
 
@@ -104,9 +92,9 @@ const AnnouncementBar = () => {
               <a
                 href={EMAIL_URL}
                 className="text-[#2db87a] font-semibold hover:text-[#d4a843] transition-colors duration-200 underline underline-offset-2 decoration-dotted"
-                aria-label="Email us at islamicnameshelp@gmail.com"
+                aria-label={`Email us at ${SUPPORT_EMAIL}`}
               >
-                {EMAIL_ADDRESS}
+                {SUPPORT_EMAIL}
               </a>
             </span>
           </div>

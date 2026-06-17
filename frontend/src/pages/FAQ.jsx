@@ -13,11 +13,11 @@ const faqs = [
       },
       {
         q: 'Are the meanings of names verified by Islamic scholars?',
-        a: 'All names in our database are researched from classical Arabic lexicons and reputable Islamic naming references. Names on our Premium plan are additionally marked as scholar-verified, indicating they have been cross-checked with a qualified Islamic scholar for accuracy in meaning and permissibility.'
+        a: 'All names in our database are researched from classical Arabic lexicons and reputable Islamic naming references.'
       },
       {
         q: 'Can I search for names by meaning or personality trait?',
-        a: 'Yes! You can search by name, meaning, origin, or letter. On our Premium plan, our AI Name Suggester lets you describe a trait or quality — such as "patient", "light", or "brave" — and we will suggest names that carry that meaning in Arabic.'
+        a: 'Yes! You can search by name, meaning, origin, or letter.'
       },
       {
         q: 'Do you include names from the Quran and Hadith?',
@@ -54,19 +54,19 @@ const faqs = [
         a: 'Yes, it is highly recommended and considered a Sunnah to give a child a beautiful and meaningful name. The Prophet (PBUH) often changed names of people and places if they had negative or unpleasant meanings.'
       },
       {
-        q: 'what is the best islamic name for a girl names?',
+        q: 'What is the best Islamic name for a girl?',
         a: 'The "best" name is subjective, but some of the most highly regarded Islamic names for girls include Maryam, Fatima, Aisha, and Khadija, who were significant women in Islamic history. Other beautiful names include Aayat (Sign/Miracle), Noor (Light), and Inaya (Care/Concern).'
       },
       {
-        q: 'what is the best islamic name for a boy names?',
+        q: 'What is the best Islamic name for a boy?',
         a: 'The Prophet Muhammad (PBUH) mentioned that the most beloved names to Allah are Abdullah (Servant of Allah) and Abdur-Rahman (Servant of the Most Merciful). Other excellent choices include Muhammad, Ibrahim, Umar, and Ali.'
       },
       {
-        q: 'what are the names of islamic months',
+        q: 'What are the names of the Islamic months?',
         a: 'The 12 Islamic (Hijri) months are: Muharram, Safar, Rabi\' al-Awwal, Rabi\' al-Thani, Jumada al-Awwal, Jumada al-Thani, Rajab, Sha\'ban, Ramadan, Shawwal, Dhu al-Qi\'dah, and Dhu al-Hijjah.'
       },
       {
-        q: 'what is the best islamic names for a boy in urdu',
+        q: 'What is the best Islamic name for a boy in Urdu?',
         a: 'Some of the best Islamic names for boys popular in Urdu-speaking cultures include Arham (Merciful), Zeeshan (Dignified), Faizan (Grace/Beneficence), and Shahzaib (Crown of a King).'
       }
     ]
@@ -100,7 +100,7 @@ const faqSchema = {
       "name": q.q,
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": `<p>${q.a}</p>`
+        "text": q.a
       }
     }))
   )
@@ -171,6 +171,18 @@ const FAQ = () => {
         <script type="application/ld+json">
           {JSON.stringify(faqSchema)}
         </script>
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "FAQ", "item": "https://www.islamicnames.in/faq" }
+            ]
+          })}
+        </script>
       </Helmet>
       {/* Arabic geometric background pattern */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.025]"
@@ -195,7 +207,7 @@ const FAQ = () => {
           </h1>
 
           <p className="text-text-muted text-base max-w-md mx-auto leading-relaxed">
-            Everything you need to know about IslamicNames — names, plans, and features.
+            Everything you need to know about IslamicNames — names and features.
             Can't find an answer?{' '}
             <a href="mailto:islamicnameshelp@gmail.com" className="text-primary hover:underline">
               Contact us

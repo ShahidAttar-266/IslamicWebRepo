@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import useFavorite from '../hooks/useFavorite';
 import {
   Heart,
   Book,
@@ -66,7 +67,6 @@ const NameDetail = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
   const [searchParams] = useSearchParams();
-  const queryClient = useQueryClient();
   const [showLoginBanner, setShowLoginBanner] = useState(!isAuthenticated);
 
   const handleLogin = () => navigate('/login');
@@ -81,49 +81,13 @@ const NameDetail = () => {
     enabled: !!id,
     retry: false,
     staleTime: 10 * 60 * 1000, // 10 min
-    initialData: () => {
-      if (typeof window !== 'undefined' && window.__INITIAL_DATA__?.name) {
-        const preloaded = window.__INITIAL_DATA__.name;
-        if (preloaded._id === id || preloaded.slug === id) {
-          return preloaded;
-        }
-      }
-      return undefined;
-    },
   });
 
   const id1 = searchParams.get('id1');
   const id2 = searchParams.get('id2');
   const isSelected = id1 === (name?.slug || id) || id2 === (name?.slug || id);
 
-  const { data: favorites } = useQuery({
-    queryKey: ['favorites'],
-    queryFn: async () => {
-      const res = await api.get('/users/favorites');
-      return res.data.data;
-    },
-    enabled: isAuthenticated
-  });
-
-  const isFavorited = favorites?.some(f => f._id === name?._id);
-
-  const toggleFavoriteMutation = useMutation({
-    mutationFn: async () => {
-      if (!name?._id) return;
-      if (isFavorited) {
-        return api.delete(`/users/favorites/${name._id}`);
-      } else {
-        return api.post(`/users/favorites/${name._id}`);
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['favorites'] });
-      toast.success(isFavorited ? 'Removed from favorites' : 'Added to favorites!');
-    },
-    onError: (err) => {
-      toast.error(err.response?.data?.error || 'Could not update favorites');
-    }
-  });
+  const { isFavorited, toggleFavorite, isPending } = useFavorite(name);
 
   const handleCompare = () => {
     const params = new URLSearchParams(window.location.search);
@@ -213,13 +177,7 @@ const NameDetail = () => {
   };
 
   const handleFavorite = (e) => {
-    e.preventDefault();
-    if (!isAuthenticated) {
-      toast.success('Please sign in to save names', { icon: '🔐' });
-      navigate('/login');
-      return;
-    }
-    toggleFavoriteMutation.mutate();
+    toggleFavorite(e);
   };
 
   return (
@@ -234,7 +192,7 @@ const NameDetail = () => {
         <meta property="og:title" content={`${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`} />
         <meta property="og:description" content={`Discover the deep meaning and historical context of the name ${name.nameEnglish}.`} />
         <meta property="og:url" content={`https://www.islamicnames.in/name/${name.slug || id}`} />
-        <meta property="og:type" content="article" />
+        <meta property="og:type" content="website" />
         <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
         
         {/* Twitter */}
@@ -247,17 +205,10 @@ const NameDetail = () => {
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "Article",
-            "headline": `${name.nameEnglish} - Meaning, Origin & Islamic Significance`,
+            "@type": "WebPage",
+            "name": `${name.nameEnglish} - Meaning, Origin & Islamic Significance`,
             "description": `Detailed information about the Islamic name ${name.nameEnglish}, including its meaning: "${name.meaning}", origin: ${name.origin || 'Arabic'}, and historical context.`,
-            "datePublished": name.createdAt || new Date().toISOString(),
-            "author": { "@type": "Organization", "name": "IslamicNames" },
-            "publisher": {
-              "@type": "Organization",
-              "name": "IslamicNames",
-              "logo": { "@type": "ImageObject", "url": "https://www.islamicnames.in/logo-120.webp" }
-            },
-            "mainEntity": {
+            "about": {
               "@type": "DefinedTerm",
               "name": name.nameEnglish,
               "alternateName": name.nameArabic,
@@ -334,12 +285,12 @@ const NameDetail = () => {
               </button>
               <button 
                 onClick={handleFavorite}
-                disabled={toggleFavoriteMutation.isPending}
+                disabled={isPending}
                 className={`flex items-center justify-center gap-2 px-5 py-3 bg-bg border rounded-xl text-sm font-bold transition-all min-h-[44px] w-full sm:w-auto ${
                   isFavorited ? 'border-danger/30 text-danger' : 'border-border text-text-muted hover:border-danger hover:text-danger'
                 }`}
               >
-                {toggleFavoriteMutation.isPending ? (
+                {isPending ? (
                   <Loader2 size={16} className="animate-spin" />
                 ) : (
                   <Heart size={16} className={isFavorited ? 'fill-danger' : ''} />

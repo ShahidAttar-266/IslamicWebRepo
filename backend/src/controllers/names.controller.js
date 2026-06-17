@@ -202,6 +202,7 @@ exports.getSitemap = async (req, res, next) => {
         const names = await Name.find({ isActive: true }).select('_id slug updatedAt');
         
         const baseUrl = 'https://www.islamicnames.in';
+        const currentDate = new Date().toISOString().split('T')[0];
         
         let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
         xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
@@ -216,10 +217,11 @@ exports.getSitemap = async (req, res, next) => {
             { path: '/privacy', changefreq: 'yearly', priority: '0.3' },
             { path: '/terms', changefreq: 'yearly', priority: '0.3' },
             { path: '/disclaimer', changefreq: 'yearly', priority: '0.3' },
+            { path: '/free-service', changefreq: 'yearly', priority: '0.3' },
             { path: '/report-bug', changefreq: 'monthly', priority: '0.3' },
         ];
         staticRoutes.forEach(({ path, changefreq, priority }) => {
-            xml += `  <url>\n    <loc>${baseUrl}${path}</loc>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
+            xml += `  <url>\n    <loc>${baseUrl}${path}</loc>\n    <lastmod>${currentDate}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
         });
 
         // Blog article routes
@@ -236,7 +238,7 @@ exports.getSitemap = async (req, res, next) => {
             '/blog/the-name-fatima-meaning-history',
         ];
         blogArticles.forEach(article => {
-            xml += `  <url>\n    <loc>${baseUrl}${article}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
+            xml += `  <url>\n    <loc>${baseUrl}${article}</loc>\n    <lastmod>${currentDate}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
         });
         
         // Dynamic name routes

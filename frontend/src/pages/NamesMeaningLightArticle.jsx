@@ -73,6 +73,38 @@ const TableOfNames = ({ data }) => (
   </div>
 );
 
+const articleFaqs = [
+  {
+    q: "Is Noor only used for girls?",
+    a: "No — Noor is genuinely unisex across the Muslim world. It's extremely common for boys, girls, and as a middle name or part of compound names for either."
+  },
+  {
+    q: "What's the actual difference between Noor and Diya?",
+    a: "Noor refers to light generally — including reflected light, like moonlight. Diya specifically refers to a brilliant, self-generated light source, like the sun. In Surah Yunus 10:5, the Quran uses exactly this distinction — the sun has diya, the moon has nur."
+  },
+  {
+    q: "Is it okay to name a child 'Shams' or 'Qamar' — aren't these just describing objects, not qualities?",
+    a: "Yes, this is fine. Naming after celestial objects mentioned reverently in the Quran (sun, moon, stars) is a long-established tradition and doesn't imply worship of those objects — the names simply borrow their beauty and the symbolism of light and guidance."
+  },
+  {
+    q: "Are Zia and Ziya the same name?",
+    a: "Yes — these are different transliterations of the exact same Arabic word and root, simply reflecting different regional pronunciations of the Arabic letter ض."
+  }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": articleFaqs.map(q => ({
+    "@type": "Question",
+    "name": q.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": q.a
+    }
+  }))
+};
+
 const NamesMeaningLightArticle = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeTOC, setActiveTOC] = useState('');
@@ -155,11 +187,70 @@ const NamesMeaningLightArticle = () => {
     <>
       <Helmet>
         <title>Names Meaning Light in the Quran — Noor, Zia, and More — IslamicNames</title>
-        <meta
-          name="description"
-          content="Explore beautiful Islamic baby names meaning light, radiance, and splendour from the Quran. Understand Ayat an-Nur and names like Noor, Zia, Munir, and Sana."
-        />
+        <meta name="description" content="Explore beautiful Islamic baby names meaning light, radiance, and splendour from the Quran. Understand Ayat an-Nur and names like Noor, Zia, Munir, and Sana." />
         <meta name="keywords" content="names meaning light in quran, Noor meaning, Ziya meaning, Munir meaning, Ayat an-Nur baby names, Quranic baby names light" />
+        
+        {/* Canonical Tag */}
+        <link rel="canonical" href="https://www.islamicnames.in/blog/names-meaning-light-in-the-quran" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://www.islamicnames.in/blog/names-meaning-light-in-the-quran" />
+        <meta property="og:title" content="Names Meaning Light in the Quran — Noor, Zia, and More — IslamicNames" />
+        <meta property="og:description" content="Explore beautiful Islamic baby names meaning light, radiance, and splendour from the Quran. Understand Ayat an-Nur and names like Noor, Zia, Munir, and Sana." />
+        <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.islamicnames.in/blog/names-meaning-light-in-the-quran" />
+        <meta name="twitter:title" content="Names Meaning Light in the Quran — Noor, Zia, and More — IslamicNames" />
+        <meta name="twitter:description" content="Explore beautiful Islamic baby names meaning light, radiance, and splendour from the Quran. Understand Ayat an-Nur and names like Noor, Zia, Munir, and Sana." />
+        <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* JSON-LD Article Structured Data */}
+        <script type="application/ld+json">
+          {`{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Names Meaning Light in the Quran — Noor, Zia, and More — IslamicNames",
+  "description": "Explore beautiful Islamic baby names meaning light, radiance, and splendour from the Quran. Understand Ayat an-Nur and names like Noor, Zia, Munir, and Sana.",
+  "image": "https://www.islamicnames.in/og-image.png",
+  "author": {
+    "@type": "Organization",
+    "name": "IslamicNames Team"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "IslamicNames",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.islamicnames.in/logo-120.webp"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.islamicnames.in/blog/names-meaning-light-in-the-quran"
+  }
+}`}
+        </script>
+
+        {/* JSON-LD Breadcrumb Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.islamicnames.in/blog" },
+              { "@type": "ListItem", "position": 3, "name": "Names Meaning Light in the Quran", "item": "https://www.islamicnames.in/blog/names-meaning-light-in-the-quran" }
+            ]
+          })}
+        </script>
+
+        {/* JSON-LD FAQ Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
       </Helmet>
 
       {/* Reading Progress Bar */}
@@ -434,24 +525,7 @@ const NamesMeaningLightArticle = () => {
                 Frequently Asked Questions
               </h2>
               <div className="space-y-4 divide-y divide-border/30">
-                {[
-                  {
-                    q: "Is Noor only used for girls?",
-                    a: "No — Noor is genuinely unisex across the Muslim world. It's extremely common for boys, girls, and as a middle name or part of compound names for either."
-                  },
-                  {
-                    q: "What's the actual difference between Noor and Diya?",
-                    a: "Noor refers to light generally — including reflected light, like moonlight. Diya specifically refers to a brilliant, self-generated light source, like the sun. In Surah Yunus 10:5, the Quran uses exactly this distinction — the sun has diya, the moon has nur."
-                  },
-                  {
-                    q: "Is it okay to name a child 'Shams' or 'Qamar' — aren't these just describing objects, not qualities?",
-                    a: "Yes, this is fine. Naming after celestial objects mentioned reverently in the Quran (sun, moon, stars) is a long-established tradition and doesn't imply worship of those objects — the names simply borrow their beauty and the symbolism of light and guidance."
-                  },
-                  {
-                    q: "Are Zia and Ziya the same name?",
-                    a: "Yes — these are different transliterations of the exact same Arabic word and root, simply reflecting different regional pronunciations of the Arabic letter ض."
-                  }
-                ].map((item, idx) => (
+                {articleFaqs.map((item, idx) => (
                   <div key={idx} className={`${idx > 0 ? 'pt-4' : ''} space-y-2`}>
                     <h4 className="text-sm font-bold text-text flex items-start gap-2">
                       <span className="text-accent">Q:</span> {item.q}

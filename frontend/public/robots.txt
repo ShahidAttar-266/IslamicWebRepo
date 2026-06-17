@@ -3,6 +3,8 @@ Allow: /
 Disallow: /admin
 Disallow: /login
 Disallow: /register
+Disallow: /compare
 Disallow: /account
+Disallow: /favorites
 
 Sitemap: https://www.islamicnames.in/sitemap.xml

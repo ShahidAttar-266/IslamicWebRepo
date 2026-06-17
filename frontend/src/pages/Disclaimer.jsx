@@ -24,6 +24,18 @@ const Disclaimer = () => {
         <meta name="twitter:title" content="Disclaimer | IslamicNames" />
         <meta name="twitter:description" content="Read the disclaimer policy for IslamicNames regarding the name information and meanings." />
         <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.islamicnames.in/" },
+              { "@type": "ListItem", "position": 2, "name": "Disclaimer", "item": "https://www.islamicnames.in/disclaimer" }
+            ]
+          })}
+        </script>
       </Helmet>
       <button 
         onClick={() => navigate(-1)} 

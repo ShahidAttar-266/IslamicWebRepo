@@ -14,14 +14,10 @@ exports.protect = async (req, res, next) => {
         // Set token from Bearer token in header
         token = req.headers.authorization.split(' ')[1];
     }
-    // Set token from cookie
-    else if (req.cookies.token) {
-        token = req.cookies.token;
-    }
 
     // Make sure token exists
     if (!token) {
-        console.error('[DEBUG_AUTH] No token provided in headers or cookies');
+        console.error('[DEBUG_AUTH] No token provided in headers');
         return next(new ErrorResponse('Not authorized to access this route', 401));
     }
 
