@@ -129,7 +129,7 @@ const MainLayout = () => {
             <Link 
               to="/search" 
               aria-label="Search Islamic names"
-              className="p-2.5 md:p-2 hover:bg-bg rounded-full text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+              className="p-2.5 md:p-2 hover:bg-bg rounded-full text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[48px] flex items-center justify-center"
             >
               <Search size={20} aria-hidden="true" />
             </Link>
@@ -139,7 +139,7 @@ const MainLayout = () => {
                 <Link 
                   to="/favorites" 
                   aria-label="View your favorite names"
-                  className="p-2.5 md:p-2 hover:bg-bg rounded-full text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                  className="p-2.5 md:p-2 hover:bg-bg rounded-full text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[48px] flex items-center justify-center"
                 >
                   <Heart size={20} aria-hidden="true" />
                 </Link>
@@ -150,7 +150,7 @@ const MainLayout = () => {
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                     aria-label="Toggle user menu"
                     aria-expanded={isDropdownOpen}
-                    className="flex items-center gap-2 p-2 hover:bg-bg rounded-full text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[44px] justify-center"
+                    className="flex items-center gap-2 p-2 hover:bg-bg rounded-full text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[48px] justify-center"
                   >
                     <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs border border-primary/20">
                       {userInitial}
@@ -194,7 +194,7 @@ const MainLayout = () => {
             <button 
               ref={menuButtonRef}
               onClick={() => setIsDrawerOpen(true)}
-              className="md:hidden p-2.5 hover:bg-bg rounded-lg text-text hover:text-primary transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+              className="md:hidden p-2.5 hover:bg-bg rounded-lg text-text hover:text-primary transition-colors min-w-[44px] min-h-[48px] flex items-center justify-center"
               aria-label="Open navigation menu"
               aria-expanded={isDrawerOpen}
             >
@@ -237,7 +237,7 @@ const MainLayout = () => {
           </Link>
           <button 
             onClick={() => setIsDrawerOpen(false)}
-            className="p-2 hover:bg-bg rounded-lg text-text-muted transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+            className="p-2 hover:bg-bg rounded-lg text-text-muted transition-colors min-w-[44px] min-h-[48px] flex items-center justify-center"
             aria-label="Close navigation menu"
           >
             <X size={24} aria-hidden="true" />

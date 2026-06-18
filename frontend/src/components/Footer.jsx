@@ -71,14 +71,14 @@ const Footer = () => {
                 href="https://www.islamicnames.in"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 bg-bg border border-border rounded-xl hover:text-primary hover:border-primary transition-all shadow-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
+                className="p-3 bg-bg border border-border rounded-xl hover:text-primary hover:border-primary transition-all shadow-sm min-w-[44px] min-h-[48px] flex items-center justify-center"
                 aria-label="Visit our official website"
               >
                 <Globe size={20} aria-hidden="true" />
               </a>
               <a 
                 href={`mailto:${SUPPORT_EMAIL}`} 
-                className="p-3 bg-bg border border-border rounded-xl hover:text-primary hover:border-primary transition-all shadow-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
+                className="p-3 bg-bg border border-border rounded-xl hover:text-primary hover:border-primary transition-all shadow-sm min-w-[44px] min-h-[48px] flex items-center justify-center"
                 aria-label="Send us an email"
               >
                 <Mail size={20} aria-hidden="true" />
@@ -89,7 +89,7 @@ const Footer = () => {
           {/* Links Sections */}
           {footerSections.map((section) => (
             <div key={section.title} className="lg:col-span-1">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-6">
+              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-6">
                 {section.title}
               </h3>
               <ul className="space-y-4">
@@ -122,16 +122,16 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2 text-text-muted text-[10px] md:text-xs font-bold uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-text-muted text-xs font-bold uppercase tracking-wider">
             <ShieldCheck size={16} className="text-primary" />
             <span>Secure SSL Encrypted Platform</span>
           </div>
           
           <div className="text-center md:text-right">
-            <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em]">
+            <p className="text-xs font-black text-text-muted uppercase tracking-[0.2em]">
               © {currentYear} IslamicNames. All rights reserved.
             </p>
-            <p className="text-[9px] text-text-muted mt-2 font-bold italic">
+            <p className="text-xs text-text-muted mt-2 font-bold italic">
               "Handcrafted for the Ummah with love."
             </p>
           </div>
