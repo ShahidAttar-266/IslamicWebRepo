@@ -49,16 +49,12 @@ const injectCriticalPreloadsPlugin = () => {
   };
 };
 
-// eslint-disable-next-line no-undef
-const isVercel = process.env.VERCEL === '1'
-
 export default defineConfig({
   base: '/',
   plugins: [
     react(),
     injectCriticalPreloadsPlugin(),
-    ...(!isVercel ? [
-      prerender({
+    prerender({
         staticDir: path.join(__dirname, 'dist'),
         routes: [
           '/', '/search', '/privacy', '/terms', '/disclaimer', '/faq', '/compare', '/free-service', '/report-bug', '/blog',
@@ -84,7 +80,6 @@ export default defineConfig({
           }
         }
       })
-    ] : [])
   ],
   resolve: {
     alias: {
