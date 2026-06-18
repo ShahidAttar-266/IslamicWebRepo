@@ -158,6 +158,11 @@ exports.renderNamePage = async (req, res, next) => {
 
             let html = await getTemplate();
 
+            // Make all asset paths absolute so CSS loads regardless of which domain serves the HTML
+            html = html.replace(/href="\/assets\//g, 'href="https://www.islamicnames.in/assets/');
+            html = html.replace(/src="\/assets\//g, 'src="https://www.islamicnames.in/assets/');
+            html = html.replace(/href="\/modulepreload\/assets\//g, 'href="https://www.islamicnames.in/assets/');
+
             const title = `${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`;
             const description = `Find the meaning, origin, pronunciation, and Quranic reference for the name ${name.nameEnglish}. Meaning: "${name.meaning}".`;
 
@@ -232,6 +237,11 @@ exports.renderHomePage = async (req, res, next) => {
                 .lean();
 
             let html = await getTemplate();
+
+            // Make all asset paths absolute so CSS loads regardless of which domain serves the HTML
+            html = html.replace(/href="\/assets\//g, 'href="https://www.islamicnames.in/assets/');
+            html = html.replace(/src="\/assets\//g, 'src="https://www.islamicnames.in/assets/');
+            html = html.replace(/href="\/modulepreload\/assets\//g, 'href="https://www.islamicnames.in/assets/');
 
             const title = "Islamic Names - Discover Meaningful Muslim Names for Boys & Girls";
             const description = "Explore thousands of Islamic names for boys and girls with authentic meanings. Find Quranic names, names of prophets, and unique Arabic Muslim baby names with rich historical backgrounds.";

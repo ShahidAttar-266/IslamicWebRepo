@@ -27,10 +27,6 @@
       "destination": "https://islamic-web-repo.vercel.app/api/v1/names/sitemap.xml"
     },
     {
-      "source": "/name/:slug",
-      "destination": "https://islamic-web-repo.vercel.app/api/v1/names/render/:slug"
-    },
-    {
       "source": "/ads.txt",
       "destination": "/ads.txt"
     },
