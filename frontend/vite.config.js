@@ -60,7 +60,19 @@ export default defineConfig({
     ...(!isVercel ? [
       prerender({
         staticDir: path.join(__dirname, 'dist'),
-        routes: ['/search', '/privacy', '/terms', '/disclaimer', '/faq'],
+        routes: [
+          '/', '/search', '/privacy', '/terms', '/disclaimer', '/faq', '/compare', '/free-service', '/report-bug', '/blog',
+          '/blog/50-beautiful-islamic-girl-names-starting-with-f',
+          '/blog/50-islamic-girl-names-starting-with-s',
+          '/blog/can-muslims-use-non-arabic-names',
+          '/blog/how-to-choose-an-islamic-name',
+          '/blog/modern-arabic-girl-names-that-sound-beautiful',
+          '/blog/names-meaning-light-in-the-quran',
+          '/blog/names-of-the-prophets-in-islam',
+          '/blog/rare-islamic-boy-names-with-deep-meanings',
+          '/blog/the-name-fatima-meaning-history',
+          '/blog/top-30-quranic-names-for-baby-boys-in-2026'
+        ],
         renderer: '@prerenderer/renderer-puppeteer',
         rendererOptions: {
           renderAfterTime: 2000,

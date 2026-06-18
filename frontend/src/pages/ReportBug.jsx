@@ -182,8 +182,9 @@ const ReportBug = () => {
             {/* Section: Basic Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-text-muted ml-1">Full Name</label>
+                <label htmlFor="nameInput" className="text-xs font-black uppercase tracking-widest text-text-muted ml-1">Full Name</label>
                 <input 
+                  id="nameInput"
                   required
                   type="text"
                   name="name"
@@ -194,8 +195,9 @@ const ReportBug = () => {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-text-muted ml-1">Email Address</label>
+                <label htmlFor="emailInput" className="text-xs font-black uppercase tracking-widest text-text-muted ml-1">Email Address</label>
                 <input 
+                  id="emailInput"
                   required
                   type="email"
                   name="email"
@@ -210,8 +212,9 @@ const ReportBug = () => {
             {/* Section: Bug Details */}
             <div className="space-y-6 pt-6 border-t border-border/50">
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-text-muted ml-1">Bug Title</label>
+                <label htmlFor="titleInput" className="text-xs font-black uppercase tracking-widest text-text-muted ml-1">Bug Title</label>
                 <input 
+                  id="titleInput"
                   required
                   type="text"
                   name="title"
@@ -223,8 +226,9 @@ const ReportBug = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-text-muted ml-1">Description</label>
+                <label htmlFor="descInput" className="text-xs font-black uppercase tracking-widest text-text-muted ml-1">Description</label>
                 <textarea 
+                  id="descInput"
                   required
                   name="description"
                   value={formData.description}
@@ -239,12 +243,13 @@ const ReportBug = () => {
             {/* Section: Environment & Severity */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-border/50">
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-text-muted ml-1">Device Type</label>
+                <label htmlFor="deviceInput" className="text-xs font-black uppercase tracking-widest text-text-muted ml-1">Device Type</label>
                 <div className="relative">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted">
                     {formData.deviceType === 'Mobile' ? <Smartphone size={18} /> : <Monitor size={18} />}
                   </div>
                   <select 
+                    id="deviceInput"
                     name="deviceType"
                     value={formData.deviceType}
                     onChange={handleChange}
@@ -258,12 +263,13 @@ const ReportBug = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-text-muted ml-1">Browser</label>
+                <label htmlFor="browserInput" className="text-xs font-black uppercase tracking-widest text-text-muted ml-1">Browser</label>
                 <div className="relative">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted">
                     <Globe size={18} />
                   </div>
                   <input 
+                    id="browserInput"
                     type="text"
                     name="browser"
                     value={formData.browser}
@@ -274,12 +280,13 @@ const ReportBug = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-text-muted ml-1">Severity</label>
+                <label htmlFor="severityInput" className="text-xs font-black uppercase tracking-widest text-text-muted ml-1">Severity</label>
                 <div className="relative">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 text-rose-500">
                     <AlertTriangle size={18} />
                   </div>
                   <select 
+                    id="severityInput"
                     name="severity"
                     value={formData.severity}
                     onChange={handleChange}

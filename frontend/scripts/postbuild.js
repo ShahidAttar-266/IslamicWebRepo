@@ -17,14 +17,21 @@ async function processHtmlFiles() {
     pruneSource: false, // Keep the full CSS stylesheet intact for dynamic/lazy elements
   });
 
-  const files = [
-    'index.html',
-    'search/index.html',
-    'privacy/index.html',
-    'terms/index.html',
-    'disclaimer/index.html',
-    'faq/index.html',
-  ];
+  // Dynamically find all HTML files in dist
+  const files = [];
+  function findHtmlFiles(dir) {
+    const list = fs.readdirSync(dir);
+    for (const file of list) {
+      const fullPath = path.join(dir, file);
+      const stat = fs.statSync(fullPath);
+      if (stat.isDirectory()) {
+        findHtmlFiles(fullPath);
+      } else if (file.endsWith('.html')) {
+        files.push(path.relative(distDir, fullPath));
+      }
+    }
+  }
+  findHtmlFiles(distDir);
 
   for (const file of files) {
     const filePath = path.join(distDir, file);

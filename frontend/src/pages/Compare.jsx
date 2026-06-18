@@ -79,7 +79,6 @@ const Compare = () => {
     <div className="max-w-5xl mx-auto space-y-8 md:space-y-12 py-4 md:py-8 px-4">
       <Helmet>
         <title>Compare Islamic Names | IslamicNames</title>
-        <meta name="robots" content="noindex, nofollow" />
         <meta name="description" content="Compare meanings, origins, and Quranic contexts of multiple Islamic names side-by-side to find the perfect choice." />
         <link rel="canonical" href="https://www.islamicnames.in/compare" />
         
