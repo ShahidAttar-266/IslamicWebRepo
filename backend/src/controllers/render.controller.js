@@ -176,6 +176,7 @@ exports.renderNamePage = async (req, res, next) => {
         if (result.status === 404) {
             let html = await getTemplate();
             html = html.replace('<head>', '<head><title>Name Not Found | IslamicNames</title>');
+            res.header('Content-Type', 'text/html');
             return res.status(404).send(html);
         }
 

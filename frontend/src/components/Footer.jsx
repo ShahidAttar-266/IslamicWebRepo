@@ -67,14 +67,15 @@ const Footer = () => {
               "Discover meaningful Islamic names with history and authenticity. Helping families build a timeless legacy for their children."
             </p>
             <div className="flex items-center gap-4 text-text-muted">
-              <button 
-                type="button"
+              <a 
+                href="https://www.islamicnames.in"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-3 bg-bg border border-border rounded-xl hover:text-primary hover:border-primary transition-all shadow-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Visit our official website"
-                onClick={(e) => e.preventDefault()}
               >
                 <Globe size={20} aria-hidden="true" />
-              </button>
+              </a>
               <a 
                 href={`mailto:${SUPPORT_EMAIL}`} 
                 className="p-3 bg-bg border border-border rounded-xl hover:text-primary hover:border-primary transition-all shadow-sm min-w-[44px] min-h-[44px] flex items-center justify-center"

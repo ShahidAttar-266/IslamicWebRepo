@@ -78,7 +78,7 @@ exports.googleLogin = async (req, res, next) => {
     }
 };
 
-// @desc    Logout user / Clear cookie
+// @desc    Logout user
 // @route   GET /api/v1/auth/logout
 // @access  Private
 exports.logout = async (req, res, next) => {
