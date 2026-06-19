@@ -72,7 +72,7 @@ export default defineConfig({
           '/blog/top-30-quranic-names-for-baby-boys-in-2026'
         ],
         maxConcurrentRoutes: 4, // JSDOM uses much less memory, so we can increase concurrency
-        renderer: '@prerenderer/renderer-puppeteer',
+        renderer: '@prerenderer/renderer-jsdom',
         rendererOptions: {
           renderAfterTime: 2000,
           timeout: 60000, // Still keep a safe timeout for Vercel
