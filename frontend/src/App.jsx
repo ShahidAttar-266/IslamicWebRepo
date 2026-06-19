@@ -18,13 +18,15 @@ const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
 
 // Static imports for public routes to avoid Suspense CLS during hydration
 import Home from './pages/Home';
-import NameDetail from './pages/NameDetail';
 import Search from './pages/Search';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Favorites from './pages/Favorites';
 import Compare from './pages/Compare';
-import Account from './pages/Account';
+
+// Lazy imports for dynamic or non-prerendered routes
+const NameDetail = lazy(() => import('./pages/NameDetail'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const Favorites = lazy(() => import('./pages/Favorites'));
+const Account = lazy(() => import('./pages/Account'));
 // Lazy imports for secondary pages to reduce main bundle size
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));

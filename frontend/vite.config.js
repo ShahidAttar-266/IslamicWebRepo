@@ -72,7 +72,7 @@ export default defineConfig({
           '/blog/top-30-quranic-names-for-baby-boys-in-2026'
         ],
         maxConcurrentRoutes: 4, // JSDOM uses much less memory, so we can increase concurrency
-        renderer: '@prerenderer/renderer-jsdom',
+        renderer: '@prerenderer/renderer-puppeteer',
         rendererOptions: {
           renderAfterTime: 2000,
           timeout: 60000, // Still keep a safe timeout for Vercel
@@ -98,13 +98,29 @@ export default defineConfig({
     },
   },
   build: {
-    cssCodeSplit: false,
+    modulePreload: false,
+    cssCodeSplit: true,
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks(id) {
           if (id.includes('lucide-react')) {
-            return 'icons'  // all icons → single icons-[hash].js chunk
+            return 'icons';
+          }
+          if (id.includes('node_modules')) {
+            if (id.includes('react/') || id.includes('react-dom/') || id.includes('react-router') || id.includes('react-helmet')) {
+              return 'vendor-react';
+            }
+            if (id.includes('framer-motion')) {
+              return 'vendor-framer';
+            }
+            if (id.includes('@tanstack') || id.includes('axios')) {
+              return 'vendor-data';
+            }
+            if (id.includes('jspdf')) {
+              return 'vendor-pdf';
+            }
+            // Allow Vite to automatically split other node_modules
           }
         }
       }
