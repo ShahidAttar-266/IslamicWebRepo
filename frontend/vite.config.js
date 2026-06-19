@@ -49,6 +49,8 @@ const injectCriticalPreloadsPlugin = () => {
   };
 };
 
+const prerenderedHtml = {};
+
 export default defineConfig({
   base: '/',
   plugins: [
@@ -74,8 +76,21 @@ export default defineConfig({
         rendererOptions: {
           renderAfterTime: 2000,
           timeout: 60000, // Still keep a safe timeout for Vercel
+        },
+        postProcess(renderedRoute) {
+          prerenderedHtml[renderedRoute.route] = renderedRoute.html;
         }
-      })
+      }),
+      {
+        name: 'restore-index-html',
+        enforce: 'post',
+        closeBundle() {
+          if (prerenderedHtml['/']) {
+            const fs = require('fs');
+            fs.writeFileSync(path.resolve(__dirname, 'dist/index.html'), prerenderedHtml['/']);
+          }
+        }
+      }
   ],
   resolve: {
     alias: {
