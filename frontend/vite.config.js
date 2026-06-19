@@ -69,11 +69,12 @@ export default defineConfig({
           '/blog/the-name-fatima-meaning-history',
           '/blog/top-30-quranic-names-for-baby-boys-in-2026'
         ],
+        maxConcurrentRoutes: 1, // Minimize concurrency to prevent Vercel OOM
         renderer: '@prerenderer/renderer-puppeteer',
         rendererOptions: {
           renderAfterTime: 2000,
-          timeout: 20000,
-          args: ['--no-sandbox', '--disable-setuid-sandbox'],
+          timeout: 60000, // Increase timeout for slow Vercel builds
+          args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu'],
           userDataDir: path.join(__dirname, '.puppeteer_user_data'),
           navigationOptions: {
             waitUntil: 'domcontentloaded',
