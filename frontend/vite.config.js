@@ -95,9 +95,6 @@ export default defineConfig({
           if (id.includes('lucide-react')) {
             return 'icons'  // all icons → single icons-[hash].js chunk
           }
-          if (id.includes('node_modules')) {
-            return 'vendor'
-          }
         }
       }
     }

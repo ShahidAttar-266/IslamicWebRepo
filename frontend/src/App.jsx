@@ -25,26 +25,28 @@ import Register from './pages/Register';
 import Favorites from './pages/Favorites';
 import Compare from './pages/Compare';
 import Account from './pages/Account';
-import Privacy from './pages/Privacy';
-import Terms from './pages/Terms';
-import Disclaimer from './pages/Disclaimer';
-import FreeService from './pages/FreeService';
+// Lazy imports for secondary pages to reduce main bundle size
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Terms = lazy(() => import('./pages/Terms'));
+const Disclaimer = lazy(() => import('./pages/Disclaimer'));
+const FreeService = lazy(() => import('./pages/FreeService'));
+const FAQ = lazy(() => import('./pages/FAQ'));
+const ReportBug = lazy(() => import('./pages/ReportBug'));
+const Blog = lazy(() => import('./pages/Blog'));
 
-import FAQ from './pages/FAQ';
-import ReportBug from './pages/ReportBug';
-import Blog from './pages/Blog';
-import GirlNamesFArticle from './pages/GirlNamesFArticle';
-import BoyQuranicNamesArticle from './pages/BoyQuranicNamesArticle';
-import HowToChooseNameArticle from './pages/HowToChooseNameArticle';
-import RareBoyNamesArticle from './pages/RareBoyNamesArticle';
-import ModernArabicGirlNamesArticle from './pages/ModernArabicGirlNamesArticle';
-import NamesMeaningLightArticle from './pages/NamesMeaningLightArticle';
-import GirlNamesSArticle from './pages/GirlNamesSArticle';
-import CanMuslimsUseNonArabicNamesArticle from './pages/CanMuslimsUseNonArabicNamesArticle';
-import NamesOfTheProphetsArticle from './pages/NamesOfTheProphetsArticle';
-import TheNameFatimaArticle from './pages/TheNameFatimaArticle';
-import ArticleComingSoon from './pages/ArticleComingSoon';
-import NotFound from './pages/NotFound';
+// Lazy Articles
+const GirlNamesFArticle = lazy(() => import('./pages/GirlNamesFArticle'));
+const BoyQuranicNamesArticle = lazy(() => import('./pages/BoyQuranicNamesArticle'));
+const HowToChooseNameArticle = lazy(() => import('./pages/HowToChooseNameArticle'));
+const RareBoyNamesArticle = lazy(() => import('./pages/RareBoyNamesArticle'));
+const ModernArabicGirlNamesArticle = lazy(() => import('./pages/ModernArabicGirlNamesArticle'));
+const NamesMeaningLightArticle = lazy(() => import('./pages/NamesMeaningLightArticle'));
+const GirlNamesSArticle = lazy(() => import('./pages/GirlNamesSArticle'));
+const CanMuslimsUseNonArabicNamesArticle = lazy(() => import('./pages/CanMuslimsUseNonArabicNamesArticle'));
+const NamesOfTheProphetsArticle = lazy(() => import('./pages/NamesOfTheProphetsArticle'));
+const TheNameFatimaArticle = lazy(() => import('./pages/TheNameFatimaArticle'));
+const ArticleComingSoon = lazy(() => import('./pages/ArticleComingSoon'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Lazy Admin Pages
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
