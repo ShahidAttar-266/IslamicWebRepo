@@ -8,8 +8,12 @@ exports.getFavorites = async (req, res, next) => {
     try {
         const user = await User.findById(req.user.id).populate('savedNames');
 
+        if (!user) {
+            return next(new ErrorResponse('User not found', 404));
+        }
+
         // Filter out any null values (in case a name was hard deleted)
-        const validFavorites = user.savedNames.filter(name => name != null);
+        const validFavorites = user.savedNames ? user.savedNames.filter(name => name != null) : [];
 
         res.status(200).json({
             success: true,
@@ -34,9 +38,13 @@ exports.addFavorite = async (req, res, next) => {
             { new: true }
         );
 
+        if (!user) {
+            return next(new ErrorResponse('User not found', 404));
+        }
+
         res.status(200).json({
             success: true,
-            data: user.savedNames
+            data: user.savedNames || []
         });
     } catch (err) {
         next(err);
@@ -57,9 +65,13 @@ exports.removeFavorite = async (req, res, next) => {
             { new: true }
         );
 
+        if (!user) {
+            return next(new ErrorResponse('User not found', 404));
+        }
+
         res.status(200).json({
             success: true,
-            data: user.savedNames
+            data: user.savedNames || []
         });
     } catch (err) {
         next(err);
