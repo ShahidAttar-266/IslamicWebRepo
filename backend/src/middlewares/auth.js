@@ -35,6 +35,10 @@ exports.protect = async (req, res, next) => {
              return next(new ErrorResponse('User no longer exists', 401));
         }
 
+        if (!req.user.id) {
+            req.user.id = decoded.id;
+        }
+
         if (!req.user.isActive) {
              console.error('[DEBUG_AUTH] User account is deactivated:', req.user.email);
              return next(new ErrorResponse('User account is deactivated', 401));

@@ -20,6 +20,10 @@ const optionalProtect = async (req, res, next) => {
             req.user = await cache.getOrSet(cacheKey, async () => {
                 return await User.findById(decoded.id);
             }, 300); // 5 min TTL
+            
+            if (req.user && !req.user.id) {
+                req.user.id = decoded.id;
+            }
         } catch (err) {
             // Proceed without user if token is invalid
         }
