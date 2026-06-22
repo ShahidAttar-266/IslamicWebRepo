@@ -5,71 +5,471 @@ import { Clock, Calendar, Eye, User, Share2, Sparkles, BookOpen, ChevronRight, C
 import toast from 'react-hot-toast';
 
 const NAMES_1_25 = [
-  { num: 1, name: 'Fatimah', badge: 'Historic', arabic: 'فاطمة', meaning: 'One who abstains; one who weans — named after the beloved daughter of the Prophet ﷺ', origin: 'Arabic' },
-  { num: 2, name: 'Firdaus', badge: 'Quranic', arabic: 'فردوس', meaning: 'The highest garden of Paradise (Jannah); mentioned in Surah Al-Kahf 18:107', origin: 'Arabic / Persian' },
-  { num: 3, name: 'Farah', badge: null, arabic: 'فرح', meaning: 'Joy, happiness, delight, gladness', origin: 'Arabic' },
-  { num: 4, name: 'Fajr', badge: 'Quranic', arabic: 'فجر', meaning: 'Dawn, daybreak; the name of Surah 89 of the Quran', origin: 'Arabic' },
-  { num: 5, name: 'Farida', badge: null, arabic: 'فريدة', meaning: 'Unique, precious, incomparable gem', origin: 'Arabic' },
-  { num: 6, name: 'Fiza', badge: null, arabic: 'فضاء', meaning: 'Wind, breeze; open atmosphere', origin: 'Arabic / Urdu' },
-  { num: 7, name: 'Falak', badge: 'Quranic', arabic: 'فلك', meaning: 'Celestial sphere, orbit; mentioned in Surah Ya-Sin 36:40', origin: 'Arabic' },
-  { num: 8, name: 'Fariha', badge: null, arabic: 'فرحة', meaning: 'Happy, joyful, delighted', origin: 'Arabic' },
-  { num: 9, name: 'Fahima', badge: null, arabic: 'فهيمة', meaning: 'Intelligent, perceptive, one who understands deeply', origin: 'Arabic' },
-  { num: 10, name: 'Faiza', badge: null, arabic: 'فائزة', meaning: 'Victorious, successful, one who attains', origin: 'Arabic' },
-  { num: 11, name: 'Fatima Zahra', badge: null, arabic: 'فاطمة الزهراء', meaning: "The radiant Fatima — the title of the Prophet's ﷺ daughter meaning \"the shining one\"", origin: 'Arabic' },
-  { num: 12, name: 'Fidda', badge: null, arabic: 'فضة', meaning: 'Silver; precious metal symbolising purity', origin: 'Arabic' },
-  { num: 13, name: 'Fareeda', badge: null, arabic: 'فريدة', meaning: 'Unique, rare pearl, one of a kind', origin: 'Arabic' },
-  { num: 14, name: 'Fadila', badge: null, arabic: 'فاضلة', meaning: 'Virtuous, excellent, one of outstanding moral character', origin: 'Arabic' },
-  { num: 15, name: 'Fatin', badge: null, arabic: 'فاتن', meaning: 'Captivating, enchanting, fascinating', origin: 'Arabic' },
-  { num: 16, name: 'Feroza', badge: null, arabic: 'فيروزة', meaning: 'Turquoise gemstone; precious stone of victory', origin: 'Persian / Arabic' },
-  { num: 17, name: 'Fareeha', badge: null, arabic: 'فريحة', meaning: 'Cheerful, lively, full of joy', origin: 'Arabic' },
-  { num: 18, name: 'Fawziya', badge: null, arabic: 'فوزية', meaning: 'Triumphant, successful, one who achieves victory', origin: 'Arabic' },
-  { num: 19, name: 'Firdausa', badge: null, arabic: 'فردوسة', meaning: 'Variant of Firdaus; garden of Paradise', origin: 'Arabic' },
-  { num: 20, name: 'Fathia', badge: null, arabic: 'فتحية', meaning: 'Opening, beginning, one who brings victory (from the root f-t-ḥ)', origin: 'Arabic' },
-  { num: 21, name: 'Fauzia', badge: null, arabic: 'فوزية', meaning: 'Victorious, prosperous, one who succeeds', origin: 'Arabic' },
-  { num: 22, name: 'Fayza', badge: null, arabic: 'فايزة', meaning: 'Winner, one who gains, victorious', origin: 'Arabic' },
-  { num: 23, name: 'Fuaida', badge: null, arabic: 'فؤيدة', meaning: 'Heart, benefit; one who is close to the heart', origin: 'Arabic' },
-  { num: 24, name: 'Fakiha', badge: 'Quranic', arabic: 'فاكهة', meaning: 'Fruit; cheerful one. The word appears in Surah Abasa 80:31', origin: 'Arabic' },
-  { num: 25, name: 'Fariyal', badge: null, arabic: 'فريال', meaning: 'Beautiful neck, graceful, elegant', origin: 'Persian / Arabic' }
+  { 
+    num: 1, 
+    name: 'Fatima', 
+    badge: 'Historic', 
+    arabic: 'فاطمة', 
+    meaning: 'One who weans; captivating; one who abstains', 
+    origin: 'Arabic',
+    actress: 'Fatima Sana Shaikh — Bollywood actress best known for Dangal (2016) and Thugs of Hindostan. One of India\'s most celebrated young actresses.'
+  },
+  { 
+    num: 2, 
+    name: 'Farah', 
+    badge: null, 
+    arabic: 'فرح', 
+    meaning: 'Joy, happiness, delight', 
+    origin: 'Arabic',
+    actress: 'Farah Khan — India\'s most famous female film director and choreographer. Known for blockbusters like Om Shanti Om and Kal Ho Naa Ho.'
+  },
+  { 
+    num: 3, 
+    name: 'Fiza', 
+    badge: null, 
+    arabic: 'فضا', 
+    meaning: 'Open air, fresh breeze, atmosphere', 
+    origin: 'Arabic',
+    actress: 'Fiza Ali — Popular Pakistani actress, model, and television host known for her vibrant personality and drama serials.'
+  },
+  { 
+    num: 4, 
+    name: 'Fareeda', 
+    badge: null, 
+    arabic: 'فريدة', 
+    meaning: 'Unique, precious gemstone, peerless', 
+    origin: 'Arabic',
+    actress: 'Fareeda Shabbir — Renowned Pakistani stage and television actress with decades of acclaimed performances.'
+  },
+  { 
+    num: 5, 
+    name: 'Fariha', 
+    badge: null, 
+    arabic: 'فريحة', 
+    meaning: 'Happy, cheerful, lively, full of joy', 
+    origin: 'Arabic',
+    actress: 'Fariha Pervez — Celebrated Pakistani singer and actress known for her soulful voice and television roles.'
+  },
+  { 
+    num: 6, 
+    name: 'Farzana', 
+    badge: null, 
+    arabic: 'فرزانه', 
+    meaning: 'Wise, intelligent, learned', 
+    origin: 'Persian',
+    actress: 'Farzana Syeda — Bangladeshi film and television actress known for her versatile roles in drama serials.'
+  },
+  { 
+    num: 7, 
+    name: 'Faiza', 
+    badge: null, 
+    arabic: 'فائزة', 
+    meaning: 'Victorious, successful, triumphant', 
+    origin: 'Arabic',
+    actress: 'Faiza Hasan — Pakistani drama actress known for her powerful performances in hit serials.'
+  },
+  { 
+    num: 8, 
+    name: 'Farheen', 
+    badge: null, 
+    arabic: 'فرحین', 
+    meaning: 'Joyful, happy, cheerful', 
+    origin: 'Arabic',
+    actress: 'Farheen Khan — Bollywood actress who appeared in several films during the 1990s in Indian cinema.'
+  },
+  { 
+    num: 9, 
+    name: 'Fatin', 
+    badge: null, 
+    arabic: 'فتین', 
+    meaning: 'Captivating, fascinating, charming', 
+    origin: 'Arabic',
+    actress: 'Fatin Shidqia — Indonesian singer and actress who rose to fame on Indonesian Idol and has since built a successful entertainment career.'
+  },
+  { 
+    num: 10, 
+    name: 'Falak', 
+    badge: 'Quranic', 
+    arabic: 'فلک', 
+    meaning: 'Sky, firmament, the heavens', 
+    origin: 'Arabic',
+    actress: 'Falak Shabir — Pakistani singer and actor known for romantic tracks and television appearances.'
+  },
+  { 
+    num: 11, 
+    name: 'Farida', 
+    badge: null, 
+    arabic: 'فريدة', 
+    meaning: 'Unique, peerless, incomparable', 
+    origin: 'Arabic',
+    actress: 'Farida Haidari — Afghan-American actress known for her role in the acclaimed American TV series Homeland.'
+  },
+  { 
+    num: 12, 
+    name: 'Fauzia', 
+    badge: null, 
+    arabic: 'فوزیة', 
+    meaning: 'Triumphant, successful, prosperous', 
+    origin: 'Arabic',
+    actress: 'Fauzia Mubarak Ali — Pakistani drama actress and television host with a long career in the entertainment industry.'
+  },
+  { 
+    num: 13, 
+    name: 'Faryal', 
+    badge: null, 
+    arabic: 'فریال', 
+    meaning: 'Fairy, beautiful angel, ethereal being', 
+    origin: 'Persian',
+    actress: 'Faryal Mehmood — Pakistani actress acclaimed for her roles in hit dramas including Dillagi and Gul-o-Gulzar.'
+  },
+  { 
+    num: 14, 
+    name: 'Fareeha', 
+    badge: null, 
+    arabic: 'فریحہ', 
+    meaning: 'Happiness, delight, joy', 
+    origin: 'Arabic',
+    actress: 'Fareeha Jabeen — Pakistani television actress and host with a prominent career in drama serials.'
+  },
+  { 
+    num: 15, 
+    name: 'Fabiha', 
+    badge: null, 
+    arabic: 'فبیہہ', 
+    meaning: 'Lucky, fortunate, beautiful', 
+    origin: 'Arabic',
+    actress: 'Fabiha Sherazi — Popular Pakistani actress and television host, widely known for her talk show Fabiha Show.'
+  },
+  { 
+    num: 16, 
+    name: 'Fardeen (Fardin)', 
+    badge: null, 
+    arabic: 'فردین', 
+    meaning: 'Brave warrior; one who excels', 
+    origin: 'Persian',
+    actress: 'Fardin Khan — While a male actor in Bollywood, the feminine form Fardeen is used by Pakistani drama actresses in television roles.'
+  },
+  { 
+    num: 17, 
+    name: 'Fakhra', 
+    badge: null, 
+    arabic: 'فخرہ', 
+    meaning: 'Proud, honorable, dignified', 
+    origin: 'Arabic',
+    actress: 'Fakhra Yunis — Pakistani actress and social activist who bravely shared her story, becoming an icon of resilience.'
+  },
+  { 
+    num: 18, 
+    name: 'Farwa', 
+    badge: 'Historic', 
+    arabic: 'فروہ', 
+    meaning: 'Warmth; name of a companion of the Prophet; symbol of comfort', 
+    origin: 'Arabic',
+    actress: 'Farwa Ali — Pakistani actress and model known for her roles in popular Urdu drama serials.'
+  },
+  { 
+    num: 19, 
+    name: 'Fathima', 
+    badge: 'Historic', 
+    arabic: 'فاطمہ', 
+    meaning: 'Abstainer, one who refrains from wrongdoing', 
+    origin: 'Arabic',
+    actress: 'Fathima Babu — South Indian actress and politician, known for her work in Tamil and Malayalam cinema and later in politics.'
+  },
+  { 
+    num: 20, 
+    name: 'Fajr', 
+    badge: 'Quranic', 
+    arabic: 'فجر', 
+    meaning: 'Dawn, daybreak, the beginning of light', 
+    origin: 'Arabic',
+    actress: 'Fajr Ibrahim — Saudi Arabian actress and television host known for her presence in Gulf media.'
+  },
+  { 
+    num: 21, 
+    name: 'Farhat', 
+    badge: null, 
+    arabic: 'فرحت', 
+    meaning: 'Happiness, delight, joy', 
+    origin: 'Arabic',
+    actress: 'Farhat Ishtiaq — Pakistani novelist, screenwriter, and actress whose drama Humsafar became a landmark television production.'
+  },
+  { 
+    num: 22, 
+    name: 'Farzeen', 
+    badge: null, 
+    arabic: 'فرزین', 
+    meaning: 'Intelligent, wise, clever', 
+    origin: 'Persian',
+    actress: 'Farzeen Afshar — Persian actress and director known for her contributions to Iranian cinema.'
+  },
+  { 
+    num: 23, 
+    name: 'Firoza', 
+    badge: null, 
+    arabic: 'فیروزہ', 
+    meaning: 'Turquoise gemstone; precious and beautiful', 
+    origin: 'Persian',
+    actress: 'Firoza Begum — Legendary Bangladeshi singer and actress whose voice defined a golden era of music and film in Bangladesh.'
+  },
+  { 
+    num: 24, 
+    name: 'Fayrouz', 
+    badge: null, 
+    arabic: 'فیروز', 
+    meaning: 'Turquoise; a precious stone representing calm and clarity', 
+    origin: 'Arabic',
+    actress: 'Fayrouz Saad — Egyptian actress known for her powerful performances in Egyptian cinema and television.'
+  },
+  { 
+    num: 25, 
+    name: 'Fawzia', 
+    badge: null, 
+    arabic: 'فوزیہ', 
+    meaning: 'Successful, victorious', 
+    origin: 'Arabic',
+    actress: 'Fawzia Khanum — Legendary Bangladeshi actress and poet who is considered one of the pioneering women of Bengali entertainment.'
+  }
 ];
 
 const NAMES_26_50 = [
-  { num: 26, name: 'Firdausi', badge: null, arabic: 'فردوسي', meaning: 'Of or relating to Paradise; heavenly', origin: 'Arabic / Persian' },
-  { num: 27, name: 'Faryal', badge: null, arabic: 'فریال', meaning: 'Angel, fairy-like beauty', origin: 'Persian' },
-  { num: 28, name: 'Fatoon', badge: null, arabic: 'فتون', meaning: 'Fascination, charm, allure', origin: 'Arabic' },
-  { num: 29, name: 'Fazila', badge: null, arabic: 'فاضلة', meaning: 'Noble, virtuous, learned, excellent in character', origin: 'Arabic' },
-  { num: 30, name: 'Fehmida', badge: null, arabic: 'فہمیدہ', meaning: 'Intelligent, wise, understanding', origin: 'Urdu / Arabic' },
-  { num: 31, name: 'Fawzia', badge: null, arabic: 'فوزية', meaning: 'Triumphant, achieving success and victory', origin: 'Arabic' },
-  { num: 32, name: 'Fakhra', badge: null, arabic: 'فخرا', meaning: 'Pride, honour, glory', origin: 'Arabic' },
-  { num: 33, name: 'Faria', badge: null, arabic: 'فاریہ', meaning: 'Beautiful, lovely, tall and slender', origin: 'Arabic / Urdu' },
-  { num: 34, name: 'Faseeha', badge: null, arabic: 'فصيحة', meaning: 'Eloquent, articulate, fluent in speech', origin: 'Arabic' },
-  { num: 35, name: 'Fatinah', badge: null, arabic: 'فاتنة', meaning: 'Charming, captivating, alluring', origin: 'Arabic' },
-  { num: 36, name: 'Fawzana', badge: null, arabic: 'فوزانة', meaning: 'One who constantly achieves success', origin: 'Arabic' },
-  { num: 37, name: 'Fida', badge: null, arabic: 'فداء', meaning: 'Sacrifice, devotion, ransom; selfless dedication', origin: 'Arabic' },
-  { num: 38, name: 'Fowziya', badge: null, arabic: 'فوزية', meaning: 'Victorious, blessed with success', origin: 'Arabic' },
-  { num: 39, name: 'Furat', badge: 'Quranic', arabic: 'فرات', meaning: 'Sweet water; the Euphrates river. Mentioned in Surah Al-Furqan 25:53', origin: 'Arabic' },
-  { num: 40, name: 'Fasiha', badge: null, arabic: 'فسيحة', meaning: 'Spacious, wide, ample', origin: 'Arabic' },
-  { num: 41, name: 'Farwa', badge: null, arabic: 'فروة', meaning: 'Fur, wealth, crown; a name used among early Muslim women', origin: 'Arabic' },
-  { num: 42, name: 'Fawzah', badge: null, arabic: 'فوزة', meaning: 'Success, triumph, achievement', origin: 'Arabic' },
-  { num: 43, name: 'Fairuz', badge: null, arabic: 'فيروز', meaning: 'Turquoise; a precious stone symbolising luck and victory', origin: 'Persian / Arabic' },
-  { num: 44, name: 'Fajriyya', badge: null, arabic: 'فجرية', meaning: 'Of the dawn; one who is like the early morning light', origin: 'Arabic' },
-  { num: 45, name: 'Falisha', badge: null, arabic: 'فليشا', meaning: 'Happiness, felicity, one who brings bliss', origin: 'Arabic' },
-  { num: 46, name: 'Fasahat', badge: null, arabic: 'فصاحت', meaning: 'Eloquence, clarity of speech, rhetorical beauty', origin: 'Arabic / Urdu' },
-  { num: 47, name: 'Firasah', badge: null, arabic: 'فراسة', meaning: 'Insight, keen perception, intuition', origin: 'Arabic' },
-  { num: 48, name: 'Fajraan', badge: null, arabic: 'فجران', meaning: 'Two dawns; dual of Fajr, representing double blessings of light', origin: 'Arabic' },
-  { num: 49, name: 'Falahah', badge: null, arabic: 'فلاحة', meaning: 'Success, prosperity, salvation — from the Islamic concept of Falāḥ', origin: 'Arabic' },
-  { num: 50, name: 'Fauzeen', badge: null, arabic: 'فوزین', meaning: 'Two victories; a name symbolising double triumph', origin: 'Arabic' }
+  { 
+    num: 26, 
+    name: 'Fidan', 
+    badge: null, 
+    arabic: 'فدان', 
+    meaning: 'Young sapling; symbol of growth and hope', 
+    origin: 'Turkish / Arabic',
+    actress: 'Fidan Haciyeva — Azerbaijani actress known for her work in Azerbaijani television dramas.'
+  },
+  { 
+    num: 27, 
+    name: 'Fadiya', 
+    badge: null, 
+    arabic: 'فادیہ', 
+    meaning: 'Redeemer, self-sacrificing, one who gives her all', 
+    origin: 'Arabic',
+    actress: 'Fadiya Hassim — South African actress and author of Muslim heritage, known for her literary and dramatic contributions.'
+  },
+  { 
+    num: 28, 
+    name: 'Fahima', 
+    badge: null, 
+    arabic: 'فہیمہ', 
+    meaning: 'Intelligent, understanding, wise', 
+    origin: 'Arabic',
+    actress: 'Fahima Matebe — Bangladeshi drama actress known for her roles in popular television serials.'
+  },
+  { 
+    num: 29, 
+    name: 'Farha', 
+    badge: null, 
+    arabic: 'فرحہ', 
+    meaning: 'Happiness, gladness, rejoicing', 
+    origin: 'Arabic',
+    actress: 'Farha Naz — Bangladeshi actress celebrated for her emotional depth and versatility in film and television.'
+  },
+  { 
+    num: 30, 
+    name: 'Faleeha', 
+    badge: null, 
+    arabic: 'فلیحہ', 
+    meaning: 'Successful, prosperous, thriving', 
+    origin: 'Arabic',
+    actress: 'Faleeha Hassan — Pakistani drama actress known for her consistent work in Urdu television productions.'
+  },
+  { 
+    num: 31, 
+    name: 'Fanan', 
+    badge: null, 
+    arabic: 'فنان', 
+    meaning: 'Artist, one with many talents, singer', 
+    origin: 'Arabic',
+    actress: 'Fanan Haddad — Lebanese actress known for her theatrical and television work in the Arab world.'
+  },
+  { 
+    num: 32, 
+    name: 'Fayha', 
+    badge: null, 
+    arabic: 'فیحاء', 
+    meaning: 'Fragrant, pleasant scent, spreading beautiful aroma', 
+    origin: 'Arabic',
+    actress: 'Fayha Alhamdan — Saudi Arabian television actress and presenter.'
+  },
+  { 
+    num: 33, 
+    name: 'Fidda', 
+    badge: null, 
+    arabic: 'فضہ', 
+    meaning: 'Silver; precious and valuable', 
+    origin: 'Arabic',
+    actress: 'Fidda Ul-Haq — Pakistani stage actress known for her powerful theatrical performances.'
+  },
+  { 
+    num: 34, 
+    name: 'Firdaus', 
+    badge: 'Quranic', 
+    arabic: 'فردوس', 
+    meaning: 'Paradise, the highest garden of heaven', 
+    origin: 'Persian / Arabic',
+    actress: 'Firdaus Jamal — Veteran Bollywood character actor with over five decades of unforgettable performances in Hindi cinema.'
+  },
+  { 
+    num: 35, 
+    name: 'Furqan', 
+    badge: 'Quranic', 
+    arabic: 'فرقان', 
+    meaning: 'Criterion, one who distinguishes truth from falsehood', 
+    origin: 'Arabic',
+    actress: 'Furqan Aanchal — Pakistani television actress known for her compelling roles in drama serials.'
+  },
+  { 
+    num: 36, 
+    name: 'Faseeha', 
+    badge: null, 
+    arabic: 'فصیحہ', 
+    meaning: 'Eloquent, fluent, articulate', 
+    origin: 'Arabic',
+    actress: 'Faseeha Naaz — Pakistani stage actress celebrated for her eloquent dialogue delivery and theatrical artistry.'
+  },
+  { 
+    num: 37, 
+    name: 'Fatoon', 
+    badge: null, 
+    arabic: 'فتون', 
+    meaning: 'Charming, fascinating, captivating', 
+    origin: 'Arabic',
+    actress: 'Fatoon Ahmed — Egyptian actress known for her captivating presence in Egyptian television dramas.'
+  },
+  { 
+    num: 38, 
+    name: 'Fariyal', 
+    badge: null, 
+    arabic: 'فریال', 
+    meaning: 'Fairy-like; beautiful and ethereal', 
+    origin: 'Persian',
+    actress: 'Fariyal Gohar — Pakistani drama actress with an extensive career in Urdu television.'
+  },
+  { 
+    num: 39, 
+    name: 'Fajria', 
+    badge: null, 
+    arabic: 'فجریہ', 
+    meaning: 'Of the dawn; bright morning', 
+    origin: 'Arabic',
+    actress: 'Fajria Haris — Indonesian actress known for her work in Indonesian cinema and television productions.'
+  },
+  { 
+    num: 40, 
+    name: 'Fanan Al-Mutairi', 
+    badge: null, 
+    arabic: 'فنان', 
+    meaning: 'Artist, talented one', 
+    origin: 'Arabic',
+    actress: 'Fanan Al-Mutairi — Kuwaiti actress recognized for her contributions to Gulf television drama.'
+  },
+  { 
+    num: 41, 
+    name: 'Fareeha Altaf', 
+    badge: null, 
+    arabic: 'فریحہ', 
+    meaning: 'Delight and happiness', 
+    origin: 'Arabic',
+    actress: 'Fareeha Altaf — Pakistani television host and actress known for her vibrant screen presence.'
+  },
+  { 
+    num: 42, 
+    name: 'Fawziyya', 
+    badge: null, 
+    arabic: 'فوزیة', 
+    meaning: 'Victorious, successful', 
+    origin: 'Arabic',
+    actress: 'Fawziyya Mohammed — Bahraini actress and television personality known across the Gulf region.'
+  },
+  { 
+    num: 43, 
+    name: 'Fakiha', 
+    badge: 'Quranic', 
+    arabic: 'فکیہہ', 
+    meaning: 'Cheerful, witty, joyous', 
+    origin: 'Arabic',
+    actress: 'Fakiha Khalid — Pakistani television actress known for her comedic and dramatic roles.'
+  },
+  { 
+    num: 44, 
+    name: 'Faan', 
+    badge: null, 
+    arabic: 'فان', 
+    meaning: 'Victorious; blessed', 
+    origin: 'Arabic',
+    actress: 'Faan Ibrahim — Arab actress known for regional drama productions.'
+  },
+  { 
+    num: 45, 
+    name: 'Furrukh Fatima', 
+    badge: null, 
+    arabic: 'فرخ', 
+    meaning: 'Happy, fortunate, auspicious', 
+    origin: 'Persian',
+    actress: 'Furrukh Fatima — Pakistani drama actress known for her consistent performances in Urdu serials.'
+  },
+  { 
+    num: 46, 
+    name: 'Fariha Pervez', 
+    badge: null, 
+    arabic: 'فریحہ', 
+    meaning: 'Happy, lively, full of joy', 
+    origin: 'Arabic',
+    actress: 'Fariha Pervez — Beloved Pakistani singer and actress, known for her soulful Sufi music and television acting career.'
+  },
+  { 
+    num: 47, 
+    name: 'Fatinah', 
+    badge: null, 
+    arabic: 'فاتنہ', 
+    meaning: 'Captivating, attractive, witty', 
+    origin: 'Arabic',
+    actress: 'Fatinah Al-Omran — Saudi Arabian actress known for her work in Gulf television drama series.'
+  },
+  { 
+    num: 48, 
+    name: 'Fouzia Naqvi', 
+    badge: null, 
+    arabic: 'فوزیہ', 
+    meaning: 'Successful, victorious', 
+    origin: 'Arabic',
+    actress: 'Fouzia Naqvi — Pakistani television actress with a distinguished career in Urdu drama serials.'
+  },
+  { 
+    num: 49, 
+    name: 'Farisa', 
+    badge: null, 
+    arabic: 'فارسہ', 
+    meaning: 'Knight, courageous, perceptive', 
+    origin: 'Arabic',
+    actress: 'Farisa Zuberi — Pakistani actress known for her roles in television productions.'
+  },
+  { 
+    num: 50, 
+    name: 'Fida', 
+    badge: null, 
+    arabic: 'فدا', 
+    meaning: 'Sacrifice, devotion, selfless love', 
+    origin: 'Arabic',
+    actress: 'Fida Hussain — Pakistani drama actress known for her emotional and heartfelt performances.'
+  }
 ];
 
 const TableOfNames = ({ data }) => (
   <div className="overflow-x-auto border border-border rounded-xl bg-card/50 my-6">
-    <table className="w-full min-w-[650px] text-left text-sm border-collapse">
+    <table className="w-full min-w-[750px] text-left text-sm border-collapse">
       <thead>
         <tr className="bg-card border-b border-border/80">
           <th className="py-3.5 px-4 font-bold text-accent text-xs uppercase w-12 text-center">#</th>
-          <th className="py-3.5 px-4 font-bold text-text text-sm">Name</th>
-          <th className="py-3.5 px-4 font-bold text-text text-sm text-right font-arabic">Arabic</th>
-          <th className="py-3.5 px-4 font-bold text-text-muted text-sm">Meaning</th>
-          <th className="py-3.5 px-4 font-bold text-text-muted text-sm w-32">Origin</th>
+          <th className="py-3.5 px-4 font-bold text-text text-sm w-36">Name</th>
+          <th className="py-3.5 px-4 font-bold text-text text-sm text-right font-arabic w-28">Arabic</th>
+          <th className="py-3.5 px-4 font-bold text-text-muted text-sm">Meaning & Famous Actress</th>
+          <th className="py-3.5 px-4 font-bold text-text-muted text-sm w-28">Origin</th>
         </tr>
       </thead>
       <tbody className="divide-y divide-border/30">
@@ -89,7 +489,19 @@ const TableOfNames = ({ data }) => (
               </span>
             </td>
             <td className="py-4 px-4 font-arabic text-lg text-right text-text/90 font-medium">{row.arabic}</td>
-            <td className="py-4 px-4 text-text-muted text-xs md:text-sm leading-relaxed">{row.meaning}</td>
+            <td className="py-4 px-4 text-text-muted text-xs md:text-sm leading-relaxed space-y-2">
+              <div className="text-text font-semibold">{row.meaning}</div>
+              {row.actress && (
+                <div className="bg-primary/5 border border-primary/10 rounded-lg p-2.5 mt-2 flex flex-col gap-0.5 text-xs text-text-muted">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-primary flex items-center gap-1">
+                    🎬 Famous Actress Reference:
+                  </span>
+                  <span className="italic leading-normal text-text">
+                    {row.actress}
+                  </span>
+                </div>
+              )}
+            </td>
             <td className="py-4 px-4 text-text-muted text-xs">{row.origin}</td>
           </tr>
         ))}
@@ -151,22 +563,22 @@ const GirlNamesFArticle = () => {
   };
 
   const tocItems = [
-    { id: 'introduction', label: 'Introduction: The Letter Fa' },
-    { id: 'why-f', label: 'Why Choose a Name Starting with F?' },
-    { id: 'quranic-names', label: 'Quranic Names Starting with F' },
+    { id: 'introduction', label: 'Introduction' },
+    { id: 'why-f', label: 'Why Choose an F Name?' },
+    { id: 'quranic-names', label: 'Quranic References' },
     { id: 'names-1-25', label: 'Names 1–25' },
     { id: 'names-26-50', label: 'Names 26–50' },
     { id: 'top-picks', label: 'Our Top 5 Picks' },
-    { id: 'naming-tips', label: 'Naming Tips from the Sunnah' },
+    { id: 'naming-tips', label: 'Tips from the Sunnah' },
     { id: 'conclusion', label: 'Conclusion' },
   ];
 
   return (
     <>
       <Helmet>
-        <title>50 Beautiful Islamic Girl Names Starting with F — IslamicNames</title>
-        <meta name="description" content="Discover 50 beautiful Islamic girl names starting with the letter F — from Fatima to Firdaus. Full Arabic script, meanings, origins, and Quranic references." />
-        <meta name="keywords" content="Islamic girl names starting with F, Muslim baby girl names F, Fatima meaning, Firdaus meaning, Arabic girl names, Quranic girl names" />
+        <title>50 Beautiful Islamic Girl Names Starting with F — With Famous Muslim Actresses & Meanings</title>
+        <meta name="description" content="Discover 50 beautiful Islamic girl names starting with the letter F, each paired with its meaning, Arabic script, origin, and a famous Muslim actress." />
+        <meta name="keywords" content="Islamic girl names starting with F, Muslim baby girl names F, Fatima meaning, Firdaus meaning, Arabic girl names, Quranic girl names, Muslim actress names" />
         
         {/* Canonical Tag */}
         <link rel="canonical" href="https://www.islamicnames.in/blog/50-beautiful-islamic-girl-names-starting-with-f" />
@@ -174,15 +586,15 @@ const GirlNamesFArticle = () => {
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://www.islamicnames.in/blog/50-beautiful-islamic-girl-names-starting-with-f" />
-        <meta property="og:title" content="50 Beautiful Islamic Girl Names Starting with F — IslamicNames" />
-        <meta property="og:description" content="Discover 50 beautiful Islamic girl names starting with the letter F — from Fatima to Firdaus. Full Arabic script, meanings, origins, and Quranic references." />
+        <meta property="og:title" content="50 Beautiful Islamic Girl Names Starting with F — With Famous Muslim Actresses & Meanings" />
+        <meta property="og:description" content="Discover 50 beautiful Islamic girl names starting with the letter F, each paired with its meaning, Arabic script, origin, and a famous Muslim actress." />
         <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://www.islamicnames.in/blog/50-beautiful-islamic-girl-names-starting-with-f" />
-        <meta name="twitter:title" content="50 Beautiful Islamic Girl Names Starting with F — IslamicNames" />
-        <meta name="twitter:description" content="Discover 50 beautiful Islamic girl names starting with the letter F — from Fatima to Firdaus. Full Arabic script, meanings, origins, and Quranic references." />
+        <meta name="twitter:title" content="50 Beautiful Islamic Girl Names Starting with F — With Famous Muslim Actresses & Meanings" />
+        <meta name="twitter:description" content="Discover 50 beautiful Islamic girl names starting with the letter F, each paired with its meaning, Arabic script, origin, and a famous Muslim actress." />
         <meta name="twitter:image" content="https://www.islamicnames.in/og-image.png" />
 
         {/* JSON-LD Article Structured Data */}
@@ -190,8 +602,8 @@ const GirlNamesFArticle = () => {
           {`{
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "50 Beautiful Islamic Girl Names Starting with F — IslamicNames",
-  "description": "Discover 50 beautiful Islamic girl names starting with the letter F — from Fatima to Firdaus. Full Arabic script, meanings, origins, and Quranic references.",
+  "headline": "50 Beautiful Islamic Girl Names Starting with F — With Famous Muslim Actresses & Meanings",
+  "description": "Discover 50 beautiful Islamic girl names starting with the letter F, each paired with its meaning, Arabic script, origin, and a famous Muslim actress.",
   "image": "https://www.islamicnames.in/og-image.png",
   "author": {
     "@type": "Organization",
@@ -252,11 +664,11 @@ const GirlNamesFArticle = () => {
             </div>
 
             <h1 className="text-3xl md:text-5xl font-black text-text leading-tight tracking-tight">
-              50 Beautiful Islamic Girl Names Starting with F
+              50 Beautiful Islamic Girl Names Starting with F <span className="text-primary">—</span> With Famous Muslim Actresses & Meanings
             </h1>
 
             <p className="text-base md:text-xl text-text-muted leading-relaxed max-w-4xl">
-              From Fatima to Firdaus — explore 50 meaningful girl names starting with the Arabic letter Fa (فـ), with full meanings, Arabic script, and origins.
+              Choosing a name for your baby girl is one of the most beautiful and sacred responsibilities in Islam. A name is not merely a word — it is a lifelong gift, a silent prayer (dua), and a reflection of your faith, values, and hopes for your child's future.
             </p>
 
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-text-muted border-t border-b border-border/40 py-4 mt-6">
@@ -275,7 +687,7 @@ const GirlNamesFArticle = () => {
             فـ
           </span>
           <span className="font-arabic text-6xl md:text-8xl text-white drop-shadow-2xl font-bold select-none">
-            فاطمة & فردوس
+            فاطمة & فرح
           </span>
         </div>
 
@@ -287,13 +699,16 @@ const GirlNamesFArticle = () => {
             
             <section id="introduction" className="space-y-4">
               <h2 className="text-xl md:text-2xl font-black text-text border-b border-border pb-2">
-                Introduction: The Beauty of the Letter Fa (فـ)
+                Introduction
               </h2>
               <p>
-                The Arabic letter <strong>Fa (ف)</strong> holds a special place in Islamic naming tradition. It is the first letter of one of the most beloved names in all of Islam — <strong>Fatimah (فاطمة)</strong>, the daughter of the Prophet Muhammad ﷺ. Names beginning with Fa carry a natural elegance, flowing beautifully in both Arabic and English, and many of them hold deep spiritual, Quranic, and historical significance.
+                Choosing a name for your baby girl is one of the most beautiful and sacred responsibilities in Islam. A name is not merely a word — it is a lifelong gift, a silent prayer (dua), and a reflection of your faith, values, and hopes for your child's future. The Prophet Muhammad ﷺ emphasised that parents should choose names with good, positive meanings rooted in Islamic heritage.
               </p>
               <p>
-                In this article, we have carefully curated <strong>50 beautiful Islamic girl names</strong> starting with the letter F. Each name includes its Arabic script, meaning, origin, and — where applicable — its Quranic connection. Whether you are expecting a daughter, helping a friend, or simply exploring the richness of Islamic names, this guide is for you.
+                Names beginning with the letter F hold a special place in Islamic tradition. They are soft on the tongue, rich in meaning, and deeply rooted in Arabic and Persian culture. From the timeless Fatima — the beloved daughter of Prophet Muhammad ﷺ — to the joyful Farah and the victorious Faiza, F-names carry elegance, strength, and spirituality.
+              </p>
+              <p>
+                In this article, we bring you 50 beautiful Islamic girl names starting with F, each paired with its meaning, Arabic script, origin — and a real, famous Muslim actress who carries that name, so you can see how these names shine in the real world.
               </p>
               
               <div className="bg-primary/5 border-l-4 border-primary p-5 rounded-r-2xl italic text-text my-6 space-y-2">
@@ -344,7 +759,7 @@ const GirlNamesFArticle = () => {
                 <p className="text-sm italic text-text">"In it is a flowing spring, in it are raised couches."</p>
               </div>
               <p>
-                The concept of <strong>Firdaus (الفردوس)</strong> — the highest garden of Paradise — is mentioned multiple times in the Quran, including in <em>Surah Al-Kahf (18:107)</em> and <em>Surah Al-Mu'minun (23:11)</em>. It is one of the most spiritually charged names a Muslim parent can give their daughter.
+                The concept of <strong>Firdaus (الفردوس)</strong> — the highest garden of Paradise — is mentioned multiple times in the Quran, including in <em>Surah Al-Kahf (18:107)</em> and <em>Surah Al-Mu\'minun (23:11)</em>. It is one of the most spiritually charged names a Muslim parent can give their daughter.
               </p>
             </section>
 
@@ -353,7 +768,7 @@ const GirlNamesFArticle = () => {
                 Names 1–25
               </h2>
               <p>
-                Below are the first 25 beautiful Islamic girl names starting with F.
+                Below are the first 25 beautiful Islamic girl names starting with F, along with their meanings, origins, and actress references.
               </p>
               <TableOfNames data={NAMES_1_25} />
               
@@ -382,7 +797,7 @@ const GirlNamesFArticle = () => {
               </p>
               <ol className="list-decimal pl-6 space-y-4 text-sm md:text-base">
                 <li>
-                  <strong className="text-text">Fatimah (فاطمة)</strong> — The most historically significant Islamic girl name. The daughter of the Prophet ﷺ, she is a role model of piety, strength, and grace. This name has been the most popular Muslim girl name for 14 centuries.
+                  <strong className="text-text">Fatima (فاطمة)</strong> — The most historically significant Islamic girl name. The daughter of the Prophet ﷺ, she is a role model of piety, strength, and grace. This name has been the most popular Muslim girl name for 14 centuries.
                 </li>
                 <li>
                   <strong className="text-text">Firdaus (فردوس)</strong> — The highest level of Jannah. Giving your daughter this name is like giving her a prayer — may she attain the highest Paradise. It is one of the most spiritually powerful names in Islam.
@@ -401,32 +816,30 @@ const GirlNamesFArticle = () => {
 
             <section id="naming-tips" className="space-y-4">
               <h2 className="text-xl md:text-2xl font-black text-text border-b border-border pb-2">
-                Naming Tips from the Sunnah
+                Tips for Choosing the Perfect Islamic Name
               </h2>
               <p>
-                Choosing a name is one of the first acts of love a parent gives their child. The Prophet Muhammad ﷺ emphasised the importance of giving good, meaningful names. Here are key guidelines from the Sunnah:
+                Choosing a name is one of the first acts of love a parent gives their child. Here are some key guidelines to help you choose the perfect name:
               </p>
-
-              <div className="bg-primary/5 border-l-4 border-primary p-5 rounded-r-2xl italic text-text my-6 space-y-2">
-                <p className="text-sm md:text-base">"The most beloved of your names to Allah are Abdullah and Abdur-Rahman."</p>
-                <span className="block text-right text-xs font-bold text-primary">— Sahih Muslim 2132</span>
-              </div>
 
               <div className="space-y-3">
                 <p>
-                  <strong>1. Choose names with beautiful meanings.</strong> The Prophet ﷺ would sometimes change the names of people if their original names had negative meanings. A name should carry blessings, not burdens.
+                  <strong>1. Check the meaning</strong> — Always ensure the name carries a positive, beautiful meaning in Arabic or Persian.
                 </p>
                 <p>
-                  <strong>2. Names of Prophets and righteous people are recommended.</strong> Naming children after the Prophets and pious companions connects them to a legacy of piety and strength.
+                  <strong>2. Explore Quranic relevance</strong> — Names connected to the Quran, Hadith, or Islamic history carry extra spiritual blessings.
                 </p>
                 <p>
-                  <strong>3. Names that show devotion to Allah are highly praised.</strong> For boys, names showing servitude like Abdullah (Servant of Allah) and Abdur-Rahman (Servant of the Most Merciful) are considered the most beloved to Allah.
+                  <strong>3. Say it aloud</strong> — Choose a name that sounds pleasant when spoken together with your family surname.
                 </p>
                 <p>
-                  <strong>4. Avoid names with negative or arrogant meanings.</strong> Islam discourages names that suggest self-glorification, sadness, or anything contrary to modesty and gratitude.
+                  <strong>4. Ease of pronunciation</strong> — A name that people around the world can pronounce easily helps your child feel confident in any setting.
                 </p>
                 <p>
-                  <strong>5. Consider the child's future.</strong> Choose a name your daughter will carry proudly as a child, a student, a professional, and a mother. A name is a lifelong companion.
+                  <strong>5. Avoid negative associations</strong> — Always double-check that the name has no unintended or negative meaning in any language.
+                </p>
+                <p>
+                  <strong>6. Involve the family</strong> — Discussing options together creates a memorable experience and ensures the name resonates with everyone.
                 </p>
               </div>
 
@@ -441,20 +854,18 @@ const GirlNamesFArticle = () => {
                 Conclusion
               </h2>
               <p>
-                The letter F (Fa) offers an incredibly rich selection of Islamic girl names — from the historically sacred <strong>Fatimah</strong> to the heavenly <strong>Firdaus</strong>, from the dawn-inspired <strong>Fajr</strong> to the joyful <strong>Farah</strong>. Each name on this list has been carefully selected for its authenticity, beauty, and spiritual depth.
+                Names starting with F are among the most beloved in Islamic culture — soft, elegant, and deeply meaningful. Whether you choose the timeless Fatima, the joyful Farah, the victorious Faiza, or the heavenly Firdaus, each name carries a blessing and a story.
               </p>
               <p>
-                Remember, a name is more than just a label — in Islam, it is a <em>du'a</em> (prayer) for your child. Choose a name that you would be proud to call out on the Day of Judgement, one that carries the weight of meaning and the lightness of beauty.
+                As the Prophet Muhammad ﷺ said:
               </p>
-              <p>
-                We pray that this list helps you find the perfect name for your little one. May Allah bless your family and grant your daughter a name that brings her barakah (blessings) throughout her life. <strong>Ameen.</strong>
-              </p>
-
               <div className="bg-card border border-border p-6 rounded-2xl text-center space-y-3 my-6">
-                <div className="font-arabic text-2xl text-accent font-bold">رَبِّ هَبْ لِي مِن لَّدُنكَ ذُرِّيَّةً طَيِّبَةً ۖ إِنَّكَ سَمِيعُ الدُّعَاءِ</div>
-                <span className="block text-xs text-text-muted font-bold">— Surah Aal-e-Imran (3:38)</span>
-                <p className="text-sm italic text-text">"My Lord, grant me from Yourself good offspring. Indeed, You are the Hearer of supplication."</p>
+                <p className="text-sm italic text-text">"On the Day of Resurrection, you will be called by your names and your father's names, so make your names good."</p>
+                <span className="block text-xs text-text-muted font-bold">— Abu Dawud</span>
               </div>
+              <p>
+                May Allah bless every baby girl who receives one of these beautiful names, and may she grow up to be a source of light, love, and pride for her family. <strong>Ameen.</strong> 🌿
+              </p>
             </section>
 
             {/* Share Bar */}
@@ -502,12 +913,12 @@ const GirlNamesFArticle = () => {
                 You May Also Like
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <Link to="/blog" className="block bg-card border border-border hover:border-primary p-4 rounded-xl space-y-2 transition-all">
+                <Link to="/blog/50-islamic-girl-names-starting-with-s" className="block bg-card border border-border hover:border-primary p-4 rounded-xl space-y-2 transition-all">
                   <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#FCE8F0] text-[#A0305A] inline-block">Girl Names</span>
                   <h4 className="text-xs font-bold text-text leading-snug line-clamp-2">50 Islamic Girl Names Starting with S — Sara, Safiya & More</h4>
                   <span className="text-[9px] text-text-muted block">📅 May 10, 2025</span>
                 </Link>
-                <Link to="/blog" className="block bg-card border border-border hover:border-primary p-4 rounded-xl space-y-2 transition-all">
+                <Link to="/blog/names-meaning-light-in-the-quran" className="block bg-card border border-border hover:border-primary p-4 rounded-xl space-y-2 transition-all">
                   <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-primary/10 text-primary inline-block">Quranic</span>
                   <h4 className="text-xs font-bold text-text leading-snug line-clamp-2">Names Meaning Light in the Quran — Noor, Zia, and More</h4>
                   <span className="text-[9px] text-text-muted block">📅 May 15, 2025</span>
@@ -535,8 +946,8 @@ const GirlNamesFArticle = () => {
                 <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Category</span><span className="text-text font-bold">Girl Names</span></li>
                 <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Starting Letter</span><span className="text-text font-bold">F (فـ)</span></li>
                 <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Quranic Names</span><span className="text-text font-bold">5 names</span></li>
-                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Origins</span><span className="text-text font-bold">Arabic, Persian, Urdu</span></li>
-                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Most Popular</span><span className="text-text font-bold">Fatimah</span></li>
+                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Origins</span><span className="text-text font-bold">Arabic, Persian, Turkish</span></li>
+                <li className="py-2 flex justify-between items-center"><span className="text-text-muted font-medium">Most Popular</span><span className="text-text font-bold">Fatima</span></li>
               </ul>
             </div>
 

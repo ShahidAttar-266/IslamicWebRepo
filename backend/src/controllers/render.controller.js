@@ -291,8 +291,8 @@ exports.renderHomePage = async (req, res, next) => {
  */
 function injectPreloadHeaders(res, html) {
     const links = [];
-    const cssMatch = html.match(/href="(\/assets\/[^"]+\.css)"/i);
-    const jsMatch = html.match(/src="(\/assets\/[^"]+\.js)"/i);
+    const cssMatch = html.match(/href="(?:https:\/\/www\.islamicnames\.in)?(\/assets\/[^"]+\.css)"/i);
+    const jsMatch = html.match(/src="(?:https:\/\/www\.islamicnames\.in)?(\/assets\/[^"]+\.js)"/i);
 
     if (cssMatch) {
         links.push(`<${cssMatch[1]}>; rel=preload; as=style`);

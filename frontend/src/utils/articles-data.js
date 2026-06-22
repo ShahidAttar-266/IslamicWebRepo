@@ -1,7 +1,7 @@
 export const ARTICLES = [
   {
     slug: '50-beautiful-islamic-girl-names-starting-with-f',
-    title: '50 Beautiful Islamic Girl Names Starting with F',
+    title: '50 Beautiful Islamic Girl Names Starting with F — With Famous Muslim Actresses & Meanings',
     href: '/blog/50-beautiful-islamic-girl-names-starting-with-f',
     tag: 'Girl Names',
     tagBg: '#FCE8F0',
@@ -12,7 +12,7 @@ export const ARTICLES = [
     arabicLetter: 'فـ',
     gradientFrom: '#A0305A',
     gradientTo: '#D4607A',
-    excerpt: 'From Fatima to Firdaus — explore 50 meaningful girl names starting with the Arabic letter Fa, with full meanings, Arabic script, and origins.',
+    excerpt: 'Choosing a name for your baby girl is one of the most beautiful and sacred responsibilities in Islam. Discover 50 beautiful Islamic girl names starting with the letter F, each paired with its meaning, Arabic script, origin, and a famous Muslim actress.',
     featured: true,
     category: 'girl',
     comingSoon: false,
