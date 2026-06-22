@@ -1,57 +1,54 @@
-const fs = require('fs');
-const path = require('path');
 const Name = require('../models/Name');
 const cache = require('../utils/cache');
 
-let cachedHtml = null;
-let lastFetched = 0;
+/**
+ * Hardcoded minimal HTML template for SSR injection.
+ * Eliminates the previous network fetch of index.html which caused circular
+ * cold-start dependencies in serverless environments and Googlebot timeouts.
+ *
+ * The render pipeline replaces title, description, canonical, og tags, and
+ * injects content into #root, so this shell just needs the right placeholders.
+ */
+const EMBEDDED_TEMPLATE = `<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IslamicNames | Meaningful Names. Timeless Legacy.</title>
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.islamicnames.in/" />
+  <link rel="icon" type="image/png" href="https://www.islamicnames.in/favicon.png">
+  <meta name="description" content="Discover thousands of meaningful Islamic names with rich origins, Quranic references, and historical context.">
+  <meta property="og:title" content="IslamicNames | Meaningful Names. Timeless Legacy.">
+  <meta property="og:description" content="Discover thousands of meaningful Islamic names with rich origins, Quranic references, and historical context.">
+  <meta property="og:image" content="https://www.islamicnames.in/og-image.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;700&display=optional">
+  <style>
+    :root {
+      --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      --bg-color: #0d1f1a;
+      --text-color: #e8f5ef;
+    }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+</body></html>`;
 
 /**
- * Fetch and cache the base index.html template
- * @returns {Promise<string>}
+ * Return the base HTML template for SSR injection.
+ * @returns {string}
  */
-async function getTemplate() {
-    const now = Date.now();
-    if (cachedHtml && (now - lastFetched < 10 * 60 * 1000)) {
-        return cachedHtml;
-    }
-
-    // Try local filesystem first (development mode)
-    try {
-        const localPath = path.join(__dirname, '../../../frontend/dist/index.html');
-        if (fs.existsSync(localPath)) {
-            cachedHtml = fs.readFileSync(localPath, 'utf8');
-            lastFetched = now;
-            return cachedHtml;
-        }
-    } catch (e) {
-        // Silent fallback to remote fetch
-    }
-
-    // Fetch via HTTP (production mode/serverless) with Redis caching
-    const fetchTemplateFromRemote = async () => {
-        try {
-            const frontendUrl = process.env.FRONTEND_URL || 'https://www.islamicnames.in';
-            const response = await fetch(`${frontendUrl}/index.html`, {
-                headers: { 'User-Agent': 'IslamicNames-SEO-Renderer' }
-            });
-            if (response.ok) {
-                return await response.text();
-            }
-            console.error(`Failed to fetch HTML template: Status ${response.status} ${response.statusText}`);
-        } catch (err) {
-            console.error('Failed to fetch HTML template:', err.message);
-        }
-        return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><title>IslamicNames</title></head><body><div id="root"></div></body></html>`;
-    };
-
-    try {
-        cachedHtml = await cache.getOrSet('template:index_html', fetchTemplateFromRemote, 1800); // Cache template for 30 minutes in Redis
-        lastFetched = now;
-        return cachedHtml;
-    } catch (e) {
-        return await fetchTemplateFromRemote();
-    }
+function getTemplate() {
+    return EMBEDDED_TEMPLATE;
 }
 
 /**
@@ -89,8 +86,6 @@ function generateSEOInjectHTML(name) {
     };
 
     return `
-  <title>${title}</title>
-  <link rel="canonical" href="${canonicalUrl}" />
   <meta name="keywords" content="${keywords}" />
   <script type="application/ld+json">${JSON.stringify(webPageSchema)}</script>
   <script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}</script>
@@ -165,8 +160,11 @@ exports.renderNamePage = async (req, res, next) => {
 
             const title = `${name.nameEnglish} (${name.nameArabic}) Meaning & Origin | IslamicNames`;
             const description = `Find the meaning, origin, pronunciation, and Quranic reference for the name ${name.nameEnglish}. Meaning: "${name.meaning}".`;
+            const canonicalUrl = `https://www.islamicnames.in/name/${name.slug || name._id}`;
 
-            // Inject dynamic tags and HTML body structure
+            // Replace existing tags to avoid duplicates, then inject additional SEO tags
+            html = html.replace(/<title>[^<]*<\/title>/i, `<title>${title}</title>`);
+            html = html.replace(/<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i, `<link rel="canonical" href="${canonicalUrl}" />`);
             html = html.replace('<head>', `<head>${generateSEOInjectHTML(name)}`);
             html = html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i, `<meta name="description" content="${description}" />`);
             html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:title" content="${title}" />`);
@@ -180,7 +178,7 @@ exports.renderNamePage = async (req, res, next) => {
 
         if (result.status === 404) {
             let html = await getTemplate();
-            html = html.replace('<head>', '<head><title>Name Not Found | IslamicNames</title>');
+            html = html.replace(/<title>[^<]*<\/title>/i, '<title>Name Not Found | IslamicNames</title>');
             res.header('Content-Type', 'text/html');
             return res.status(404).send(html);
         }
@@ -257,13 +255,13 @@ exports.renderHomePage = async (req, res, next) => {
             };
 
             const seoInject = `
-  <title>${title}</title>
-  <link rel="canonical" href="${canonicalUrl}" />
   <meta name="keywords" content="${keywords}" />
   <script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}</script>
             `;
 
-            // Inject HTML body structure and dynamic head tags
+            // Replace existing title and canonical to avoid duplicates, then inject additional SEO tags
+            html = html.replace(/<title>[^<]*<\/title>/i, `<title>${title}</title>`);
+            html = html.replace(/<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i, `<link rel="canonical" href="${canonicalUrl}" />`);
             html = html.replace('<head>', `<head>${seoInject}`);
             html = html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i, `<meta name="description" content="${description}" />`);
             html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:title" content="${title}" />`);

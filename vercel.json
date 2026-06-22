@@ -96,6 +96,46 @@
       "destination": "https://islamic-web-repo.vercel.app/api/v1/:path*"
     },
     {
+      "source": "/blog/50-beautiful-islamic-girl-names-starting-with-f",
+      "destination": "https://islamic-web-repo.vercel.app/api/v1/render/blog/50-beautiful-islamic-girl-names-starting-with-f"
+    },
+    {
+      "source": "/blog/top-30-quranic-names-for-baby-boys-in-2026",
+      "destination": "https://islamic-web-repo.vercel.app/api/v1/render/blog/top-30-quranic-names-for-baby-boys-in-2026"
+    },
+    {
+      "source": "/blog/how-to-choose-an-islamic-name",
+      "destination": "https://islamic-web-repo.vercel.app/api/v1/render/blog/how-to-choose-an-islamic-name"
+    },
+    {
+      "source": "/blog/rare-islamic-boy-names-with-deep-meanings",
+      "destination": "https://islamic-web-repo.vercel.app/api/v1/render/blog/rare-islamic-boy-names-with-deep-meanings"
+    },
+    {
+      "source": "/blog/modern-arabic-girl-names-that-sound-beautiful",
+      "destination": "https://islamic-web-repo.vercel.app/api/v1/render/blog/modern-arabic-girl-names-that-sound-beautiful"
+    },
+    {
+      "source": "/blog/names-meaning-light-in-the-quran",
+      "destination": "https://islamic-web-repo.vercel.app/api/v1/render/blog/names-meaning-light-in-the-quran"
+    },
+    {
+      "source": "/blog/50-islamic-girl-names-starting-with-s",
+      "destination": "https://islamic-web-repo.vercel.app/api/v1/render/blog/50-islamic-girl-names-starting-with-s"
+    },
+    {
+      "source": "/blog/can-muslims-use-non-arabic-names",
+      "destination": "https://islamic-web-repo.vercel.app/api/v1/render/blog/can-muslims-use-non-arabic-names"
+    },
+    {
+      "source": "/blog/names-of-the-prophets-in-islam",
+      "destination": "https://islamic-web-repo.vercel.app/api/v1/render/blog/names-of-the-prophets-in-islam"
+    },
+    {
+      "source": "/blog/the-name-fatima-meaning-history",
+      "destination": "https://islamic-web-repo.vercel.app/api/v1/render/blog/the-name-fatima-meaning-history"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

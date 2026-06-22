@@ -13,6 +13,7 @@ const namesRoutes = require('./routes/names.routes');
 const adminRoutes = require('./routes/admin.routes');
 const userRoutes = require('./routes/users.routes');
 const bugRoutes = require('./routes/bugs.routes');
+const renderRoutes = require('./routes/render.routes');
 
 const errorHandler = require('./middlewares/error');
 
@@ -94,6 +95,7 @@ app.use('/api/v1/names', namesRoutes);
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/bugs', bugRoutes);
+app.use('/api/v1/render', renderRoutes);
 
 // Basic route for health check
 app.get('/', (req, res) => {
