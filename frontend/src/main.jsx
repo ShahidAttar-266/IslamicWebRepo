@@ -33,3 +33,11 @@ if (rootElement.hasChildNodes()) {
     </React.StrictMode>
   );
 }
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.dispatchEvent(new Event('render-complete'));
+    }, 1000);
+  });
+}

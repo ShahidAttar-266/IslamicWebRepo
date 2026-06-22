@@ -59,7 +59,7 @@ export default defineConfig({
     prerender({
         staticDir: path.join(__dirname, 'dist'),
         routes: [
-          '/', '/search', '/privacy', '/terms', '/disclaimer', '/faq', '/compare', '/free-service', '/report-bug', '/blog',
+          '/', '/search', '/privacy', '/terms', '/disclaimer', '/faq', '/free-service', '/report-bug', '/blog',
           '/blog/50-beautiful-islamic-girl-names-starting-with-f',
           '/blog/50-islamic-girl-names-starting-with-s',
           '/blog/can-muslims-use-non-arabic-names',
@@ -71,11 +71,14 @@ export default defineConfig({
           '/blog/the-name-fatima-meaning-history',
           '/blog/top-30-quranic-names-for-baby-boys-in-2026'
         ],
-        maxConcurrentRoutes: 4, // JSDOM uses much less memory, so we can increase concurrency
-        renderer: '@prerenderer/renderer-jsdom',
+        maxConcurrentRoutes: 1,
+        renderer: '@prerenderer/renderer-puppeteer',
         rendererOptions: {
-          renderAfterTime: 2000,
-          timeout: 60000, // Still keep a safe timeout for Vercel
+          renderAfterDocumentEvent: 'render-complete',
+          timeout: 60000,
+          launchOptions: {
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+          },
         },
         postProcess(renderedRoute) {
           prerenderedHtml[renderedRoute.route] = renderedRoute.html;
