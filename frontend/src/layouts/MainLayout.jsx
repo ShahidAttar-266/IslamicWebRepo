@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
-import { Search, LogOut, Heart, Menu, X, ChevronRight, User, BookOpen, Shield } from 'lucide-react';
+import { Search, LogOut, Heart, Menu, X, ChevronRight, User, BookOpen, Shield, Info } from 'lucide-react';
 import Footer from '../components/Footer';
 import { AnnouncementBar } from '../components/AnnouncementBar';
 import { FallbackLoader } from '../components/FallbackLoader';
@@ -121,6 +121,15 @@ const MainLayout = () => {
               >
                 <BookOpen size={15} />
                 Articles
+              </Link>
+              <Link
+                to="/about"
+                className={`px-3 py-2 rounded-md transition-colors flex items-center gap-1.5 ${
+                  isActive('/about') ? 'bg-primary/10 text-primary' : 'hover:text-primary'
+                }`}
+              >
+                <Info size={15} />
+                About
               </Link>
             </nav>
           </div>
@@ -270,6 +279,17 @@ const MainLayout = () => {
               >
                 <span className="flex items-center gap-2"><BookOpen size={18} /> Articles</span>
                 {isActive('/blog') && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
+              </Link>
+              <Link
+                to="/about"
+                className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all ${
+                  isActive('/about') 
+                    ? 'bg-primary/10 text-primary font-semibold' 
+                    : 'text-text-muted hover:bg-bg hover:text-text'
+                }`}
+              >
+                <span className="flex items-center gap-2"><Info size={18} /> About</span>
+                {isActive('/about') && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
               </Link>
           </nav>
 

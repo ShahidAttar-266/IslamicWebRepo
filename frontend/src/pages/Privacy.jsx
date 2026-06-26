@@ -71,7 +71,27 @@ const Privacy = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">02.</span> Information We Collect
+              <span className="text-primary text-sm font-black">02.</span> Advertising & Cookies (Google AdSense)
+            </h2>
+            <p>
+              We use <strong>Google AdSense</strong> to display advertisements on this website. Google AdSense uses cookies and web beacons to serve ads based on your prior visits to this and other websites.
+            </p>
+            <p className="mt-3">
+              Google's use of advertising cookies enables it and its partners to serve ads to you based on your visit to our site and/or other sites on the Internet. Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to our website or other websites.
+            </p>
+            <p className="mt-3">
+              You may opt out of personalized advertising by visiting{' '}
+              <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">Google Ads Settings</a>.
+            </p>
+            <p className="mt-3">
+              For more information about how Google uses data when you use our site, please visit:{' '}
+              <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">Google's Privacy & Terms</a>.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
+              <span className="text-primary text-sm font-black">03.</span> Information We Collect
             </h2>
             <p>
               We may collect personal information including your name, email address, account details, device information, IP address, browser type, and usage data when you interact with our platform.
@@ -80,7 +100,7 @@ const Privacy = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">03.</span> Use of Information
+              <span className="text-primary text-sm font-black">04.</span> Use of Information
             </h2>
             <p>The information collected is used to:</p>
             <ul className="list-disc pl-6 space-y-2 mt-2">
@@ -94,7 +114,7 @@ const Privacy = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">04.</span> Cookies & Tracking Technologies
+              <span className="text-primary text-sm font-black">05.</span> Cookies & Tracking Technologies
             </h2>
             <p>
               We may use cookies, analytics tools, and similar technologies to enhance user experience, analyze website traffic, remember preferences, and improve platform functionality. Users may disable cookies through their browser settings if desired.
@@ -103,7 +123,7 @@ const Privacy = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">05.</span> Data Sharing
+              <span className="text-primary text-sm font-black">06.</span> Data Sharing
             </h2>
             <p>
               We do not sell or rent personal information to third parties. However, we may share limited information with trusted service providers including cloud hosting providers, email delivery services, and analytics platforms strictly for operational purposes.
@@ -112,7 +132,7 @@ const Privacy = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">06.</span> Data Protection
+              <span className="text-primary text-sm font-black">07.</span> Data Protection
             </h2>
             <p>
               We implement reasonable technical and organizational security measures to protect user information from unauthorized access, misuse, disclosure, or alteration. Despite our efforts, no online platform can guarantee absolute security.
@@ -121,7 +141,7 @@ const Privacy = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">07.</span> Third-Party Services
+              <span className="text-primary text-sm font-black">08.</span> Third-Party Services
             </h2>
             <p>
               IslamicNames.in may contain links or integrations with third-party services. We are not responsible for the privacy practices, policies, or content of external websites or services.
@@ -130,7 +150,7 @@ const Privacy = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">08.</span> User Rights
+              <span className="text-primary text-sm font-black">09.</span> User Rights
             </h2>
             <p>
               Users may request access, correction, or deletion of their personal data by contacting us through the official support channels provided on the website.
@@ -139,7 +159,7 @@ const Privacy = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">09.</span> Children's Privacy
+              <span className="text-primary text-sm font-black">10.</span> Children's Privacy
             </h2>
             <p>
               IslamicNames.in is not intended for children under the age required by applicable laws without parental supervision. We do not knowingly collect sensitive information from minors.
@@ -148,7 +168,7 @@ const Privacy = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">10.</span> Policy Updates
+              <span className="text-primary text-sm font-black">11.</span> Policy Updates
             </h2>
             <p>
               We may update this Privacy Policy periodically to reflect changes in our services, technologies, or legal requirements. Continued use of the website after updates constitutes acceptance of the revised policy.
@@ -157,7 +177,7 @@ const Privacy = () => {
 
           <section>
             <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
-              <span className="text-primary text-sm font-black">11.</span> Contact Information
+              <span className="text-primary text-sm font-black">12.</span> Contact Information
             </h2>
             <p>
               For questions regarding this Privacy Policy or data-related concerns, users may contact us using the contact details available on IslamicNames.in.

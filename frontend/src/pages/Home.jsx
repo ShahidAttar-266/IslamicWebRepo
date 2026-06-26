@@ -1,12 +1,14 @@
-import { useState, Suspense } from 'react';
+import { useState, Suspense, lazy } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Search as SearchIcon, ArrowRight, BookOpen, Sparkles, Users } from 'lucide-react';
 import api from '../api/axios';
 import NameCard from '../components/NameCard';
-import HomeFAQ from '../components/HomeFAQ';
 import ErrorBoundary from '../components/ErrorBoundary';
-import ArticlesSlider from '../components/ArticlesSlider';
+
+// Lazy load heavy below-the-fold components to reduce initial JS payload
+const HomeFAQ = lazy(() => import('../components/HomeFAQ'));
+const ArticlesSlider = lazy(() => import('../components/ArticlesSlider'));
 
 import { Helmet } from 'react-helmet-async';
 
@@ -210,10 +212,14 @@ const Home = () => {
       </section>
 
       {/* Articles Slider Section */}
-      <ArticlesSlider />
+      <Suspense fallback={null}>
+        <ArticlesSlider />
+      </Suspense>
 
       {/* SEO FAQ Section */}
-      <HomeFAQ />
+      <Suspense fallback={null}>
+        <HomeFAQ />
+      </Suspense>
     </div>
   );
 };

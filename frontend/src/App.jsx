@@ -16,10 +16,10 @@ import MainLayout from './layouts/MainLayout';
 import { FallbackLoader } from './components/FallbackLoader';
 const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
 
-// Static imports for public routes to avoid Suspense CLS during hydration
-import Home from './pages/Home';
-import Search from './pages/Search';
-import Compare from './pages/Compare';
+// Lazy imports for public routes to reduce initial bundle size
+const Home = lazy(() => import('./pages/Home'));
+const Search = lazy(() => import('./pages/Search'));
+const Compare = lazy(() => import('./pages/Compare'));
 
 // Lazy imports for dynamic or non-prerendered routes
 const NameDetail = lazy(() => import('./pages/NameDetail'));
@@ -48,6 +48,7 @@ const CanMuslimsUseNonArabicNamesArticle = lazy(() => import('./pages/CanMuslims
 const NamesOfTheProphetsArticle = lazy(() => import('./pages/NamesOfTheProphetsArticle'));
 const TheNameFatimaArticle = lazy(() => import('./pages/TheNameFatimaArticle'));
 const ArticleComingSoon = lazy(() => import('./pages/ArticleComingSoon'));
+const About = lazy(() => import('./pages/About'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Lazy Admin Pages
@@ -149,6 +150,7 @@ function App() {
                     <Route path="/blog/names-of-the-prophets-in-islam" element={<NamesOfTheProphetsArticle />} />
                     <Route path="/blog/the-name-fatima-meaning-history" element={<TheNameFatimaArticle />} />
                     <Route path="/blog/:slug" element={<ArticleComingSoon />} />
+                    <Route path="/about" element={<About />} />
                     <Route path="*" element={<NotFound />} />
                   </Route>
 

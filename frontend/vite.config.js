@@ -56,15 +56,31 @@ export default defineConfig({
             return 'icons';
           }
           if (id.includes('node_modules')) {
-            if (id.includes('react/') || id.includes('react-dom/') || id.includes('react-router') || id.includes('react-helmet')) {
+            // Core React runtime — keep together for shared dependency
+            if (id.includes('react/') || id.includes('react-dom/')) {
               return 'vendor-react';
             }
+            // Router — separate chunk since only needed after hydration
+            if (id.includes('react-router')) {
+              return 'vendor-router';
+            }
+            // Helmet — SEO head management, loaded on every page
+            if (id.includes('react-helmet')) {
+              return 'vendor-helmet';
+            }
+            // Animation library — heavy, only needed for animated pages
             if (id.includes('framer-motion')) {
               return 'vendor-framer';
             }
+            // Data fetching layer
             if (id.includes('@tanstack') || id.includes('axios')) {
               return 'vendor-data';
             }
+            // Google OAuth — only loaded on login/register pages
+            if (id.includes('@react-oauth') || id.includes('google')) {
+              return 'vendor-oauth';
+            }
+            // PDF generation — only loaded on-demand
             if (id.includes('jspdf')) {
               return 'vendor-pdf';
             }
