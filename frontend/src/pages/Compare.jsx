@@ -80,7 +80,7 @@ const Compare = () => {
       <Helmet>
         <title>Compare Islamic Names | IslamicNames</title>
         <meta name="description" content="Compare meanings, origins, and Quranic contexts of multiple Islamic names side-by-side to find the perfect choice." />
-        <link rel="canonical" href="https://www.islamicnames.in/compare" />
+        <meta name="robots" content="noindex, nofollow" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:title" content="Compare Islamic Names | IslamicNames" />

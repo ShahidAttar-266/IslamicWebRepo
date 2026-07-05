@@ -14,7 +14,6 @@ const EMBEDDED_TEMPLATE = `<!DOCTYPE html><html lang="en"><head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IslamicNames | Meaningful Names. Timeless Legacy.</title>
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://www.islamicnames.in/" />
   <link rel="icon" type="image/png" href="https://www.islamicnames.in/favicon.png">
   <meta name="description" content="Discover thousands of meaningful Islamic names with rich origins, Quranic references, and historical context.">
   <meta property="og:title" content="IslamicNames | Meaningful Names. Timeless Legacy.">
@@ -164,8 +163,7 @@ exports.renderNamePage = async (req, res, next) => {
 
             // Replace existing tags to avoid duplicates, then inject additional SEO tags
             html = html.replace(/<title>[^<]*<\/title>/i, `<title>${title}</title>`);
-            html = html.replace(/<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i, `<link rel="canonical" href="${canonicalUrl}" />`);
-            html = html.replace('<head>', `<head>${generateSEOInjectHTML(name)}`);
+            html = html.replace('<head>', `<head>\n  <link rel="canonical" href="${canonicalUrl}" />${generateSEOInjectHTML(name)}`);
             html = html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i, `<meta name="description" content="${description}" />`);
             html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:title" content="${title}" />`);
             html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:description" content="${description}" />`);
@@ -179,7 +177,9 @@ exports.renderNamePage = async (req, res, next) => {
         if (result.status === 404) {
             let html = await getTemplate();
             html = html.replace(/<title>[^<]*<\/title>/i, '<title>Name Not Found | IslamicNames</title>');
+            html = html.replace(/<meta name="robots" content="[^"]*">/i, '<meta name="robots" content="noindex, nofollow">');
             res.header('Content-Type', 'text/html');
+            res.header('X-Robots-Tag', 'noindex, nofollow');
             return res.status(404).send(html);
         }
 
@@ -259,10 +259,9 @@ exports.renderHomePage = async (req, res, next) => {
   <script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}</script>
             `;
 
-            // Replace existing title and canonical to avoid duplicates, then inject additional SEO tags
+            // Replace existing title and inject canonical + additional SEO tags
             html = html.replace(/<title>[^<]*<\/title>/i, `<title>${title}</title>`);
-            html = html.replace(/<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i, `<link rel="canonical" href="${canonicalUrl}" />`);
-            html = html.replace('<head>', `<head>${seoInject}`);
+            html = html.replace('<head>', `<head>\n  <link rel="canonical" href="${canonicalUrl}" />${seoInject}`);
             html = html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i, `<meta name="description" content="${description}" />`);
             html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:title" content="${title}" />`);
             html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:description" content="${description}" />`);

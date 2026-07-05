@@ -86,7 +86,6 @@ const BLOG_TEMPLATE = `<!DOCTYPE html><html lang="en"><head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IslamicNames Blog</title>
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://www.islamicnames.in/blog" />
   <link rel="icon" type="image/png" href="https://www.islamicnames.in/favicon.png">
   <meta name="description" content="Read articles about Islamic names, Quranic references, and naming traditions.">
   <meta property="og:title" content="IslamicNames Blog">
@@ -215,10 +214,12 @@ exports.renderBlogPage = async (req, res, next) => {
         const article = BLOG_ARTICLES[slug];
 
         if (!article) {
-            // Unknown slug → 404 with minimal shell
+            // Unknown slug → 404 with minimal shell and noindex
             let html = BLOG_TEMPLATE;
             html = html.replace(/<title>[^<]*<\/title>/i, '<title>Article Not Found | IslamicNames Blog</title>');
+            html = html.replace(/<meta name="robots" content="[^"]*">/i, '<meta name="robots" content="noindex, nofollow">');
             res.header('Content-Type', 'text/html');
+            res.header('X-Robots-Tag', 'noindex, nofollow');
             return res.status(404).send(html);
         }
 
@@ -230,16 +231,15 @@ exports.renderBlogPage = async (req, res, next) => {
             const canonicalUrl = `https://www.islamicnames.in/blog/${slug}`;
             const ogImage = 'https://www.islamicnames.in/og-image.png';
 
-            // Replace title, canonical, description, OG tags
+            // Replace title, description, OG tags
             html = html.replace(/<title>[^<]*<\/title>/i, `<title>${article.title} | IslamicNames Blog</title>`);
-            html = html.replace(/<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i, `<link rel="canonical" href="${canonicalUrl}" />`);
             html = html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i, `<meta name="description" content="${article.description}" />`);
             html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:title" content="${article.title} | IslamicNames Blog" />`);
             html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:description" content="${article.description}" />`);
             html = html.replace(/<meta\s+property="og:image"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:image" content="${ogImage}" />`);
 
-            // Inject structured data
-            html = html.replace('<head>', `<head>${generateBlogSEOInjectHTML(article, slug)}`);
+            // Inject canonical and structured data
+            html = html.replace('<head>', `<head>\n  <link rel="canonical" href="${canonicalUrl}" />${generateBlogSEOInjectHTML(article, slug)}`);
 
             // Inject fallback body content
             html = html.replace('<div id="root"></div>', `<div id="root">${generateBlogFallbackBodyHTML(article, slug)}</div>`);

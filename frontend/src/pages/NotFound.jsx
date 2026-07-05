@@ -8,12 +8,12 @@ const NotFound = () => {
       <Helmet>
         <title>Page Not Found | IslamicNames</title>
         <meta name="description" content="The page you are looking for does not exist on IslamicNames." />
-        <link rel="canonical" href="https://www.islamicnames.in/404" />
+        <meta name="robots" content="noindex, nofollow" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:title" content="Page Not Found | IslamicNames" />
         <meta property="og:description" content="The page you are looking for does not exist on IslamicNames." />
-        <meta property="og:url" content="https://www.islamicnames.in/404" />
+        <meta property="og:url" content="https://www.islamicnames.in/" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://www.islamicnames.in/og-image.png" />
         

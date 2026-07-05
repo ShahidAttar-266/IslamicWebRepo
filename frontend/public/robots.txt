@@ -1,9 +1,25 @@
 User-agent: *
 Allow: /
+Allow: /assets/
+Allow: /name/
+Allow: /blog/
+Allow: /search
+Allow: /faq
+Allow: /about
+
+# Private / user-specific pages (intentionally blocked)
 Disallow: /admin
 Disallow: /login
 Disallow: /register
 Disallow: /account
 Disallow: /favorites
+
+# Internal API endpoints (raw JSON, not for indexing)
+Disallow: /api/
+
+# User-specific compare page (dynamic, not indexable)
+Disallow: /compare
+
+Crawl-delay: 1
 
 Sitemap: https://www.islamicnames.in/sitemap.xml

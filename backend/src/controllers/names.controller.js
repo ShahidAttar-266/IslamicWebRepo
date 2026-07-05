@@ -218,6 +218,7 @@ exports.getSitemap = async (req, res, next) => {
             { path: '/disclaimer', changefreq: 'yearly', priority: '0.3' },
             { path: '/free-service', changefreq: 'yearly', priority: '0.3' },
             { path: '/report-bug', changefreq: 'monthly', priority: '0.3' },
+            { path: '/about', changefreq: 'monthly', priority: '0.5' },
         ];
         staticRoutes.forEach(({ path, changefreq, priority }) => {
             xml += `  <url>\n    <loc>${baseUrl}${path}</loc>\n    <lastmod>${currentDate}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
