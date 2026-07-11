@@ -47,6 +47,7 @@ const GirlNamesSArticle = lazy(() => import('./pages/GirlNamesSArticle'));
 const CanMuslimsUseNonArabicNamesArticle = lazy(() => import('./pages/CanMuslimsUseNonArabicNamesArticle'));
 const NamesOfTheProphetsArticle = lazy(() => import('./pages/NamesOfTheProphetsArticle'));
 const TheNameFatimaArticle = lazy(() => import('./pages/TheNameFatimaArticle'));
+const TheNameIbrahimArticle = lazy(() => import('./pages/TheNameIbrahimArticle'));
 const ArticleComingSoon = lazy(() => import('./pages/ArticleComingSoon'));
 const About = lazy(() => import('./pages/About'));
 const NotFound = lazy(() => import('./pages/NotFound'));
@@ -149,6 +150,7 @@ function App() {
                     <Route path="/blog/can-muslims-use-non-arabic-names" element={<CanMuslimsUseNonArabicNamesArticle />} />
                     <Route path="/blog/names-of-the-prophets-in-islam" element={<NamesOfTheProphetsArticle />} />
                     <Route path="/blog/the-name-fatima-meaning-history" element={<TheNameFatimaArticle />} />
+                    <Route path="/blog/the-name-ibrahim-meaning-history" element={<TheNameIbrahimArticle />} />
                     <Route path="/blog/:slug" element={<ArticleComingSoon />} />
                     <Route path="/about" element={<About />} />
                     <Route path="*" element={<NotFound />} />

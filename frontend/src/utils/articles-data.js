@@ -160,5 +160,21 @@ export const ARTICLES = [
     excerpt: 'The most beloved name in Islam. Learn the full story, meaning, and legacy of Fatimah bint Muhammad.',
     category: 'girl',
     comingSoon: false,
+  },
+  {
+    slug: 'the-name-ibrahim-meaning-history',
+    title: 'The Name Ibrahim — Meaning, History, and Why It Matters',
+    href: '/blog/the-name-ibrahim-meaning-history',
+    tag: 'Boy Names',
+    tagBg: '#E3EEF9',
+    tagText: '#1A4F8A',
+    date: 'July 11, 2026',
+    readTime: '7 min',
+    arabicLetter: 'إ',
+    gradientFrom: '#3A2A0A',
+    gradientTo: '#8A6A2A',
+    excerpt: 'Khalilullah — the Friend of Allah, builder of the Kaaba, and father of the prophets. The full story, meaning, and legacy of the name Ibrahim.',
+    category: 'boy',
+    comingSoon: false,
   }
 ];
