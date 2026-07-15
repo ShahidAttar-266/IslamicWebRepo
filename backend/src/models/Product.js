@@ -23,9 +23,26 @@ const productSchema = new mongoose.Schema({
     },
     affiliateUrl: {
         type: String,
-        required: [true, 'Please add an affiliate URL'],
-        trim: true
+        trim: true,
+        default: ''
     },
+    affiliateLinks: [{
+        label: {
+            type: String,
+            trim: true,
+            default: 'Buy Now'
+        },
+        url: {
+            type: String,
+            required: [true, 'Please add a link URL'],
+            trim: true
+        },
+        countryCode: {
+            type: String,
+            trim: true,
+            default: ''
+        }
+    }],
     imageUrl: {
         type: String,
         trim: true,

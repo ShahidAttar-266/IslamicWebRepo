@@ -14,6 +14,18 @@ const GRADIENT_PRESETS = [
   'linear-gradient(135deg, #2D6A5A, #4AB59A)',
 ];
 
+const COUNTRY_FLAGS = {
+  'IN': '🇮🇳',
+  'US': '🇺🇸',
+  'GB': '🇬🇧',
+  'AE': '🇦🇪',
+  'SA': '🇸🇦',
+  'PK': '🇵🇰',
+  'BD': '🇧🇩',
+  'MY': '🇲🇾',
+  'ID': '🇮🇩',
+};
+
 const Shop = () => {
   const [activeCategory, setActiveCategory] = useState('All');
 
@@ -44,6 +56,17 @@ const Shop = () => {
       return `linear-gradient(${product.gradient})`;
     }
     return GRADIENT_PRESETS[index % GRADIENT_PRESETS.length];
+  };
+
+  // Resolve links — prefer affiliateLinks[], fall back to affiliateUrl
+  const getProductLinks = (product) => {
+    if (product.affiliateLinks && product.affiliateLinks.length > 0) {
+      return product.affiliateLinks;
+    }
+    if (product.affiliateUrl) {
+      return [{ label: 'Buy Now', url: product.affiliateUrl, countryCode: '' }];
+    }
+    return [];
   };
 
   return (
@@ -155,65 +178,111 @@ const Shop = () => {
         {/* Product Grid */}
         {!isLoading && products.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {products.map((product, index) => (
-              <m.a
-                key={product._id}
-                href={product.affiliateUrl}
-                target="_blank"
-                rel="noopener noreferrer sponsored"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, delay: index * 0.06 }}
-                className="group bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
-              >
-                {/* Card Header — Image or Gradient */}
-                <div
-                  className="h-36 flex items-center justify-center relative overflow-hidden"
-                  style={{ background: product.imageUrl ? undefined : getGradient(product, index) }}
+            {products.map((product, index) => {
+              const links = getProductLinks(product);
+              const hasMultipleLinks = links.length > 1;
+              const primaryLink = links[0]?.url || '#';
+
+              return (
+                <m.div
+                  key={product._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, delay: index * 0.06 }}
+                  className="group bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 flex flex-col"
                 >
-                  {product.imageUrl ? (
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <ShoppingBag size={32} className="text-white/90" />
-                  )}
-                </div>
+                  {/* Card Header — Image or Gradient (clickable to primary link) */}
+                  <a
+                    href={primaryLink}
+                    target="_blank"
+                    rel="noopener noreferrer sponsored"
+                    className="block"
+                  >
+                    <div
+                      className="h-36 flex items-center justify-center relative overflow-hidden"
+                      style={{ background: product.imageUrl ? undefined : getGradient(product, index) }}
+                    >
+                      {product.imageUrl ? (
+                        <img
+                          src={product.imageUrl}
+                          alt={product.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <ShoppingBag size={32} className="text-white/90" />
+                      )}
+                    </div>
+                  </a>
 
-                {/* Card Body */}
-                <div className="p-4">
-                  <h2 className="text-sm font-semibold text-text leading-snug mb-1 line-clamp-2 group-hover:text-primary transition-colors">
-                    {product.name}
-                  </h2>
+                  {/* Card Body */}
+                  <div className="p-4 flex flex-col flex-1">
+                    <h2 className="text-sm font-semibold text-text leading-snug mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                      {product.name}
+                    </h2>
 
-                  {product.description && (
-                    <p className="text-xs text-text-muted leading-relaxed mb-3 line-clamp-2">
-                      {product.description}
-                    </p>
-                  )}
+                    {product.description && (
+                      <p className="text-xs text-text-muted leading-relaxed mb-3 line-clamp-2">
+                        {product.description}
+                      </p>
+                    )}
 
-                  {product.price && (
-                    <p className="text-base font-bold text-text mb-3">
-                      {product.price}
-                    </p>
-                  )}
+                    {product.price && (
+                      <p className="text-base font-bold text-text mb-3">
+                        {product.price}
+                      </p>
+                    )}
 
-                  <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/50">
-                    <span className="text-[10px] text-text-muted uppercase tracking-wider flex items-center gap-1">
-                      <Tag size={10} />
-                      Paid link
-                    </span>
-                    <span className="text-xs font-semibold bg-primary text-bg px-3 py-1.5 rounded-lg flex items-center gap-1 group-hover:shadow-md group-hover:shadow-primary/20 transition-all">
-                      View
-                      <ExternalLink size={11} />
-                    </span>
+                    {/* Footer with Links */}
+                    <div className="mt-auto pt-3 border-t border-border/50 space-y-2.5">
+                      <span className="text-[10px] text-text-muted uppercase tracking-wider flex items-center gap-1">
+                        <Tag size={10} />
+                        Paid link{hasMultipleLinks ? 's' : ''}
+                      </span>
+
+                      {/* Single Link — full-width button */}
+                      {!hasMultipleLinks && (
+                        <a
+                          href={primaryLink}
+                          target="_blank"
+                          rel="noopener noreferrer sponsored"
+                          className="flex items-center justify-center gap-1.5 w-full text-xs font-semibold bg-primary text-bg px-3 py-2 rounded-lg hover:shadow-md hover:shadow-primary/20 transition-all"
+                        >
+                          {links[0]?.countryCode && COUNTRY_FLAGS[links[0].countryCode]
+                            ? `${COUNTRY_FLAGS[links[0].countryCode]} `
+                            : ''
+                          }
+                          {links[0]?.label || 'View'}
+                          <ExternalLink size={11} />
+                        </a>
+                      )}
+
+                      {/* Multiple Links — side by side region buttons */}
+                      {hasMultipleLinks && (
+                        <div className="flex gap-2">
+                          {links.map((link, i) => (
+                            <a
+                              key={i}
+                              href={link.url}
+                              target="_blank"
+                              rel="noopener noreferrer sponsored"
+                              className="flex-1 flex items-center justify-center gap-1 text-xs font-semibold bg-primary text-bg px-2 py-2 rounded-lg hover:shadow-md hover:shadow-primary/20 transition-all text-center"
+                            >
+                              {link.countryCode && COUNTRY_FLAGS[link.countryCode]
+                                ? <span>{COUNTRY_FLAGS[link.countryCode]}</span>
+                                : null
+                              }
+                              <span className="truncate">{link.label || 'Buy'}</span>
+                              <ExternalLink size={10} className="shrink-0" />
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </m.a>
-            ))}
+                </m.div>
+              );
+            })}
           </div>
         )}
       </div>
