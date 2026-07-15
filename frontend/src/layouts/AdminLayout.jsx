@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, Navigate, Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import useAuthStore from '../store/useAuthStore';
-import { Home, Users, Database, Upload, Settings, LogOut, ArrowLeft, Menu, X, Copy } from 'lucide-react';
+import { Home, Users, Database, Upload, Settings, LogOut, ArrowLeft, Menu, X, Copy, ShoppingBag } from 'lucide-react';
 
 const AdminLayout = () => {
   const { user, isAuthenticated, logout } = useAuthStore();
@@ -24,6 +24,7 @@ const AdminLayout = () => {
     { name: 'Dashboard', path: '/admin', icon: <Home size={20} /> },
     { name: 'Names', path: '/admin/names', icon: <Database size={20} /> },
     { name: 'Upload', path: '/admin/upload', icon: <Upload size={20} /> },
+    { name: 'Products', path: '/admin/products', icon: <ShoppingBag size={20} /> },
     { name: 'Users', path: '/admin/users', icon: <Users size={20} /> },
     { name: 'Duplicates', path: '/admin/duplicates', icon: <Copy size={20} /> },
     { name: 'Settings', path: '/admin/settings', icon: <Settings size={20} /> },

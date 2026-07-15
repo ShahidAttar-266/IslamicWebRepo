@@ -51,6 +51,7 @@ const TheNameIbrahimArticle = lazy(() => import('./pages/TheNameIbrahimArticle')
 const ArticleComingSoon = lazy(() => import('./pages/ArticleComingSoon'));
 const About = lazy(() => import('./pages/About'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const Shop = lazy(() => import('./pages/Shop'));
 
 // Lazy Admin Pages
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
@@ -59,6 +60,7 @@ const AdminUpload = lazy(() => import('./pages/admin/AdminUpload'));
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
 const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
 const AdminDuplicates = lazy(() => import('./pages/admin/AdminDuplicates').then(m => ({ default: m.AdminDuplicates })));
+const AdminProducts = lazy(() => import('./pages/admin/AdminProducts'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -153,6 +155,7 @@ function App() {
                     <Route path="/blog/the-name-ibrahim-meaning-history" element={<TheNameIbrahimArticle />} />
                     <Route path="/blog/:slug" element={<ArticleComingSoon />} />
                     <Route path="/about" element={<About />} />
+                    <Route path="/shop" element={<Shop />} />
                     <Route path="*" element={<NotFound />} />
                   </Route>
 
@@ -164,6 +167,7 @@ function App() {
                     <Route path="users" element={<AdminUsers />} />
                     <Route path="settings" element={<AdminSettings />} />
                     <Route path="duplicates" element={<AdminDuplicates />} />
+                    <Route path="products" element={<AdminProducts />} />
                   </Route>
                 </Routes>
               </Suspense>

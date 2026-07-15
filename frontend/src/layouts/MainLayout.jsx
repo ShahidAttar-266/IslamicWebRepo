@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
-import { Search, LogOut, Heart, Menu, X, ChevronRight, User, BookOpen, Shield, Info } from 'lucide-react';
+import { Search, LogOut, Heart, Menu, X, ChevronRight, User, BookOpen, Shield, Info, ShoppingBag } from 'lucide-react';
 import Footer from '../components/Footer';
 import { AnnouncementBar } from '../components/AnnouncementBar';
 import { FallbackLoader } from '../components/FallbackLoader';
@@ -121,6 +121,15 @@ const MainLayout = () => {
               >
                 <BookOpen size={15} />
                 Articles
+              </Link>
+              <Link
+                to="/shop"
+                className={`px-3 py-2 rounded-md transition-colors flex items-center gap-1.5 ${
+                  isActive('/shop') ? 'bg-primary/10 text-primary' : 'hover:text-primary'
+                }`}
+              >
+                <ShoppingBag size={15} />
+                Shop
               </Link>
               <Link
                 to="/about"
@@ -279,6 +288,17 @@ const MainLayout = () => {
               >
                 <span className="flex items-center gap-2"><BookOpen size={18} /> Articles</span>
                 {isActive('/blog') && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
+              </Link>
+              <Link
+                to="/shop"
+                className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all ${
+                  isActive('/shop') 
+                    ? 'bg-primary/10 text-primary font-semibold' 
+                    : 'text-text-muted hover:bg-bg hover:text-text'
+                }`}
+              >
+                <span className="flex items-center gap-2"><ShoppingBag size={18} /> Shop</span>
+                {isActive('/shop') && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
               </Link>
               <Link
                 to="/about"
