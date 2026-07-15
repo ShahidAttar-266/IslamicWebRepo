@@ -1,5 +1,5 @@
-export const WHATSAPP_NUMBER = '919011531687';
-export const WHATSAPP_DISPLAY_NUMBER = '+91 90115 31687';
+export const WHATSAPP_NUMBER = '918275360063';
+export const WHATSAPP_DISPLAY_NUMBER = '+91 82753 60063';
 export const WHATSAPP_MESSAGE = encodeURIComponent(
   'Assalamu Alaikum! I am interested in getting personal Islamic name suggestions for my baby. Please help me.'
 );
