@@ -52,6 +52,7 @@ const ArticleComingSoon = lazy(() => import('./pages/ArticleComingSoon'));
 const About = lazy(() => import('./pages/About'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const Shop = lazy(() => import('./pages/Shop'));
+const ProductDetail = lazy(() => import('./pages/ProductDetail'));
 
 // Lazy Admin Pages
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
@@ -156,6 +157,7 @@ function App() {
                     <Route path="/blog/:slug" element={<ArticleComingSoon />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/shop" element={<Shop />} />
+                    <Route path="/shop/:id" element={<ProductDetail />} />
                     <Route path="*" element={<NotFound />} />
                   </Route>
 

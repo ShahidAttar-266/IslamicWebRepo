@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { m } from 'framer-motion';
@@ -191,11 +192,9 @@ const Shop = () => {
                   transition={{ duration: 0.35, delay: index * 0.06 }}
                   className="group bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 flex flex-col"
                 >
-                  {/* Card Header — Image or Gradient (clickable to primary link) */}
-                  <a
-                    href={primaryLink}
-                    target="_blank"
-                    rel="noopener noreferrer sponsored"
+                  {/* Card Header — Image or Gradient (clickable to product detail page) */}
+                  <Link
+                    to={`/shop/${product._id}`}
                     className="block"
                   >
                     <div
@@ -213,13 +212,15 @@ const Shop = () => {
                         <ShoppingBag size={32} className="text-white/90" />
                       )}
                     </div>
-                  </a>
+                  </Link>
 
                   {/* Card Body */}
                   <div className="p-4 flex flex-col flex-1">
-                    <h2 className="text-sm font-semibold text-text leading-snug mb-1 line-clamp-2 group-hover:text-primary transition-colors">
-                      {product.name}
-                    </h2>
+                    <Link to={`/shop/${product._id}`} className="block">
+                      <h2 className="text-sm font-semibold text-text leading-snug mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                        {product.name}
+                      </h2>
+                    </Link>
 
                     {product.description && (
                       <p className="text-xs text-text-muted leading-relaxed mb-3 line-clamp-2">
